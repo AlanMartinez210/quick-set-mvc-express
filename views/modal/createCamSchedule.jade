@@ -1,0 +1,117 @@
+#createScheduleModal(data-modal="hide")
+  form(method="post", action="", name="scheduleForm")
+
+    .board-prm
+
+      .board-cnt._s
+        .attention-prm
+          p
+            span.st-required(style="border-radius:5px;display: inline-block;")
+              |&emsp;&emsp;&emsp;
+            |&nbsp;は必須項目です。
+
+        .label-input-box#box_date_key
+          .label-box
+            p.main-label: |日付
+            span.sub-label: |予定の空いてる日付を入力してください。
+          .input-box._s.flex._c.st-required
+            input(type="text", data-datepicker, name="date_key")
+            //- input(type="text", name="date_key_hidden", readonly="readonly")
+          p.bottom-label
+
+        .label-input-box#box_shot_type
+          .label-box
+            p.main-label: |撮影タイプ
+            span.sub-label: |可能な撮影を選択してください。
+          .select-box._s.flex._c.st-required
+            select(name="shot_type")
+              - for(var shot_type of C2LINK.SHOT_TYPE_LIST){
+                  option(value="#{shot_type.id}") #{shot_type.name}
+              - }
+          p.bottom-label
+
+        .label-input-box._mbs#box_prefectureField
+          .label-box
+            p.main-label: |活動地域
+            span.sub-label: |あなたの活動している地域を選択し追加してください。
+          .select-box._s.flex._c.st-required
+            select(name="prefecture")#prefectures.js-addPrefectures
+              option(value="")
+              - for(var pref of C2LINK.ALL_PREF_LIST){
+                option(value="#{pref.id}") #{pref.name}
+              - }
+            //- span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw
+          p.bottom-label
+
+        p.st-title-tag
+          |活動地域一覧
+        .tag-cnt-box.flex._wrap#prefectures_field
+
+        .label-input-box._mbs#box_tagField
+          .label-box
+            p.main-label: |タグの設定
+            span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
+          .input-box._s.flex._c
+            input(type="text")#tags
+            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
+          p.bottom-label
+
+        p.st-title-tag
+          |追加したタグ一覧
+        .tag-cnt-box.flex._wrap#tags_field
+
+
+        .accordion-prm
+
+          .accordion-label.flex._c
+            .accordion-title
+              p: |詳細オプション
+          .accordion-cnt
+
+            .label-input-box#box_time_from
+              .label-box
+                p.main-label: |開始時間
+              .select-box._s.flex._c
+                select(name="time_from")
+                  option(value="") 未定
+                  - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+                      option(value="#{time}:00") #{time}:00
+                      option(value="#{time}:30") #{time}:30
+                  - }
+
+              p.bottom-label
+
+            .label-input-box#box_time_to
+              .label-box
+                p.main-label: |終了時間
+              .select-box._s.flex._c
+                select(name="time_to")
+                  option(value="") 未定
+                  - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+                      option(value="#{time}:00") #{time}:00
+                      option(value="#{time}:30") #{time}:30
+                  - }
+              p.bottom-label
+
+            .label-input-box#box_eventname
+              .label-box
+                p.main-label: |イベント名 or 開催地
+                span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
+              .input-box._s.flex._c
+                input(type="text", name="eventname", placeholder="世界コスプレサミット")
+              p.bottom-label
+
+            .label-input-box#box_remarks
+              .label-box
+                p.main-label: |備考
+              .textarea-box._s.flex._c
+                textarea(name="remarks", rows="3")
+              p.bottom-label
+
+      .board-ftr._s.flex._c._jc
+        button(type="submit", data-proc="create", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
+            |登録
+        button(type="submit", data-proc="edit", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
+            |編集
+        button(type="submit", data-proc="delete", name="doSchedulePost").btn-prm.st-back-r.shadow-l.proc-btn
+            |削除

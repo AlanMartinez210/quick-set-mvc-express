@@ -1,0 +1,36 @@
+#searchModal(data-modal="hide")
+  form(action="", method="post")
+    .board-prm
+
+      .board-cnt._s
+        -const today = true;
+
+        .input-box._s.flex._c(class="#{today?'disabled':''}")
+            i.icon-input.far.fa-calendar.fa-fw
+            input(type="text", placeholder="2018/05/08")
+
+        .input-box._s.flex._c
+          i.icon-input.fas.fa-map-marker-alt.fa-fw
+          input(type="text", placeholder="東京都 港区")
+
+        .input-box._s.flex._c
+          i.icon-input.fas.fa-tags.fa-fw
+          input(type="text", placeholder="一眼レフOK")
+
+        .accordion-prm
+          .accordion-label.flex._c
+            .accordion-title: p: |詳細オプション
+          .accordion-cnt
+            .label-input-box#box_shot_type
+              .label-box
+                p.main-label: |撮影タイプ
+              .select-box._s.flex._c
+                select(name="shot_type")
+                  - for(var shot_type of C2LINK.SHOT_TYPE_LIST){
+                    option(value="#{shot_type.id}") #{shot_type.name}
+                  - }
+
+      .board-ftr._s.flex._c._jc
+        button.btn-prm.st-back-b.shadow-l
+          //- i.icon-btn.fas.fa-chevron-left
+          span: |検索

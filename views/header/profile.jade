@@ -1,0 +1,27 @@
+header.bgImage
+  //-header
+  .hdr-cntnr.cntnr-balancer
+      .hdr-menu
+        //-title
+        //- .hdr-title.flex._c
+        //-   i.icon-menu.far.fa-user.fa-fw
+        //-   h1: |コンテンツ1
+        //-   span.hvr-back-blue: i.icon-menu.fas.fa-bars.fa-fw
+        //-navigation
+        //-nav
+          ul.hdr-g-nav
+            - for (let i=0;i<5;i++){
+                li.flex._c.hvr-back-blue
+                  i.icon-menu.far.fa-clock.fa-fw
+                  p: |コンテンツ
+                  span: i.icon-menu.fas.fa-chevron-right.fa-fw
+            - }
+      //-.hdr-controll
+
+      //-.hdr-controll
+        select.select-prm.shadow-l
+          option(value="aa")
+            i.icon-menu.far.fa-comments.fa-fw: |テスト
+          option(value="aa") aaa
+          option(value="aa") aaa
+          option(value="aa") aaa

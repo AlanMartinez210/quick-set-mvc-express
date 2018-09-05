@@ -1,0 +1,40 @@
+-
+  var messages = self.bodyData.messages;
+  var user_id = self.session.user.id;
+-
+
+.center-frame
+  .message-line
+    - for(var obj of messages){
+      div(class=["message-pop",user_id==obj.user_id?"me":"other"])
+        .message-state.date-s
+          | 2018-10-12
+        .pop-inner-cnt.flex
+          .message-box.shadow-l
+            | #{obj.message}
+        .message-state.checked-s
+          i.fas.fa-check
+    - }
+
+.board-editer
+  .editer-menu
+    .board-prm
+      .board-cnt._n
+        ul.st_options
+          li.flex._c.hvr-back-blue
+            i.fas.fa-user-plus.fa-fw.c-red
+            p: |ユーザーを追加
+          li.flex._c.hvr-back-blue
+            i.fas.fa-clipboard-list.fa-fw.c-red
+            p: |ユーザー一覧
+          li.flex._c.hvr-back-blue
+            i.far.fa-file-image.fa-fw.c-red
+            p: |画像を送る
+  .editer-cntnr.flex._bm
+    span#editerMenuBtn.editer-menu-btn
+      i.icon-editer-menu.fas.fa-bars
+    .wrap-editer-set
+      .message-editer(contenteditable="true", role="textbox", tabindex="1", aria-multiline="true")
+      .span.emoji-icon
+    button#messageSendBtn.message-send-btn
+      |送信

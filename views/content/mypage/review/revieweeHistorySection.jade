@@ -1,0 +1,50 @@
+- // あなたへのレビュー一覧
+-
+  var revieweeList = self.bodyData.revieweeList;
+  var revieweeList = [
+    {
+      id: 1,  //request_id
+      date: {y:"2018", m:"05", d:"01"},
+      username: "テストユーザー1",
+      type: 1,  // good
+    },{
+      id: 2,  //request_id
+      date: {y:"2018", m:"05", d:"02"},
+      username: "テストユーザー2",
+      type: 2,  // bad
+    },
+  ];
+-
+
+.board-hdr
+  .label-box._fb.flex._c
+    i.icon-title-b.fas.fa-gift.fa-fw.c-orange
+    span: |あなたへのレビュー一覧
+.board-cnt._s.list-board
+  //- p.info-text: |メッセージ履歴はありません
+  ul.st_options
+    - var goodIcon = ["icon-title-b","far","fa-fw", "fa-thumbs-up","c-blue"]; // goodアイコンのcssセット
+    - var badIcon  = ["icon-title-b","far","fa-fw", "fa-thumbs-down","c-purple"]; //badアイコンのcssセット
+    - for(var obj of revieweeList){
+      li.label-icon-link
+        .link-wrap.flex._c.editReview
+          .label-icon
+            img
+          i(class=obj.type==1?goodIcon:badIcon)
+          .st-string-set
+            span.sub-text: |#{obj.date.y + "/" + obj.date.m + "/" + obj.date.d}
+            p: |#{obj.username}
+          i.icon-link.fas.fa-chevron-right.fa-fw
+    - }
+
+
+.board-ftr._s
+  .pager(data-pagerid="reviewhistry")
+    ul.flex._jc
+      li: a: i.icon-pager.fas.fa-angle-double-left.fa-fw
+      li: a: i.icon-pager.fas.fa-angle-left.fa-fw
+      -for(let i=1;i<=3;i++){
+        li: a(class="#{i==1?'selected':''}"): |#{i}
+      -}
+      li: a: i.icon-pager.fas.fa-angle-right.fa-fw
+      li: a: i.icon-pager.fas.fa-angle-double-right.fa-fw

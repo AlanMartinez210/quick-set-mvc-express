@@ -1,0 +1,43 @@
+-
+  // var unReviewList = self.bodyData.unReviewList;
+  var unReviewList = [
+    {
+      id: 1,  //request_id
+      date: {y:"2018", m:"05", d:"01"},
+      username: "テストユーザー1",
+    },{
+      id: 2,  //request_id
+      date: {y:"2018", m:"05", d:"02"},
+      username: "テストユーザー2",
+    },
+  ];
+-
+
+
+.center-frame
+  .board-prm
+    .board-hdr
+
+      .label-box._fb.flex._c
+        i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+        span: |未レビュー一覧
+
+    .board-cnt._s.list-board
+      //- p.info-text: |新しいメッセージはありません
+      ul.st_options
+        - for(var obj of unReviewList){
+          li.label-icon-link.editReview
+            .link-wrap.flex._c
+              .label-icon
+                img
+              .st-string-set
+                span.sub-text: |2018/05/01
+                p: |#{obj.username}
+              i.icon-link.fas.fa-chevron-right.fa-fw
+        - }
+
+  .board-prm
+    include ./revieweeHistorySection.jade
+
+  .board-prm
+    include ./reviewHistorySection.jade

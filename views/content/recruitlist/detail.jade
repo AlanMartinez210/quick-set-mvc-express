@@ -1,0 +1,70 @@
+-
+  var data = self.data;
+-
+.center-frame
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.far.fa-clock.fa-fw.c-blue
+        span: |日時
+    .board-cnt
+      .label-box
+        span: |#{data.date_txt}
+
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.far.fa-flag.fa-fw.c-blue
+        span: |イベント名 or 開催地域
+    .board-cnt
+      span: |#{data.eventname}
+      //- span.sub-text: |イベント名は設定されていません。
+    .board-ftr._s
+      .label-box._fb.flex._c
+        i.icon-title.fas.fa-link.fa-fw.c-blue
+        span: |詳細URL
+    .board-ftr
+      a(href=data.eventurl): | #{data.eventurl}
+
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.fas.fa-map-marker-alt.fa-fw.c-blue
+        span: |開催地
+    .board-cnt
+      .label-box
+        span: |#{data.prefecture}
+
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.far.fa-images.fa-fw.c-blue
+        span: |サンプル写真
+    .board-cnt.js-slickBtn
+      .my-slick
+        div: |test
+        div: |test
+        div: |test
+
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.far.fa-thumbs-up.fa-fw.c-blue
+        span: |レビュー評価
+    .board-cnt._s
+      .group-wrap
+
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.fas.fa-tag.fa-fw.c-blue
+        span: |タグ一覧
+    .board-cnt
+
+  .board-prm
+    .board-hdr._s
+      .label-box._fb.flex._c
+        i.icon-title.fas.fa-clipboard-list.fa-fw.c-blue
+        span: |備考
+    .board-cnt
+      span: pre: |#{data.remarks}

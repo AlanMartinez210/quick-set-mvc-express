@@ -1,0 +1,15 @@
+extends ../../layout/index
+block header
+  include ../../header/general.jade
+
+block modal
+  include ../../modal/notice.jade
+  -if(self.userType == "1")
+    include ../../modal/createCosSchedule.jade
+  -else
+    include ../../modal/createCamSchedule.jade
+
+block content
+  include ../../content/mypage/schedule/schedule.jade
+
+

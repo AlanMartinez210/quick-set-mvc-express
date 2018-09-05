@@ -1,0 +1,27 @@
+#loginModal.login-ptm(data-modal="hide")
+  form(method="post", action="/login", name="loginForm")
+
+    .board-prm
+
+      .board-cnt._s
+
+        .label-input-box
+          .label-box
+            p.main-label: |ユーザーID
+            span.sub-label: |50文字まで入力できます
+          .input-box._s.flex._c
+            input(type="text", name="userid")
+          p.bottom-label #{self.err_message}
+
+        .label-input-box
+          .label-box
+            p.main-label: |パスワード
+            span.sub-label: |半角英字と数字を含む8～32文字を入力してください
+          .input-box._s.flex._c
+            input(type="password", name="password")
+          p.bottom-label #{self.err_message}
+
+      .board-ftr._s.flex._c._jc
+
+        button(type="submit", name="doLogin").btn-prm.st-back-b.shadow-l
+          |ログイン

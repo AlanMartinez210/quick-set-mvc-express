@@ -1,0 +1,89 @@
+
+.center-frame
+
+  .board-prm#login-board
+
+    .board-cnt._s.flex._c._jc
+
+      a.flex._c._jc.register-btn.st-back-orange.shadow-l#test
+        span: |新規登録
+
+      a(href="/login")#loginBtn.flex._c._jc.login-btn.st-line-b.shadow-l
+        i.icon-title.fas.fa-sign-in-alt
+        span: |ログイン
+
+  .introduction
+
+    p.introduction-text: |現在999件の募集があります！
+
+
+
+    .logo-mark
+      img(src="/image/c2logo.svg", alt="")
+
+    p.introduction-text: |あなたをサポートする機能達を紹介します
+
+    a.flex._c._jc.st-large-btn.st-back-b.shadow-l.st-center
+      span: |機能紹介を見る
+
+.register-cntnr
+
+  .center-frame
+
+    p.register-text: |さあ、スタートしましょう！
+
+    form(method="post", name="registerForm")
+      .board-prm
+        .board-cnt
+
+          .label-input-box#box_user_name
+            .label-box
+              p.main-label: |ユーザー名
+              span.sub-label: |50文字まで入力できます
+            .input-box._s.flex._c
+              input(type="text", name="user_name")
+            p.bottom-label
+
+          .label-input-box#box_password
+            .label-box
+              p.main-label: |パスワード
+              span.sub-label: |半角英字と数字を含む8～32文字を入力してください
+            .input-box._s.flex._c
+              input(type="password", name="password")
+            p.bottom-label
+
+          .label-input-box#box_email
+            .label-box
+              p.main-label: |メールアドレス
+              span.sub-label: |＠を含むメールアドレスを入力してください
+            .input-box._s.flex._c
+              input(type="text", name="email")
+            p.bottom-label
+
+          .label-input-box#box_type
+            .label-box
+              p.main-label: |ユーザータイプ
+              span.sub-label: |あなたの活動タイプを選択してください
+            .radio-box._s.flex._c._jc
+              .radio-set
+                input(type="radio", id="cos", name="user_type", value="1", checked)
+                label(for="cos").btn-prm.st-line-bl.shadow-l コスプレイヤー
+              .radio-set
+                input(type="radio", id="cam", name="user_type", value="2")
+                label(for="cam").btn-prm.st-line-bl.shadow-l カメラマン
+            p.bottom-label
+
+        .board-ftr.flex._j
+          button(type="submit",id="submit", name="doRegist", value="新規登録").st-large-btn.st-back-orange.shadow-l
+            |新規登録
+
+    .board-prm
+      .board-hdr.flex._j
+        span
+          i.icon-title.fab.fa-twitter.c-twitter
+          |twitterでも始められます！
+      .board-cnt
+        .flex._j.st-mb
+          a(href="/twitter/cos").flex._c._jc.st-large-btn.st-back-b.shadow-d コスプレイヤーはこちら
+        .flex._j
+          a(href="/twitter/cam").flex._c._jc.st-large-btn.st-back-b.shadow-d カメラマンはこちら

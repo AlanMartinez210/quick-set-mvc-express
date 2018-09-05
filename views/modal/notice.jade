@@ -1,0 +1,49 @@
+-
+  const notice_data_arr = [
+    {
+      id: "201805010615",
+      type: "worn",
+      year: 2018,
+      month: 5,
+      day: 20,
+      title: "β版利用でのご注意",
+      content: "<p>平素よりc2Linkをご利用いただきありがとうございます。</p><p>現在、c2Linkはβ版稼働中です。<br />今後の追加される機能につきましては<br />「マイページ > 新機能研究室」<br />にて、追加予定の新機能を掲載しております。<br />また、利用者様からの評価を受け付ける為の評価機能もありますので皆様のご参加お待ちしております。<br /><br />今後ともc2Linkならびに運営チームを何卒よろしくお願い致します。<br /></p>"
+    }
+  ];
+  const notice_type = {worn: "注意喚起", info: "お知らせ"};
+-
+
+#noticeModal(data-modal="hide")
+  form(method="post", action="", name="recruitForm")
+
+    .board-prm
+
+      .board-cnt._s
+        -for(var notice of notice_data_arr){
+        .card-prm.notice-box
+          .card-hdr.notice-hdr(data-noticeid="#{notice.id}", data-type="#{notice.type}")
+            .notice-data-type-set
+              span.notice-type: |#{notice_type[notice.type]}
+              span.notice-date: |#{notice.year}年#{notice.month}月#{notice.day}日
+            p.notice-title: |#{notice.title}
+          .card-cnt
+            article.notice-cnt
+              !{notice.content}
+            .btn-notice-read: |さらに読み込む
+        -}
+
+      .board-ftr._s
+        .pager(data-pagerid="notice")
+          ul.flex._jc
+            li: a: i.icon-pager.fas.fa-angle-double-left.fa-fw
+            li: a: i.icon-pager.fas.fa-angle-left.fa-fw
+            -for(let i=1;i<=3;i++){
+              li: a(class="#{i==1?'selected':''}"): |#{i}
+            -}
+            li: a: i.icon-pager.fas.fa-angle-right.fa-fw
+            li: a: i.icon-pager.fas.fa-angle-double-right.fa-fw
+          
+          
+
+          
+          

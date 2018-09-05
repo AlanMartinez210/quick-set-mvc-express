@@ -1,0 +1,19 @@
+-
+  var data = self.data;
+-
+
+header(data-bgimage="#{self.header.bgImage}").bgImage
+  .hdr-Gradation
+  .hdr-cntnr
+    .hdr-cnt-wrap
+      .hdr-cnt-box.flex._c
+        .hdr-user-data
+          .user-name
+            span: |テストユーザー
+          .review-wrap.flex._c
+            i.icon-title.far.fa-thumbs-up.fa-fw.c-green
+            span.mr: |800
+            i.icon-title.far.fa-thumbs-down.fa-fw.c-purple
+            span: | 9
+        .recuit-btn-wrap
+          span.btn-prm.btn-link.st-line-w.shadow-l(data-doRequest, data-requestid="#{data.id}"): |依頼する

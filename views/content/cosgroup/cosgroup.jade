@@ -1,0 +1,21 @@
+.center-frame
+  .board-prm
+    .float-cntnr.st-search-btn
+      span#searchBtn.btn-prm.st-btn-circle.st-back-b.shadow-d
+        i.icon-btn.fas.fa-search.fa-fw
+    .board-hdr
+      .label-box.flex._c
+        span: |条件指定なし
+    .board-cnt
+      form(method='post', action='', name='')
+        .check-box._n.flex._c
+          input(type='checkbox' id="bookmark")
+          label(for='bookmark') ブックマークのみ表示
+        .check-box._n.flex._c
+          input(type='checkbox' id="cosgroup")
+          label(for='cosgroup') 合わせ募集の通知を行わない
+
+  .floor-prm
+    .floor-hdr._n.flex._jc
+      button.btn-prm.st-line-bl
+        span: |さらに読み込む

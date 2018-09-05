@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+$img_path: "../image/";
+
+/** 文字サイズ **/
+@mixin font-large{font-size: 18px;}
+@mixin font-normal{font-size: 15px;}
+@mixin font-small{font-size: 13px;}
+@mixin font-min{font-size: 10px;}
+
+/** 余白 **/
+@mixin p-content{padding: 20px;}
+@mixin p-inner{padding: 16px;}
+@mixin p-inner-bottom{padding: 16px 16px 0;}
+@mixin p-small-inner{padding: 8px;}
+@mixin p-thin-inner{padding: 4px;}
+
+/**　余白間のサイズ **/
+$p-content: 20px;
+$p-inner: 16px;
+$p-small-inner: 8px;
+$p-thin-inner: 4px;
+
+$base-f-color: #34495e;
+
+
+/**　z-index **/
+$modal-cnt: 1001;
+$modal-cntnr: 1001;
+$ovarlay-dialog-wrap: 2000;
+$confirm-dialog-wrap: 2001;
+$instantMessage: 9998;
+$cnt-progress: 9999;
+$prev-touch: 100;
+$next-touch: 100;
+$hdr-menu: 1000;
+$bgImage: 0;
+$bgImage_before: -1;
+$header: 200;
+$year-month-box: 100;
+$st-add-event-btn: 999;
+$st-search-btn: 999;

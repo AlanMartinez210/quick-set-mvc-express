@@ -1,0 +1,100 @@
+-
+  var userData = self.bodyData.userData;
+-
+//- -
+//-   var data = self.data;
+//-   var user = self.data.user;
+//-   var error = self.error;
+//-   var isError = self.error?self.error.error:false;
+//- -
+
+.center-frame
+  form(method="post", action="", name="")
+
+    .board-prm
+
+      .board-hdr
+
+        .label-box._fb.flex._c
+          i.icon-title-b.far.fa-user.fa-fw.c-orange
+          span: |プロフィール編集
+
+      .board-cnt
+        //- span: |#{(isError&&error.errors['top'])?error.errors['top'].message:""}
+
+        .attention-prm
+          p
+            span.st-required(style="border-radius:5px;display: inline-block;")
+              |&emsp;&emsp;&emsp;
+            |&nbsp;は必須項目です。
+
+        .label-input-box#box_username
+          .label-box
+            p.main-label: |アイコン
+            span.sub-label: |200kまでの画像(jpg/gif/png)が設定できます。
+          .input-box._s.flex._c
+            input(type="file", name="usericon")
+          p.bottom-label
+
+        .label-input-box#box_username
+          .label-box
+            p.main-label: |ユーザー名
+            span.sub-label: |50文字まで入力できます
+          .input-box._s.flex._c.st-required
+            .icon-box
+            //- input(type="text", name="username" value="#{userData.username}")
+            input(type="text", name="username" value="")
+          //- p.bottom-label| #{(isError&&error.errors['username'])?error.errors['username'].message:""}
+
+        .label-input-box#box_username
+          .label-box
+            p.main-label: |メールアドレス
+            span.sub-label: |＠を含むメールアドレスを入力してください。
+          .input-box._s.flex._c.st-required
+            //- input(type="text", name="email" value="#{userData.email}")
+            input(type="text", name="email" value="")
+          //- p.bottom-label| #{(isError&&error.errors['email'])?error.errors['email'].message:""}
+
+        .label-input-box._mbs#box_prefectureField
+          .label-box
+            p.main-label: |活動地域
+            span.sub-label: |あなたの活動している地域を選択し追加してください。
+          .select-box._s.flex._c
+            select(name="prefecture")#prefectures.js-addPrefectures
+              option(value="")
+              - for(var pref of C2LINK.ALL_PREF_LIST){
+                option(value="#{pref.id}") #{pref.name}
+              - }
+          p.bottom-label
+
+        p.st-title-tag
+          |活動地域一覧
+        .tag-cnt-box.flex._wrap#prefectures_field
+
+
+        .label-input-box._mbs#box_tagField
+          .label-box
+            p.main-label: |タグの設定
+            span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
+          .input-box._s.flex._c
+            input(type="text")#tags
+            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
+          p.bottom-label
+
+        p.st-title-tag
+          |追加したタグ一覧
+        .tag-cnt-box.flex._wrap#tags_field
+
+      .board-ftr._s.flex._j
+        button.btn-prm.st-back-b.shadow-l
+          |変更する
+
+  .board-prm
+    .board-cnt._n
+      .label-link
+        a#deleteBtn(href="/user_delete").flex._c
+          i.icon-title-b.fas.fa-minus-circle.fa-fw.c-red
+          .st-string-set
+            p: |アカウント削除
+            span.sub-text: |c2Linkアカウントを削除します。
+          i.icon-link.fas.fa-chevron-right.fa-fw

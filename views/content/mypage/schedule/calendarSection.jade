@@ -1,0 +1,79 @@
+-
+  const calendar = self.bodyData.calendar;
+  const select_year = Number(self.bodyData.select_year);
+  const select_month = Number(self.bodyData.select_month);
+  const current_year = Number(self.bodyData.current_year)
+  const today = Number(self.bodyData.today);
+  const month_schedule_num_arr = self.bodyData.month_schedule_num_arr;
+-
+
+.board-hdr._m
+  .label-box._fb.flex._c
+    i.icon-title-b.far.fa-calendar-alt.fa-fw.c-glay
+    span: |スケジュール
+
+    //- 年度選択
+    .select-box._mbn.hdr-right-side
+      select(name="yearSelectList")._s
+        - for(let year=current_year-1, limit=current_year+2; year<=limit; year++){
+          option(value=year, selected=select_year==year) #{year.toString()}
+        - }
+
+.board-cnt._s
+  .calendar-ptn
+
+    //- 月選択
+    .month-btn-box(data-select_month=select_month)
+      -for(let month=1; month<=12; ++month){ const month_schedule_num = Number(month_schedule_num_arr[month - 1]);
+        a(name="selectMonthList", class=['month-label', (month==select_month ? 'seleced' : '')], data-selected_year=select_year, data-selected_month=month): |#{month.toString()}
+          -if(month_schedule_num > 0){
+          span.schedule-count: |#{month_schedule_num.toString()}
+          -}
+      -}
+
+    //- オプション選択
+    .st-mb.st-mt
+      .check-box._s.flex._c
+        input#isCheckDate(type='checkbox')
+        label(for='isCheckDate') 予定のある日付のみ表示
+
+    //- カレンダー年月
+    .calendar-box.flex
+
+      .year-month-wrap
+        .year-month-box
+          .year-str: |#{select_year.toString()}
+          .month-str: |#{select_month.toString()}
+
+      .date-list-wrap
+        ul.st_options.date-list
+
+          -for(let i=0,e=calendar.length; i<e; ++i){ const cln = calendar[i]; console.log(cln)
+
+              li(class=[
+                cln.day == today ? 'row-green': '',
+                cln.week[0] == 6 ? 'row-blue': '',
+                cln.week[0] == 0 ? 'row-red': '',
+                cln.holiday ? 'row-red' : '',
+                cln.schedule[0] ? '' : 'empty'
+                ]).board-hdr._s.flex._c
+
+                .calendar-date-set.flex._c
+                  a
+                    i.fas.fa-edit(name="createSchedule", data-date_key=cln.date_key, data-mode= cln.schedule.length ? "edit" : "create")
+
+                  //- 一桁台の日付の空白埋め
+                  - if(cln.day < 10)
+                    span.date-str &nbsp;&nbsp;#{cln.day.toString()}
+                  - else
+                    span.date-str &nbsp;#{cln.day.toString()}
+
+                  //- 曜日
+                  span.week-str #{cln.week[1].toString()}
+
+                -if(cln.schedule.length)
+                  .calendar-event-set.flex._c
+                    p.event-str: |#{cln.schedule[0].eventname || '予定あり'}
+                    a
+                      i.fas.fa-trash-alt(name="createSchedule", data-date_key=cln.date_key, data-mode="delete")
+          -}

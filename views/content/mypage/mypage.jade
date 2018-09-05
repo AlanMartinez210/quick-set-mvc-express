@@ -1,0 +1,158 @@
+-
+  var no_review = self.bodyData.no_review_num;
+  var matching = self.bodyData.matching_info_num;
+  var session = self.session;
+-
+
+.center-frame
+  .board-prm.cus-board-set
+    .board-cnt._n
+      .label-link
+        a(href="/mypage/schedule").flex._c
+          - if(Number(self.userType) == 1){
+          i.icon-title-b.far.fa-calendar-plus.fa-fw.c-blue
+          .st-string-set
+            p: |募集の管理
+            span.sub-text: |募集の確認や作成ができます。
+          i.icon-link.fas.fa-chevron-right.fa-fw
+
+          - }else{
+          i.icon-title-b.far.fa-calendar-plus.fa-fw.c-blue
+          .st-string-set
+            p: |予定の管理
+            span.sub-text: |予定の確認や作成ができます。
+          i.icon-link.fas.fa-chevron-right.fa-fw
+          - }
+
+  .board-prm
+    .board-cnt._n
+      .label-link
+        a(href="/mypage/review").flex._c
+          i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+          .st-string-set
+            p: |レビューの管理
+            span.sub-text: |レビューの管理や閲覧ができます。
+          i.icon-link.fas.fa-chevron-right.fa-fw
+    .board-ftr._s.flex._c._jc
+      i.icon-error.fas.fa-exclamation-triangle.fa-fw
+      p.error-text: |未レビューが#{no_review.length}件あります。
+
+
+  .board-prm
+    .board-cnt._n
+      .label-link
+        a(href="/mypage/matching").flex._c
+          i.icon-title-b.far.fa-handshake.fa-fw.c-blue
+          .st-string-set
+            p: |マッチングの管理
+            span.sub-text: |マッチングの管理や閲覧ができます。
+          i.icon-link.fas.fa-chevron-right.fa-fw
+    .board-ftr._s.flex._c._jc
+      i.icon-error.fas.fa-exclamation-triangle.fa-fw
+      p.error-text: |未確認の内容が#{matching.length}件あります。
+
+  .group-wrap._mb
+    .board-prm.board-accordion
+      .board-hdr.flex._c
+        .label-box._fb.flex._c
+          i.icon-title-b.fas.fa-cog.fa-fw.c-glay
+          span: |設定
+      .board-cnt._n
+        ul.st_options
+
+          li.label-link._s
+            a(href="/mypage/profile").flex._c
+              i.icon-title-b.far.fa-address-card.fa-fw.c-orange
+              .st-string-set
+                p: |プロフィール編集
+                span.sub-text: |あなたの情報を設定、編集できます。
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          li.label-link._s
+            a(href="/mypage/site").flex._c
+              i.icon-title-b.fas.fa-sliders-h.fa-fw.c-purple
+              .st-string-set
+                p: |サイト設定
+                span.sub-text: |サイトの動作の設定ができます。
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          case Number(self.userType)
+            when 1
+              li.label-link._s
+                a(href="/mypage/costume").flex._c
+                  i.icon-title-b.fas.fa-tshirt.fa-fw.c-glay
+                  .st-string-set
+                    p: |所持コスプレ設定
+                    span.sub-text: |所持しているコスプレ衣装を設定できます。
+                  i.icon-link.fas.fa-chevron-right.fa-fw
+            
+            when 2
+              li.label-link._s
+                a(href="/mypage/equipment").flex._c
+                  i.icon-title-b.fas.fa-camera.fa-fw.c-glay
+                  .st-string-set
+                    p: |所持機材設定
+                    span.sub-text: |所持している機材を設定できます。
+                  i.icon-link.fas.fa-chevron-right.fa-fw
+
+          li.label-link._s
+            a(href="/mypage/sampleImage").flex._c
+              i.icon-title-b.far.fa-images.fa-fw.c-green
+              .st-string-set
+                p: |サンプル写真設定
+                span.sub-text: |サンプル写真の公開や設定ができます。
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          li.label-link._s
+            a(href="/mypage/extService").flex._c
+              i.icon-title-b.fas.fa-link.fa-fw.c-red
+              .st-string-set
+                p: |外部サービス連携
+                span.sub-text: |外部サービスの設定ができます。
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+
+    .board-prm.board-accordion
+      .board-hdr.flex._c
+        .label-box._fb.flex._c
+          img(src="../image/c2logo.svg", alt="", srcset="").icon-logo-c2
+          span._wbka: |運営と規約
+      .board-cnt._n
+        ul.st_options
+
+          li.label-link._s
+            a(href="/mypage/adminInfo").flex._c
+              i.icon-title-b.far.fa-address-card.fa-fw.c-orange
+              .st-string-set
+                p: |運営情報
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          li.label-link._s
+            a(href="/mypage/privacyPolicy").flex._c
+              i.icon-title-b.fas.fa-lock.fa-fw.c-purple
+              .st-string-set
+                p: |プライバシーポリシー
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          li.label-link._s
+            a(href="/mypage/aboutUserData").flex._c
+              i.icon-title-b.far.fa-user-circle.fa-fw.c-green
+              .st-string-set
+                p: |利用者様のデータについて
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          li.label-link._s
+            a(href="/mypage/contact").flex._c
+              i.icon-title-b.far.fa-envelope.fa-fw.c-red
+              .st-string-set
+                p: |お問い合わせ
+              i.icon-link.fas.fa-chevron-right.fa-fw
+    .board-prm
+      .board-cnt._n
+        .label-link
+          a#logoutBtn(href="/logout").flex._c
+            i.icon-title-b.fas.fa-sign-out-alt.fa-fw.c-blue
+            .st-string-set
+              p: |ログアウト
+              span.sub-text: |c2Linkからログアウトします。
+            i.icon-link.fas.fa-chevron-right.fa-fw

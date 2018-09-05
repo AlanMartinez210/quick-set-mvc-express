@@ -1,0 +1,468 @@
+@import "general/_color.scss";
+@import "general/_mixin.scss";
+
+$fontAwesome : "Font Awesome 5 Free";
+
+.hdr-controll{
+	padding: 0 16px 16px;
+}
+
+.hdr-select-box{
+	color: $white;
+	border-radius: 5px;
+	&._mbn{margin-bottom: 0;}
+	&.hdr-right-side{margin-left: auto;}
+	select{
+		-webkit-appearance:none;
+		-moz-appearance:none;
+		appearance:none;
+		/*Firefox用*/
+		text-indent:.01px; 
+		text-overflow:"";
+		width: 100%;
+		padding: 0.6em 0.4em 0.6em 0.4em;
+		@include font-normal;
+		&._s{padding: 0.4em 0;}
+	}
+	//セレクトボックスのデザイン
+	label.selectBox{
+		width: 100%;
+		line-height: 1;
+		border-radius: 5px;
+		background: $blueD;
+	}
+}
+
+/* ボード */
+.board-prm {
+	.board-hdr{
+		padding: 16px;
+		&._s{padding: 10px;}
+		&._m{padding: 8px 16px;}
+		&._n{padding: 0;}
+		border-bottom: 1px solid $grayL;
+	}
+	.board-cnt{
+		padding: 16px;
+		&._s{padding: 8px;}
+		&._xs{padding: 4px;}
+		&._n{padding: 0;}
+	}
+	.board-ftr{
+		padding: 16px;
+		&._s{padding: 8px;}
+		&._n{padding: 0;}
+		border-top: 1px solid $grayL;
+	}
+	.list-board{
+		ul > li{
+			margin-bottom: 8px;
+			&:last-child{
+				margin-bottom: 0;
+			}
+		}
+	}
+	.btn-board{
+		a.btn-prm{
+			&:last-child{
+				margin-right: 0;
+			}
+			margin-right: 8px;
+		}
+	}
+	// button, .link-btn{
+	// 	margin: 0 4px;
+	// }
+
+	&.board-accordion{
+		.board-hdr{
+			border: 0;
+			cursor: pointer;
+			&::after{
+				margin-left: auto;
+				font-family: "Font Awesome 5 Free";
+				content : '\f358';
+				color: $grayD;
+				margin-right: 8px;
+				font-weight: 900;
+			}
+		}
+		.board-cnt{
+			display: none;
+		}
+		&.on-show{
+			.board-hdr{
+				border-bottom: 1px solid $grayL;
+				&::after{
+					font-family: "Font Awesome 5 Free";
+					content : '\f35b';
+					color: $grayD;
+					margin-right: 8px;
+					font-weight: 900;
+				}
+			}
+			.board-cnt{
+				display: block;
+			}
+		}
+	}
+}
+
+/* カード */
+.card-prm{
+	border: 1px solid $grayL;
+	border-radius: 5px;
+	.card-hdr{
+		margin: 0 8px;
+		padding: 8px 0;
+		border-bottom: 1px solid $grayLW;
+	}
+	.card-cnt{padding: 8px;}
+}
+
+.floor-prm{
+	.floor-hdr{
+		position: relative;
+		padding: 16px;
+		&._s{padding: 8px;}
+		&._n{padding: 0;}
+		&._bb{border-bottom: 1px solid $grayL;}
+	}
+	.floor-cnt{
+		padding: 16px;
+	}
+	margin-bottom: 8px;
+}
+
+.ad-box{
+	text-align: center;
+	img{
+		width: 100%;
+	}
+}
+
+/* ラベル */
+.label-box{
+	line-height: 1.4em;
+	._wbka{word-break: keep-all};
+	.main-label{
+		@include font-normal;
+		font-weight: bold;
+		color: $blackD;
+	}
+	.sub-label{
+		@include font-small;
+		color: $grayD;
+	}
+	&._fb{font-weight: bold; }
+}
+
+// 入力系
+.input-box{
+	border-radius: 5px;
+	padding: 0 8px;
+	border: 1px $grayL solid;
+	margin-bottom: 16px;
+	background: $white;
+	&._s{margin-bottom: 8px;}
+	&:last-child{margin-bottom: 0;}
+	input[type="text"], input[type="password"]{
+		width: 100%;
+		@include font-normal;
+		padding: 0.6em 0.4em 0.6em 0.4em;
+	}
+}
+
+.radio-box{
+	margin: 4px 0;
+	.radio-set{
+		input[type="radio"]{
+			display: none;
+			&:checked + label{
+				color: $white;
+				background: $greenL;
+				border: none;
+			}
+		}
+	}
+}
+
+.select-box{
+	border-radius: 5px;
+	padding: 0 8px;
+	border: 1px $grayL solid;
+	margin-bottom: 16px;
+	background: $white;
+	&._s{margin-bottom: 8px;}
+	&._mbn{margin-bottom: 0;}
+	&.hdr-right-side{margin-left: auto;}
+	select{
+		width: 100%;
+		padding: 0.6em 0.4em 0.6em 0.4em;
+		@include font-normal;
+		&._s{padding: 0.4em 0;}
+	}
+
+	//  セレクトボックスの三角アイコンを設定
+	&.flex._c {		
+		position: relative;
+		&::before{
+			content: '\f0d7';
+			position: absolute;
+			right: 12px;
+			margin: 0;
+			font-weight: 900;
+			font-family: $fontAwesome;
+			color: $grayDW;
+		}
+	}
+}
+
+.check-box{
+	border-radius: 5px;
+	border: 1px $grayL solid;
+	margin-bottom: 16px;
+	background: $white;
+	padding: 0.6em 0.8em 0.6em 0.8em;
+	&._n{border: 0; padding: 0;}
+	&._s{margin-bottom: 8px;}
+	&:last-child{margin-bottom: 0;}
+	label{width: 100%;}
+	input[type="checkbox"]{ display: none; }
+	input[type="checkbox"] + label::before{
+		font-size: 16px;
+		font-family: $fontAwesome;
+		content : '\f0c8';
+		color: $greenL;
+		margin-right: 8px;
+	}
+	input[type="checkbox"]:checked + label::before{
+		content : '\f14a';
+		font-weight: 900;
+	}
+}
+
+.textarea-box{
+	border-radius: 5px;
+	padding: 0 8px;
+	border: 1px $grayL solid;
+	margin-bottom: 16px;
+	background: $white;
+	&._s{margin-bottom: 8px;}
+	textarea{
+		resize: none;
+		width: 100%;
+		padding: 0.6em 0.4em 0.6em 0.4em;
+		@include font-normal;
+	}
+	button{
+		background: none;
+		padding: 0;
+		margin: 0;
+		cursor: pointer;
+	}
+}
+
+.bottom-label{@include font-small;}
+
+/* ラベル付きインプット */
+.label-input-box{
+	margin-bottom: 16px;
+	&._mbs{
+		margin-bottom: 8px;
+	}
+}
+
+.label-link{
+// 	padding: 16px 0;
+// 	background: #FFF;
+	a{padding: 0.8em;}
+}
+
+.label-icon-link, .label-icon-box{
+	a, .link-wrap{
+		//padding: 0.4em;
+		.label-icon{
+			overflow: hidden;
+			min-width: 64px;
+			height: 64px;
+			background: $grayL;
+			border-radius: 5px;
+			margin-right: 16px;
+		}
+		.st-string-set{
+			p{
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+	.maching-wrap{
+		width: 100%;
+		.st-string-set{padding: 0;}
+		.st-matching-type{
+			margin-top: 4px;
+			display: inline-block;
+			text-align: center;
+			padding: 6px 8px;
+			border-radius: 5px;
+			&._req{
+				color: $blueL;
+				border: 1px $blueL solid;
+			}
+		}
+	}
+	
+}
+
+.link-btn{
+	width: fit-content;
+	display: inline-block;
+	padding: 0.8em 1.4em;
+	min-height: auto;
+}
+
+/* タグラベル */
+.tag-cnt-box{
+	min-height: 47px;
+	border: 1px $grayL solid;
+	border-radius: 5px;
+	padding: 8px 8px 0 8px;
+	margin-bottom: 16px;
+	&._s{margin-bottom: 8px;}
+	.tag-label{
+		background: $blueL;
+		color: $white;
+		font-size: 13px;
+		border-radius: 5px;
+		padding: 8px 12px;
+		margin: 0 8px 8px 0;
+		word-break: break-all;
+		.tag-text{margin-right: 8px;}
+	}
+}
+
+.notice-box{
+	&:last-child{margin-bottom: 0;}
+	margin-bottom: 8px;
+	.notice-hdr{
+		&[data-type='info']{
+			.notice-data-type-set{border-left: 4px solid $blueL; color: $blueL;}
+		}
+		&[data-type='event']{
+			.notice-data-type-set{border-left: 4px solid $greenL; color: $greenL;}
+		}
+		&[data-type='worn']{
+			.notice-data-type-set{border-left: 4px solid $redL; color: $redL;}
+		}
+		.notice-data-type-set{
+			font-size: 12px;
+			margin-bottom: 10px;
+			.notice-type{
+				margin-right: 8px;
+				padding-left: 4px;
+			}
+			.notice-date{color: $grayD;}
+		}
+		.notice-title{}
+	}
+	.notice-cnt{
+		display: none;
+		p {font-size: 13px;}
+		
+	}
+	.btn-notice-read {
+		text-align: center;
+		font-size: 13px;
+		text-decoration: underline;
+		color: $blueL;
+		cursor: pointer;
+	}
+	.notice-cnt-on-show {display: block;}
+}
+
+
+.attention-prm{
+	padding: 8px;
+	background: $grayLW;
+	border-radius: 5px;
+	font-size: 13px;
+	margin-bottom: 8px;
+}
+
+.accordion-prm{
+	.accordion-label{
+		width: 100%;
+		border-bottom: 1px solid $grayD;
+		cursor: pointer;
+		.accordion-title{
+			padding: 8px;
+			width: 100%;
+		}
+		&::after{
+			font-family: "Font Awesome 5 Free";
+			content : '\f358';
+			color: $grayD;
+			margin-right: 8px;
+			font-weight: 900;
+		}
+	}
+	.accordion-cnt{
+		display: none;
+		padding: 16px 0;
+		&._s{
+			padding: 8px;
+		}
+	}
+	&.on-show{
+		.accordion-label{
+			&::after{
+				font-family: "Font Awesome 5 Free";
+				content : '\f35b';
+				color: $grayD;
+				margin-right: 8px;
+				font-weight: 900;
+			}
+		}
+		.accordion-cnt{
+			display: block;
+		}
+	}
+}
+
+.pager>ul{
+	li{
+		margin: 0 2px;
+		font-size: 13px;
+		a{
+			cursor: pointer;
+			display: block;
+			padding: 6px 9px;
+			&.selected{
+				color: $white;
+				background: $blueL;
+				border-radius: 5px;
+			}
+		}
+	}
+}
+
+//slick-sliderのprevとnextボタンのスタイル
+.prev-touch{
+	width: 10%;
+	background-color: inherit;
+	position: absolute;
+	top: -110%;
+	left: -2%;
+	z-index: $prev-touch;
+}
+
+.next-touch{
+	width: 10%;
+	background-color: inherit;
+	position: absolute;
+	top: -110%;
+	right: -2%;
+	z-index: $next-touch;
+}

@@ -1,0 +1,311 @@
+@import "general/_color.scss";
+@import "general/_mixin.scss";
+
+/*
+	疑似要素命名規則
+	例: 接頭辞-対象-補助(任意)-特徴
+	・接頭辞は付与する疑似要素の略名をつける
+	 - 例: hover -> hvr, action -> act
+	・補助は主に具象性を上げる場合につける
+ 	 - 例: top,left,bottom,right,back,font,etc...
+	・特徴は主にこのクラスの最たる個性を表す、色など
+	 - 例: blue -> b
+
+	例: hoverすると背景が青色になる
+	.hvr-back-blue{
+		background: $blueL-opcity-30;
+	}
+
+	また、基本的に2つの特徴を併せ持つものは分けて定義する。
+	ただし、連鎖的に確定するものは併せ持っても良い
+	例:背景が青色の場合、文字色は連鎖して白になるため併せ持ってもOK
+	
+*/
+
+.hvr-back-blue{
+	&:hover{
+		mix-blend-mode: multiply;
+		background: $blueL-opcity-30;
+	}
+}
+
+.act-back-blue{
+	&:active{
+		mix-blend-mode: multiply;
+		background: $blueL-opcity-30;
+	}
+}
+
+/*
+	style命名規則
+	例: 接頭辞-対象-補助(任意)-特徴
+	・接頭辞はst-
+	・対象は「何を」に該当する
+	 - 例: 背景(back),線(line),文字(font),ボタン(btn),etc...
+	・補助は主に「位置」などより具象性を上げる場合につける
+ 	 - 例: top,left,bottom,ringht,etc...
+	・特徴は主にこのクラスの最たる個性を表す、色など
+	 - 例: blue -> b
+
+	例: 要素上部に青色の線を引くスタイル
+	.st-line-top-b{
+		border-top: 1px solid $blue
+	}
+
+	また、基本的に2つの特徴を併せ持つものは分けて定義する。
+	ただし、連鎖的に確定するものは併せ持っても良い
+	例:背景が青色の場合、文字色は連鎖して白になるため併せ持ってもOK
+	
+*/
+
+.st-line-w{
+	background: transparent;
+	color: $white !important;
+	border: 1px $white solid;
+}
+
+.st-line-b{
+	background: transparent;
+	color: $blueL !important;
+	border: 1px $blueL solid;
+}
+
+.st-line-bl{
+	background: transparent;
+	color: $grayDW;
+	border: 1px $grayDW solid;
+}
+
+.st-line-r{
+	background: transparent;
+	color: $redL !important;
+	border: 1px $redL solid;
+}
+
+.st-back-b{
+	background: $blueL;
+	color: $white !important;
+}
+
+.st-back-r{
+	background: $redD;
+	color: $white !important;
+}
+
+.st-back-orange{
+	background: $yellowD;
+	color: $white !important;
+}
+
+.st-btn-icon{padding: 0.6em 1.3em 0.6em 0.6em;}
+
+.st-btn-circle{
+	padding: 0;
+	width: 48px;
+	height: 48px;
+	.icon-btn{margin: 0};
+}
+
+.st-btn-square{
+	border-radius: 8px;
+	padding: 8px;
+	.btn-text{padding-right: 16px};
+}
+
+.st-btn-fixed-w{width: 280px;}
+
+.st-string-set{
+	padding-top: 4px;
+	line-height: 1.2em;
+	p{font-weight: bold;}
+	span{ font-size: 13px; }
+}
+
+.st-lbl-attention{
+	padding: 8px;
+	background: $greenL;
+	color: $white !important;
+	border-radius: 5px;
+}
+
+.st-title-tag{
+	line-height: 1.5em;
+}
+
+.st-title-date{
+	font-size: 18px;
+	padding-top: 2px;
+	padding-left: 36px;
+	font-weight: bold;
+}
+.st-title-day{
+	position: absolute;
+	width: 28px;
+    height: 28px;
+    text-align: center;
+    // left: 195px;
+    line-height: 2em;
+    font-weight: bold;
+    background: $blackD;
+    border-radius: 50%;
+    color: $white !important;
+}
+
+.st-add-event-btn{
+	position: fixed;
+	z-index: $st-add-event-btn;
+	bottom: 32px;
+	right: 32px;
+	button{
+		background: $greenL;
+	}
+}
+
+.st-search-btn{
+	position: absolute;
+	z-index: $st-search-btn;
+	margin-top: -24px;
+	top: 50%;
+	right: 16px;
+}
+
+.error-text{width: 100%; font-size: 13px; color: $redD; text-align: left;}
+.sub-text{color: $grayD; font-size:13px;}
+.st-large-btn{
+	width: 280px;
+	min-height: 43px;
+	border-radius: 21px;
+}
+
+.st-center{
+	margin: 0 auto;
+}
+.st-mt{
+	margin-top: 16px;
+}
+.st-mr{
+	margin-right: 16px;
+}
+.st-mb{
+	margin-bottom: 16px;
+}
+
+.error-label{
+	color: $redL;
+}
+
+.error-input{
+	.input-box{
+		border: 1px solid $redD !important;
+		background: $redD-opcity-40;
+		input{
+			background: $redD-opcity-40;
+		}
+	}
+	.bottom-label{
+		color: $redL;
+	}
+}
+
+.error-select-box{
+	.select-box{
+		border: 1px solid $redD !important;
+		background: $redD-opcity-40;
+		input{
+			background: $redD-opcity-40;
+		}
+	}
+	.bottom-label{
+		color: $redL;
+	}
+}
+
+.disabled{display: none !important;}
+
+/* icon */
+.icon-b{font-size: 42px;};
+.icon-btn{font-size: 24px; margin-right: 8px;}
+.icon-btn-s{font-size: 13px; margin-right: 4px;}
+.icon-input{ font-size: 16px; color: $grayL; }
+.icon-label{ margin-right: 8px; font-size:16px; }
+.icon-menu{ font-size: 24px; color: $blueL; }
+.icon-title{font-size: 16px; margin-right: 8px;}
+.icon-title-b{font-size: 20px; margin-right: 12px;}
+//.icon-title-b{font-size: 24px; margin-right: 12px;}
+.icon-link{font-size: 16px; margin-left: auto; color: $grayD;}
+.icon-link-s{font-size: 13px; margin-left: auto; color: $grayD;}
+.icon-error{ font-size: 13px; color: $redD; margin-right: 8px; }
+.icon-plus{ font-size: 24px; color: $blueL;}
+.icon-close{ font-size: 24px; color: $grayD; }
+.icon-logo-c2{height: 20px; margin-right: 12px;}
+.icon-pager{font-size: 13px; color: $blueD;}
+
+/* text */
+.sub-text{font-size: 13px; color: $grayD;}
+.info-text{font-size: 13px; color: $grayD;}
+.error-text{width: 100%; font-size: 13px; color: $redD; text-align: left;}
+.st-input-num{text-align: right;}
+.st-required{border: 2px solid $greenL;}
+
+::-webkit-input-placeholder{color: $grayL;}
+::-moz-placeholder{color: $grayL;}
+:-moz-placeholder{color: $grayL;}
+:-ms-input-placeholder{color: $grayL;}
+
+/* color */
+.c-glay{color: $grayDW;}
+.c-blue{color: $blueL;}
+.c-orange{color: $yellowD;}
+.c-purple{color: $purpleL;}
+.c-red{color: $redL;}
+.c-green{color: $greenblueL;}
+.c-twitter{color: $twitter;}
+
+/* shadow */
+.shadow-l{box-shadow:0px 1px 3px 0px $blackD-opcity-30;}
+.shadow-d{box-shadow:0px 3px 6px 0px $blackD-opcity-30;}
+
+/* flex */
+.flex{
+	display: -webkit-flex; display: flex;
+	&._j{-webkit-justify-content: space-around; justify-content: space-around;}
+	&._jc{-webkit-justify-content: center; justify-content: center;}
+	&._jr{-webkit-justify-content: flex-end; justify-content: flex-end;}
+	&._c{-webkit-align-items: center; align-items: center;}
+	&._c{-webkit-align-items: center; align-items: center;}	
+	&._wrap{-webkit-flex-wrap:wrap; flex-wrap: wrap;}
+	&._between{justify-content: space-between;}
+	&._bm{-webkit-align-items: flex-end; align-items: flex-end;}
+}
+
+/* liを灰色のボーダーで区切るul */
+ul.st_options{
+	// &>li{
+	// 	//border-bottom: 1px solid $grayLW;
+	// }
+	// &>li:last-child{
+	// 	border-bottom: none;
+	// }
+}
+
+/* カスタム */
+.cus-board-set{
+	//background-image: linear-gradient(250deg, #4481eb 0%, #04befe 100%);
+	background-image: linear-gradient(250deg, #92fe9d 0%, #00c9ff 100%);
+	div, p, span, i{
+		color: $white;
+	}
+}
+
+/* レビューのGOOD・BADアイコン選択時の色変更 */
+input[id="good"]:checked + label{
+	.fa-thumbs-up::before{
+		color: $white;
+	}
+}
+
+input[id="bad"]:checked + label{
+	.fa-thumbs-down::before{
+		color: $white;
+	}
+}

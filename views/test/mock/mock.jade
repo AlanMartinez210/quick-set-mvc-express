@@ -1,0 +1,252 @@
+doctype html
+html(lang="ja")
+  head
+    meta(charset="utf-8")
+    meta(name='viewport', content='width=device-width,user-scalable=no,initial-scale=1.0')
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css")
+    link(rel="stylesheet", href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.min.css")
+    script(src="bundle.js")
+    <script>FontAwesomeConfig = { searchPseudoElements: true };</script>
+    link(rel="stylesheet", href="https://use.fontawesome.com/releases/v5.0.6/css/all.css")
+    //- <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+    
+  body
+    .wrapper.general-ptn
+      header
+        //-header
+        .hdr-cntnr
+          .cntnr-balancer
+            .hdr-menu
+              //-title
+              .hdr-title.flex._c
+                i.icon-menu.far.fa-user.fa-fw
+                h1: |コンテンツ1
+                span.hvr-back-blue: i.icon-menu.fas.fa-bars.fa-fw
+              //-navigation
+              nav
+                ul.hdr-g-nav
+                  - for (let i=0;i<5;i++){
+                      li.flex._c.hvr-back-blue
+                        i.icon-menu.far.fa-clock.fa-fw
+                        p: |コンテンツ
+                        span: i.icon-menu.fas.fa-chevron-right.fa-fw
+                  - }
+            .hdr-controll
+              button.btn-prm.st-btn-icon.st-line-w
+                i.icon-btn.fas.fa-chevron-left.fa-fw
+                span: |マイページへ戻る
+
+      //- content
+      .main-cntnr
+        .center-frame
+
+          .board-prm
+            .board-hdr
+
+            .board-cnt
+
+            .board-ftr
+
+          .board-prm
+            .board-hdr
+              .label-box.flex._c
+                i.icon-title.fas.fa-bullhorn.fa-fw
+                span: |テストタイトル
+            .board-cnt
+              p: |テストコンテンツ
+              p: |テストコンテンツ
+              p: |テストコンテンツ
+            .board-ftr
+              |テストフッター
+
+          .board-prm
+            .board-hdr
+              .label-box.flex._c
+                //- i.icon-label.fas.fa-bullhorn.fa-fw
+                span: |テストタイトル
+            .board-cnt
+              p: |テストコンテンツ
+              p: |テストコンテンツ
+              p: |テストコンテンツ
+
+          .board-prm
+            .board-cnt._s
+              .input-box._s.flex._c
+                i.icon-input.fas.fa-map-marker-alt.fa-fw
+                input(type="text")
+
+              .input-box._s.flex._c
+                i.icon-input.fas.fa-chevron-left.fa-fw
+                input(type="text")
+
+          .board-prm
+
+            .board-hdr
+              .label-box.flex._c
+                i.icon-label.fas.fa-bullhorn.fa-spin.fa-fw
+                span: |テストタイトル
+
+            .board-cnt
+              .input-box._s.flex._c
+                i.icon-input.fas.fa-map-marker-alt.fa-fw
+                input(type="text")
+
+              .input-box._s.flex._c
+                input(type="text")
+
+            .board-ftr._s.flex._c._jc
+              button.btn-prm.st-back-b.shadow-l
+                //- i.icon-btn.fas.fa-chevron-left
+                span: |ボタン1
+              button.btn-prm.st-btn-icon.st-line-b.shadow-l
+                i.icon-btn.fas.fa-chevron-left.fa-fw
+                span: |ボタン2
+
+          button.btn-prm.st-line-b.shadow-l
+            span: |ボタン2
+
+          hr
+
+          button.btn-prm.st-btn-icon.st-back-b.shadow-l
+            i.icon-btn.fas.fa-chevron-left.fa-fw
+            span: |ボタン2ボタン2ボタン2
+
+          hr
+
+          button.btn-prm.st-btn-circle.st-back-b.shadow-d
+            i.icon-btn.fas.fa-map-marker-alt.fa-fw
+
+          hr
+
+          button.btn-prm.st-btn-fixed-w.st-line-b.shadow-d
+            span: |ボタン2
+
+          hr
+
+          .input-box._s.flex._c
+            input(type="text")
+
+          hr
+
+          .input-box._s.flex._c
+            i.icon-input.fas.fa-map-marker-alt.fa-fw
+            input(type="text")
+
+          hr
+
+          .label-link
+            a(href="#").flex._c
+              i.icon-title.far.fa-user.fa-fw
+              span: |ボタン2
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          hr
+
+          .label-link
+            a(href="#").flex._c
+              i.icon-title.far.fa-user.fa-fw
+              .st-string-set
+                p: |タイトル
+                span: |サブタイトル
+              i.icon-link.fas.fa-chevron-right.fa-fw
+
+          hr
+
+          .board-prm
+
+            .board-cnt
+              .label-link
+                a(href="#").flex._c
+                  i.icon-title.far.fa-user.fa-fw
+                  span: |ボタン2
+                  i.icon-link.fas.fa-chevron-right.fa-fw
+
+          hr
+
+          .board-prm
+
+            .board-cnt
+              .label-link
+                a(href="#").flex._c
+                  i.icon-title.far.fa-user.fa-fw
+                  .st-string-set
+                    p: |タイトル
+                    span: |サブタイトル
+                  i.icon-link.fas.fa-chevron-right.fa-fw
+
+            .board-ftr._s.flex._c._jc
+              i.icon-error.fas.fa-exclamation-triangle.fa-fw
+              p.error-text: |エラーメッセージ
+
+          .board-prm
+            .board-cnt
+
+              .label-input-box
+                .label-box.flex._c
+                  i.icon-title.fas.fa-bullhorn.fa-fw
+                  span: |テストタイトル
+                span.sub-text: |サブタイトル
+                .input-box._s.flex._c
+                  i.icon-input.fas.fa-map-marker-alt.fa-fw
+                  input(type="text")
+
+              form(action="/tags/register",method="POST")
+                .label-input-box
+                  .label-box.flex._c
+                    i.icon-title.fas.fa-bullhorn.fa-fw
+                    span: |タグ_テストタイトル
+                  span.sub-text: |タグ_サブタイトル
+                  .input-box._s.flex._c
+                    input(type="text")#tags
+                    span#tag_add_button
+                      i.icon-plus.fas.fa-plus-square.fa-fw
+                  ul#tags_field
+                  button.btn-prm.st-back-b.shadow-l#tag_register
+                    span: |タグ登録
+              
+                  
+
+
+          .board-prm
+            .board-hdr
+              .label-box.flex._c
+                i.icon-title.fas.fa-bullhorn.fa-fw
+                span: |テストタイトル
+            .board-cnt._n
+              ul.st_options
+                - for(var i=0;i<4;i++){
+                li.label-link._s
+                  a(href="#").flex._c
+                    i.icon-title.far.fa-user.fa-fw
+                    .st-string-set
+                      p: |タイトル
+                      span: |サブタイトル
+                    i.icon-link.fas.fa-chevron-right.fa-fw
+                - }
+          //- これとって
+          .board-prm
+            .board-cnt
+
+              .label-input-box#box_username
+                .label-box
+                  p.main-label: |イベント名 or 開催地
+                  span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
+                .check-box._s.flex._c
+                  input(id="form01" type="checkbox")
+                  label(for="form01")
+                    |チェックボックス
+                p.bottom-label
+
+            .input-box._s.flex._c
+              input(id="form01" type="checkbox")
+              label(for="form01")
+                |チェックボックス
+
+            //- datepicker
+            .input-box._s.flex._c
+              input(id="test01" name="datepicker" type="text")
+
+      footer
+        .ftr-cntnr
+          .ftr-cnt
+            p &copy; 2018 Fujitu Cloud tecnology

@@ -1,0 +1,146 @@
+#createScheduleModal(data-modal="hide")
+  form(method="post", action="", name="scheduleForm")
+
+    .board-prm
+
+      .board-cnt._s
+        .attention-prm
+          p
+            span.st-required(style="border-radius:5px;display: inline-block;")
+              |&emsp;&emsp;&emsp;
+            |&nbsp;は必須項目です。
+
+        .label-input-box#box_date_key
+          .label-box
+            p.main-label: |日付
+            span.sub-label: |撮影当日の日付を入力してください。
+          .input-box._s.flex._c.st-required
+            input(type="text", data-datepicker, name="date_key", readonly="readonly")
+            //- input(type="text", name="date_key_hidden", readonly="readonly")
+          p.bottom-label
+
+        .label-input-box#box_time_from
+          .label-box
+            p.main-label: |開始時間
+          .select-box._s.flex._c
+            select(name="time_from")
+              option(value="")
+              option(value="要相談") 要相談
+
+              - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+                  option(value="#{time}:00") #{time}:00
+                  option(value="#{time}:30") #{time}:30
+              - }
+
+          p.bottom-label
+
+        .label-input-box#box_time_to
+          .label-box
+            p.main-label: |終了時間
+          .select-box._s.flex._c
+            select(name="time_to")
+              option(value="")
+              option(value="要相談") 要相談
+
+              - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+                  option(value="#{time}:00") #{time}:00
+                  option(value="#{time}:30") #{time}:30
+              - }
+          p.bottom-label
+
+        .label-input-box#box_shot_type
+          .label-box
+            p.main-label: |撮影タイプ
+          .select-box._s.flex._c.st-required
+            select(name="shot_type")
+              - for(var shot_type of C2LINK.SHOT_TYPE_LIST){
+                option(value="#{shot_type.id}") #{shot_type.name}
+              - }
+          p.bottom-label
+
+        .label-input-box#box_eventname
+          .label-box
+            p.main-label: |イベント名 or 開催地
+            span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
+          .input-box._s.flex._c.st-required
+            input(type="text", name="eventname", placeholder="世界コスプレサミット")
+          p.bottom-label
+
+        .label-input-box#box_eventurl
+          .label-box
+            p.main-label: |詳細URL
+            span.sub-label: |イベントや開催地のURLがある場合は入力してください。
+          .input-box._s.flex._c
+            input(type="text", name="eventurl", placeholder="http://")
+          p.bottom-label
+
+        .label-input-box#box_prefecture
+          .label-box
+            p.main-label: |開催都道府県
+          .select-box._s.flex._c.st-required
+            select(name="prefecture")
+              - for(var pref of C2LINK.ALL_PREF_LIST){
+                option(value="#{pref.id}") #{pref.name}
+              - }
+          p.bottom-label
+
+        .label-input-box#box_tagField
+          .label-box
+            p.main-label: |タグの設定
+            span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
+          .input-box._s.flex._c.st-required
+            input(type="text")#tags
+            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
+          p.bottom-label
+
+        p.st-title-tag
+          |追加したタグ一覧
+
+        .tag-cnt-box.flex._wrap#tags_field
+
+        .accordion-prm
+
+          .accordion-label.flex._c
+            .accordion-title
+              p: |詳細オプション
+          .accordion-cnt
+
+            .label-input-box#box_cost
+              .label-box
+                p.main-label: |募集人数
+              .input-box._s.flex._c
+                input(type="text", name="num").st-input-num
+                span: |人
+              p.bottom-label
+
+            .label-input-box#box_cost
+              .label-box
+                p.main-label: |参加費用
+                span.sub-label: |交通費以外にカメラマンが負担する金額を入力してください。
+              .input-box._s.flex._c
+                input(type="text", name="cost").st-input-num
+                span: |円
+              p.bottom-label
+
+            .label-input-box#box_character
+              .label-box
+                p.main-label: |コスプレキャラクター
+                span.sub-label: |当日コスプレするキャラクターを入力してください。
+              .textarea-box._s.flex._c
+                textarea(name="coschara", rows="2", placeholder="作品名/キャラクター名")
+              p.bottom-label
+
+            .label-input-box#box_remarks
+              .label-box
+                p.main-label: |備考
+              .textarea-box._s.flex._c
+                textarea(name="remarks", rows="3")
+              p.bottom-label
+
+      .board-ftr._s.flex._c._jc
+        button(type="submit", data-proc="create", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
+            |登録
+        button(type="submit", data-proc="edit", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
+            |編集
+        button(type="submit", data-proc="delete", name="doSchedulePost").btn-prm.st-back-r.shadow-l.proc-btn
+            |削除

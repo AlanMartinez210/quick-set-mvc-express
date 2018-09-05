@@ -1,0 +1,14 @@
+extends layout/frame
+
+block content
+  h1 #{title}
+  a #{err_message}
+  form(method="post")
+    a ユーザーID
+    input(type="text", id="userid", name="userid" placeholder="userid")
+    br
+    a パスワード
+    input(type="password", id="password", name="password" placeholder="password")
+    br
+    button(type="submit",id="submit", name="submit", value="submit")
+  a(href="/auth/twitter") Twitterログイン
