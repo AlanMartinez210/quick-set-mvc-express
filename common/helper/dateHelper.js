@@ -19,7 +19,7 @@ exports.getToday = (format = "YYYYMMDD") =>{
  * @param {boolean} safemode (default: true)
  *
  */
-exports.getDate = (date = [0,0,0], format = "YYYYMMDD", safemode = true)=>{
+exports.getDate = (date = [0,0,0], {format = "YYYYMMDD", safemode = true} = {})=>{
 
   var dt = _getDate();
   var year = date[0];
@@ -48,39 +48,30 @@ exports.getDate = (date = [0,0,0], format = "YYYYMMDD", safemode = true)=>{
 }
 
 /**
- * date型の日付を配列に変換します。
- *
- * @param {Date} date
- * @return {Array} [YYYY, MM, DD, HH, MM, SI]
- *
- */
-exports.dateToArray = (date)=>{
-  var date = _getDate(date);
-  return [
-    date.year(),
-    date.month()+1,
-    date.date(),
-    date.hour(),
-    date.minute(),
-    date.second(),
-  ];
-}
-
-/**
  * date型の日付をオブジェクトに分割します
  * @param {Moment} date
  * @param {Object} mode {diffMonth: 月を0-11に変換するために加算する数値 1-12の月情報の場合は-1を設定 }
  * @return {Object}  { key: '20180815', year: 2018, month: 8, day: 15, week: [3, "水"]}
  */
-exports.dateToObject = (date, mode = {diffMonth:0})=>{
-  if(mode.diffMonth && date.month !== undefined){
-    date.month += mode.diffMonth;
-  }
-  var dt = _getDate(date);
+exports.dateToObject = (date, mode = false)=>{
+  const dt = this.datetimeToObject(date, mode);
   return {
-    key: dt.format("YYYYMMDD"),
+    date: dt.date,
+    year: dt.year,
+    month: dt.month,
+    day: dt.day,
+    week: dt.week
+  }
+}
+
+exports.datetimeToObject = (date, mode = false) =>{
+  if(mode) date.month -= 1;
+
+  const dt = _getDate(date);
+  return {
+    date: dt.format("YYYYMMDD"),
     year: dt.year(),
-    month: dt.month()+1,
+    month: dt.month() + 1,
     day: dt.date(),
     week: [dt.day(), days_map[dt.day()]],
     hour: dt.hours(),
@@ -92,21 +83,41 @@ exports.dateToObject = (date, mode = {diffMonth:0})=>{
 /**
  * 現在の日付から年情報を取得します。
  *
- * @param {integer} addYear 指定した数値を年に加算します。
  * @returns {string} YYYY
  */
-exports.getCurrentYear = (addYear = 0) => {
-	const d = _getDate();
+exports.getCurrentYear = () => {
+	return this.getYear(0)
+}
+
+/**
+ * 現在の日付から引数に指定した数値分加算して年情報を取得します。
+ * 
+ * @param {integer} addYear 指定した数値を年に加算します。
+ * @returns {string} YYYY
+ * 
+ */
+exports.getYear = (addYear = 0) => {
+  const d = _getDate();
 	return d.add(addYear, 'y').year();
 }
+
 
 /**
  * 現在の日付から月情報を取得します。
  *
+ * @returns {string} MM
+ */
+exports.getCurrentMonth = () => {
+	return this.getMonth(0);
+}
+
+/**
+ * 現在の日付から引数に指定した数値分加算して月情を報取得します。
+ *
  * @param {integer} addMonth 指定した数値を月に加算します。
  * @returns {string} MM
  */
-exports.getCurrentMonth = (addMonth = 0) => {
+exports.getMonth = (addMonth = 0) => {
 	const d = _getDate();
 	return d.add(addMonth, 'M').month() + 1;
 }
@@ -114,10 +125,19 @@ exports.getCurrentMonth = (addMonth = 0) => {
 /**
  * 現在の日付から日にち情報を取得します。
  *
+ * @returns {string} DD
+ */
+exports.getCurrentDay = () => {
+	return this.getDay(0);
+}
+
+/**
+ * 現在の日付から引数に指定した数値分加算して日にち情報を取得します。
+ *
  * @param {integer} addDate 指定した数値を日付に加算します。
  * @returns {string} DD
  */
-exports.getCurrentDay = (addDate = 0) => {
+exports.getDay = (addDate = 0) => {
 	const d = _getDate();
 	return d.add(addDate, 'd').date();
 }
@@ -129,4 +149,24 @@ exports.getCurrentDay = (addDate = 0) => {
  */
 function _getDate (datestr = {}) {
 	return moment(datestr).tz("Asia/Tokyo");
+}
+
+
+/**
+ * date型の日付を配列に変換します。
+ *
+ * @param {Date} date
+ * @return {Array} [YYYY, MM, DD, HH, MM, SI]
+ * @deprecated
+ */
+exports.dateToArray = (date)=>{
+  var date = _getDate(date);
+  return [
+    date.year(),
+    date.month()+1,
+    date.date(),
+    date.hour(),
+    date.minute(),
+    date.second(),
+  ];
 }

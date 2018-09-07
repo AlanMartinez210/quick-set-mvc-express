@@ -8,9 +8,14 @@ const scheduleService = require('../services/scheduleService');
 // console.log(dateHelper.getToday("YYYYMM"));
 // console.log(dateHelper.getToday("YYYY/MM/DD"));
 
-// console.log(dateHelper.getCurrentYear(2));
-// console.log(dateHelper.getCurrentMonth(6));
+// console.log(dateHelper.getYear(1));
+// console.log(dateHelper.getCurrentMonth());
 // console.log(dateHelper.getCurrentDay());
+
+// var testdate = dateHelper.getDate([2018, 11, 7]);
+// console.log(testdate);
+// console.log(dateHelper.dateToObject(testdate));
+// console.log(dateHelper.datetimeToObject(testdate));
 
 // console.log(dateHelper.getDate([2018, 02, 16]));
 // console.log(dateHelper.getDate([2018, 2]));
@@ -45,7 +50,7 @@ const scheduleService = require('../services/scheduleService');
 // 	console.log(result);
 // });
 
-scheduleService.getScheduleData("999999", "20180809")
-.then(result => {
-	console.log(result);
-});
+// scheduleService.getScheduleData("999999", "20180809")
+// .then(result => {
+// 	console.log(result);
+// });

@@ -20,7 +20,8 @@ exports.getMonthSchedule = async (user_id, year, month) => {
   const year_month = dateHelper.getDate([year, month], 'YYYYMM');
   const schedule_list = await scheduleRepository.getScheduleList(user_id, year_month)
   const current_calendar = calendarHelper.getCalendar(year, month);
-  return c2Util.bindSchedule(current_calendar, schedule_list);
+  return "dekimasita"; 
+  // c2Util.bindSchedule(current_calendar, schedule_list);
 
 }
 
@@ -150,15 +151,12 @@ exports.deleteScheduleData = (user_id, date_key) => {
     return scheduleRepository.Sequelize.transaction(
       async (tx) => { 
         // スケジュール情報の取得
-        const result = await scheduleRepository.getSchedule(user_id, date_key, {transaction: tx});
+        const schedule = await scheduleRepository.getSchedule(user_id, date_key, {transaction: tx});
         await function(){
-          if(!result) throw "err";
+          if(!schedule) throw "err";
           // 取得したスケジュール情報のIDを元に関連データを削除
           Promise.all([
-            schedule.destroy({
-              where: { id: result.id },
-              transaction: tx
-            }),
+            scheduleRepository.deleteSchedule(schedule.id, { transaction: tx }),
             schedulePrefecture.destroy({
               where: { schedule_id: result.id },
               transaction: tx

@@ -47,12 +47,18 @@ function _getCalendar(year, month){
   list.forEach((ele, i) => {
     // ゴースト日ならスキップする。
     if (ele.ghost) return;
-
-//    var key = dateHelper.getDate([ele.year, ele.month, ele.day]);
-		var obj = dateHelper.dateToObject(ele,{diffMonth:-1});
-		obj.date_key = obj.key;
-		obj.schedule = [];
-    arr.push(obj);
+    const cln = {};
+    
+		var obj = dateHelper.dateToObject(ele, true);
+    
+    cln.date_key = obj.date;
+    cln.year = obj.year;
+    cln.month = obj.month;
+    cln.day = obj.day;
+    cln.week = obj.week;
+		cln.schedule = [];
+    
+    arr.push(cln);
   });
   return arr;
 }

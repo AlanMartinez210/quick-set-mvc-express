@@ -17,18 +17,20 @@ function testController(){
 	console.log("")
 
 	// VVVVVVVVVV テストするコントローラーのメソッドを書く VVVVVVVVVV
+	
+	// profileController.index(req,res,next);
+
 	// scheduleController.index(req, res, next);
-	profileController.index(req,res,next);
 
 	// req.params.year = "2018";
-	// req.params.month = "7";
+	// req.params.month = "8";
 	// scheduleController.getSelectScheduleList(req, res, next);
 
 	// req.params.date_key = "20180809";
 	// scheduleController.getSchedule(req, res, next);
 
 	// req.form_data = {
-	// 	date_key: "20180809",
+	// 	date_key: "20180909",
   //   shot_type: 1,
   //   time_from: "15:00",
   //   time_to: "20:30",
@@ -37,7 +39,7 @@ function testController(){
 
 	// 	// cos_chara: [],
 	// 	prefectures: [13, 15],
-	// 	tags: ["カメラ", "会員"],
+	// 	tags: ["カメラ"],
 	// 	cost: 0,
   //   num: 0,
   //   event_url: "http://test.com",
