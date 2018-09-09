@@ -1,8 +1,0 @@
-# session
-secret = "c2link"
-resave = false
-saveUninitialized = true
-[cookie]
-	httpOnly = true
-	secure = false
-	maxage = 1800000
