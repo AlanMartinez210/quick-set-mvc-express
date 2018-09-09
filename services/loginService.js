@@ -1,25 +1,25 @@
-var userRepository = require('../repository/userRepository');
-var sessionHelper = require('../common/helper/sessionHelper');
-var hashHelper = require("../common/helper/hashHelper");
+const userRepository = require('../repository/userRepository');
+
+const sessionHelper = require('../common/helper/sessionHelper');
+const hashHelper = require("../common/helper/hashHelper");
+const errorHelper = require('../common/helper/errorHelper');
 
 module.exports = {
-  loginByIDPW: (req)=>{
-    var user_key  = req.form_data.user_key;
-    var password = hashHelper(req.form_data.password);
+  loginByIDPW: (user_key, password)=>{
     return userRepository()
-            .findOne({where:{user_key:user_key}})
-            .then(user=>{
-              console.log(user);
-              if(user.user_key !== user_key || user.password !== password){
-                throw {code:'NOT_FOUND', message:'認証情報が間違っています'};
-              }
-              sessionHelper.setUserData(req, user);
-            });
+    .findOne({where:{user_key}})
+    .then(user=>{
+      if(!user || user.user_key !== user_key || user.password !== password){
+        throw new errorHelper().setWindowMsg('E00001');
+      }else{
+        return user;
+      }
+    });
   },
   loginById: (req, user_id)=>{
     return userRepository().findOne({where:{id:user_id}}).then(user=>{
       if(user.id == null){
-        throw {code:'NOT_FOUND', message:'認証情報が間違っています'};
+        throw new errorHelper().setWindowMsg('E00001');
       }
       sessionHelper.setUserData(req, user);
     });

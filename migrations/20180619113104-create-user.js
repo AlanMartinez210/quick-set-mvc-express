@@ -24,7 +24,8 @@ module.exports = {
         type: Sequelize.STRING(255)
       },
       user_type: {
-        type: Sequelize.TINYINT.UNSIGNED
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false,        
       },
       tags: {
         type: Sequelize.JSON
@@ -33,15 +34,18 @@ module.exports = {
         type: Sequelize.JSON
       },
       expiration_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: true
       },
       created_at: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        allowNull: false
       },
       updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+        allowNull: false
       }
     },{
       indexes:[{

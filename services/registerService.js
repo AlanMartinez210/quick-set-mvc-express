@@ -4,8 +4,8 @@ var hashHelper = require("../common/helper/hashHelper");
 
 /**
  * ユーザーの新規登録を行います。
- * 
- * @param {*} req 
+ *
+ * @param {*} req
  */
 exports.registerUser = (req)=>{
   req.form_data.password = hashHelper(req.form_data.password);

@@ -26,9 +26,11 @@ exports.getScheduleListResult = (data = {schedule_type:2, /* date_key: "20180808
                    where  schedule_tags.schedule_id = schedules.id
                  ), ''), ']') as tags_json
                `;
-  options.orderBy = options.orderBy || [["schedules.date_key", "asc"], ["schedules.updated_at", "desc"], ["users.id", "desc"]];
-  options.limit = options.limit || PAGE_COUNT;
-  options.offset = options.offset || ((options.page-1)*PAGE_COUNT);
+  options = Object.assign({
+    orderBy: [["schedules.date_key", "asc"], ["schedules.updated_at", "desc"], ["users.id", "desc"]],
+    limit: PAGE_COUNT,
+    offset: (options.page-1)*PAGE_COUNT,
+  }, options);
   return getScheduleList(select, data, options);
 };
 

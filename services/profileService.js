@@ -12,12 +12,14 @@ module.exports = {
     let prefectures = userData.prefectures;
     
     // 配列tagsからタグ名を取得
-    let tagData = await tagRepository().getTagRowById(tags).catch(err=>{
-      new Error("エラーが発生しました");
-    })
     let tagArray = new Array();
-    for(let tag of tagData){
-      tagArray.push(tag.tag_name);
+    if(tags != null){
+      let tagData = await tagRepository().getTagRowById(tags).catch(err=>{
+        new Error("エラーが発生しました");
+      });
+      for(let tag of tagData){
+        tagArray.push(tag.tag_name);
+      }        
     }
     
     //配列prefecturesから都道府県名を取得

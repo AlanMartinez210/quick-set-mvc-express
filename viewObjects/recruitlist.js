@@ -16,7 +16,7 @@ module.exports = {
     constructor({recruit_list_id = "", user_info = {id:0,icon:""}, date_info = {/* dateHelper.dateToObject */},
                  event_info = {type: 0, title:"", prefectures:[]},
                  good_review_num = 0, bookmark_flg = false, tags = [], anime_info = [] }){
-      recruit_list_id = recruit_list_id;
+      this.recruit_list_id = recruit_list_id;
       this.user_info = user_info;
       this.date_info = date_info;
       this.event_info = event_info;

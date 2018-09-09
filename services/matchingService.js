@@ -4,7 +4,6 @@ const sessionHelper = require('../common/helper/sessionHelper');
 
 const errorHelper = require('../common/helper/errorHelper');
 const dateHelper = require('../common/helper/dateHelper');
-const messageHelper = require('../common/helper/messageHelper');
 
 /**
  * マッチング一覧の取得
@@ -87,3 +86,58 @@ exports.getMatchingHistoryList = (req) => {
             }
           })
  };
+
+
+/**
+ * 依頼を承諾する
+ *
+ * @param user_id
+ * @param matching_id
+ */
+exports.postConsent = async (user_id, matching_id) => {
+  // 承諾対象のmatchingを取得
+  const matching = await matchingRepository.findOne({
+    where:{
+      to_user_id: user_id,  /* 自分に依頼されてる */
+      status_id: global.C2LINK.MATCHING_STATUS_ID_MAP.REQUEST,  /* ステータスが申請中 */
+      id: matching_id,
+    }
+  });
+  if(!matching) throw new errorHelper().setWindowMsg("L00003");
+
+  await matchingRepository.update({
+    status_id: global.C2LINK.MATCHING_STATUS_ID_MAP.MATCHING,
+  },{
+    where:{
+      id: matching_id,
+    }
+  });
+  return true;
+};
+
+/**
+ * 依頼を拒否する
+ *
+ * @param user_id
+ * @param matching_id
+ */
+exports.postReject = async (user_id, matching_id) => {
+  // 拒否対象のmatchingを取得
+  const matching = await matchingRepository.findOne({
+    where:{
+      to_user_id: user_id,  /* 自分に依頼されてる */
+      status_id: global.C2LINK.MATCHING_STATUS_ID_MAP.REQUEST,  /* ステータスが申請中 */
+      id: matching_id,
+    }
+  });
+  if(!matching) throw new errorHelper().setWindowMsg("L00005");
+
+  await matchingRepository.update({
+    status_id: global.C2LINK.MATCHING_STATUS_ID_MAP.REJECT,
+  },{
+    where:{
+      id: matching_id,
+    }
+  });
+  return true;
+};

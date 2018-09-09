@@ -53,7 +53,6 @@ module.exports = (req, res, next)=>{
     return send_matching_stats_map[id];
   }
 
-  send_matching_stats_map,receive_matching_stats_map
 
   global.C2LINK = {
     ALL_PREF_LIST,

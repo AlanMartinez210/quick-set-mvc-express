@@ -45,9 +45,9 @@ exports.getMonthScheduleNumList = async (user_id, year) => {
 
 /**
  * 対象ユーザーの指定した日付のスケジュール情報を取得します。
- * 
- * @param {*} user_id 
- * @param {*} date_key 
+ *
+ * @param {*} user_id
+ * @param {*} date_key
  */
 exports.getScheduleData = async (user_id, date_key) => {
   try{
@@ -68,12 +68,12 @@ exports.getScheduleData = async (user_id, date_key) => {
   }
   catch(err){
     return err;
-  } 
+  }
 }
 
 /**
  * スケジュールデータの登録を行う。
- * 
+ *
  * @param {*} registData
  */
 exports.upsertScheduleData = (registData) => {
@@ -142,14 +142,14 @@ exports.upsertScheduleData = (registData) => {
 
 /**
  * 対象ユーザーの指定日付のスケジュールと関連データを削除します。
- * 
- * @param {*} user_id 
- * @param {*} date_key 
+ *
+ * @param {*} user_id
+ * @param {*} date_key
  */
 exports.deleteScheduleData = (user_id, date_key) => {
   try{
     return scheduleRepository.Sequelize.transaction(
-      async (tx) => { 
+      async (tx) => {
         // スケジュール情報の取得
         const schedule = await scheduleRepository.getSchedule(user_id, date_key, {transaction: tx});
         await function(){

@@ -1,10 +1,22 @@
 module.exports = {
+  review_page: class{
+    constructor({
+      unReviewList = {rows:[/* unReviewItem */], pages:{}},
+      revieweeHistoryList = {rows:[/* revieweeHistoryItem */], pages:{}},
+      reviewHistoryList = {rows:[/* reviewHistoryItem */], pages:{}}
+    }){
+      this.unReviewList = unReviewList;
+      this.revieweeHistoryList = revieweeHistoryList;
+      this.reviewHistoryList = reviewHistoryList;
+    }
+  },
+
 	/**
 	 * 未レビュー一覧
 	 */
-  unReviewList: class {
-    constructor({review_id = "", review_date = {}, user_name = ""}){
-      this.review_id = review_id;
+  unReviewItem: class {
+    constructor({matching_id = "", review_date = {}, user_name = ""}){
+      this.matching_id = matching_id;
       this.review_date = review_date;
       this.user_name = user_name;
     }
@@ -13,19 +25,19 @@ module.exports = {
   /**
    * あなたへのレビュー一覧
    */
-  revieweeHistoryList: class {
+  revieweeHistoryItem: class {
     constructor({review_id = "", reviewee_date = {}, reviewee_user_name = "", review_type = ""}){
       this.review_id = review_id;
       this.reviewee_date = reviewee_date;
-      this.user_name = user_name;
+      this.reviewee_user_name = reviewee_user_name;
       this.review_type = review_type;
     }
   },
 
   /**
-   * レビュー履歴一覧
+   * あなたからのレビュー一覧
    */
-  revieweeHistoryList: class {
+  reviewHistoryItem: class {
     constructor({review_id = "", review_date = {}, review_user_name = "", review_type = ""}){
       this.review_id = review_id;
       this.review_date = review_date;

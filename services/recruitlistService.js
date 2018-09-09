@@ -19,7 +19,7 @@ exports.getScheduleList = async ({user_type, date_key, page})=>{
     customScheduleRepository.getScheduleListResult(data, options),
     customScheduleRepository.getScheduleListCount(data, options),
   ]);
-  const count = result[1].cnt;
+  const count = result[1][0].cnt;
   return {
     rows: result[0],
     pages: pageHelper.makePageObject(count, page),

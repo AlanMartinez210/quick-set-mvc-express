@@ -8,7 +8,6 @@ module.exports = (models)=>{
 
 		findAll: (options = {}) => {
 			options.raw = true;
-			console.log()
 			return models().findAll(options);
 		},
 
@@ -20,6 +19,11 @@ module.exports = (models)=>{
 		create: (values, options = {})=>{
 			options.raw = true;
 			return models().create(values, options);
+		},
+
+		update: (values, options = {})=>{
+			options.raw = true;
+			return models().update(values, options);
 		},
 
 		bulkCreate: (records, options = {}) => {
