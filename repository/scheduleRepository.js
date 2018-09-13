@@ -15,9 +15,9 @@ const scheduleRepository = {
    * 指定した年月の対象ユーザーのスケジュールを取得します。
    *
    * @param {string} user_id 対象ユーザー
-   * @param {number} year_month YYYYMM
+   * @param {moment} moment_date
    */
-  getScheduleList: (user_id, year_month, options = {}) => {
+  getScheduleList: (user_id, moment_date, options = {}) => {
     options.where = {
       user_id: user_id,
       date_key: {
@@ -52,13 +52,12 @@ const scheduleRepository = {
   /**
    * 対象ユーザーのスケジュールを取得します。
    *
-   * @param {string} user_id 対象ユーザー
+   * @param {string} schedule_id スケジュールID
    * @param {calendar.date_key} date_key YYYYMMDD
    */
-  getSchedule: (user_id, date_key, options = {}) => {
+  getSchedule: (schedule_id, options = {}) => {
     options.where = {
-      user_id: user_id,
-      date_key: date_key
+      id: schedule_id,
     };
     return repo.findOne(options);
   },

@@ -10,13 +10,12 @@ const msgJson = {
 	E00007: {msg: "日付形式で入力してください"},
 	M00002: {msg: "test2"},
 	M00003: {msg: "test2"},
-	M00004: {msg: "create, edit, deleteのいずれかにしてください"},
 
 	L00001: {msg: "セッションが切断されました"},
 	L00002: {msg: "すでに依頼済みの募集です"},
-	L00003: {msg: "依頼の承諾に失敗しました"},
+	L00003: {msg: "依頼の承諾に失敗しました"},
 	L00004: {msg: "この人にはレビューできません"},
-	L00005: {msg: "依頼の取消に失敗しました"},
+	L00005: {msg: "依頼の取消に失敗しました"},
 }
 
 exports.getMsgObj = (code) => {
@@ -25,7 +24,6 @@ exports.getMsgObj = (code) => {
 		return msgJson[code];
 	}
 	else{
-		console.error("code is undefined");
-		return msgJson.E00000;
+		throw new Error("invaild code");
 	}
 }

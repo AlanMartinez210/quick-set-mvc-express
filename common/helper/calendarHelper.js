@@ -8,9 +8,8 @@ const dateHelper = require('./dateHelper');
  * @returns {array} calendarObjectArray
  */
 exports.getCurrentCalendar = () => {
-	const y = dateHelper.getCurrentYear();
-	const m = dateHelper.getCurrentMonth();
-  const cln = _getCalendar(y, m);
+  const mDt = dateHelper.getDate();
+  const cln = _getCalendar(mDt.year(), mDt.trueMonth());
   return cln;
 }
 
@@ -22,11 +21,11 @@ exports.getCurrentCalendar = () => {
  * @returns {array} calendarObjectArray
  */
 exports.getCalendar = (year = 0, month = 0) => {
-  let cln = {};
-  if(year && month && month <= 12){
-    const cln = _getCalendar(year, month);
-    return cln;
-  }
+  if(isNaN(year) || (Number(year) < 1970 || Number(year) > 9999)) throw new Error('expect year param is 1970 to 9999');
+  if(isNaN(month) || Number(month) < 1 || Number(month) > 12) throw new Error('expect month param is 1 to 12');
+
+  const cln = _getCalendar(year, month);
+  return cln;
 }
 
 /**
@@ -47,15 +46,13 @@ function _getCalendar(year, month){
   list.forEach((ele, i) => {
     // ゴースト日ならスキップする。
     if (ele.ghost) return;
+    
     const cln = {};
-    
-		var obj = dateHelper.dateToObject(ele, true);
-    
-    cln.date_key = obj.date;
-    cln.year = obj.year;
-    cln.month = obj.month;
-    cln.day = obj.day;
-    cln.week = obj.week;
+    cln.year = ele.year;
+    cln.month = ele.month;
+    cln.day = ele.day;
+    cln.week = dateHelper.getWeek(ele.week);
+    cln.holiday = ele.holiday;
 		cln.schedule = [];
     
     arr.push(cln);

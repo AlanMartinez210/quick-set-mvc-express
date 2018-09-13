@@ -17,6 +17,11 @@ module.exports = {
         allowNull: false,
         comment: '表示するスケジュールを制御するための種別'
       },
+      schedule_group: {
+        type: Sequelize.STRING(6),
+        allowNull: false,
+        comment: '年月を基準としたスケジュールの範囲'
+      },
       date_key: {
         type: Sequelize.DATE,
         allowNull: false

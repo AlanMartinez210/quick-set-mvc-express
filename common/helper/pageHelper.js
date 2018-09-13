@@ -10,6 +10,6 @@ exports.makePageObject = (count, now_page)=>{
   return {
     count: count,
     now_page: now_page,
-    max_page: Math.ceil(count/PAGE_COUNT),
+    max_page: Math.ceil(count/10),
   };
 }
