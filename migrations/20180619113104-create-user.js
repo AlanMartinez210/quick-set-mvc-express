@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.BIGINT.UNSIGNED
       },
       user_key: {
-        type: Sequelize.STRING(12)
+        type: Sequelize.STRING(50)
       },
       user_name: {
         type: Sequelize.STRING(50)

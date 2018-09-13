@@ -23,7 +23,12 @@
     "db:create": "node_modules/.bin/sequelize model:generate",
     "migrate:up": "node_modules/.bin/sequelize db:migrate",
     "migrate:down": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "migrate:reset": "(node_modules/.bin/sequelize db:drop || node_modules/.bin/sequelize db:create) && node_modules/.bin/sequelize db:migrate"
+    "migrate:reset": "(node_modules/.bin/sequelize db:drop || node_modules/.bin/sequelize db:create) && node_modules/.bin/sequelize db:migrate",
+    "seed:gen:user": "node_modules/.bin/sequelize seed:generate --name test-user",
+    "seed:gen:schedule": "node_modules/.bin/sequelize seed:generate --name test-schedule",
+    "seed:gen:tag": "node_modules/.bin/sequelize seed:generate --name test-tag",
+    "seed:run": "node_modules/.bin/sequelize db:seed:all",
+    "seed:undo": "node_modules/.bin/sequelize db:seed:undo:all"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
