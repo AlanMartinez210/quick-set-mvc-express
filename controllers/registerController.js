@@ -23,7 +23,7 @@ exports.index = (req, res, next) => {
  * @param {*} res
  */
 exports.postCreateUser = (req, res, next) => {
-	registerService.registerUser(req)
+	return registerService.registerUser(req.form_data)
 	.then(user=>{
 		console.log("------ registered ---------", user);
 		sessionHelper.setUserData(req, user, ()=>{

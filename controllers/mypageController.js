@@ -1,5 +1,6 @@
 const mypageService = require("../services/mypageService");
 const mypageVO = require("../viewObjects/mypage");
+const sessionHelper = require('../common/helper/sessionHelper');
 
 /**
  * マイページの表示
@@ -12,10 +13,10 @@ exports.index = function(req, res, next){
 	const render_obj = res.render_obj;
 	render_obj.contentId = "mypage";
 	render_obj.title = "マイページ";
-
+	const user_id = sessionHelper.getUserId(req);
 	Promise.all([
-		mypageService.getNoReviewNum(req),
-		mypageService.getMatchingInfoNum(req)
+		mypageService.getNoReviewNum(user_id),
+		mypageService.getMatchingRequestNum(user_id),
 	])
 	.then(results => {
 		console.log(results);

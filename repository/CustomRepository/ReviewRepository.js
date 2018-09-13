@@ -1,4 +1,5 @@
 const abstractRepository = require('../abstractRepository')();
+const dateHelper = require('../../common/helper/dateHelper');
 
 
 
@@ -7,11 +8,13 @@ const abstractRepository = require('../abstractRepository')();
  *
  * @param data.user_id ユーザーのuser_id
  */
-const getUnReviewList = (select, data, options)=>{
+const getUnReviewList = (select, data = {}, options)=>{
+  data.today = data.today||dateHelper.getDate(new Date()).toDate();
   const query = select + `
     from matchings
     join users as from_user on matchings.user_id = from_user.id
     join users as to_user on matchings.to_user_id = to_user.id
+    join schedules on schedules.id = matchings.schedule_id and schedules.date_key <= :today /* 今日以前の日程の募集が対象 */
     where 1=1
     and   ( matchings.user_id = :user_id or matchings.to_user_id = :user_id )
     and   not exists ( select * from reviews where reviews.matching_id = matchings.id)
@@ -22,7 +25,7 @@ exports.getUnReviewListResult = (data = {user_id:0}, options={})=>{
   const select = `
     select
       matchings.id as matching_id,
-      (select date_key from schedules where id = matchings.schedule_id) as schedules_date_key,
+      schedules.date_key as schedules_date_key,
       case when from_user.id = :user_id then from_user.id else to_user.id end as to_user_id,
       case when from_user.id = :user_id then from_user.user_name else to_user.user_name end as to_user_name
   `;

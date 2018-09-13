@@ -54,12 +54,27 @@ module.exports = (req, res, next)=>{
   }
 
 
+  // ユーザータイプ一覧
+  const USER_TYPE_ID_MAP = {
+    COSPLAYER: 1,
+    CAMERAMAN: 2,
+  };
+
+  // スケジュールタイプ一覧
+  const SCHEDULE_TYPE_ID_MAP = {
+    COSPLAYER: 1,
+    CAMERAMAN: 2,
+  };
+
+
   global.C2LINK = {
     ALL_PREF_LIST,
     ALL_PREF_ID_MAP,
     SHOT_TYPE_LIST,
     SHOT_TYPE_ID_MAP,
     MATCHING_STATUS_ID_MAP,
+    USER_TYPE_ID_MAP,
+    SCHEDULE_TYPE_ID_MAP,
   };
   next();
 };

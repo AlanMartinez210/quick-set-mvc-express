@@ -11,8 +11,7 @@ const dateHelper = require('../common/helper/dateHelper');
  * @param {request}
  * @return {Promise}
  */
-exports.getMatchingList = (req) => {
-  const user_id = sessionHelper.getUserId(req);
+exports.getMatchingList = (user_id) => {
   return customMatchingRepository.getMatchingList(user_id)
   .then(rows=>{
     rows.forEach(row=>{
@@ -34,8 +33,7 @@ exports.getMatchingList = (req) => {
   });
 };
 
-exports.getMatchingHistoryList = (req) => {
-  const user_id = sessionHelper.getUserId(req);
+exports.getMatchingHistoryList = (user_id) => {
   return customMatchingRepository.getMatchingHistoryList(user_id)
   .then(rows=>{
     rows.forEach(row=>{
@@ -66,25 +64,18 @@ exports.getMatchingHistoryList = (req) => {
  * @param {request}  requestForm
  * @return {Promise}
  */
- exports.postRequest = (req) => {
-   const user_id = sessionHelper.getUserId(req);
-   const schedule_id = req.form_data.schedule_id;
-   const data = {
-     schedule_id,
-     user_id,
-     status_id:global.C2LINK.MATCHING_STATUS_ID_MAP.REQUEST,
-   };
-   return matchingRepository.create(data)
-          .then(row=>{
-            console.log(row);
-          })
-          .catch(err=>{
-            if(err.errors[0].path == 'matchings_user_id_schedule_id'){
-              throw new errorHelper().setWindowMsg('L00002');
-            }else{
-              throw err;
-            }
-          })
+exports.postRequest = (user_id, schedule_id) => {
+  return matchingRepository.create({
+    schedule_id,user_id,
+    status_id:global.C2LINK.MATCHING_STATUS_ID_MAP.REQUEST,
+  })
+  .catch(err=>{
+    if(err.errors[0].path == 'matchings_user_id_schedule_id'){
+      throw new errorHelper().setWindowMsg('L00002');
+    }else{
+      throw err;
+    }
+  });
  };
 
 

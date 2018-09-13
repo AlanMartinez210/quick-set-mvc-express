@@ -51,13 +51,14 @@ const dateHelper = require("../common/helper/dateHelper");
  * @param {*} res
  */
 exports.index = function(req, res, next){
-  var render_obj = res.render_obj;
+  const render_obj = res.render_obj;
   render_obj.contentId = "matching";
   render_obj.title = "マッチング管理";
 
+  const user_id = sessionHelper.getUserId(req);
   Promise.all([
-    matchingService.getMatchingList(req),
-    matchingService.getMatchingHistoryList(req),
+    matchingService.getMatchingList(user_id),
+    matchingService.getMatchingHistoryList(user_id),
   ])
   .then(results=>{
     const matchingList = results[0];

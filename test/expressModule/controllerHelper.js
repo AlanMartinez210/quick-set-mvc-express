@@ -1,5 +1,6 @@
 const requestObjectDefer = require('../../common/middleware/requestObjectDefer');
 const responseObjectDefer = require('../../common/middleware/responseObjectDefer');
+const globalVariables = require('../../common/middleware/globalVariables')
 /**
  * テスト用のreq,res,nextを取得
  *
@@ -10,13 +11,14 @@ exports.getControllerArguments = ()=>{
       form_data: {
       },
       session:{
-        save:()=>{},
+        save:(fnc)=>{fnc?fnc():null},
       },
     },
     res: {
       jsonResult: null, // res.jsonを呼ぶとjsonResultに結果が入る
       json: function(param){
         this.jsonResult = param;
+        console.log('----- json -----', param, this);
         return this;
       },
 
@@ -38,6 +40,7 @@ exports.getControllerArguments = ()=>{
   };
   requestObjectDefer(params.req, params.res, params.next);
   responseObjectDefer(params.req, params.res, params.next);
+  globalVariables(params.req, params.res, params.next);
   return params;
 
 }

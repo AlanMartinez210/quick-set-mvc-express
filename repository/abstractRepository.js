@@ -16,6 +16,11 @@ module.exports = (models)=>{
 			return models().findOne(options);
 		},
 
+		count: (options = {}) => {
+			options.raw = true;
+			return models().count(options);
+		},
+
 		create: (values, options = {})=>{
 			options.raw = true;
 			return models().create(values, options);
