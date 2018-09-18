@@ -19,6 +19,10 @@ module.exports = {
       message: {
         type: Sequelize.STRING
       },
+      read_count: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

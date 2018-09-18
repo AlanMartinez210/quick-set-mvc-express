@@ -1,4 +1,4 @@
-const c_messageRepository = require("../repository/CustomRepository/messageRepository");
+const messageService = require("../services/messageService");
 
 /**
  * メッセージ一覧ページの表示
@@ -11,7 +11,7 @@ exports.index = function(req, res, next){
 	render_obj.title = "メッセージ一覧";
 	render_obj.contentId = "message";
 
-	c_messageRepository.getNewMessageList(req)
+	messageService.getNewMessageList(req)
 	.then(results=>{
 		render_obj.bodyData.newMessages = results;
 		res.render('message', render_obj);

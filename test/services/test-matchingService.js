@@ -4,14 +4,15 @@ const {req, res, next} = require('../expressModule/controllerHelper').getControl
 const errorHelper = require('../../common/helper/errorHelper');
 const hashHelper = require('../../common/helper/hashHelper');
 const calendarHelper = require('../../common/helper/calendarHelper');
+const seeder = require('../expressModule/seeder');
 
 const registerService = require('../../services/registerService');
 const {sequelize, User, Schedule, Matching} = require('../../models');
 
 
 describe('MatchingService test', ()=>{
-  const user1 = {user_key:"テストユーザーcos", user_type:1, password:"tesuto_user?", raw_password: "tesuto_user?"};
-  const user2 = {user_key:"テストユーザーcam", user_type:2, password:"tesuto_user?", raw_password: "tesuto_user?"};
+  let user1 = {user_key:"テストユーザーcos", user_type:1, password:"tesuto_user?", raw_password: "tesuto_user?"};
+  let user2 = {user_key:"テストユーザーcam", user_type:2, password:"tesuto_user?", raw_password: "tesuto_user?"};
 
   const user1Schedules = [];
   const user2Schedules = [];
@@ -19,52 +20,37 @@ describe('MatchingService test', ()=>{
   const user2Matchings = [];
   before(async()=>{
     // テストユーザーの作成
-    let user = await registerService.registerUser(user1);
-    user = await User.findOne({where:{id:user.id}});
-    user1.user_key = user.user_key;
-    user1.id = user.id;
-    user = await registerService.registerUser(user2);
-    user = await User.findOne({where:{id:user.id}});
-    user2.user_key = user.user_key;
-    user2.id = user.id;
-
+    user1 = await seeder.createUser(user1);;
+    user2 = await seeder.createUser(user2);;
 
     // 1ヶ月分の募集を作成
     const calendar = calendarHelper.getCurrentCalendar();
     const array = [];
     for(const row of calendar){
       const date = new Date(row.year, row.month-1, row.day);
-      array.push(Schedule.create({
+      user1Schedules.push(
+        await seeder.createSchedule({
           user_id:user1.id,
           schedule_type: user1.user_type,
           date_key: date,
-        }, {logging:false})
-      ,Schedule.create({
+        })
+      );
+      user2Schedules.push(
+        await seeder.createSchedule({
           user_id:user2.id,
           schedule_type: user2.user_type,
           date_key: date,
-        },{logging:false})
-      );
+        })
+      )
     }
-    await Promise.all(array).then(row=>{
-      for(let i=0;i<row.length;){
-        user1Schedules.push(row[i++]);
-        user2Schedules.push(row[i++]);
-      }
-    });
 
     for(let i=21;i<24;i++){ // 21-24は申請中
       user1Matchings.push(await matchingService.postRequest(user1.id, user2Schedules[i].id));
       user2Matchings.push(await matchingService.postRequest(user2.id, user1Schedules[i].id));
     }
-
-
   });
   after(async()=>{
-    // テストデータの削除
-    await User.destroy({where:{id: user1.id}});
-    await Schedule.destroy({where:{id: user1Schedules.concat(user2Schedules).map(v=>v.id)}});
-    await Matching.destroy({where:{id: user1Matchings.concat(user2Matchings).map(v=>v.id)}});
+    seeder.allDestroy();
   });
 
   describe('test : postRequest', ()=>{

@@ -11,7 +11,6 @@ module.exports = () =>{
 	return repo;
 }
 
-
 const userRepository = {
 	/**
 	 * ログインする
@@ -37,25 +36,4 @@ const userRepository = {
 			return user;
 		});
 	},
-	// /**
-	//  * プロフィール編集画面の表示に必要な情報を取得する
-	//  * ユーザー名、(パスワード)、メールアドレス、活動地域、タグ
-	//  */
-	// getProfileEditViewData: (req)=>{
-	// 	const data = {
-	// 		user_id: req.session.user.id
-	// 	};
-	// 	return new Promise((resolve, reject)=>{
-	// 		result = {};
-	// 		user().findOne({where:{id:data.user_id},attributes:['user_name','email']}).then(row=>{
-	// 			if(row) {
-	// 				result.user_name = row.user_name;
-	// 				result.email = row.email;
-	// 				resolve(result);
-	// 			} else {
-	// 				reject();
-	// 			}
-	// 		}).catch(reject);
-	// 	});
-	// }
 };

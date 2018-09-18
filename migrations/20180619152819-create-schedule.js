@@ -17,10 +17,13 @@ module.exports = {
         allowNull: false,
         comment: '表示するスケジュールを制御するための種別'
       },
-      schedule_group: {
-        type: Sequelize.STRING(6),
-        allowNull: false,
-        comment: '年月を基準としたスケジュールの範囲'
+      group_year: {
+        type: Sequelize.INTEGER,
+        comment: '年を基準としたスケジュールの範囲',
+      },
+      group_month: {
+        type: Sequelize.INTEGER,
+        comment: '月を基準としたスケジュールの範囲',
       },
       date_key: {
         type: Sequelize.DATE,
@@ -66,38 +69,28 @@ module.exports = {
         allowNull: false
       }
     })
-//     .then(() => {
-//        queryInterface.addIndex('Schedules', {
-//          unique: true,
-// //         fields: ['user','date_key', 'seq_id'], 同日に複数投稿したい場合はこっちにする
-//          fields: ['user_id','date_key'],
-//        });
-//       //  queryInterface.addIndex('Schedules', {
-//       //    unique: false,
-//       //    fields: ['date_key', 'seq_id'],
-//       //  });
-//     })
-    // .then(e=>{
-    //   queryInterface.sequelize.query(`
-    //     create trigger insert_date_key before insert on Schedules
-    //     for each row
-    //       begin
-    //         DECLARE $date_key varchar(8);
-    //         DECLARE $seq_id int;
-
-    //         /* date_keyを設定する */
-    //         select new.date_key into $date_key;
-
-    //         /* seqnumを設定する */
-    //         select ifnull(max(seq_id),0) + 1 into $seq_id
-    //         from Schedules where user_id = new.user_id and date_key = $date_key;
-
-    //         set new.date_key = $date_key;
-    //         set new.seq_id = $seq_id;
-    //       end
-    //       ;
-    //   `);
-    // });
+    .then(() => {
+      queryInterface.addIndex('Schedules', {
+        unique: false,
+        fields: ['group_year','group_month'],
+      })
+      queryInterface.sequelize.query(`
+        create trigger insert_date_key before insert on Schedules
+        for each row
+        begin
+          set new.group_year  = date_format(new.date_key,'%Y')-0;
+          set new.group_month = date_format(new.date_key,'%m')-0;
+        end
+      `);
+      queryInterface.sequelize.query(`
+        create trigger update_date_key before update on Schedules
+        for each row
+        begin
+          set new.group_year  = date_format(new.date_key,'%Y')-0;
+          set new.group_month = date_format(new.date_key,'%m')-0;
+        end
+      `);
+    });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Schedules');

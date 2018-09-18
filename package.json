@@ -19,6 +19,7 @@
     "test:s": "mocha --recursive test/services/test-*.js",
     "test:r": "mocha --recursive test/repository/test-*.js",
     "test:m": "mocha --recursive test/common/middleware/test-*.js",
+    "test:x": "mocha --recursive -- ",
     "sequelize": "node_modules/.bin/sequelize --",
     "db:create": "node_modules/.bin/sequelize model:generate",
     "migrate:up": "node_modules/.bin/sequelize db:migrate",
@@ -79,13 +80,14 @@
     "eslint": "^4.19.1",
     "eslint-loader": "^2.0.0",
     "faker": "^4.1.0",
+    "husky": "^1.0.0-rc.13",
     "mocha": "^5.2.0",
     "node-sass": "^4.9.2",
     "node-watch": "^0.5.8",
     "nodemon": "^1.17.5",
     "sass-loader": "^7.0.1",
-    "style-loader": "^0.21.0",
-    "husky": "^1.0.0-rc.13"
+    "sinon": "^6.3.3",
+    "style-loader": "^0.21.0"
   },
   "husky": {
     "hooks": {

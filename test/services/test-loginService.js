@@ -4,32 +4,31 @@ const {req, res, next} = require('../expressModule/controllerHelper').getControl
 const errorHelper = require('../../common/helper/errorHelper');
 const hashHelper = require('../../common/helper/hashHelper');
 const registerService = require('../../services/registerService');
+const seeder = require('../expressModule/seeder');
 
 const {sequelize, User} = require('../../models');
 
 
 describe('LoginService test', ()=>{
-  const user1 = {user_key:"テストユーザーcos", user_type:1, password:"tesuto_user?", raw_password: "tesuto_user?"};
+  let user1 = {user_key:"テストユーザーcos", user_type:1, password:hashHelper("tesuto_user?"), raw_password: "tesuto_user?"};
   before(async()=>{
     // テストユーザーの作成
-    let user = await registerService.registerUser(user1);
-    user = await User.findOne({where:{id:user.id}});
-    user1.user_key = user.user_key;
-    user1.id = user.id;
+    user1 = await seeder.createUser(user1);
+    console.log(user1);
   });
   after(async()=>{
-    User.destroy({where:{id: user1.id}});
+    seeder.allDestroy();
   });
 
   it('ログインできること', async ()=>{
-    return await loginService.loginByIDPW(user1.user_key, hashHelper(user1.raw_password))
+    return await loginService.loginByIDPW(user1.user_key, user1.password)
     .then((res)=>{
       assert.deepEqual(res.id, user1.id);
     });
   });
 
   it('失敗した場合にE00001エラーが返ってくること', async ()=>{
-    return await loginService.loginByIDPW(user1.user_key, user1.raw_password /* ハッシュ化しない */)
+    return await loginService.loginByIDPW(user1.user_key, user1.password+"aa")
     .then(res=>{
       assert(false, "ログインできました");
     })

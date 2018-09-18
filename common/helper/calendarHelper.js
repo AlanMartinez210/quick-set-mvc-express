@@ -53,7 +53,6 @@ function _getCalendar(year, month){
     cln.day = ele.day;
     cln.week = dateHelper.getWeek(ele.week);
     cln.holiday = ele.holiday;
-		cln.schedule = [];
     
     arr.push(cln);
   });

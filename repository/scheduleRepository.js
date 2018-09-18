@@ -17,12 +17,11 @@ const scheduleRepository = {
    * @param {string} user_id 対象ユーザー
    * @param {moment} moment_date
    */
-  getScheduleList: (user_id, moment_date, options = {}) => {
+  getScheduleList: (user_id, year, month, options = {}) => {
     options.where = {
       user_id: user_id,
-      date_key: {
-        [repo.Sequelize.Op.like]: year_month + "%"
-      }
+      group_year: year,
+      group_month: month,
     };
     return repo.findAll(options);
   },
@@ -36,18 +35,15 @@ const scheduleRepository = {
    * @returns {Array}
    *
    */
-   getMonthScheduleNumList: (user_id, year) => {
-     var query = `
-      select substring(date_key,5,2) as month,
-             count(1) as count
-      from   schedules
-      where  user_id = :user_id
-      and    date_key like :year
-      group by substring(date_key,5,2)
-      ;`;
-      var replacements = {user_id: user_id, year: year+'%' }
-      return repo.querySelect(query, replacements);
-   },
+  getMonthScheduleNumList: (user_id, year, options = {}) => {
+    options.where = {
+      user_id: user_id,
+      group_year: year
+    };
+    options.attributes = ["group_month", [repo.Sequelize.fn('count', "id"), 'count']]
+    options.group = ["group_year", "group_month"]
+    return repo.findAll(options);
+  },
 
   /**
    * 対象ユーザーのスケジュールを取得します。

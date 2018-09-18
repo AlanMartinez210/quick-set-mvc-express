@@ -1,4 +1,5 @@
 const sequelize = require('../../models/index').sequelize;
+const abstractRepository = require('../abstractRepository');
 
 const matching = require('../../models/matching');
 const chat = require('../../models/chat');
@@ -30,15 +31,11 @@ const matching_select = `
  * @return {Promise}
  */
 exports.getMatchingList = (user_id)=>{
-  var select = matching_select + `
+  const select = matching_select + `
     where to_user_id = :user_id or matchings.user_id = :user_id
     order by matchings.updated_at desc;
   `;
-  var queryOption = {
-    type: sequelize.Sequelize.QueryTypes.SELECT,
-    replacements: {user_id},
-  };
-  return sequelize.query(select, queryOption)
+  return abstractRepository.querySelect(select, {user_id});
 }
 
 /**
@@ -48,14 +45,10 @@ exports.getMatchingList = (user_id)=>{
  * @return {Promise}
  */
 exports.getMatchingHistoryList = (user_id)=>{
-  var select = matching_select + `
+  const select = matching_select + `
     where to_user_id = :user_id or matchings.user_id = :user_id
     order by matchings.updated_at desc
     ;
   `;
-  var queryOption = {
-    type: sequelize.Sequelize.QueryTypes.SELECT,
-    replacements: {user_id},
-  };
-  return sequelize.query(select, queryOption)
+  return abstractRepository.querySelect(select, {});
 }
