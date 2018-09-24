@@ -1,10 +1,5 @@
 'use strict';
-
 module.exports = (sequelize, DataTypes) => {
-  var s = require('../models/index');
-  sequelize = sequelize||s.sequelize;
-  DataTypes = DataTypes||s.Sequelize;
-
   var Schedule = sequelize.define('Schedule', {
     user_id: DataTypes.INTEGER,
     schedule_type: DataTypes.INTEGER,

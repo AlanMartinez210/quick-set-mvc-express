@@ -1,11 +1,18 @@
 var chai = require('chai');
 var expect = chai.expect;
 var sessionHelper = require('../../../common/helper/sessionHelper');
-var test_mock_data = require('../../expressModule/testMockData');
+var basePattern = require("../../expressModule/testData/basePattern");
 
 describe('sessionHelper test', function() {
-  const req_data = test_mock_data.getReq();
-  const user_data = test_mock_data.getUser();
+  let user_data = {};
+  let req_data = {};
+  const bp = new basePattern();
+  before(async () => {
+    await bp.genTestData();
+    user_data = await bp.getUserData(1);
+    req_data = await bp.getloginSesstionRequest(1)
+  });
+
   describe('setUserData/getUserData test', function() {
     describe('例外判定:setUserData', function() {
       it('不正な値の場合はエラーを出す。', function(){
@@ -24,10 +31,12 @@ describe('sessionHelper test', function() {
     });
     describe('正常テスト', function(){
       it('ユーザーデータをセッションに設定し、取得できる', function(){
-        const test_data = { id: 999999, user_name: 'テストカメラマン', email: 'cam@cam.com', user_type: 2 }
-        sessionHelper.setUserData(req_data, user_data);
-        const result = sessionHelper.getUserData(req_data);
-        expect(result).to.deep.equal(test_data);
+        return bp.getUserData(4)
+        .then(res => {
+          sessionHelper.setUserData(req_data, user_data);
+          const result = sessionHelper.getUserData(req_data);
+          expect(result).to.deep.equal(test_data);
+        });
       });
     });
   });

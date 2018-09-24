@@ -1,5 +1,5 @@
 var abstractRepository = require('./abstractRepository');
-const user = require('../models/user');
+
 const hashHelper = require("../common/helper/hashHelper");
 const sessionHelper = require("../common/helper/sessionHelper");
 const errorHelper = require('../common/helper/errorHelper');
@@ -7,7 +7,7 @@ const errorHelper = require('../common/helper/errorHelper');
 var repo;
 module.exports = () =>{
 	// リポジトリは2回以上作成しない
-	repo = repo || Object.assign(userRepository, abstractRepository(user))
+	repo = repo || Object.assign(userRepository, abstractRepository("User"))
 	return repo;
 }
 

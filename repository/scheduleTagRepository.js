@@ -1,17 +1,13 @@
 var abstractRepository = require('./abstractRepository');
 
-const model = require('../models/schedule_tag');
-
 var repo;
 module.exports = () =>{
 	// リポジトリは2回以上作成しない
-	repo = repo || Object.assign(ScheduleTagRepository, abstractRepository(model));
+	repo = repo || Object.assign(ScheduleTagRepository, abstractRepository("Schedule_tag"));
 	return repo;
 }
 
-
 const ScheduleTagRepository = {
-
 	/**
 	 * 指定したスケジュールIDに紐づくタグを取得します。
 	 * 

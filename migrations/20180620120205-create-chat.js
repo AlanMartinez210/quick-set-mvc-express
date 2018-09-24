@@ -19,8 +19,8 @@ module.exports = {
       message: {
         type: Sequelize.STRING
       },
-      read_count: {
-        type: Sequelize.INTEGER,
+      read_flag: {
+        type: Sequelize.BOOLEAN,
         defaultValue: 0,
       },
       created_at: {

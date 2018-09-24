@@ -1,9 +1,4 @@
-const sequelize = require('../../models/index').sequelize;
 const abstractRepository = require('../abstractRepository');
-
-const matching = require('../../models/matching');
-const chat = require('../../models/chat');
-
 const errorHelper = require('../../common/helper/errorHelper');
 
 const matching_select = `

@@ -1,3 +1,5 @@
+const dateHelper = require('../common/helper/dateHelper'); 
+
 // アプリケーション依存処理の定義を行います。
 
 /**
@@ -28,9 +30,11 @@ exports.bindSchedule = (calendar, schedule) => {
   if(calendar.length <= 0 ||  schedule.length <= 0) return calendar;
 
   calendar.forEach((ele, i) => {
-    const key = ele.date_key
+    // Date型を前提でフィルター処理を行う。
     const result = schedule.filter(obj=>{
-      return obj.date_key == key;
+      const cdt = dateHelper.createDate(ele.year, ele.month, ele.day);
+      const sdt = dateHelper.getDate(obj.date_key);
+      return cdt.isSame(sdt);
     })
     ele.schedule = result;
   });

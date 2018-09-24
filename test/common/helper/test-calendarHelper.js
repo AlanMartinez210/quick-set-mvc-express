@@ -2,11 +2,41 @@ var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
 var calendarHelper = require('../../../common/helper/calendarHelper');
-var test_mock_data = require('../../expressModule/testMockData');
 
 describe('calendarHelper test', function() {
 
-	const testCln = test_mock_data.getCalendarDateList();
+	const testCln = [
+		{ year: 2018, month: 9, day: 1, week: '土', holiday: '' },
+		{ year: 2018, month: 9, day: 2, week: '日', holiday: '' },
+		{ year: 2018, month: 9, day: 3, week: '月', holiday: '' },
+		{ year: 2018, month: 9, day: 4, week: '火', holiday: '' },
+		{ year: 2018, month: 9, day: 5, week: '水', holiday: '' },
+		{ year: 2018, month: 9, day: 6, week: '木', holiday: '' },
+		{ year: 2018, month: 9, day: 7, week: '金', holiday: '' },
+		{ year: 2018, month: 9, day: 8, week: '土', holiday: '' },
+		{ year: 2018, month: 9, day: 9, week: '日', holiday: '' },
+		{ year: 2018, month: 9, day: 10, week: '月', holiday: '' },
+		{ year: 2018, month: 9, day: 11, week: '火', holiday: '' },
+		{ year: 2018, month: 9, day: 12, week: '水', holiday: '' },
+		{ year: 2018, month: 9, day: 13, week: '木', holiday: '' },
+		{ year: 2018, month: 9, day: 14, week: '金', holiday: '' },
+		{ year: 2018, month: 9, day: 15, week: '土', holiday: '' },
+		{ year: 2018, month: 9, day: 16, week: '日', holiday: '' },
+		{ year: 2018, month: 9, day: 17, week: '月', holiday: '敬老の日' },
+		{ year: 2018, month: 9, day: 18, week: '火', holiday: '' },
+		{ year: 2018, month: 9, day: 19, week: '水', holiday: '' },
+		{ year: 2018, month: 9, day: 20, week: '木', holiday: '' },
+		{ year: 2018, month: 9, day: 21, week: '金', holiday: '' },
+		{ year: 2018, month: 9, day: 22, week: '土', holiday: '' },
+		{ year: 2018, month: 9, day: 23, week: '日', holiday: '秋分の日' },
+		{ year: 2018, month: 9, day: 24, week: '月', holiday: '振替休日' },
+		{ year: 2018, month: 9, day: 25, week: '火', holiday: '' },
+		{ year: 2018, month: 9, day: 26, week: '水', holiday: '' },
+		{ year: 2018, month: 9, day: 27, week: '木', holiday: '' },
+		{ year: 2018, month: 9, day: 28, week: '金', holiday: '' },
+		{ year: 2018, month: 9, day: 29, week: '土', holiday: '' },
+		{ year: 2018, month: 9, day: 30, week: '日', holiday: '' }
+	];
 
 	describe('getCalendar test', function() {
 		describe('例外判定', function() {

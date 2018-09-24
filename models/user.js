@@ -1,9 +1,5 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var s = require('../models/index');
-  sequelize = sequelize||s.sequelize;
-  DataTypes = DataTypes||s.Sequelize;
-
   var User = sequelize.define('User', {
     id:{
       type: DataTypes.INTEGER,
@@ -18,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     user_type: DataTypes.INTEGER,
     tags: DataTypes.JSON,
     prefectures: DataTypes.JSON,
+    expiration_date: DataTypes.DATE
   }, {});
   User.associate = function(models) {
     // associations can be defined here

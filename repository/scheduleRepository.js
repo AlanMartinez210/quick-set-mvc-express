@@ -1,10 +1,9 @@
 const abstractRepository = require('./abstractRepository');
-const model = require('../models/schedule');
 
 var repo;
 module.exports = () =>{
   // リポジトリは2回以上作成しない
-  repo = repo || Object.assign(scheduleRepository, abstractRepository(model))
+  repo = repo || Object.assign(scheduleRepository, abstractRepository("Schedule"))
   return repo;
 }
 

@@ -1,16 +1,11 @@
 const abstractRepository = require('./abstractRepository');
-const sequelize = require('../models/index').sequelize;
-const Op = sequelize.Op;
-
-const model = require('../models/tag');
 
 var repo;
 module.exports = () =>{
 	// リポジトリは2回以上作成しない
-	repo = repo || Object.assign(tagRepository, abstractRepository(model));
+	repo = repo || Object.assign(tagRepository, abstractRepository("Tag"));
 	return repo;
 }
-
 
 const tagRepository = {
 	/**
@@ -36,7 +31,7 @@ const tagRepository = {
 	getTagByName(arr_tag_name, options = {}){
 		options.where = {
 			tag_name: {
-				[Op.in]: arr_tag_name
+				[repo.Op.in]: arr_tag_name
 			}
 		};
 		options.attributes = ['id','tag_name','use_count'];
@@ -50,7 +45,7 @@ const tagRepository = {
 	getTagById(arr_tag_id, options = {}){
 		options.where = {
 			id: {
-				[Op.in]: arr_tag_id
+				[repo.Op.in]: arr_tag_id
 			}
 		};
 		options.attributes = ['id', 'tag_name', 'use_count'];

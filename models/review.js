@@ -1,8 +1,5 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var s = require('../models/index');
-  sequelize = sequelize||s.sequelize;
-  DataTypes = DataTypes||s.Sequelize;
   var Review = sequelize.define('Review', {
     matching_id: {
       type: DataTypes.BIGINT.UNSIGNED,

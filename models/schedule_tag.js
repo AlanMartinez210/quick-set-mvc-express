@@ -1,8 +1,5 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var s = require('../models/index');
-  sequelize = sequelize||s.sequelize;
-  DataTypes = DataTypes||s.Sequelize;
   var Schedule_tag = sequelize.define('Schedule_tag', {
     schedule_id: {
       type: DataTypes.BIGINT.UNSIGNED,

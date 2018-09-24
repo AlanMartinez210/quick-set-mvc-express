@@ -1,7 +1,5 @@
 const abstractRepository = require('../abstractRepository')();
 
-
-
 const getScheduleList = (select, data, options)=>{
   var from   = ` from schedules join users on schedules.user_id = users.id and schedules.schedule_type = :schedule_type `;
   var where  = " where 1=1 ";
