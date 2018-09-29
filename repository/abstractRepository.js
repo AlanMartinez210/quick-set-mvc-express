@@ -25,6 +25,14 @@ module.exports = (models_name) => {
 		},
 
 		/**
+		 * findById(id: Number | String | Buffer, options: Object): Promise<Model>
+		 */
+		findById: (key_id, options = {}) => {
+			options.raw = true;
+			return db[models_name].findById(key_id, options);
+		},
+
+		/**
 		 * count(options: Object): Promise<Integer>
 		 */
 		count: (options = {}) => {
@@ -76,7 +84,7 @@ module.exports = (models_name) => {
 		querySelect: (sql, replacements = {} ,options = {}) =>{
 			options.raw = true;
 			options.replacements = replacements;
-			options.type = sequelize.QueryTypes.SELECT;
+			options.type = db.sequelize.QueryTypes.SELECT;
 
 			if(options.orderBy){
 				sql += " order by ";
