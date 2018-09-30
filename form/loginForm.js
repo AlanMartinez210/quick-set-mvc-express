@@ -1,17 +1,22 @@
 /** ログインフォーム */
 module.exports = {
-	user_key: {
+	login_key: {
 		in: 'body',
-		isLength:{
-			errorMessage: 'user_key should be at least 7 chars long',
-			options: { min: 6 }
+		isEmpty: {
+			errorMessage: 'E00002',
+			negated: true
 		}
 	},
 	password: {
 		in: 'body',
-		isLength:{
-			errorMessage: 'password should be at least 7 chars long',
-			options: { min: 6 }
+		isLength: {
+      errorMessage: 'E00004',
+      options: { min: 7 }
+		},
+		matches: {
+			errorMessage: 'E00004',
+			options: '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,32}$',
+			negated: true,
 		}
 	},
 }

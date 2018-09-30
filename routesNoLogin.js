@@ -3,9 +3,8 @@ const router = express.Router();
 
 const controllerPath = './controllers/';
 
-const registerController = require(`${controllerPath}registerController`);
-const loginController = require(`${controllerPath}loginController`);
 const publicController = require(`${controllerPath}publicController`);
+const userController = require(`${controllerPath}userController`)
 
 const validate = require('./common/middleware/validateForm');
 
@@ -18,20 +17,20 @@ router.get('/', (req,res,next)=>{
 });
 
 /* 新規登録ページの表示 */
-router.get('/register', registerController.index);
+router.get('/register', userController.index);
 /* ユーザー新規登録処理 */
-router.post('/api/register', validate.check(require('./form/registerForm')), validate.result, registerController.postCreateUser);
+router.post('/api/register', validate.check(require('./form/registerForm')), validate.result, userController.postRegister);
 /* ログイン処理 */
-router.post('/api/login', validate.check(require('./form/loginForm')), validate.result, loginController.postLoginIDPW);
+router.post('/api/login', validate.check(require('./form/loginForm')), validate.result, userController.postLogin);
 
 ///* 運営情報の表示 */
-//router.get('/public/adminInfo', publicController.getAdminInfo);　
+//router.get('/public/adminInfo', publicController.getAdminInfo);
 //
 ///* プライバシーポリシーの表示 index */
-//router.get('/public/privacyPolicy', publicController.getPrivacyPolicy);　
+//router.get('/public/privacyPolicy', publicController.getPrivacyPolicy);
 //
 ///* 利用者様のデータについての表示 index */
-//router.get('/public/aboutUserData', publicController.getAboutUserData);　
+//router.get('/public/aboutUserData', publicController.getAboutUserData);
 //
 ///* お問い合わせの表示 index */
 //router.get('/public/contact', publicController.getContact);

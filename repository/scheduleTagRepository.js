@@ -31,6 +31,7 @@ const ScheduleTagRepository = {
 	createScheduleTag(tag_arr = [], options = {}){
 		return repo.bulkCreate(tag_arr, options);
 	},
+	
 	/**
 	 * スケジュールに登録された都道府県を削除します。
 	 * 

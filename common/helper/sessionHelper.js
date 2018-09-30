@@ -11,8 +11,6 @@ exports.setUserData = function(req, userObj, callback){
 	if(!isHelper.isObject(userObj)) throw new Error('user object does not exist');
 	req.session.user = {
 		id: userObj.id,
-		user_name: userObj.user_name,
-		email: userObj.email,
 		user_type: userObj.user_type,
 	};
 	if(callback) req.session.save(callback);

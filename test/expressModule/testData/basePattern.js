@@ -18,7 +18,7 @@ module.exports = class {
     for(var i=1;i<=3;i++){
       const user_data = {}
       user_data.user_name = "test_camera_man_" + i;
-      const password = "pass" + i;
+      const password = "password" + i;
       user_data.password = hashHelper(password);
       user_data.email = "test.cam_" + i + "_cs@c2link.mail.com";
       user_data.icon_url = "http://s3.c2link.test/test" + i + ".jpg"
@@ -32,7 +32,7 @@ module.exports = class {
     for(var i=1;i<=3;i++){
       const user_data = {}
       user_data.user_name = "test_cosplayer_" + i;
-      const password = "pass" + i;
+      const password = "password" + i;
       user_data.password = hashHelper(password);
       user_data.email = "test.cos_" + i + "_cs@c2link.mail.com";
       user_data.icon_url = "http://s3.c2link.test/test" + i + ".jpg"

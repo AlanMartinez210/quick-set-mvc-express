@@ -19,8 +19,7 @@ const tagRepository = require('../repository/tagRepository')();
 exports.getMonthSchedule = async (user_id, year, month) => {
   const schedule_list = await scheduleRepository.getScheduleList(user_id, year, month)
   const current_calendar = calendarHelper.getCalendar(year, month);
-  return schedule_list; 
-  // c2Util.bindSchedule(current_calendar, schedule_list);
+  return c2Util.bindSchedule(current_calendar, schedule_list);
 
 }
 

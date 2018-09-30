@@ -29,7 +29,7 @@ describe('scheduleTagRepository test', function () {
   });
   describe('::createScheduleTag()', function () {
     describe('○正常テスト', function () {
-      it('schedule_id -> 5のとき対象のスケジュールに紐づくタグデータを登録できる。', () => {
+      it('schedule_id -> 999のとき対象のスケジュールに紐づくタグデータを登録できる。', () => {
         const test_tag_data = [
           { schedule_id: 999, tag_id: 1 },
           { schedule_id: 999, tag_id: 2 },
@@ -37,15 +37,19 @@ describe('scheduleTagRepository test', function () {
         ]
         return scheduleTagRepository.createScheduleTag(test_tag_data)
         .then(res => {
-          console.log(res);
+          expect(test_tag_data).to.deep.equal(res);
         })
       });
     });
   });
   describe('::deleteScheduleTag()', function () {
     describe('○正常テスト', function () {
-      it('schedule_id -> 5のとき対象のスケジュールに紐づくタグデータを削除できる。', () => {
-        
+      it('schedule_id -> 999のとき対象のスケジュールに紐づくタグデータを削除できる。', () => {
+        const test_tag_id = 999;
+        return scheduleTagRepository.deleteScheduleTag(test_tag_id)
+        .then(res => {
+          expect(3).to.be.equal(res);
+        })
       });
     });
   });

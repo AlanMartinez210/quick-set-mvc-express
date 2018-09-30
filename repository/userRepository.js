@@ -1,6 +1,5 @@
 var abstractRepository = require('./abstractRepository');
 
-const hashHelper = require("../common/helper/hashHelper");
 const sessionHelper = require("../common/helper/sessionHelper");
 const errorHelper = require('../common/helper/errorHelper');
 
@@ -13,27 +12,68 @@ module.exports = () =>{
 
 const userRepository = {
 	/**
-	 * ログインする
+	 * ユーザーIDからユーザーデータを取得する。
 	 */
-	doLogin: (req)=>{
-		return repo.findOne({
-			where: { user_key: req.form_data.userid, password:hashHelper(req.form_data.password)},
-		}).then(row=>{
-			if(row.user_key){
-				sessionHelper.setUserData(req, row);
-			}else{
-				return Promise.reject(errorHelper.message({code:"E00001"}));
-			}
-		});
+	getUserById: (user_id, options = {}) => {
+		return repo.findById(user_id, options);
 	},
+
 	/**
-	 * ユーザー登録してログインする
+	 * user_keyまたは、メールアドレスからユーザーデータを取得する。
 	 */
-	register: (req)=>{
-		req.form_data.password = hashHelper(req.form_data.password);
-		return user().create(req.form_data).then(user=>{
-			sessionHelper.setUserData(req, user);
-			return user;
-		});
+	getUserByUserKeyOrEmail: (key, password, options = {}) => {
+		options.where = {
+			[repo.Op.or]: [
+				{user_key: key},
+				{email: key}
+			],
+			[repo.Op.and]: [
+				{password: password}
+			]
+		}
+		return repo.getUserAll(options);
 	},
+	
+	/**
+	 * すべてのユーザーを取得する。
+	 */
+	getUserAll: (options = {}) => {
+		return repo.findAll(options)
+	},
+
+	/**
+	 * 新しくユーザーを作成する。
+	 */
+	create: (user_data, options = {}) => {
+		return repo.create(user_data, options)
+		.then(row => {
+			return row;
+		})
+	},
+
+	/**
+	 * ユーザーデータのexpiration_dateに削除予定の日付を追加します。
+	 */
+	deleteUser: (user_id, delete_date , options = {}) => {
+		options.where = {
+			id: user_id
+		}
+		values = {
+			expiration_date: delete_date
+		}
+		return repo.update(values, options);
+	},
+
+	/**
+	 * 対象のユーザーの有効期限を削除します。
+	 */
+	deleteExpirationDate: (user_id, options = {}) => {
+		options.where = {
+			id: user_id
+		}
+		values = {
+			expiration_date: null
+		}
+		return repo.update(values, options);
+	}
 };

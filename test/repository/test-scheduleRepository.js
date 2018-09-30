@@ -75,7 +75,7 @@ describe('scheduleRepository test', function () {
           time_from: "11:00",
           time_to: "17:00",
           shot_type: 1,
-          event_name: "テストイベント5",
+          event_name: "テストイベント1",
           event_url: "htt://c2link.com/detail/event/test",
           cost: 1000,
           num: 1,
@@ -83,20 +83,16 @@ describe('scheduleRepository test', function () {
         };
         return scheduleRepository.getSchedule(5)
         .then(res => {
-          expect(expect_data.id).to.equal(res.id);
-          expect(expect_data.user_id).to.equal(res.user_id);
-          expect(expect_data.schedule_type).to.equal(res.schedule_type);
-          expect(expect_data.group_year).to.equal(res.group_year);
-          expect(expect_data.group_month).to.equal(res.group_month);
-          expect(expect_data.date_key).to.equalDate(res.date_key);
-          expect(expect_data.time_from).to.equal(res.time_from);
-          expect(expect_data.time_to).to.equal(res.time_to);
-          expect(expect_data.shot_type).to.equal(res.shot_type);
-          expect(expect_data.event_name).to.equal(res.event_name);
-          expect(expect_data.event_url).to.equal(res.event_url);
-          expect(expect_data.cost).to.equal(res.cost);
-          expect(expect_data.num).to.equal(res.num);
-          expect(expect_data.remarks).to.equal(res.remarks);
+          Object.keys(res).forEach(key => {
+            if(expect_data[key]){
+              if(key == "date_key"){
+                expect(expect_data[key]).to.equalDate(res[key]);
+              }
+              else{
+                expect(expect_data[key]).to.equal(res[key]);
+              }
+            }
+          });
         })
       });
     });

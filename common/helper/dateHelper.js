@@ -42,7 +42,7 @@ exports.getWeek = (week_id) => {
  *   - `default` 現在の日付を取得します。
  * @returns {Date} {year, month, day, h, m, s}
  */
-function _getDate (datestr, locale = "en") {
+function _getDate (datestr, locale = "ja") {
   moment.locale(locale);
   const mDt =  moment(datestr).tz("Asia/Tokyo");
   // 拡張メソッドを定義
