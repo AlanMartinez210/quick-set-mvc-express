@@ -1,6 +1,5 @@
 const userRepository = require('../repository/userRepository');
 const dateHelper = require('../common/helper/dateHelper');
-const sessionHelper = require('../common/helper/sessionHelper');
 const hashHelper = require("../common/helper/hashHelper");
 const errorHelper = require('../common/helper/errorHelper');
 
@@ -10,19 +9,13 @@ const errorHelper = require('../common/helper/errorHelper');
  * @param {Object} user_data
  */
 exports.createUser = (user_data) => {
+  console.log(user_data);
   user_data.password = hashHelper(user_data.password);
   return userRepository().create(user_data)
   .then(res => {
     return res;
   });
 };
-
-/**
- * ログインキー(user_key or email)とパスワードを指定して、ユーザーアカウントの削除処理を行います。
- */
-exports.deleteUser = (login_key, password) => {
-
-}
 
 /**
  * ログインキー(user_key or email)とパスワードでログイン対象のユーザーを取得を行います。
@@ -56,7 +49,7 @@ exports.checkExpirationDate = (expiration_date) => {
 }
 
 /**
- * 対象のユーザーの有効期限をクリアし、更新したユーザーデータを変えします。
+ * 対象のユーザーの有効期限をクリアし、更新したユーザーデータを返します。
  */
 exports.clearExpirationDate = (user_id) => {
   return userRepository().deleteExpirationDate(user_id)
@@ -70,8 +63,16 @@ exports.clearExpirationDate = (user_id) => {
 }
 
 /**
- * ログアウトを行います。
+ * 対象のユーザーに有効期限を設定します。
  */
-exports.logout = () => {
-
+exports.setExpirationDate = (user_id) => {
+  const expiration_date = dateHelper.getDate().add(7, 'days').toDate();
+  return userRepository().updateExpirationDate(user_id, expiration_date)
+  .then(res => {
+    if(res){
+      return userRepository().getUserById(user_id);
+    }else{
+      return Promise.reject(new errorHelper().setWindowMsg("E00000"));
+    }
+  })
 }

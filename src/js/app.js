@@ -182,6 +182,30 @@ export default class myApp extends baseApp {
 
   }
 
+  /** =======================================================
+   * #### inputボトムメッセージ
+   ========================================================== */
+
+  /**
+   * インプットのボトムメッセージを表示します。
+   *
+   * @param {*} view_id (input name)
+   * @param {*} message
+   * @memberof myApp
+   */
+  showInputErr(view_id, message){
+    $(`#box_${view_id}`).addClass('error-input').find(".bottom-label").text(message);
+  }
+
+  /**
+   * インプットのボトムメッセージをクリアします。
+   *
+   * @param {*} view_id (input name)
+   * @memberof myApp
+   */
+  clearInputMsg(view_id){
+    $(`#box_${view_id}`).removeClass('error-input').text("");
+  }
 
   /** =======================================================
    * #### モーダル
@@ -193,7 +217,7 @@ export default class myApp extends baseApp {
    * @param {*} e
    */
   showModal(e){
-    
+
     $(".wrapper").css({"paddingRight": (window.innerWidth - document.body.clientWidth) + "px"});
     $("body").addClass("on-modal");
 

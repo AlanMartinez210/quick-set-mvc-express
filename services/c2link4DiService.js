@@ -27,9 +27,7 @@ exports.isCameraman = (user_type) => {
  * @param {array} schedule
  */
 exports.bindSchedule = (calendar, schedule) => {
-  if(calendar.length <= 0 ||  schedule.length <= 0) return calendar;
-
-  calendar.forEach((ele, i) => {
+  calendar.forEach(ele => {
     // Date型を前提でフィルター処理を行う。
     const result = schedule.filter(obj=>{
       const cdt = dateHelper.createDate(ele.year, ele.month, ele.day);
@@ -38,7 +36,6 @@ exports.bindSchedule = (calendar, schedule) => {
     })
     ele.schedule = result;
   });
-
   return calendar;
 }
 

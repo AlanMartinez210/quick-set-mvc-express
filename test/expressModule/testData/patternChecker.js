@@ -3,6 +3,6 @@ const reviewPattern = require('./reviewPattern');
 const basePattern = require('./basePattern');
 
 (function(){
-	const mp = new reviewPattern();
-	mp.genReviewData();
+	const mp = new basePattern();
+	mp.genTestData();
 })();

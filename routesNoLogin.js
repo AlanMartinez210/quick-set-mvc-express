@@ -4,7 +4,7 @@ const router = express.Router();
 const controllerPath = './controllers/';
 
 const publicController = require(`${controllerPath}publicController`);
-const userController = require(`${controllerPath}userController`)
+const userController = require(`${controllerPath}userController`);
 
 const validate = require('./common/middleware/validateForm');
 

@@ -17,6 +17,21 @@ const messageController = require(`${controllerPath}messageController`);
 const messageRoomController = require(`${controllerPath}messageRoomController`);
 const recruitlistController = require(`${controllerPath}recruitlistController`);
 const recruitDetailController = require(`${controllerPath}recruitDetailController`);
+const userController = require(`${controllerPath}userController`)
+
+/** =============================
+ * ユーザー操作
+ ================================*/
+/**
+ * ログアウト
+ */
+router.post('/api/logout', userController.postLogout);
+
+/**
+ * アカウントの削除
+ */
+router.post('/api/delete', validate.check(require('./form/userDeleteForm')), validate.result, userController.postUserDelete);
+
 
 /** =============================
  * マイページ

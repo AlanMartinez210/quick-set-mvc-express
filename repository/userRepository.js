@@ -24,6 +24,7 @@ const userRepository = {
 	getUserByUserKeyOrEmail: (key, password, options = {}) => {
 		options.where = {
 			[repo.Op.or]: [
+				{id: key},
 				{user_key: key},
 				{email: key}
 			],
@@ -68,11 +69,18 @@ const userRepository = {
 	 * 対象のユーザーの有効期限を削除します。
 	 */
 	deleteExpirationDate: (user_id, options = {}) => {
+		return repo.updateExpirationDate(user_id, null, options);
+	},
+
+	/**
+	 * 対象のユーザーの有効期限を更新します。
+	 */
+	updateExpirationDate: (user_id, expiration_date, options = {}) => {
 		options.where = {
 			id: user_id
 		}
 		values = {
-			expiration_date: null
+			expiration_date: expiration_date
 		}
 		return repo.update(values, options);
 	}

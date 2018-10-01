@@ -43,7 +43,7 @@ export default class register {
 			user_name: this.registerForm.find('[name=user_name]').val(),
 			password: this.registerForm.find('[name=password]').val(),
 			email: this.registerForm.find('[name=email]').val(),
-			user_type: this.registerForm.find('[name=user_type]').val(),
+			user_type: this.registerForm.find('[name=user_type]:checked').val()
 		}
 		c2.sendPost('/api/register', data)
 		.done(() => {

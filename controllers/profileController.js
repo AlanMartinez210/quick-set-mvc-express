@@ -14,18 +14,19 @@ exports.index = (req, res, next) => {
 	render_obj.contentId = "profile";
 	render_obj.title = "プロフィール編集";
 	var user_id  = sessionHelper.getUserId(req);
-	profileService.getProfileEditViewData(user_id)
-	.then(result=>{
-		render_obj.bodyData = new profileVO.profileInfo
-		({
-			icon_url: result.icon_url,
-			user_name: result.user_name,
-			email: result.email,
-			prefectures: result.prefectures,
-			tags: result.tags 
-		});
-		res.render('mypage/myprofile', render_obj);
-	});
+	// profileService.getProfileEditViewData(user_id)
+	// .then(result=>{
+	// 	render_obj.bodyData = new profileVO.profileInfo
+	// 	({
+	// 		icon_url: result.icon_url,
+	// 		user_name: result.user_name,
+	// 		email: result.email,
+	// 		prefectures: result.prefectures,
+	// 		tags: result.tags 
+	// 	});
+		
+	// });
+	res.render('mypage/myprofile', render_obj);
 }
 //exports.postUserLoginByTwitter = function(req, res){
 //

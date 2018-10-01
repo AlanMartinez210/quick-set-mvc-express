@@ -52,8 +52,8 @@
 
               li(class=[
                 cln.day == today ? 'row-green': '',
-                cln.week[0] == 6 ? 'row-blue': '',
-                cln.week[0] == 0 ? 'row-red': '',
+                cln.week == '土' ? 'row-blue': '',
+                cln.week == '日' ? 'row-red': '',
                 cln.holiday ? 'row-red' : '',
                 cln.schedule[0] ? '' : 'empty'
                 ]).board-hdr._s.flex._c
@@ -69,7 +69,7 @@
                     span.date-str &nbsp;#{cln.day.toString()}
 
                   //- 曜日
-                  span.week-str #{cln.week[1].toString()}
+                  span.week-str #{cln.week.toString()}
 
                 -if(cln.schedule.length)
                   .calendar-event-set.flex._c

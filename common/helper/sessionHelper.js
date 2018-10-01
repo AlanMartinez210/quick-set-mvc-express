@@ -17,6 +17,14 @@ exports.setUserData = function(req, userObj, callback){
 };
 
 /**
+ * セッションを破棄します。
+ */
+exports.deleteSession = function(req, callback = function(err){}){
+	if(!isHelper.isObject(req)) throw new Error('request object does not exist');
+	req.session.destroy(callback);
+}
+
+/**
  * セッション内のユーザー情報をすべて取得します。
  *
  * @param {*} req

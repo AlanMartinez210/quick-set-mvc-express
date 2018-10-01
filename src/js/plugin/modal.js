@@ -5,8 +5,6 @@ export default (c2) => {
 	var showClearAll = c2.showClearAll;
 	const showModalNameObj = {
 		"#searchBtn": "search",
-		"#logoutBtn": "logout",
-		"#deleteBtn": "delete",
 		".createRecruit": "createRecruit",
 		".createSchedule": "createSchedule",
 		"#noticeBtn": "notice",

@@ -6,11 +6,12 @@ module.exports = {
 	 */
 	scheduleMonthList: class {
 		constructor({calendar = [], select_year = "", select_month = "", month_schedule_num_arr = []}){
+			const current_date = dateHelper.getDate();
 			this.calendar = calendar;
 			this.select_year = select_year;
 			this.select_month = select_month;
-			this.current_year = dateHelper.getCurrentYear();
-			this.today = dateHelper.getToday();
+			this.current_year = current_date.year();
+			this.today = current_date.toDate();
 			this.month_schedule_num_arr = month_schedule_num_arr;
 		}
 	},

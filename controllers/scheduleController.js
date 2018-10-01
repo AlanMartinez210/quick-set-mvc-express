@@ -18,8 +18,9 @@ exports.index = (req, res, next) => {
   const render_obj = res.render_obj;
   const user_id = sessionHelper.getUserId(req);
   const user_type = sessionHelper.getUserType(req);
-  const year = dateHelper.getCurrentYear();
-	const month = dateHelper.getCurrentMonth();
+  const today = dateHelper.getDate();
+  const year = today.year();
+  const month = today.trueMonth();
 
   render_obj.contentId = content_id;
   render_obj.title = c2Util.isCosplayer(user_type) ? "募集の管理" : "予定の管理";
