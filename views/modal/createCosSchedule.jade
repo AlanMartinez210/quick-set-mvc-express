@@ -13,10 +13,8 @@
         .label-input-box#box_date_key
           .label-box
             p.main-label: |日付
-            span.sub-label: |撮影当日の日付を入力してください。
-          .input-box._s.flex._c.st-required
-            input(type="text", data-datepicker, name="date_key", readonly="readonly")
-            //- input(type="text", name="date_key_hidden", readonly="readonly")
+          .input-box._s.flex._c
+            input(type="text", name="date_key", readonly="true")
           p.bottom-label
 
         .label-input-box#box_time_from

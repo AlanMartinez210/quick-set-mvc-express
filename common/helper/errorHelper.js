@@ -48,6 +48,7 @@ module.exports = class {
 			err_code: code,
 			err_message: msg
 		});
+		return this;
 	}
 
 	/**

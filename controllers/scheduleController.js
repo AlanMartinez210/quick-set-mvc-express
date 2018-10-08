@@ -61,14 +61,14 @@ exports.getSelectScheduleList = (req, res, next) =>{
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),
-    //scheduleService.getMonthScheduleNumList(user_id, year),
+    scheduleService.getMonthScheduleNumList(user_id, year),
   ])
   .then(results => {
     render_obj.bodyData = new scheduleVO.scheduleMonthList({
       calendar: results[0],
       select_year: year,
       select_month: month,
-      //month_schedule_num_arr: results[1]
+      month_schedule_num_arr: results[1]
     })
     res.render('../content/mypage/schedule/calendarSection', render_obj);
   })
@@ -85,14 +85,13 @@ exports.getSelectScheduleList = (req, res, next) =>{
  */
 exports.getSchedule = (req, res, next)=>{
   const user_id = sessionHelper.getUserId(req);
-  var date_key = req.params.date_key;
-  console.log("date_key: " + date_key);
+  const schedule_id = req.params.schedule_id;
 
-  scheduleService.getScheduleData(user_id, date_key)
+  scheduleService.getScheduleData(user_id, schedule_id)
   .then(results => {
     console.log(results);
     scheduleJson = new scheduleVO.scheduleInfo({
-      date_key : date_key,
+      date_key : results.date_key,
 			shot_type : results.shot_type,
 			prefectures : results.prefectures,
 			tags : results.tags,

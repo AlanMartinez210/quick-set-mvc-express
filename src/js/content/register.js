@@ -59,7 +59,7 @@ export default class register {
 	login(e){
 		const data = {
 			login_key: this.loginForm.find('[name=login_key]').val(),
-			password: this.loginForm.find('[name=password]').val()
+			login_password: this.loginForm.find('[name=login_password]').val()
 		}
 		c2.sendPost('/api/login', data)
 		.done(() => {

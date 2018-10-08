@@ -36,7 +36,7 @@ exports.getMonthScheduleNumList = async (user_id, year) => {
   const scheduleNumList = [0,0,0,0,0,0,0,0,0,0,0,0];
   const rows = await scheduleRepository.getMonthScheduleNumList(user_id, year);
   rows.forEach(val => {
-    scheduleNumList[val.month-1] = val.count
+    scheduleNumList[val.group_month-1] = val.count
   })
   return scheduleNumList;
 }
@@ -47,10 +47,10 @@ exports.getMonthScheduleNumList = async (user_id, year) => {
  * @param {*} user_id
  * @param {*} date_key
  */
-exports.getScheduleData = async (user_id, date_key) => {
+exports.getScheduleData = async (user_id, schedule_id) => {
   try{
     // スケジュール情報の情報を取得
-    const schedule = await scheduleRepository.getSchedule(user_id, date_key);
+    const schedule = await scheduleRepository.getSchedule(schedule_id);
 
     // スケジュール情報に紐づいたタグ、都道府県の取得
     const [scheduleTag, schedulePref] = await Promise.all([
@@ -61,6 +61,8 @@ exports.getScheduleData = async (user_id, date_key) => {
     // タグと都道府県情報の取得
     schedule.tags = scheduleTag.map(obj => obj.tag_id);
     schedule.prefectures = schedulePref.map(obj => obj.prefecture_id);
+
+    
     
     return schedule;
   }

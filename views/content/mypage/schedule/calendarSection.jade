@@ -48,8 +48,7 @@
       .date-list-wrap
         ul.st_options.date-list
 
-          -for(let i=0,e=calendar.length; i<e; ++i){ const cln = calendar[i]; console.log(cln)
-
+          -for(let i=0,e=calendar.length; i<e; ++i){ const cln = calendar[i];
               li(class=[
                 cln.day == today ? 'row-green': '',
                 cln.week == '土' ? 'row-blue': '',
@@ -60,7 +59,7 @@
 
                 .calendar-date-set.flex._c
                   a
-                    i.fas.fa-edit(name="createSchedule", data-date_key=cln.date_key, data-mode= cln.schedule.length ? "edit" : "create")
+                    i.fas.fa-edit(name="createSchedule", data-date_key=cln.date_key.toString(), data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "" , data-mode= cln.schedule.length ? "edit" : "create")
 
                   //- 一桁台の日付の空白埋め
                   - if(cln.day < 10)

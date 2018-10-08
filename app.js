@@ -100,7 +100,7 @@ app.use(require('./common/middleware/responseObjectDefer'));
  * generate routing
 */
 
-// if(env == "development") app.use(require('./common/middleware/dev/debugSurvei'));
+if(env == "development") app.use(require('./common/middleware/dev/debugSurvei'));
 
 app.use(require('./routesNoLogin'));
 /** login check */

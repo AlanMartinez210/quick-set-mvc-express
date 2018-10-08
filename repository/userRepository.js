@@ -36,6 +36,16 @@ const userRepository = {
 	},
 	
 	/**
+	 * メールアドレスからユーザーを取得します。
+	 */
+	getUserByEmail:(email, options = {}) => {
+		options.where = {
+			email: email
+		}
+		return repo.getUserAll(options);
+	},
+
+	/**
 	 * すべてのユーザーを取得する。
 	 */
 	getUserAll: (options = {}) => {

@@ -56,6 +56,16 @@ export class baseApp {
             var baf = $(this).val();
             return baf.slice(0,4) + baf.slice(5,7) + baf.slice(8,10);
           }
+        },
+        setValue: function(serverData){
+          const formData = this[0];
+          if(formData){
+            Object.keys(serverData).forEach(key => {
+              if(formData[key]){
+                $(formData[key]).val(serverData[key]);
+              }
+            })
+          }
         }
       })
 

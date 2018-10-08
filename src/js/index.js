@@ -29,11 +29,8 @@ c2.ready(() => {
 	c2.plugin.screen();
 	c2.plugin.modal(c2);
 	c2.plugin.tag();
-	c2.plugin.prefecture();
-	// Object.keys(c2.ajaxLogics).forEach((key)=>{
-	// 	c2.ajaxLogics[key](c2);
-	// });
-
+  c2.plugin.prefecture();
+  
 	$("#scMenu").on("change", function(){
 		const local = $(this).val();
 		window.location.href = local;
@@ -51,8 +48,12 @@ c2.ready(() => {
 	$("[data-doRequest]").on('click',(e)=>{
 		var requestid = e.currentTarget.dataset.requestid;
 		c2.showRequestModal(requestid);
-	});
-
+  });
+  
+  // input系の標準イベント
+  $("input[type='text'], input[type='password']").on('change', e => {
+    c2.clearInputMsg(e.target.name);
+  })
 });
 
 // window load complated run function.

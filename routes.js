@@ -81,7 +81,7 @@ router.get('/mypage/schedule', scheduleController.index);　
 router.get('/mypage/schedule/:year(\\d{4})/:month(\\d{1,2})', scheduleController.getSelectScheduleList);　
 
 /* 選択した日付のスケジュールを取得 getSchedule */
-router.get('/mypage/schedule/:date_key(\\d{8})', scheduleController.getSchedule);　
+router.get('/mypage/schedule/:schedule_id', scheduleController.getSchedule);　
 
 /* スケジュールの登録/編集 postSchedule  body.data_procの値によって登録/編集/削除を制御する */
 router.post('/mypage/schedule',validate.check(require('./form/scheduleForm')), validate.result, scheduleController.postSchedule);

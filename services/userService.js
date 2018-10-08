@@ -9,9 +9,13 @@ const errorHelper = require('../common/helper/errorHelper');
  * @param {Object} user_data
  */
 exports.createUser = (user_data) => {
-  console.log(user_data);
   user_data.password = hashHelper(user_data.password);
-  return userRepository().create(user_data)
+  return userRepository().getUserByEmail(user_data.email)
+  .then(res => {
+    // メールアドレスからユーザーが取得できたらエラー
+    if(res.length > 0) return Promise.reject(new errorHelper({http_status: 400}).addErrorData({view_id: "email", code: "E00010"}));
+    return userRepository().create(user_data);
+  })
   .then(res => {
     return res;
   });

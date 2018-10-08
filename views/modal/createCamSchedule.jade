@@ -13,10 +13,8 @@
         .label-input-box#box_date_key
           .label-box
             p.main-label: |日付
-            span.sub-label: |予定の空いてる日付を入力してください。
-          .input-box._s.flex._c.st-required
-            input(type="text", data-datepicker, name="date_key")
-            //- input(type="text", name="date_key_hidden", readonly="readonly")
+          .input-box._s.flex._c.st-readonly
+            input(type="text", name="date_key")
           p.bottom-label
 
         .label-input-box#box_shot_type
@@ -74,7 +72,7 @@
               .select-box._s.flex._c
                 select(name="time_from")
                   option(value="") 未定
-                  - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+                  - for(let i=0;i<24;i++){ const time = ((i+6)%24);
                       option(value="#{time}:00") #{time}:00
                       option(value="#{time}:30") #{time}:30
                   - }
@@ -87,18 +85,18 @@
               .select-box._s.flex._c
                 select(name="time_to")
                   option(value="") 未定
-                  - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+                  - for(let i=0;i<24;i++){ const time = ((i+6)%24);
                       option(value="#{time}:00") #{time}:00
                       option(value="#{time}:30") #{time}:30
                   - }
               p.bottom-label
 
-            .label-input-box#box_eventname
+            .label-input-box#box_event_name
               .label-box
                 p.main-label: |イベント名 or 開催地
                 span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
               .input-box._s.flex._c
-                input(type="text", name="eventname", placeholder="世界コスプレサミット")
+                input(type="text", name="event_name", placeholder="世界コスプレサミット")
               p.bottom-label
 
             .label-input-box#box_remarks

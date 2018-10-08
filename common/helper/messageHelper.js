@@ -10,6 +10,7 @@ const msgJson = {
 	E00007: {msg: "日付形式で入力してください"},
 	E00008: {msg: "不正なデータが送られたため、処理に失敗しました。"},
 	E00009: {msg: "有効期限が切れています。"},
+	E00010: {msg: "このメールアドレスは使用できません。"},
 	M00002: {msg: "test2"},
 	M00003: {msg: "test2"},
 
@@ -22,7 +23,6 @@ const msgJson = {
 
 exports.getMsgObj = (code) => {
 	if(msgJson[code]){
-		console.log(msgJson[code]);
 		return msgJson[code];
 	}
 	else{

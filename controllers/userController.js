@@ -60,7 +60,7 @@ exports.postUserDelete = function(req, res, next){
  **/
 exports.postLogin = function(req, res, next){
 	const login_key = req.form_data.login_key;
-	const password = req.form_data.password;
+	const password = req.form_data.login_password;
 	return userService.getloginUserData(login_key, password)
 	.then(user_data =>{
 		// 取得したユーザーが有効期限を保持していたら

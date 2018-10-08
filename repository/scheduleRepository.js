@@ -48,13 +48,9 @@ const scheduleRepository = {
    * 対象ユーザーのスケジュールを取得します。
    *
    * @param {string} schedule_id スケジュールID
-   * @param {calendar.date_key} date_key YYYYMMDD
    */
   getSchedule: (schedule_id, options = {}) => {
-    options.where = {
-      id: schedule_id,
-    };
-    return repo.findOne(options);
+    return repo.findById(schedule_id, options);
   },
 
   /**

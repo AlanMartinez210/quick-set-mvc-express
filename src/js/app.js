@@ -204,7 +204,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   clearInputMsg(view_id){
-    $(`#box_${view_id}`).removeClass('error-input').text("");
+    $(`#box_${view_id}`).removeClass('error-input').find(".bottom-label").text("");
   }
 
   /** =======================================================
@@ -447,5 +447,4 @@ export default class myApp extends baseApp {
 
     return obj;
   }
-
 }

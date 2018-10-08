@@ -7,7 +7,7 @@ module.exports = {
 			negated: true
 		}
 	},
-	password: {
+	login_password: {
 		in: 'body',
 		isLength: {
       errorMessage: 'E00004',
