@@ -3,7 +3,7 @@ chai.use(require('chai-datetime'));
 var expect = chai.expect;
 var scheduleRepository = require('../../repository/scheduleRepository')();
 var dateHelper = require('../../common/helper/dateHelper');
-var basePattern = require("../expressModule/testData/basePattern");
+var basePattern = require("../../testdata/pattern/basePattern");
 
 describe('scheduleRepository test', function () {
   let user_data_cam = {};

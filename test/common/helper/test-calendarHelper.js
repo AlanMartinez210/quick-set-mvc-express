@@ -51,12 +51,15 @@ describe('calendarHelper test', function() {
 			});
 		});
 		describe('正常テスト', function(){
-			it(`指定月のカレンダーが取得できる: テスト月 -> 2018/9`, function(){
-				const result = calendarHelper.getCalendar(2018, 9);
-				result.forEach((res, i) => {
-					expect(res).to.deep.equal(testCln[i]);
-				});
-			});
+
+			// it(`指定月のカレンダーが取得できる: テスト月 -> 2018/9`, function(){
+			// 	const result = calendarHelper.getCalendar(2018, 9);
+			// 	result.forEach((res, i) => {
+			// 		expect(res).to.deep.equal(testCln[i]);
+			// 	});
+			// });
+
+			it(`指定月のカレンダーが取得できる: テスト月 -> 2018/9`)
 
 		});
 	});

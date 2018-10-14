@@ -1,7 +1,8 @@
 const messageService = require("../services/messageService");
+const messageViewObjects = require("../viewObjects/message");
 
 /**
- * メッセージ一覧ページの表示
+ * 新着メッセージ一覧
  *
  * @param {*} req
  * @param {*} res
@@ -13,7 +14,14 @@ exports.index = function(req, res, next){
 
 	messageService.getNewMessageList(req)
 	.then(results=>{
-		render_obj.bodyData.newMessages = results;
+
+		render_obj.bodyData = new messageViewObjects.newMessageList({
+			send_date_info: results ,
+			user_name: "",
+			summary: ""
+		});
+
+		render_obj.newMessages = results;
 		res.render('message', render_obj);
 	})
 	.catch(err=>{

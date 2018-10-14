@@ -1,5 +1,5 @@
 const basePattern = require('./basePattern');
-const abstractRepository = require('../../../repository/abstractRepository');
+const abstractRepository = require('../../repository/abstractRepository');
 
 const matching = abstractRepository('Matching');
 const schedule = abstractRepository('Schedule');

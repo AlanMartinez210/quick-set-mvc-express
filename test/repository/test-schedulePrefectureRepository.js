@@ -2,7 +2,7 @@ var chai = require('chai');
 chai.use(require('chai-datetime'));
 var expect = chai.expect;
 var schedulePrefectureRepository = require('../../repository/schedulePrefectureRepository')();
-var basePattern = require("../expressModule/testData/basePattern");
+var basePattern = require("../../testdata/pattern/basePattern");
 
 describe('schedulePrefectureRepository test', function () {
   let bp = {};

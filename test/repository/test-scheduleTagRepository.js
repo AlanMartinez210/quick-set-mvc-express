@@ -2,14 +2,14 @@ var chai = require('chai');
 chai.use(require('chai-datetime'));
 var expect = chai.expect;
 var scheduleTagRepository = require('../../repository/scheduleTagRepository')();
-var basePattern = require("../expressModule/testData/basePattern");
+var basePattern = require("../../testdata/pattern/basePattern");
 
 describe('scheduleTagRepository test', function () {
   let bp = {};
   const test_schedule_id = 5;
-  before(async () => {
+  before(() => {
     bp = new basePattern();
-    await bp.genTestData();
+    return bp.genTestData();
   });
 
   describe('::getScheduleTag()', function () {

@@ -4,13 +4,15 @@ var expect = chai.expect;
 var pageHelper = require('../../../common/helper/pageHelper');
 
 describe('pageHelper test', function() {
-  // describe('エラーテスト', function() {
-  //   it('不正な値の場合はエラーを出す。', function(){
-  //     (function() { pageHelper.makePageObject(null, null) }).should.throw(Error, 'type of Number or integer is expected.');
-  //     (function() { pageHelper.makePageObject(undefined, undefined) }).should.throw(Error, 'type of Number or integer is expected.');
-  //     (function() { pageHelper.makePageObject("test", "test") }).should.throw(Error, 'type of Number or integer is expected.');
-  //   });
-  // });
+  describe('エラーテスト', function() {
+    it('不正な値の場合はエラーを出す。'
+    // , function(){
+    //   (function() { pageHelper.makePageObject(null, null) }).should.throw(Error, 'type of Number or integer is expected.');
+    //   (function() { pageHelper.makePageObject(undefined, undefined) }).should.throw(Error, 'type of Number or integer is expected.');
+    //   (function() { pageHelper.makePageObject("test", "test") }).should.throw(Error, 'type of Number or integer is expected.');
+    // }
+    );
+  });
 
   describe('正常テスト', function() {
     it('指定した引数から期待したオブジェクトが取得出来る。', function(){

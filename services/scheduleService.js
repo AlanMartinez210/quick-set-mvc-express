@@ -19,8 +19,8 @@ const tagRepository = require('../repository/tagRepository')();
 exports.getMonthSchedule = async (user_id, year, month) => {
   const schedule_list = await scheduleRepository.getScheduleList(user_id, year, month)
   const current_calendar = calendarHelper.getCalendar(year, month);
+  console.log("getScheduleList", schedule_list);
   return c2Util.bindSchedule(current_calendar, schedule_list);
-
 }
 
 /**
@@ -61,8 +61,6 @@ exports.getScheduleData = async (user_id, schedule_id) => {
     // タグと都道府県情報の取得
     schedule.tags = scheduleTag.map(obj => obj.tag_id);
     schedule.prefectures = schedulePref.map(obj => obj.prefecture_id);
-
-    
     
     return schedule;
   }

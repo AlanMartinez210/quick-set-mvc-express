@@ -1,5 +1,5 @@
 const basePattern = require('./basePattern');
-const abstractRepository = require('../../../repository/abstractRepository');
+const abstractRepository = require('../../repository/abstractRepository');
 
 const matching = abstractRepository('Matching');
 const schedule = abstractRepository('Schedule');
@@ -8,10 +8,10 @@ const chat = abstractRepository('Chat');
 /**
  * #### マッチングパターン生成クラス
  * ##### このクラスはマッチング機能に特化して、DBデータの状態を生成します。
- * 
+ *
  *  - このクラスでは以下のユーザーが対象とされます。
  *    - user_id: 1, 5, 6
- * 
+ *
  *  - このクラスは以下の状態を再現します。
  *    - **スケジュール日を過ぎていない**
  *       - 未マッチング状態 -> case1
@@ -26,7 +26,7 @@ const chat = abstractRepository('Chat');
  *       - マッチングがキャンセルされた状態 -> case9
  *       - 未マッチング状態(複数人) -> case10
  *       - マッチングが成立した状態(複数人) -> case11
- * 
+ *
  * @class matchingPattern
  * @extends {basePattern}
  */
@@ -102,7 +102,7 @@ const matchingPattern = class extends basePattern {
       { schedule_id: 11, user_id: 5, to_user_id: 1, status_id: 3},
       { schedule_id: 11, user_id: 6, to_user_id: 1, status_id: 5},
     ]
-    
+
 
     // マッチングケース2
     this.chat_data = [
@@ -114,7 +114,7 @@ const matchingPattern = class extends basePattern {
 
   /**
    * データを生成します。
-   * 
+   *
    */
   genMatchingData(){
     return new Promise((resolve, reject) => {
@@ -139,7 +139,7 @@ const matchingPattern = class extends basePattern {
       .then(res => {
         // 発言を既読に更新
         return Promise.all([
-          chat.update({ read_flag: true }, { where: { matching_id: 1, seq_id: 1 } }),
+          chat.update({ read_flag: true }, { where: { matching_id: 2, seq_id: 1 } }),
         ])
       })
       .then(res => {
@@ -149,7 +149,7 @@ const matchingPattern = class extends basePattern {
       .then(res => {
         // 発言を既読に更新
         return Promise.all([
-          chat.update({ read_flag: true }, { where: { matching_id: 1, seq_id: 2 } }),
+          chat.update({ read_flag: true }, { where: { matching_id: 2, seq_id: 2 } }),
         ])
       })
       .then(res => {

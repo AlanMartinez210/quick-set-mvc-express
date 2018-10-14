@@ -28,7 +28,6 @@ c2.ready(() => {
 
 	c2.plugin.screen();
 	c2.plugin.modal(c2);
-	c2.plugin.tag();
   c2.plugin.prefecture();
   
 	$("#scMenu").on("change", function(){

@@ -1,75 +1,114 @@
 export default class tag{
 	constructor(){
+		this.taglist = new Array();
+
 		this.$input_tag = $("#tags");
 		this.$tag_field = $("#tags_field");
 		this.$tag_add_button = $("#tag_add_button");
+		this.tag_delete_button = ".tag_delete_button";
 		this.tagCount = 0;
-		this.taglist = new Array();
-		this.errText = "";
 		this.limitTagLength = 10;
-		this.errEmitter = () => {
-			c2.showInputErr("box_tagField", this.errText);
+		this.errEmitter = (errText) => {
+			c2.showInputErr("tagField", errText);
 			return false;
 		}
 	}
 	ready(){
-		
 		this.$tag_add_button.on('click', () => {
+			c2.clearInputMsg("tagField");
+			const tagStr = this.$input_tag.val();
+			if(!this.checkDuplicate(tagStr)) return false;
+			if(!this.checkBlank(tagStr)) return false;
+			if(!this.checkStrType(tagStr)) return false;
+			if(!this.checkTagsNum()) return false;
+			
+			this.addTags(tagStr);
+			this.clearTag();
 
+			this.$input_tag.focus();
 		})
 
+		const that = this;
 
+		this.$tag_field.on('click', this.tag_delete_button, function(){
+			// 削除するタグ名取得(1文字目の#を削除)
+			var deleteTagName = $(this).parent().children("span").first().text().slice(1);
 
+			// 削除
+			$(this).parent().remove();
+			that.tagCount--;
+			var idx = that.taglist.indexOf(deleteTagName);
+			if(idx >= 0){
+				that.taglist.splice(idx, 1); 
+			}
+			// エラー表示を消す
+			c2.clearInputMsg("tagField");
+		});
+		
 	}
 	/**
 	 * タグを追加する。
 	 * @param {*} tagArr 
 	 */
 	addTags(tagArr){
+		this.$tag_field.append(`
+			<div class="tag-label flex _c">
+				<span class="tag-text">#${tagArr}</span>
+				<i data-id="tab-close" class="far fa-times-circle tag_delete_button" ></i>
+				<input type="hidden" name="tags" value="${tagArr}">
+			</div>
+		`);
 
+		this.tagCount++;
+		this.taglist.push(tagArr);
 	}
+
 	/**
 	 * 重複チェック
 	 */
-	checkDuplicate(){
-		const idx = this.tagList.indexOf(this.$input_tag.val());
-		if(idx >= 0){
-			this.errText = "すでに登録されています";
-			this.errEmitter();
-		}
+	checkDuplicate(tagStr){
+		const idx = this.taglist.indexOf(tagStr);
+		if(idx >= 0) return this.errEmitter("すでに登録されています");
+		return true;
 	}
 
 	/**
 	 * 空白チェック
 	 */
-	checkBlank(){
-		if(this.$input_tag.val() == ""){
-			this.errText = "すでに登録されています";
-			this.errEmitter();
-		}
+	checkBlank(tagStr){
+		if(!tagStr) return this.errEmitter("文字を入力してください");
+		return true;
 	}
 
 	/**
 	 * 文字種チェック
 	 */
-	checkStrType(){
-		if(this.$input_tag.val().match(/[<>]/)){
-			this.errText = "使用できない文字が含まれています";
-			this.errEmitter();
-		}
+	checkStrType(tagStr){
+		if(tagStr.match(/[<>]/)) return this.errEmitter("使用できない文字が含まれています");
+		return true;
 	}
-	
+
 	/**
 	 * タグの個数チェック
 	 */
 	checkTagsNum(){
-		if(this.tagCount + 1 > this.limitTagLength){
-			errText = `タグは${this.limitTagLength}以上設定できません。`;
-			this.errEmitter();
-		}
+		if(this.tagCount + 1 > this.limitTagLength) return this.errEmitter(`タグは${this.limitTagLength}以上設定できません。`);
+		return true;
 	}
-	
+
+	/**
+	 * タグフィールドをクリアする。
+	 */
+	clearTag(){
+		this.$input_tag.val("");
+	}
+
+	deleteTag(){
+
+	}
+
 }
+
 //  () => {
 // 	var tagCount = 0;
 // 	var tagList = new Array();
@@ -78,14 +117,12 @@ export default class tag{
 
 // 		var addTagName = $("#tags").val();
 
-
 // 		// 前後に含まれるスペースを削除
 // 		var addTagName = addTagName.replace(/^\s+|\s+$/g, "");
 
 // 		// スペースのみの場合と、既にタグを10個登録している場合は処理しない
 		
 // 		let errText = "", errFlg = false;
-
 
 // 		// 重複チェック
 // 		var idx = tagList.indexOf(addTagName);
@@ -94,13 +131,11 @@ export default class tag{
 // 			errFlg = true;
 // 		}
 
-
 // 		// 空チェック
 // 		if(addTagName == ""){
 // 			errText = "文字を入力してください。";
 // 			errFlg = true;
 // 		}
-
 
 // 		// 文字種チェック
 // 		if(addTagName.match(/[<>]/)){
@@ -108,16 +143,12 @@ export default class tag{
 // 			errFlg = true;
 // 		}
 
-
-
 // 		// 個数チェック
 // 		const limitTagLength = 10; 
 // 		if(!errFlg && tagCount + 1 > limitTagLength){
 // 			errText = `タグは${limitTagLength}以上設定できません。`;
 // 			errFlg = true;
 // 		}
-
-
 
 // 		// 
 // 		if(errFlg){

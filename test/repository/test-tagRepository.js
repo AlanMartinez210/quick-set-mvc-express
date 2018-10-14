@@ -8,7 +8,7 @@ describe('tag repository test', function() {
   describe('upsertTagのテスト', function() {
     //最初にtagsテーブルを空にする
     before(async() =>{
-      sequelize.query(`truncate table tags;`,{});
+      await sequelize.query(`truncate table tags;`,{});
     });
 
     it('初回upsert時の登録確認', async() => {

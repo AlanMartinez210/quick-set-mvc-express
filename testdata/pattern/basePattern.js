@@ -1,4 +1,4 @@
-const abstractRepository = require("../../../repository/abstractRepository");
+const abstractRepository = require("../../repository/abstractRepository");
 
 const schedule = abstractRepository("Schedule");
 const user = abstractRepository("User");
@@ -6,8 +6,8 @@ const tag = abstractRepository("Tag");
 const schedule_tag = abstractRepository("Schedule_tag");
 const schedule_prefecture = abstractRepository("Schedule_prefecture");
 
-const hashHelper = require('../../../common/helper/hashHelper');
-const dateHelper = require('../../../common/helper/dateHelper');
+const hashHelper = require('../../common/helper/hashHelper');
+const dateHelper = require('../../common/helper/dateHelper');
 
 // 基本的なテストを行うためのテストデータを作成します。
 

@@ -66,6 +66,26 @@ export class baseApp {
               }
             })
           }
+        },
+        clearForm: function(){
+          if(this[0]){
+            const formData = this.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
+            console.log(formData);
+            for(let i=0;i<=formData.length;i++){
+              let crntEle = formData[i]
+              if(crntEle){
+                switch(crntEle.tagName){
+                  case "INPUT":
+                  case "TEXTAREA":
+                    crntEle.value = "";
+                    break;
+                  case "SELECT":
+                  case "RADIO":
+                  case "CHECK":
+                }
+              }
+            }
+          }
         }
       })
 

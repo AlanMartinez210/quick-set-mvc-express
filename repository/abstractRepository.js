@@ -102,7 +102,7 @@ module.exports = (models_name) => {
 		queryUpsert: (sql, replacements = {} ,options = {}) =>{
 			options.raw = true;
 			options.replacements = replacements;
-			options.type = sequelize.QueryTypes.INSERT;
+			options.type = db.sequelize.QueryTypes.INSERT;
 			return db.sequelize.query(sql, options)
 		}
 
