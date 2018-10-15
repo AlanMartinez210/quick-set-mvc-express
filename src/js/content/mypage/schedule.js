@@ -1,10 +1,13 @@
 import plugin_tag from "../../plugin/tag";
+import plugin_prefecture from "../../plugin/prefecture";
 
 export default class schedule{
 	constructor(){
 		this.scheduleForm = $('[name=scheduleForm]');
 		this.tag = new plugin_tag();
+		this.prefecture = new plugin_prefecture();
 		this.tag.ready();
+		this.prefecture.ready();
 	}
 	ready(){
 		const scheduleSection = $('#scheduleSection');
@@ -15,8 +18,6 @@ export default class schedule{
 		const openScheduleBtn = "[name=createSchedule]";
 		// 日付のみ表示のチェック
 		const isExistSchedule = "#isCheckDate";
-
-		
 
 		// カレンダーの年を変更したとき
 		calendarSection.on("change", "[name=yearSelectList]", (e) => {
@@ -46,12 +47,12 @@ export default class schedule{
 				// ボタンの表示
 				$(`[data-proc=${modal_mode}]`).show();
 
-				// 作成かつ日付がない場合は新規作成モードにし、内容を初期化する。
-				if(modal_mode == "create" && !schedule_id){
-					this.modalInit();
-					resolve();
-				}
+				// formを初期化する 
+				this.scheduleForm.clearForm();
 
+				// 作成かつ日付がない場合は新規作成モードにし、内容を初期化する。
+				if(modal_mode == "create" && !schedule_id) resolve();
+				
 				this.scheduleForm.find('[name=date_key]').dateVal(date_key);
 				switch(modal_mode){
 					case "create":
@@ -64,10 +65,12 @@ export default class schedule{
 						this.getSchedule(schedule_id)
 						.then(res => {
 							// タグと都道府県のみ別設定
-							res.tags.forEach(tag => {
-								this.tag.addTags(tag);
+							res.tag_field.forEach(item => {
+								this.tag.addTags(item);
 							});
-							this.scheduleForm.clearForm();
+							res.prefectures_field.forEach(item => {
+								this.prefecture.addPrefecture(item);
+							});
 							this.scheduleForm.setValue(res);
 							resolve();
 						})
@@ -161,12 +164,6 @@ export default class schedule{
 			c2.onHideProgress();
 			$('#calendarSection').html(result);
 		})
-	}
-
-	// モーダルの内容を初期化します。
-	modalInit(){
-		this.scheduleForm.find("input").val("");
-		this.scheduleForm.find("select#prefectures").val("");
 	}
 
 	// 変更無効時のモーダル制御

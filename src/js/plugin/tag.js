@@ -17,24 +17,24 @@ export default class tag{
 		this.$tag_add_button.on('click', () => {
 			c2.clearInputMsg("tagField");
 			const tagStr = this.$input_tag.val();
-			if(!this.checkDuplicate(tagStr)) return false;
-			if(!this.checkBlank(tagStr)) return false;
-			if(!this.checkStrType(tagStr)) return false;
+			var addTagName = tagStr.replace(/^\s+|\s+$/g, "")
+			if(!this.checkDuplicate(addTagName)) return false;
+			if(!this.checkBlank(addTagName)) return false;
+			if(!this.checkStrType(addTagName)) return false;
 			if(!this.checkTagsNum()) return false;
 			
-			this.addTags(tagStr);
+			this.addTags(addTagName);
 			this.clearTag();
 
 			this.$input_tag.focus();
 		})
 
 		const that = this;
-
+		// タグを削除する。
 		this.$tag_field.on('click', this.tag_delete_button, function(){
 			// 削除するタグ名取得(1文字目の#を削除)
 			var deleteTagName = $(this).parent().children("span").first().text().slice(1);
 
-			// 削除
 			$(this).parent().remove();
 			that.tagCount--;
 			var idx = that.taglist.indexOf(deleteTagName);
@@ -51,6 +51,8 @@ export default class tag{
 	 * @param {*} tagArr 
 	 */
 	addTags(tagArr){
+
+
 		this.$tag_field.append(`
 			<div class="tag-label flex _c">
 				<span class="tag-text">#${tagArr}</span>
@@ -92,7 +94,7 @@ export default class tag{
 	 * タグの個数チェック
 	 */
 	checkTagsNum(){
-		if(this.tagCount + 1 > this.limitTagLength) return this.errEmitter(`タグは${this.limitTagLength}以上設定できません。`);
+		if(this.tagCount + 1 > this.limitTagLength) return this.errEmitter(`タグは${this.limitTagLength}以上設定できません`);
 		return true;
 	}
 
@@ -102,11 +104,6 @@ export default class tag{
 	clearTag(){
 		this.$input_tag.val("");
 	}
-
-	deleteTag(){
-
-	}
-
 }
 
 //  () => {
@@ -118,7 +115,7 @@ export default class tag{
 // 		var addTagName = $("#tags").val();
 
 // 		// 前後に含まれるスペースを削除
-// 		var addTagName = addTagName.replace(/^\s+|\s+$/g, "");
+// 	;
 
 // 		// スペースのみの場合と、既にタグを10個登録している場合は処理しない
 		
