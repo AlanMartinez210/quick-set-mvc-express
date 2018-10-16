@@ -28,7 +28,12 @@ c2.ready(() => {
 
 	c2.plugin.screen();
 	c2.plugin.modal(c2);
-  
+	c2.plugin.tag();
+	c2.plugin.prefecture();
+	// Object.keys(c2.ajaxLogics).forEach((key)=>{
+	// 	c2.ajaxLogics[key](c2);
+	// });
+
 	$("#scMenu").on("change", function(){
 		const local = $(this).val();
 		window.location.href = local;

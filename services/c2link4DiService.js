@@ -32,7 +32,7 @@ exports.bindSchedule = (calendar, schedule) => {
     const result = schedule.filter(obj=>{
       const cdt = dateHelper.createDate(ele.year, ele.month, ele.day);
       const sdt = dateHelper.getDate(obj.date_key);
-      return cdt.format("YYYYMMDD") == sdt.format("YYYYMMDD");
+      return cdt.isSame(sdt);
     })
     ele.schedule = result;
   });

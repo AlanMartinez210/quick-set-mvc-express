@@ -1,13 +1,8 @@
-import plugin_tag from "../../plugin/tag";
-import plugin_prefecture from "../../plugin/prefecture";
+import { resolve } from "url";
 
 export default class schedule{
 	constructor(){
 		this.scheduleForm = $('[name=scheduleForm]');
-		this.tag = new plugin_tag();
-		this.prefecture = new plugin_prefecture();
-		this.tag.ready();
-		this.prefecture.ready();
 	}
 	ready(){
 		const scheduleSection = $('#scheduleSection');
@@ -47,12 +42,12 @@ export default class schedule{
 				// ボタンの表示
 				$(`[data-proc=${modal_mode}]`).show();
 
-				// formを初期化する 
-				this.scheduleForm.clearForm();
-
 				// 作成かつ日付がない場合は新規作成モードにし、内容を初期化する。
-				if(modal_mode == "create" && !schedule_id) resolve();
-				
+				if(modal_mode == "create" && !schedule_id){
+					this.modalInit();
+					resolve();
+				}
+
 				this.scheduleForm.find('[name=date_key]').dateVal(date_key);
 				switch(modal_mode){
 					case "create":
@@ -64,22 +59,13 @@ export default class schedule{
 						// 値を取りに行く
 						this.getSchedule(schedule_id)
 						.then(res => {
-							// タグと都道府県のみ別設定
-							res.tag_field.forEach(item => {
-								this.tag.addTags(item);
-							});
-							res.prefectures_field.forEach(item => {
-								this.prefecture.addPrefecture(item);
-							});
 							this.scheduleForm.setValue(res);
 							resolve();
 						})
 						break;
 				}
 			}
-			
 		}, c2.showModal);
-
 
 
 
@@ -150,6 +136,7 @@ export default class schedule{
 		// 	});
 		// 	return false;
 		// });
+
 	}
 	// スケジュールの取得
 	getSchedule(schedule_id){
@@ -165,7 +152,11 @@ export default class schedule{
 			$('#calendarSection').html(result);
 		})
 	}
-
+	// モーダルの内容を初期化します。
+	modalInit(){
+		this.scheduleForm.find("input").val("");
+		this.scheduleForm.find("select#prefectures").val("");
+	}
 	// 変更無効時のモーダル制御
 	modalDisable(){
 		this.scheduleForm.find("input").prop('readonly', true);
@@ -177,7 +168,6 @@ export default class schedule{
 		this.scheduleForm.find("[name=date_key_hidden]").show();
 		this.scheduleForm.find(".sub-label").hide();
 	}
-
 	// 変更有効時のモーダル制御
 	modalEnable(){
 		this.scheduleForm.find("input").prop('readonly', false);
@@ -190,7 +180,6 @@ export default class schedule{
 		this.scheduleForm.find("[name=date_key_hidden]").hide();
 		this.scheduleForm.find(".sub-label").show();
 	}
-	
 	// スケジュールの登録を行う。
 	registerSchedule(){
 

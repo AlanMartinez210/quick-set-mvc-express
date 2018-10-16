@@ -1,5 +1,4 @@
 const dateHelper = require('../common/helper/dateHelper');
-const prefectureHelper = require("../common/helper/prefectureHelper");
 const calendarHelper = require("../common/helper/calendarHelper");
 const c2Util = require("../services/c2link4DiService");
 
@@ -20,8 +19,8 @@ const tagRepository = require('../repository/tagRepository')();
 exports.getMonthSchedule = async (user_id, year, month) => {
   const schedule_list = await scheduleRepository.getScheduleList(user_id, year, month)
   const current_calendar = calendarHelper.getCalendar(year, month);
-  console.log("getScheduleList", schedule_list);
   return c2Util.bindSchedule(current_calendar, schedule_list);
+
 }
 
 /**
@@ -63,11 +62,6 @@ exports.getScheduleData = async (user_id, schedule_id) => {
     schedule.tags = scheduleTag.map(obj => obj.tag_id);
     schedule.prefectures = schedulePref.map(obj => obj.prefecture_id);
     
-    // タグIDを名称に変換
-    const tagData = await tagRepository.getTagById(schedule.tags);
-    schedule.tags = tagData.map(obj => obj.tag_name);
-    schedule.prefectures = prefectureHelper.getPrefectureNameByIds(schedule.prefectures);
-
     return schedule;
   }
   catch(err){

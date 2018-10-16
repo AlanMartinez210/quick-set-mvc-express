@@ -21,8 +21,8 @@ module.exports = {
 		cost = 0, num = 0, start_time = "", end_time = "", event_name = "", event_url = "", remark = ""}){
 			this.date_key = dateHelper.getDate(date_key).format("YYYY/MM/DD");
 			this.shot_type = shot_type;
-			this.prefectures_field = prefectures;
-			this.tag_field = tags;
+			this.prefectures = prefectures;
+			this.tags = tags;
 			this.coschara = coschara;
 			this.cost = Number(cost);
 			this.num =  Number(num);

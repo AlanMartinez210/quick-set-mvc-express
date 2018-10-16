@@ -66,48 +66,6 @@ export class baseApp {
               }
             })
           }
-        },
-        clearForm: function(){
-          if(this[0]){
-            // formの取得
-            const formData = this.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
-            
-            // エラー表示の要素の取得
-            const errInput = this.find(".error-input");
-            if(errInput.length){
-              for(let i=0;i<errInput.length;i++){
-                $(errInput[i]).removeClass("error-input");
-              }
-            }
-
-            // ボトムラベルの初期化
-            const bottomLabel = this.find(".bottom-label");
-            if(bottomLabel.length){
-              for(let i=0;i<bottomLabel.length;i++){
-                $(bottomLabel[i]).text("");
-              }
-            }
-
-            // 入力系要素の初期化
-            for(let i=0;i<formData.length;i++){
-              let crntEle = formData[i]
-              if(crntEle){
-                switch(crntEle.tagName){
-                  case "INPUT":
-                  case "TEXTAREA":
-                    crntEle.value = "";
-                    break;
-                  case "DIV":
-                    crntEle.textContent = null;
-                    break;
-                  case "SELECT":
-                  case "RADIO":
-                  case "CHECK":
-                    break;
-                }
-              }
-            }
-          }
         }
       })
 
