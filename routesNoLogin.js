@@ -37,62 +37,86 @@ router.post('/api/login', validate.check(require('./form/loginForm')), validate.
 
 module.exports = router;
 
-
 /* デバッグページ */
-router.get('/debug', (req,res,next)=>{
-  res.render('../test/debug/debugMenu',{
-    self: true,
-    user: req.session.user,
-    users:[],
-  });
-});
-router.get('/debug/loginCosplayer', (req,res,next)=>{
-  var userRepo = require('./repository/userRepository');
-  var sessionHelper = require('./common/helper/sessionHelper');
-  userRepo().create({id:999998, user_name:"コスプレイヤー", password: "pass", email:"cos@cos.com", user_type:1}).then(row=>{
-    sessionHelper.setUserData(req, row);
-    res.redirect('/');
-  }).catch(row=>{
-    userRepo().findOne({where:{id:999998}}).then(row=>{
-      sessionHelper.setUserData(req, row);
-      res.redirect('/');
-    });
-  })
-});
-router.get('/debug/loginCameraman', (req,res,next)=>{
-  var userRepo = require('./repository/userRepository');
-  var sessionHelper = require('./common/helper/sessionHelper');
-  userRepo().create({id:999999, user_name:"テストカメラマン", password: "pass", email:"cam@cam.com", user_type:2}).then(row=>{
-    sessionHelper.setUserData(req, row);
-    res.redirect('/');
-  }).catch(row=>{
-    userRepo().findOne({where:{id:999999}}).then(row=>{
-      sessionHelper.setUserData(req, row);
-      res.redirect('/');
-    });
-  })
-});
+const basePattern = require("./testdata/pattern/basePattern");
+const matchingPattern = require("./testdata/pattern/matchingPattern");
+const reviewPattern = require("./testdata/pattern/reviewPattern");
+const userRepository = require("./repository/userRepository");
+const hashHelper = require("./common/helper/hashHelper");
 
-router.get('/debug/cameramansPost', (req,res,next)=>{
-  var scheduleRepository = require('./repository/CustomRepository/scheduleRepository');
-  var koyomi = require('koyomi');
-  var days = koyomi.getCalendarData('2018/8');
-  var pros = days.map(v=>{
-    if(v.ghost) return null;
-    req.form_data = {
-      date_data: v.year + "/" + v.month + "/" + v.day,
-      shot_type: 2,
-      time_from: "10:00",
-      time_to: "11:00",
-      event_name: "テストイベント",
-      remarks: "備考",
-      prefectures:[],
-      tags:[],
-    };
-    return scheduleRepository.postSchedule(req).then(()=>{});
-  }).filter(x=>{return !!x});
+/**
+ * テストでのデータやログインモードをデバックで使用します。
+ * 
+ * type(ユーザー種別): cam(カメラマン)/cos(コスプレイヤー)
+ * mode(データタイプ): 
+ *    u(ユーザーデータのみ)
+ *    s(スケジュールデータ)
+ *    m(マッチングデータ)
+ *    r(レビューデータ)
+ */
+router.get('/test/:type/:mode', (req, res, next) => {
+  const sessionHelper = require('./common/helper/sessionHelper');
+  console.log(req.params);
+  const user_type = req.params.type;
+  const data_mode = req.params.mode;
+  console.log("ユーザー種別 -> ", user_type);
+  const mail = user_type == "cam" ? "test.cam_1_cs@c2link.mail.com" : "test.cos_1_cs@c2link.mail.com";
 
-  Promise.all(pros).then((row)=>{
-    res.redirect("/debug");
-  }).catch(console.log);
+  if(data_mode == "u"){
+    console.log("データタイプ -> ユーザーデータのみ ");
+    const bp = new basePattern();
+    bp.genUserAndTags().then(results => {
+      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+    })
+    .then(results => {
+      sessionHelper.setUserData(req, results[0]);
+      res.redirect('/');
+    })
+  }
+  else if(data_mode == "s"){
+    console.log("データタイプ -> スケジュールデータ ");
+    const bp = new basePattern();
+    bp.genTestData().then(results => {
+      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+    })
+    .then(results => {
+      sessionHelper.setUserData(req, results[0]);
+      res.redirect('/');
+    })
+  }
+  else if(data_mode == "m"){
+    console.log("データタイプ -> マッチングデータ ");
+    const mp = new matchingPattern();
+    mp.genMatchingData().then(results => {
+      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+    })
+    .then(results => {
+      sessionHelper.setUserData(req, results[0]);
+      res.redirect('/');
+    })
+  }
+  else if(data_mode == "r"){
+    console.log("データタイプ -> レビューデータ ");
+    const rp = new reviewPattern();
+    rp.genReviewData().then(results => {
+      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+    })
+    .then(results => {
+      sessionHelper.setUserData(req, results[0]);
+      res.redirect('/');
+    })
+  }
+
+  
+  // prom
+  // .then(results => {
+    
+  // })
+  // .then(results => {
+  //   sessionHelper.setUserData(req, results[0]);
+  //   res.redirect('/');
+  // })
+  // .catch(err => {
+  //   next(err);
+  // })
 });

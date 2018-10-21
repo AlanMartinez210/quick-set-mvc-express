@@ -139,6 +139,18 @@ export default class myApp extends baseApp {
     return this.sendAjax("get", url, data, option);
   }
 
+  /**
+   * DELETEでajaxを実行します。
+   *
+   * @param {string} url
+   * @param {JSON} data
+   * @return {jqXHR}
+   * @memberof myApp
+   */
+  sendDelete(url, data = {}, option = {}){
+    return this.sendAjax("delete", url, data, option);
+  }
+
 
   /** =======================================================
    * #### プログレスバー
@@ -422,7 +434,7 @@ export default class myApp extends baseApp {
    * @returns ダイアログデータ
    * @memberof myApp
    */
-  _getDialogDate(DialogId){
+  _getDialogDate(DialogId, options = {}){
     const obj = {};
     switch(DialogId){
       // 投稿確認ダイアログ
@@ -443,6 +455,25 @@ export default class myApp extends baseApp {
             onclick:()=>{console.log('no')},
           }
         };
+        break;
+      case "deleteCheck":
+        obj.icon = "fas fa-exclamation-circle c-orange";
+        obj.name = "deleteCheck";
+        obj.title = "削除確認";
+        obj.text = "削除します。よろしいですか";
+        obj.button = {
+          yes: {
+            label:"はい",
+            name:"doYes",
+            onclick:()=>{console.log('yes')},
+          },
+          no: {
+            label:"いいえ",
+            name:"doNo",
+            onclick:()=>{console.log('no')},
+          }
+        };
+        break;
     }
 
     return obj;

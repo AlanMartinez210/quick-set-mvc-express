@@ -62,7 +62,7 @@ describe('scheduleRepository test', function () {
       });
     });
   });
-  describe('::getSchedule()', function () {
+  describe('::getScheduleById()', function () {
     describe('○正常テスト', function () {
       it('user_id -> 1(カメラマン)且つ、スケジュールID:5を指定してデータを取得する。', () => {
         const expect_data = {
@@ -81,7 +81,7 @@ describe('scheduleRepository test', function () {
           num: 1,
           remarks: "カメラマンテストスケジュール"
         };
-        return scheduleRepository.getSchedule(5)
+        return scheduleRepository.getScheduleById(5)
         .then(res => {
           Object.keys(res).forEach(key => {
             if(expect_data[key]){
@@ -125,18 +125,42 @@ describe('scheduleRepository test', function () {
           expect(res).to.be.true;
         })
       });
-    });
-  });
-  describe('::deleteSchedule()', function () {
-    describe('○正常テスト', function () {
-      it('指定したデータ(前項の登録テストで作成したデータ))を削除する。', () => {
-        return scheduleRepository.deleteSchedule(1)
+      it('指定したデータで更新する', function() {
+        const update_data = {
+          id: 1,
+          user_id: 1,
+          schedule_type: 2,
+          group_year: 2018,
+          group_month: 8,
+          date_key: dateHelper.createDate(2018, 8, 5).toDate(),
+          time_from: "11:00",
+          time_to: "17:00",
+          shot_type: 1,
+          event_name: "テストイベント5",
+          event_url: "htt://c2link.com/detail/event/test",
+          cost: 1000,
+          num: 1,
+          remarks: "ここを更新しましたカメラマンテストスケジュール"
+        };
+
+        // ユーザーデータのみ作成
+        scheduleRepository.upsertSchedule(update_data)
         .then(res => {
-          // 一件削除のため1を期待
-          expect(res).to.equal(1);
-        });
+          expect(res).to.equal(false);
+        })
       })
     });
   });
+  // describe('::deleteSchedule()', function () {
+  //   describe('○正常テスト', function () {
+  //     it('指定したデータ(前項の登録テストで作成したデータ))を削除する。', () => {
+  //       return scheduleRepository.deleteSchedule(1)
+  //       .then(res => {
+  //         // 一件削除のため1を期待
+  //         expect(res).to.equal(1);
+  //       });
+  //     })
+  //   });
+  // });
 
 })

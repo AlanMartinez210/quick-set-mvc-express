@@ -49,15 +49,45 @@ const scheduleRepository = {
    *
    * @param {string} schedule_id スケジュールID
    */
-  getSchedule: (schedule_id, options = {}) => {
+  getScheduleById: (schedule_id, options = {}) => {
     return repo.findById(schedule_id, options);
   },
+
+  /**
+   * 対象ユーザーのスケジュールを取得します。
+   *
+   * @param {string} schedule_id スケジュールID
+   */
+  // getSchedule: (user_id, date_key, options = {}) => {
+  //   options.where = {
+  //     user_id: user_id,
+  //     date_key: date_key
+  //   };
+  //   return repo.findOne(options);
+  // },
 
   /**
    * スケジュールの登録/更新を行います。
    */
   upsertSchedule: (scheduleObj, options = {}) => {
     return repo.upsert(scheduleObj, options);
+  },
+
+  /**
+   * スケジュールの更新を行います。
+   */
+  updateSchedule: (schedule_id, updateData, options = {}) => {
+    options.where = {
+      id: schedule_id
+    }
+    return repo.update(updateData, options);
+  },
+
+  /**
+   * スケジュールの登録を行います。
+   */
+  createSchedule: (registData, options = {}) => {
+    return repo.create(registData, options);
   },
 
   /**

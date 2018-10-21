@@ -84,13 +84,12 @@ exports.getSelectScheduleList = (req, res, next) =>{
  * @param {*} res
  */
 exports.getSchedule = (req, res, next)=>{
-  const user_id = sessionHelper.getUserId(req);
   const schedule_id = req.params.schedule_id;
 
-  scheduleService.getScheduleData(user_id, schedule_id)
+  scheduleService.getScheduleData(schedule_id)
   .then(results => {
-    console.log(results);
     scheduleJson = new scheduleVO.scheduleInfo({
+      schedule_id: results.id,
       date_key : results.date_key,
 			shot_type : results.shot_type,
 			prefectures : results.prefectures,
@@ -122,12 +121,13 @@ exports.postSchedule = (req, res, next) => {
   const registData = req.form_data;
   registData.user_id = sessionHelper.getUserId(req);
   registData.schedule_type = sessionHelper.getUserType(req);
+  // date_keyをmomentに変換する
+  registData.date_key = dateHelper.getDateToStr(registData.date_key)
 
   scheduleService.upsertScheduleData(registData)
-  .then(results=>{
+  .then(results => {
     res.json({status:'success'});
-  }).catch(err=>{
-    console.log("cont err");
+  }).catch(err => {
     next(err);
   });
 }
@@ -140,10 +140,10 @@ exports.postSchedule = (req, res, next) => {
  * @param {*} next 
  */
 exports.deleteSchedule = (req, res, next) => {
-  const user_id = sessionHelper.getUserId(req);
-  const date_key = req.form_data.date_key;
-
-  scheduleService.deleteScheduleData(user_id, date_key)
+  console.log("aaaa");
+  const schedule_id = req.form_data.schedule_id;
+  console.log(schedule_id);
+  scheduleService.deleteScheduleData(schedule_id)
   .then(results=>{
     res.json({status:'success'});
   }).catch(err=>{

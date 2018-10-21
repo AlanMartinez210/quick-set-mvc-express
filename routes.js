@@ -87,7 +87,7 @@ router.get('/mypage/schedule/:schedule_id', scheduleController.getSchedule);　
 router.post('/mypage/schedule',validate.check(require('./form/scheduleForm')), validate.result, scheduleController.postSchedule);
 
 /* スケジュールの削除 deleteSchedule */
-router.delete('/mypage/schedule', validate.check(require('./form/scheduleForm')), validate.result, scheduleController.postSchedule);
+router.delete('/mypage/schedule', validate.check(require('./form/scheduleForm')), validate.result, scheduleController.deleteSchedule);
 
 /** =============================
  * レビューの管理

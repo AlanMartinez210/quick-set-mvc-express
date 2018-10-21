@@ -1,10 +1,6 @@
 const messageService = require("../services/messageService");
 const messageViewObjects = require("../viewObjects/message");
 
-const matchingPattern = require('./matchingPattern');
-const basePattern = require('./basePattern');
-
-
 /**
  * 新着メッセージ一覧
  *
@@ -20,12 +16,12 @@ exports.index = function(req, res, next){
 	.then(results=>{
 
 		render_obj.bodyData = new messageViewObjects.newMessageList({
-			send_date_info = results ,
-			user_name = "",
-			summary = ""
+			send_date_info: results ,
+			user_name: "",
+			summary: ""
 		});
 
-		.newMessages = results;
+		render_obj.newMessages = results;
 		res.render('message', render_obj);
 	})
 	.catch(err=>{

@@ -1,4 +1,3 @@
-var profileService = require("../services/profileService");
 const profileVO = require("../viewObjects/mypage");
 const sessionHelper = require("../common/helper/sessionHelper");
 

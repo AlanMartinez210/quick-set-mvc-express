@@ -11,6 +11,9 @@ module.exports = {
 
   /**
    * 募集一覧中身
+   * 
+   * tags: 形式 [{ id: **, name: ** }, ...]
+   * prefectures: 形式 [{ id: **, name: ** }, ...]
    */
   recruit_list_item: class {
     constructor({recruit_list_id = "", user_info = {id:0,icon:""}, date_info = {/* dateHelper.dateToObject */},

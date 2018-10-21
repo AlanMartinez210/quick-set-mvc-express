@@ -104,14 +104,7 @@ exports.getProfileEditViewData = async (user_id) => {
   const prefectures = userData.prefectures;
 
   // 配列tagsからタグ名を取得
-  const tagArray = new Array();
-  if (tags) { // タグが存在する場合
-    const tagData = await tagRepository().getTagById(tags, {});
-    // タグを配列にセット
-    for (const tag of tagData) {
-      tagArray.push(tag.tag_name);
-    }
-  }
+  const tagArray = await tagRepository().getTagById(tags).map(tag => tag.tag_name);
 
   //配列prefecturesから都道府県名を取得
   const prefectureArray = prefectureHelper.getPrefectureNameByIds(prefectures);

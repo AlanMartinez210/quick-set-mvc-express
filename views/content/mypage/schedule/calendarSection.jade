@@ -59,7 +59,7 @@
 
                 .calendar-date-set.flex._c
                   a
-                    i.fas.fa-edit(name="createSchedule", data-date_key=cln.date_key.toString(), data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "" , data-mode= cln.schedule.length ? "edit" : "create")
+                    i.fas.fa-edit(name="createSchedule", data-date_key=cln.date_key.toString(), data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "", data-mode= cln.schedule.length ? "edit" : "create")
 
                   //- 一桁台の日付の空白埋め
                   - if(cln.day < 10)
@@ -74,5 +74,5 @@
                   .calendar-event-set.flex._c
                     p.event-str: |#{cln.schedule[0].eventname || '予定あり'}
                     a
-                      i.fas.fa-trash-alt(name="createSchedule", data-date_key=cln.date_key, data-mode="delete")
+                      i.fas.fa-trash-alt(name="createSchedule", data-date_key=cln.date_key.toString(), data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "", data-mode="delete")
           -}

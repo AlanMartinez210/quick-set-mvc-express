@@ -1,5 +1,8 @@
 const dateHelper = require('../common/helper/dateHelper');
+const errorHelper = require('../common/helper/errorHelper');
+const prefectureHelper = require("../common/helper/prefectureHelper");
 const calendarHelper = require("../common/helper/calendarHelper");
+
 const c2Util = require("../services/c2link4DiService");
 
 const scheduleRepository = require("../repository/scheduleRepository")();
@@ -19,8 +22,8 @@ const tagRepository = require('../repository/tagRepository')();
 exports.getMonthSchedule = async (user_id, year, month) => {
   const schedule_list = await scheduleRepository.getScheduleList(user_id, year, month)
   const current_calendar = calendarHelper.getCalendar(year, month);
+  console.log("getScheduleList", schedule_list);
   return c2Util.bindSchedule(current_calendar, schedule_list);
-
 }
 
 /**
@@ -47,10 +50,10 @@ exports.getMonthScheduleNumList = async (user_id, year) => {
  * @param {*} user_id
  * @param {*} date_key
  */
-exports.getScheduleData = async (user_id, schedule_id) => {
+exports.getScheduleData = async (schedule_id) => {
   try{
     // スケジュール情報の情報を取得
-    const schedule = await scheduleRepository.getSchedule(schedule_id);
+    const schedule = await scheduleRepository.getScheduleById(schedule_id);
 
     // スケジュール情報に紐づいたタグ、都道府県の取得
     const [scheduleTag, schedulePref] = await Promise.all([
@@ -62,6 +65,11 @@ exports.getScheduleData = async (user_id, schedule_id) => {
     schedule.tags = scheduleTag.map(obj => obj.tag_id);
     schedule.prefectures = schedulePref.map(obj => obj.prefecture_id);
     
+    // タグIDを名称に変換
+    const tagData = await tagRepository.getTagById(schedule.tags);
+    schedule.tags = tagData.map(obj => obj.tag_name);
+    schedule.prefectures = prefectureHelper.getPrefectureNameByIds(schedule.prefectures);
+
     return schedule;
   }
   catch(err){
@@ -75,6 +83,12 @@ exports.getScheduleData = async (user_id, schedule_id) => {
  * @param {*} registData
  */
 exports.upsertScheduleData = (registData) => {
+  // 登録データをDate型に変換する。
+  registData.date_key = registData.date_key.toDate();
+  // 
+  registData.prefectures = prefectureHelper.getPrefectureIdByName(registData.prefectures);
+  // スケジュールIDの設定
+  let schedule_id = registData.schedule_id;
   try{
     return scheduleRepository.Sequelize.transaction(
       async(tx) => {
@@ -99,11 +113,23 @@ exports.upsertScheduleData = (registData) => {
           registData.tags = tag_id_arr;
         }();
 
-        // スケジュールの登録/更新
-        await scheduleRepository.upsertSchedule(registData, {transaction: tx});
+        
+        if(schedule_id){
+          // 更新
+          await scheduleRepository.updateSchedule(schedule_id, registData, {transaction: tx})
+        }
+        else{
+          // 登録
+          await scheduleRepository.createSchedule(registData, {transaction: tx})
+          .then(res => {
+            schedule_id = res.id;
+          })
+        }
 
         // スケジュールの取得
-        const scheduleResult = await scheduleRepository.getSchedule(registData.user_id, registData.date_key, {transaction: tx});
+        const scheduleResult = await scheduleRepository.getScheduleById(schedule_id, {transaction: tx});
+
+        console.log(scheduleResult);
 
         // 登録したスケジュールに属するタグと都道府県情報を削除
         await Promise.all([
@@ -144,27 +170,28 @@ exports.upsertScheduleData = (registData) => {
  * @param {*} user_id
  * @param {*} date_key
  */
-exports.deleteScheduleData = (user_id, date_key) => {
+exports.deleteScheduleData = (schedule_id) => {
   try{
     return scheduleRepository.Sequelize.transaction(
       async (tx) => {
         // スケジュール情報の取得
-        const schedule = await scheduleRepository.getSchedule(user_id, date_key, {transaction: tx});
-        await function(){
-          if(!schedule) throw "err";
-          // 取得したスケジュール情報のIDを元に関連データを削除
-          Promise.all([
-            scheduleRepository.deleteSchedule(schedule.id, { transaction: tx }),
-            schedulePrefecture.destroy({
-              where: { schedule_id: result.id },
-              transaction: tx
-            }),
-            scheduleTag.destroy({
-              where: { schedule_id: result.id },
-              transaction: tx
-            })
-          ])
-        }();
+        const schedule = await scheduleRepository.getScheduleById(schedule_id, {transaction: tx});
+
+        // if(!schedule) return Promise.reject(new errorHelper().setWindowMsg("E00001"));
+
+        // 取得したスケジュール情報のIDを元に関連データを削除
+        await Promise.all([
+          scheduleRepository.deleteSchedule(schedule.id, { transaction: tx }),
+          schedulePrefectureRepository.destroy({
+            where: { schedule_id: schedule.id },
+            transaction: tx
+          }),
+          scheduleTagRepository.destroy({
+            where: { schedule_id: schedule.id },
+            transaction: tx
+          })
+        ])
+
       }
     )
   }

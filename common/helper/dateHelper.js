@@ -11,6 +11,11 @@ exports.getDate = (sequelize_date = new Date()) => {
   return _getDate(sequelize_date);
 }
 
+exports.getDateToStr = (dateStr = "") => {
+  if(dateStr.length !== 8) throw new Error('expect date string format to YYYYMMDD ex: 20180101.');
+  return _getDate(dateStr);
+}
+
 /**
  * 新規にmoment dateを取得します。 
  * 
