@@ -73,6 +73,7 @@ export default class schedule{
 							res.prefectures_field.forEach(item => {
 								this.prefecture.addPrefecture(item);
 							});
+							console.log(res);
 							this.scheduleForm.setValue(res);
 							resolve();
 						})
@@ -94,14 +95,10 @@ export default class schedule{
 		// 登録/編集/削除ボタンの処理
 		doScheduleBtn.on('click', (e) => {
 			const modal_mode = e.currentTarget.dataset.proc;
-			console.log(modal_mode);
 			const data = this.getModalData();
 			
 			const dialog_type = modal_mode == "delete" ? "deleteCheck" : "PostCheck";
 			const httpMethod = modal_mode == "delete" ? "sendDelete" : "sendPost";
-
-			console.log(dialog_type);
-			console.log(httpMethod);
 
 			c2.showDialog(dialog_type)
 			.yes(e=>{
@@ -146,8 +143,6 @@ export default class schedule{
 		this.scheduleForm.find("textarea").prop('readonly', true);
 		this.scheduleForm.find("#box_prefectureField").hide();
 		this.scheduleForm.find("#box_tagField").hide();
-		// this.scheduleForm.find("[name=date_key]").hide();
-		// this.scheduleForm.find("[name=date_key_hidden]").show();
 		this.scheduleForm.find(".sub-label").hide();
 	}
 
@@ -155,7 +150,6 @@ export default class schedule{
 	modalEnable(){
 		this.scheduleForm.find("input").prop('readonly', false);
 		this.scheduleForm.find("input[name=date_key]").prop('readonly', true);
-		// this.scheduleForm.find("select").prop("readonly", true);
 		this.scheduleForm.find("textarea").prop('readonly', false);
 		this.scheduleForm.find("#box_prefectureField").show();
 		this.scheduleForm.find("#box_tagField").show();
@@ -173,8 +167,9 @@ export default class schedule{
 					data[ele_name] = $(ele).dateVal();
 					break;
 				case "":
-				case "prefecture":
+				case "prefecture": // コスプレイヤー用
 					// 無視
+					data[ele_name] = $(ele).val();
 					break;
 				default:
 					data[ele_name] = $(ele).val();
@@ -182,7 +177,7 @@ export default class schedule{
 			}
 		});
 
-		// 都道府県の取得
+		// 都道府県の取得(カメラマン用)
 		data.prefectures = $('[name=prefectures]').map((idx, ele) => {
 			return ele.value;
 		}).get();

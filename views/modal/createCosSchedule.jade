@@ -13,8 +13,9 @@
         .label-input-box#box_date_key
           .label-box
             p.main-label: |日付
-          .input-box._s.flex._c
-            input(type="text", name="date_key", readonly="true")
+          .input-box._s.flex._c.st-readonly
+            input(type="text", name="date_key")
+            input(type="hidden", name="schedule_id")
           p.bottom-label
 
         .label-input-box#box_time_from
@@ -22,10 +23,10 @@
             p.main-label: |開始時間
           .select-box._s.flex._c
             select(name="time_from")
-              option(value="")
+              option(value="") 未定
               option(value="要相談") 要相談
 
-              - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+              - for(let i=0;i<24;i++){ const time = ((i+6)%24);
                   option(value="#{time}:00") #{time}:00
                   option(value="#{time}:30") #{time}:30
               - }
@@ -37,7 +38,7 @@
             p.main-label: |終了時間
           .select-box._s.flex._c
             select(name="time_to")
-              option(value="")
+              option(value="") 未定
               option(value="要相談") 要相談
 
               - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
@@ -56,37 +57,39 @@
               - }
           p.bottom-label
 
-        .label-input-box#box_eventname
+        .label-input-box#box_event_name
           .label-box
             p.main-label: |イベント名 or 開催地
             span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
           .input-box._s.flex._c.st-required
-            input(type="text", name="eventname", placeholder="世界コスプレサミット")
+            input(type="text", name="event_name", placeholder="世界コスプレサミット")
           p.bottom-label
 
-        .label-input-box#box_eventurl
+        .label-input-box#box_event_url
           .label-box
             p.main-label: |詳細URL
             span.sub-label: |イベントや開催地のURLがある場合は入力してください。
           .input-box._s.flex._c
-            input(type="text", name="eventurl", placeholder="http://")
+            input(type="text", name="event_url", placeholder="http://")
           p.bottom-label
 
         .label-input-box#box_prefecture
           .label-box
             p.main-label: |開催都道府県
+            span.sub-label: |イベントが開催される都道府県を選択してください。
           .select-box._s.flex._c.st-required
             select(name="prefecture")
+              option(value="")
               - for(var pref of C2LINK.ALL_PREF_LIST){
                 option(value="#{pref.id}") #{pref.name}
               - }
           p.bottom-label
 
-        .label-input-box#box_tagField
+        .label-input-box#box_tag_field
           .label-box
             p.main-label: |タグの設定
             span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
-          .input-box._s.flex._c.st-required
+          .input-box._s.flex._c
             input(type="text")#tags
             span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
           p.bottom-label
@@ -94,7 +97,7 @@
         p.st-title-tag
           |追加したタグ一覧
 
-        .tag-cnt-box.flex._wrap#tags_field
+        .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input")
 
         .accordion-prm
 

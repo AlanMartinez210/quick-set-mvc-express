@@ -29,24 +29,23 @@
               - }
           p.bottom-label
 
-        .label-input-box._mbs#box_prefectureField
+        .label-input-box._mbs#box_prefectures_field
           .label-box
             p.main-label: |活動地域
             span.sub-label: |あなたの活動している地域を選択し追加してください。
-          .select-box._s.flex._c.st-required
+          .select-box._s.flex._c
             select(name="prefecture")#prefectures.js-addPrefectures
               option(value="")
               - for(var pref of C2LINK.ALL_PREF_LIST){
-                option(value="#{pref.id}") #{pref.name}
+                option(value="#{pref.name}") #{pref.name}
               - }
-            //- span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw
           p.bottom-label
 
         p.st-title-tag
-          |活動地域一覧
-        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input")
+          |追加した活動地域
+        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input").st-required
 
-        .label-input-box._mbs#box_tagField
+        .label-input-box._mbs#box_tag_field
           .label-box
             p.main-label: |タグの設定
             span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。

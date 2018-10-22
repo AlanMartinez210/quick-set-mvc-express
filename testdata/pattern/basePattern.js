@@ -38,7 +38,7 @@ module.exports = class {
       user_data.icon_url = "http://s3.c2link.test/test" + i + ".jpg"
       user_data.user_type = 1;
       user_data.tags = [i%8+1, (i+1)%8+1, (i+2)%8+1];
-      user_data.prefectures = [13+i, 14+i];
+      user_data.prefectures = [13+i];
       this.cos_user_data.push(user_data)
     }
 
