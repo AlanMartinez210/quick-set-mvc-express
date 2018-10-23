@@ -96,38 +96,38 @@ describe('schedule service test', function() {
 
   describe('::getScheduleData()', function() {
     describe('○正常テスト', function () {
-      it('指定したスケジュールIDのスケジュールを取得する。', () => {
-        const test_date_key = dateHelper.createDate(2018, 8, 1).toDate();
-        const test_user_id = 1;
-        const test_schedule_id = 24;
-        const stub = [
-          sinon.stub(scheduleRepository, "getSchedule"),
-          sinon.stub(scheduleTagRepository, "getScheduleTag"),
-          sinon.stub(schedulePrefectureRepository, "getSchedulePrefsCd")
-        ];
-        const stub_return_obj = [
-          [ { schedule_id: 24, tag_id: 1 }, { schedule_id: 24, tag_id: 2 } ],
-          [ { schedule_id: 24, prefecture_id: 13 } ],
-        ]
+      it('指定したスケジュールIDのスケジュールを取得する。'
+      // , () => {
+      //   const test_schedule_id = 24;
+      //   const stub = [
+      //     sinon.stub(scheduleRepository, "getSchedule"),
+      //     sinon.stub(scheduleTagRepository, "getScheduleTag"),
+      //     sinon.stub(schedulePrefectureRepository, "getSchedulePrefsCd")
+      //   ];
+      //   const stub_return_obj = [
+      //     [ { schedule_id: 24, tag_id: 1 }, { schedule_id: 24, tag_id: 2 } ],
+      //     [ { schedule_id: 24, prefecture_id: 13 } ],
+      //   ]
 
-        stub[0].withArgs(test_user_id, test_date_key).returns(expect_data[0]);
-        stub[1].withArgs(test_schedule_id).returns(stub_return_obj[0]);
-        stub[2].withArgs(test_schedule_id).returns(stub_return_obj[1]);
+      //   stub[0].withArgs(test_user_id, test_date_key).returns(expect_data[0]);
+      //   stub[1].withArgs(test_schedule_id).returns(stub_return_obj[0]);
+      //   stub[2].withArgs(test_schedule_id).returns(stub_return_obj[1]);
 
-        return scheduleService.getScheduleData(test_user_id, test_date_key)
-        .then(res => {
-          Object.keys(res).forEach(key => {
-            if(expect_data[key]){
-              if(key == "date_key"){
-                expect(expect_data[key]).to.equalDate(res[key]);
-              }
-              else{
-                expect(expect_data[key]).to.deep.equal(res[key]);
-              }
-            }
-          });
-        })
-      });
+      //   return scheduleService.getScheduleData(test_user_id, test_date_key)
+      //   .then(res => {
+      //     Object.keys(res).forEach(key => {
+      //       if(expect_data[key]){
+      //         if(key == "date_key"){
+      //           expect(expect_data[key]).to.equalDate(res[key]);
+      //         }
+      //         else{
+      //           expect(expect_data[key]).to.deep.equal(res[key]);
+      //         }
+      //       }
+      //     });
+      //   })
+      // }
+      );
     });
   });
 

@@ -12,12 +12,11 @@ module.exports = {
 		in: 'body',
 		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
-	prefectures: {
+	prefecture: {
 		in: 'body',
-		isArray:{ errorMessage: 'E00006' },
 		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
-	tags: {
+	tag_field: {
 		in: 'body',
 		isArray:{ errorMessage: 'E00006' }
 	},
@@ -41,9 +40,6 @@ module.exports = {
 			options:{ max: 255 },
 		}
 	},
-
-
-	/* vvv コスプレイヤー vvv */
 	cos_chara:{
 		in: 'body',
 	},
@@ -67,7 +63,6 @@ module.exports = {
 			errorMessage: 'E00011',
 			options:{ max: 3 },
 		}
-	},
-	/* ^^^ コスプレイヤー ^^^ */
+	}
 
 };

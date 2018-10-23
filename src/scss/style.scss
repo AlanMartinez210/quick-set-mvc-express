@@ -199,7 +199,7 @@
 }
 
 .error-input{
-	.input-box{
+	.input-box,.select-box{
 		border: 1px solid $redD !important;
 		background: $redD-opcity-40;
 		input{

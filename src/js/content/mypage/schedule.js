@@ -14,7 +14,6 @@ export default class schedule{
 		const calendarSection = $('#calendarSection');
 		// 処理ボタン
 		const doScheduleBtn = $('[name=doSchedulePost]');
-		const doScheduleDeleteBtn = $('[name=doScheduleDelete]');
 		// モーダルの表示
 		const openScheduleBtn = "[name=createSchedule]";
 		// 日付のみ表示のチェック
@@ -94,16 +93,21 @@ export default class schedule{
 
 		// 登録/編集/削除ボタンの処理
 		doScheduleBtn.on('click', (e) => {
+			let path = "/mypage/schedule";
+
 			const modal_mode = e.currentTarget.dataset.proc;
 			const data = this.getModalData();
-			
+			console.log(data);
 			const dialog_type = modal_mode == "delete" ? "deleteCheck" : "PostCheck";
 			const httpMethod = modal_mode == "delete" ? "sendDelete" : "sendPost";
+			if(modal_mode !== "delete"){
+				path = c2.config.isCam() ? path + "/cam" : path + "/cos";
+			} 
 
 			c2.showDialog(dialog_type)
 			.yes(e=>{
 				c2.onShowProgress();
-				c2[httpMethod](`/mypage/schedule`, data)
+				c2[httpMethod](path, data)
 				.done(result => {
 					$('.month-label.seleced').click();
 					c2.showClearAll();
@@ -163,13 +167,12 @@ export default class schedule{
 		this.scheduleForm.find('input, select, textarea').each((idx, ele) => {
 			const ele_name = ele.name;
 			switch(ele_name){
+				case "":
+				case "prefectures":
+					// 無視
+					break;
 				case "date_key":
 					data[ele_name] = $(ele).dateVal();
-					break;
-				case "":
-				case "prefecture": // コスプレイヤー用
-					// 無視
-					data[ele_name] = $(ele).val();
 					break;
 				default:
 					data[ele_name] = $(ele).val();
@@ -178,12 +181,14 @@ export default class schedule{
 		});
 
 		// 都道府県の取得(カメラマン用)
-		data.prefectures = $('[name=prefectures]').map((idx, ele) => {
-			return ele.value;
-		}).get();
+		if(c2.config.isCam()){
+			data.prefectures_field = $('[name=prefectures]').map((idx, ele) => {
+				return ele.value;
+			}).get();
+		}
 		
 		//タグの取得
-		data.tags = $('[name=tags]').map((idx, ele) => {
+		data.tag_field = $('[name=tags]').map((idx, ele) => {
 			return ele.value;
 		}).get();
 

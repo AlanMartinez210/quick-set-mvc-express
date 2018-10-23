@@ -1,6 +1,6 @@
 // モーダル関係の処理js
 
-export default (c2) => {
+export default () => {
 	var showModal = c2.showModal;
 	var showClearAll = c2.showClearAll;
 	const showModalNameObj = {

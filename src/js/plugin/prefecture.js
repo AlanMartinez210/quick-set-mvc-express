@@ -7,22 +7,30 @@ export default class prefecture{
 		this.prefectureCount = 0;
 		this.limitPrefectureLength = 47;
 		this.errEmitter = (errText) => {
-			c2.showInputErr("prefectureField", errText);
+			c2.showInputErr("prefectures_field", errText);
 			return false;
 		}
 	}
 	ready(){
 		this.$Prefectures.on('change', () => {
-			c2.clearInputMsg("prefectureField");
 			const prefectureValue = $("#prefectures option:selected").val();
 			// 初期空白時に処理を飛ばす
 			if(!prefectureValue) return false;
 
 			const prefectureStr = $("#prefectures option:selected").text();
-			if(!this.checkDuplicate(prefectureStr)) return false;
-			if(!this.checkPrefecturesNum()) return false;
+			if(!this.checkDuplicate(prefectureStr)){
+				this.initSelect();
+				return false;
+			} 
+			if(!this.checkPrefecturesNum()){
+				this.initSelect();
+				return false;
+			} 
+
+			c2.clearInputMsg("prefectures_field");
 
 			this.addPrefecture(prefectureStr);
+			this.initSelect();
 		});
 
 		//都道府県タグ削除
@@ -66,6 +74,7 @@ export default class prefecture{
 	checkDuplicate(prefectureStr){
 		const idx = this.prefectureList.indexOf(prefectureStr);
 		if(idx >= 0) return this.errEmitter(`すでに登録されています`);
+		
 		return true;
 	}
 
@@ -75,5 +84,12 @@ export default class prefecture{
 	checkPrefecturesNum(){
 		if(this.prefectureCount + 1 > this.limitPrefectureLength) return this.errEmitter(`活動地域は${this.limitPrefectureLength}以上設定できません`);
 		return true;
+	}
+
+	/**
+	 * 選択を初期化する。
+	 */
+	initSelect(){
+		$("#prefectures").val("");
 	}
 }

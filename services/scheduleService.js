@@ -176,7 +176,7 @@ exports.deleteScheduleData = (schedule_id) => {
         // スケジュール情報の取得
         const schedule = await scheduleRepository.getScheduleById(schedule_id, {transaction: tx});
 
-        // if(!schedule) return Promise.reject(new errorHelper().setWindowMsg("E00001"));
+        if(!schedule) return Promise.reject(new errorHelper().setWindowMsg("E00000"));
 
         // 取得したスケジュール情報のIDを元に関連データを削除
         await Promise.all([

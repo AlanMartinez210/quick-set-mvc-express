@@ -19,7 +19,6 @@ import 'jquery-ui-bundle';
 export class baseApp {
   constructor(){
     window.$ = jquery;
-    //thisa.$ = jquery;
     this.root = this._getRoot();
     this.ua = this._getUA();
   };

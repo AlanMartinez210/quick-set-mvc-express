@@ -81,7 +81,7 @@
             select(name="prefecture")
               option(value="")
               - for(var pref of C2LINK.ALL_PREF_LIST){
-                option(value="#{pref.id}") #{pref.name}
+                option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label
 

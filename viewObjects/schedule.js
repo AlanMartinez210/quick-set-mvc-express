@@ -18,12 +18,13 @@ module.exports = {
 	},
 
 	scheduleInfo: class {
-		constructor({schedule_id = "", date_key = "", shot_type = 1, prefectures = [], tags = [], coschara = [],
+		constructor({schedule_id = "", date_key = "", shot_type = 1, prefectures = "", prefectures_field = [], tags = [], coschara = [],
 		cost = 0, num = 0, start_time = "", end_time = "", event_name = "", event_url = "", remark = ""}){
 			this.schedule_id = schedule_id;
 			this.date_key = dateHelper.getDate(date_key).format("YYYY/MM/DD");
 			this.shot_type = shot_type;
-			this.prefectures_field = prefectures;
+			this.prefecture = prefectures;
+			this.prefectures_field = prefectures_field;
 			this.tag_field = tags;
 			this.coschara = coschara;
 			this.cost = Number(cost);

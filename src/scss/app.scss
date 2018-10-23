@@ -92,8 +92,12 @@ html, body{ height: 100%; background: $grayLW;}
 				padding: 8px 12px;
 				background: $white;
 			}
-			[data-modal="hide"]{display: none;}
-			[data-modal="show"]{display: block;}
+			[data-modal="hide"]{
+				display: none;
+			}
+			[data-modal="show"]{
+				display: block;
+			}
 		}
 	}
 }

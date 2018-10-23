@@ -52,6 +52,7 @@ export default class myApp extends baseApp {
     const bodyConfig = {};
     const body = document.getElementsByTagName('body')[0];
     bodyConfig.cntid = body.dataset.cntid;
+    bodyConfig.usertype = body.dataset.usertype;
     return bodyConfig;
   }
 

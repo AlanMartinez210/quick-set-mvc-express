@@ -88,11 +88,10 @@ exports.getSchedule = (req, res, next)=>{
 
   scheduleService.getScheduleData(schedule_id)
   .then(results => {
-    scheduleJson = new scheduleVO.scheduleInfo({
+    const vo = {
       schedule_id: results.id,
       date_key : results.date_key,
 			shot_type : results.shot_type,
-			prefectures : results.prefectures,
 			tags : results.tags,
 			coschara : results.coschara,
 			cost : results.cost,
@@ -102,7 +101,19 @@ exports.getSchedule = (req, res, next)=>{
 			event_name : results.event_name,
 			event_url : results.event_url,
 			remark : results.remarks
-    })
+    }
+
+    // 都道府県だけ別設定
+    if(c2Util.isCosplayer(sessionHelper.getUserType(req))) {
+      vo.prefectures = results.prefectures[0];
+    }
+    else{
+      vo.prefectures_field = results.prefectures;
+    }
+
+    console.log(vo);
+
+    scheduleJson = new scheduleVO.scheduleInfo(vo)
     res.json(scheduleJson);
   })
   .catch(err => {
@@ -121,6 +132,18 @@ exports.postSchedule = (req, res, next) => {
   const registData = req.form_data;
   registData.user_id = sessionHelper.getUserId(req);
   registData.schedule_type = sessionHelper.getUserType(req);
+  // 都道府県を纏める
+  registData.prefectures = [];
+  if(c2Util.isCosplayer(registData.schedule_type)){
+    registData.prefectures.push(registData.prefecture);
+  }
+  else{
+    registData.prefectures = registData.prefectures_field;
+  }
+
+  // タグを纏める
+  registData.tags = registData.tag_field;
+
   // date_keyをmomentに変換する
   registData.date_key = dateHelper.getDateToStr(registData.date_key)
 

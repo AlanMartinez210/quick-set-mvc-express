@@ -34,7 +34,7 @@
             p.main-label: |活動地域
             span.sub-label: |あなたの活動している地域を選択し追加してください。
           .select-box._s.flex._c
-            select(name="prefecture")#prefectures.js-addPrefectures
+            select#prefectures.js-addPrefectures
               option(value="")
               - for(var pref of C2LINK.ALL_PREF_LIST){
                 option(value="#{pref.name}") #{pref.name}

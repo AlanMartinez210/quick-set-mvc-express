@@ -83,11 +83,13 @@ router.get('/mypage/schedule/:year(\\d{4})/:month(\\d{1,2})', scheduleController
 /* 選択した日付のスケジュールを取得 getSchedule */
 router.get('/mypage/schedule/:schedule_id', scheduleController.getSchedule);　
 
-/* スケジュールの登録/編集 postSchedule  body.data_procの値によって登録/編集/削除を制御する */
-router.post('/mypage/schedule',validate.check(require('./form/scheduleForm')), validate.result, scheduleController.postSchedule);
+/* スケジュールの登録/編集 postSchedule */
+router.post('/mypage/schedule/cos',validate.check(require('./form/postCosScheduleForm')), validate.result, scheduleController.postSchedule);
 
-/* スケジュールの削除 deleteSchedule */
-router.delete('/mypage/schedule', validate.check(require('./form/scheduleForm')), validate.result, scheduleController.deleteSchedule);
+router.post('/mypage/schedule/cam',validate.check(require('./form/postCamScheduleForm')), validate.result, scheduleController.postSchedule);
+
+/* スケジュールの削除 deleteSchedule */ 
+router.delete('/mypage/schedule',validate.check(require('./form/deleteScheduleForm')), validate.result, scheduleController.deleteSchedule);
 
 /** =============================
  * レビューの管理
