@@ -280,6 +280,7 @@
 	&._wrap{-webkit-flex-wrap:wrap; flex-wrap: wrap;}
 	&._between{justify-content: space-between;}
 	&._bm{-webkit-align-items: flex-end; align-items: flex-end;}
+	&._drr{-webkit-flex-direction: row-reverse; flex-direction: row-reverse;}
 }
 
 /* liを灰色のボーダーで区切るul */

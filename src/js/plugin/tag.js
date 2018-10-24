@@ -9,13 +9,13 @@ export default class tag{
 		this.tagCount = 0;
 		this.limitTagLength = 10;
 		this.errEmitter = (errText) => {
-			c2.showInputErr("tagField", errText);
+			c2.showInputErr("tag_field", errText);
 			return false;
 		}
 	}
 	ready(){
 		this.$tag_add_button.on('click', () => {
-			c2.clearInputMsg("tagField");
+			c2.clearInputMsg("tag_field");
 			const tagStr = this.$input_tag.val();
 			var addTagName = tagStr.replace(/^\s+|\s+$/g, "")
 			if(!this.checkDuplicate(addTagName)) return false;
@@ -42,7 +42,7 @@ export default class tag{
 				that.taglist.splice(idx, 1); 
 			}
 			// エラー表示を消す
-			c2.clearInputMsg("tagField");
+			c2.clearInputMsg("tag_field");
 		});
 		
 	}

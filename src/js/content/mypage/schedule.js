@@ -6,8 +6,6 @@ export default class schedule{
 		this.scheduleForm = $('[name=scheduleForm]');
 		this.tag = new plugin_tag();
 		this.prefecture = new plugin_prefecture();
-		this.tag.ready();
-		this.prefecture.ready();
 	}
 	ready(){
 		const scheduleSection = $('#scheduleSection');
@@ -38,6 +36,10 @@ export default class schedule{
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
 				this.modalEnable();
+				
+				this.tag.ready();
+				this.prefecture.ready();
+
 				const modal_mode = event.currentTarget.dataset.mode;
 				const schedule_id = event.currentTarget.dataset.schedule_id;
 				const date_key = event.currentTarget.dataset.date_key;
@@ -72,7 +74,7 @@ export default class schedule{
 							res.prefectures_field.forEach(item => {
 								this.prefecture.addPrefecture(item);
 							});
-							console.log(res);
+							console.log("bind-data", res);
 							this.scheduleForm.setValue(res);
 							resolve();
 						})
@@ -92,34 +94,47 @@ export default class schedule{
 		});
 
 		// 登録/編集/削除ボタンの処理
-		doScheduleBtn.on('click', (e) => {
+		doScheduleBtn.on('click', (event) => {
 			let path = "/mypage/schedule";
+			let httpMethod;
+			const modal_mode = event.currentTarget.dataset.proc;
+			let data = this.getModalData();
+			let dialog = {};
 
-			const modal_mode = e.currentTarget.dataset.proc;
-			const data = this.getModalData();
-			console.log(data);
-			const dialog_type = modal_mode == "delete" ? "deleteCheck" : "PostCheck";
-			const httpMethod = modal_mode == "delete" ? "sendDelete" : "sendPost";
-			if(modal_mode !== "delete"){
+			if(modal_mode === "delete"){
+				httpMethod = "sendDelete";
+				dialog = c2.showWarnDialog({
+					name: "checkDel",
+					title: "削除の確認",
+					text: "この内容を削除します。よろしいですか？"
+				})	
+			}
+			else{
 				path = c2.config.isCam() ? path + "/cam" : path + "/cos";
-			} 
+				httpMethod = "sendPost";
+				dialog = c2.showInfoDialog({
+					name: "checkCmf",
+					title: modal_mode === "create" ?  "登録の確認" : "更新の確認",
+					text: modal_mode === "create" ?  "この内容で登録します。よろしいですか？" : "この内容で更新します。よろしいですか？",
+				})
+			}
 
-			c2.showDialog(dialog_type)
-			.yes(e=>{
-				c2.onShowProgress();
-				c2[httpMethod](path, data)
-				.done(result => {
-					$('.month-label.seleced').click();
-					c2.showClearAll();
-				})
-				.always(result=>{
-					c2.onHideProgress();
-					c2.hideDialog();
-				})
+			dialog.closelabel("いいえ")
+			.addBtn({
+				callback: function() {
+					c2.onShowProgress();
+					c2[httpMethod](path, data)
+					.always(result=>{
+						c2.onHideProgress();
+						c2.hideDialog();
+					})
+					.done(result => {
+						$('.month-label.seleced').click();
+						c2.showClearAll();
+						c2.showInfo("処理に成功しました。")
+					})
+				}
 			})
-			.no(e=>{
-				c2.hideDialog();
-			});
 	
 			return false;
 		});
@@ -145,8 +160,6 @@ export default class schedule{
 		this.scheduleForm.find("input").prop('readonly', true);
 		this.scheduleForm.find("select").prop("readonly", true);
 		this.scheduleForm.find("textarea").prop('readonly', true);
-		this.scheduleForm.find("#box_prefectureField").hide();
-		this.scheduleForm.find("#box_tagField").hide();
 		this.scheduleForm.find(".sub-label").hide();
 	}
 
@@ -155,9 +168,6 @@ export default class schedule{
 		this.scheduleForm.find("input").prop('readonly', false);
 		this.scheduleForm.find("input[name=date_key]").prop('readonly', true);
 		this.scheduleForm.find("textarea").prop('readonly', false);
-		this.scheduleForm.find("#box_prefectureField").show();
-		this.scheduleForm.find("#box_tagField").show();
-		this.scheduleForm.find("[name=date_key]").show();
 		this.scheduleForm.find(".sub-label").show();
 	}
 
@@ -192,7 +202,7 @@ export default class schedule{
 			return ele.value;
 		}).get();
 
-		console.log("schedule-data: ", data);
+		console.log("send-data: ", data);
 
 		return data;
 	}

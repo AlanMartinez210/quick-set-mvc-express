@@ -40,3 +40,36 @@ $header: 200;
 $year-month-box: 100;
 $st-add-event-btn: 999;
 $st-search-btn: 999;
+
+@mixin icon-info($top, $left, $fSize: 15) {
+  position: absolute;
+    top: #{$top}px;
+    left: #{$left}px;
+    font-family: "Font Awesome 5 Free";
+    content: '\F05A';
+    font-weight: 900;
+    color: $blueL;
+    font-size: #{$fSize}px;
+}
+
+@mixin icon-warn($top, $left, $fSize: 13) {
+  position: absolute;
+  top: #{$top}px;
+  left: #{$left}px;
+  font-family: "Font Awesome 5 Free";
+  content: '\f071';
+  font-weight: 900;
+  color: $yellowD;
+  font-size: #{$fSize}px;
+}
+
+@mixin icon-err($top, $left, $fSize: 15) {
+  position: absolute;
+  top: #{$top}px;
+  left: #{$left}px;
+  font-family: "Font Awesome 5 Free";
+  content: '\f06a';
+  font-weight: 900;
+  color: $redLW;
+  font-size: #{$fSize}px;
+}

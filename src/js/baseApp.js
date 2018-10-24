@@ -47,14 +47,20 @@ export class baseApp {
       
       // jqueryの関数拡張
       $.fn.extend({
-        dateVal: function(serverDate){
-          if(serverDate){
-            return $(this).val(serverDate.replace(/(\d{4})(\d{2})(\d{2})/,'$1/$2/$3'));
+        dateVal: function(dateValue){
+          if(dateValue){
+            return $(this).val(dateValue.replace(/(\d{4})(\d{2})(\d{2})/,'$1/$2/$3'));
           }
           else{
             var baf = $(this).val();
             return baf.slice(0,4) + baf.slice(5,7) + baf.slice(8,10);
           }
+        },
+        shamHide: function(){
+          $(this).addClass("dummy-hide");
+        },
+        shamShow: function(){
+          $(this).removeClass("dummy-hide");
         },
         setValue: function(serverData){
           console.log(serverData);

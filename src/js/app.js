@@ -234,13 +234,13 @@ export default class myApp extends baseApp {
     $(".wrapper").css({"paddingRight": (window.innerWidth - document.body.clientWidth) + "px"});
     $("body").addClass("on-modal");
 
-    // 非同期版
+    // 同期版
     if(e.data.onOpenBrefore){
       c2.onShowProgress(e);
       e.data.onOpenBrefore(e);
     }
 
-    // 同期版
+    // 非同期版
     if(e.data.onSyncOpenBrefore){
       c2.onShowProgress();
       const preModalProc = new Promise((resolve, reject) => {
@@ -361,60 +361,79 @@ export default class myApp extends baseApp {
    ========================================================== */
 
   /**
+   * インフォメーション用のダイアログを表示します。
+   */
+  showInfoDialog({name, title, text} = dialogObj){
+    return c2._showDialog(name, title, text, "info");
+  }
+
+  /**
+   * 警告用のダイアログを表示します。
+   */
+  showWarnDialog({name, title, text} = dialogObj){
+    return c2._showDialog(name, title, text, "warn");
+  }
+
+  /**
+   * エラー用のダイアログを表示します。
+   */
+  showErrDialog({name, title, text} = dialogObj){
+    return c2._showDialog(name, title, text, "err");
+  }
+
+  /**
    * DialogIdで指定したダイアログの生成、表示を行います。
    *
    * @param {*} DialogId
    * @returns
    * @memberof myApp
    */
-  showDialog(DialogId){
-    // DialogIdからダイアログの内容定義を取得します。
-    const dialogData = c2._getDialogDate(DialogId);
-    const overlay = "<div id='dialog_overlay' class='ovarlay-dialog-wrap'></div>";
+  _showDialog(name, title, text = "", type){
 
     // ダイアログタイトルHTML定義
-    const dTitle = dialogData.title ? `
+    const dTitle = title ? `
       <div class='dialog-title board-hdr'>
-        <div class='label-box _fb flex _c'>
-          ${dialogData.icon ? "<i class='icon-title-b " + dialogData.icon + " fa-fw'></i>" : ""}
-          <span>${dialogData.title}</span>
+        <div class='label-box _fb'>
+          <p class='title-str dialog-${type}'>${title}</>
         </div>
       </div>` : "";
-
-    // ダイアログコンテンツHTML定義
-    const dContent = dialogData.text ? `<div class='dialog-cnt board-cnt'>${dialogData.text}</div>` : "";
-
-    // ダイアログフッターHTML定義
-    const dFooter = dialogData.button ? `
-      <div class='dialog-ftr  board-ftr'>
-        ${dialogData.button.no ? `<button name='${dialogData.button.no.name}'>${dialogData.button.no.label}</button>` : ''}
-        ${dialogData.button.yes ? `<button name='${dialogData.button.yes.name}'>${dialogData.button.yes.label}</button>` : ''}
-      </div>` : "";
-
+    
     // ダイアログをbodyの直前に定義します。
     $("body").prepend(`
-      ${overlay}
-      <div id='dialog_body' class='confirm-dialog-wrap' name='${dialogData.name}'>
+      <div id='dialog_overlay' class='ovarlay-dialog-wrap'></div>
+      <div id='dialog_body' class='confirm-dialog-wrap' name='${name}'>
         <div class='confirm-dialog board-prm'>
           ${dTitle}
-          ${dContent}
-          ${dFooter}
+          <div class='dialog-cnt board-cnt'>${text}</div>
+          <div class='dialog-ftr board-ftr flex _jr'>
+            <button class='dialog-close btn-prm st-line-b' name='dialogClose'>閉じる</button>
+          </div>
         </div>
 			</div>
     `);
 
-    // はい/いいえボタンのコールバックを定義
-    var callbacks = {
-      yes: (fnc)=>{
-        $(`[name=${dialogData.name}] [name=${dialogData.button.yes.name}]`).click(fnc);
-        return callbacks;
+
+    const $footer = $(`[name=${name}] .dialog-ftr`);
+    const $closeBtn = $(`[name=${name}] [name=dialogClose]`);
+    $closeBtn.on('click', c2.hideDialog);
+
+    /**
+     * メソッドが呼ばれた時に生成されます。
+     */
+    return {
+      count: 0,
+      addBtn: function({label = "はい", callback = function(){}} = {}){
+        let btnName = `dialogBtn${this.count}`;
+        this.count++;
+        $footer.append(`<button class='dialog-btn btn-prm st-back-b shadow-l' name='${btnName}'>${label}</button>`);
+        $(`[name=${name}] [name=${btnName}]`).on('click', callback);
+        return this;
       },
-      no : (fnc)=>{
-        $(`[name=${dialogData.name}] [name=${dialogData.button.no.name}], #dialog_overlay`).click(fnc);
-        return callbacks;
-      },
-    };
-    return callbacks;
+      closelabel: function(label = "閉じる"){
+        $closeBtn.text(label);
+        return this;
+      }
+    }
   }
 
   /**
@@ -423,60 +442,6 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   hideDialog(){
-    $('#dialog_overlay,#dialog_body').remove();
-  }
-
-
-  /**
-   * ダイアログデータを定義します。
-   *   - ダイアログはDialogIdをキーに取得します。
-   *
-   * @param {*} DialogId
-   * @returns ダイアログデータ
-   * @memberof myApp
-   */
-  _getDialogDate(DialogId, options = {}){
-    const obj = {};
-    switch(DialogId){
-      // 投稿確認ダイアログ
-      case "PostCheck":
-        obj.icon = "fas fa-exclamation-circle c-orange";
-        obj.name = "PostCheck";
-        obj.title = "投稿確認";
-        obj.text = "投稿します。よろしいですか";
-        obj.button = {
-          yes: {
-            label:"はい",
-            name:"doYes",
-            onclick:()=>{console.log('yes')},
-          },
-          no: {
-            label:"いいえ",
-            name:"doNo",
-            onclick:()=>{console.log('no')},
-          }
-        };
-        break;
-      case "deleteCheck":
-        obj.icon = "fas fa-exclamation-circle c-orange";
-        obj.name = "deleteCheck";
-        obj.title = "削除確認";
-        obj.text = "削除します。よろしいですか";
-        obj.button = {
-          yes: {
-            label:"はい",
-            name:"doYes",
-            onclick:()=>{console.log('yes')},
-          },
-          no: {
-            label:"いいえ",
-            name:"doNo",
-            onclick:()=>{console.log('no')},
-          }
-        };
-        break;
-    }
-
-    return obj;
+    $('#dialog_overlay, #dialog_body').remove();
   }
 }
