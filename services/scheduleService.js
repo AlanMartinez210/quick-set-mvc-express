@@ -52,7 +52,12 @@ exports.getMonthScheduleNumList = async (user_id, year) => {
 exports.getScheduleData = async (schedule_id) => {
   try{
     // スケジュール情報の情報を取得
-    const schedule = await scheduleRepository.getScheduleById(schedule_id);
+    const schedule = await scheduleRepository.getScheduleById(schedule_id)
+    .then(res => {
+      // 日付をmomentに変換
+      res.date_key = dateHelper.getDate(res.date_key);    
+      return res;
+    });
 
     // スケジュール情報に紐づいたタグ、都道府県の取得
     const [scheduleTag, schedulePref] = await Promise.all([

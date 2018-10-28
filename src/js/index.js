@@ -99,6 +99,9 @@ function setDesignPtn(cntId){
     case "register":
       designPtn = cntId;
       break;
+    case "recruit_detail":
+      designPtn = "recruitdetail";
+      break;
   }
   $(".wrap-body-content").addClass(`${designPtn}-ptn`);
 }

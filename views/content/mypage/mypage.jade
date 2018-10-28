@@ -1,7 +1,6 @@
 -
-  var no_review = self.bodyData.no_review_num;
-  var matching = self.bodyData.matching_info_num;
-  var session = self.session;
+  const no_review_num = Number(self.bodyData.no_review_num);
+  const matching_info_num = Number(self.bodyData.matching_info_num);
 -
 
 .center-frame
@@ -27,30 +26,33 @@
   .board-prm
     .board-cnt._n
       .label-link
-        a(href="/mypage/review").flex._c
-          i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
-          .st-string-set
-            p: |レビューの管理
-            span.sub-text: |レビューの管理や閲覧ができます。
-          i.icon-link.fas.fa-chevron-right.fa-fw
-    .board-ftr._s.flex._c._jc
-      i.icon-error.fas.fa-exclamation-triangle.fa-fw
-      p.error-text: |未レビューが#{no_review.length}件あります。
-
-
-  .board-prm
-    .board-cnt._n
-      .label-link
         a(href="/mypage/matching").flex._c
           i.icon-title-b.far.fa-handshake.fa-fw.c-blue
           .st-string-set
             p: |マッチングの管理
             span.sub-text: |マッチングの管理や閲覧ができます。
           i.icon-link.fas.fa-chevron-right.fa-fw
+    - if(matching_info_num > 0){
     .board-ftr._s.flex._c._jc
       i.icon-error.fas.fa-exclamation-triangle.fa-fw
-      p.error-text: |未確認の内容が#{matching.length}件あります。
+      p.error-text: |未確認の内容が#{matching_info_num}件あります。
+    - }
 
+  .board-prm
+    .board-cnt._n
+      .label-link
+        a(href="/mypage/review").flex._c
+          i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+          .st-string-set
+            p: |レビューの管理
+            span.sub-text: |レビューの管理や閲覧ができます。
+          i.icon-link.fas.fa-chevron-right.fa-fw
+    - if(no_review_num > 0){
+    .board-ftr._s.flex._c._jc
+      i.icon-error.fas.fa-exclamation-triangle.fa-fw
+      p.error-text: |未レビューが#{no_review_num}件あります。
+    - }
+    
   .group-wrap._mb
     .board-prm.board-accordion
       .board-hdr.flex._c

@@ -4,9 +4,6 @@ export default () => {
 	var showModal = c2.showModal;
 	var showClearAll = c2.showClearAll;
 	const showModalNameObj = {
-		"#searchBtn": "search",
-		".createRecruit": "createRecruit",
-		".createSchedule": "createSchedule",
 		"#noticeBtn": "notice",
 		".editReview": "editReview",
 	}

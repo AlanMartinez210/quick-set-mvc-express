@@ -10,17 +10,17 @@ const getScheduleList = (select, data, options)=>{
   return abstractRepository.querySelect(resultQuery, data, options);
 };
 
-exports.getScheduleListResult = (data = {schedule_type:2, /* date_key: "20180808" */}, options = {page:1/* page, orderBy */}) => {
+exports.getScheduleListResult = async(data = {schedule_type:2, /* date_key: "20180808" */}, options = {page:1/* page, orderBy */}) => {
   var select = ` select schedules.*,
                  users.id as user_id, users.icon_url as user_icon_url,
                  concat('[', ifnull((
-                   select GROUP_CONCAT(schedule_prefectures.prefecture_id SEPARATOR ',')
+                   select GROUP_CONCAT(JSON_OBJECT('id', schedule_prefectures.prefecture_id) SEPARATOR ',')
                    from   schedule_prefectures
                    where  schedule_prefectures.schedule_id = schedules.id
                  ),""), ']') as prefecture_json,
                  concat('[', ifnull((
-                   select GROUP_CONCAT(schedule_tags.tag_id SEPARATOR ',')
-                   from   schedule_tags
+                   select GROUP_CONCAT(JSON_OBJECT('id', schedule_tags.tag_id, 'name', tags.tag_name ) SEPARATOR ',')
+                   from   schedule_tags join tags on schedule_tags.tag_id = tags.id
                    where  schedule_tags.schedule_id = schedules.id
                  ), ''), ']') as tags_json
                `;
@@ -29,7 +29,19 @@ exports.getScheduleListResult = (data = {schedule_type:2, /* date_key: "20180808
     limit: PAGE_COUNT,
     offset: (options.page-1)*PAGE_COUNT,
   }, options);
-  return getScheduleList(select, data, options);
+  const schedule_list = await getScheduleList(select, data, options);
+  console.log('\naaaaprefeaaa\n', schedule_list);
+  schedule_list.forEach(row=>{
+    row.prefecture_json = JSON.parse(row.prefecture_json);
+    if(Array.isArray(row.prefecture_json)){
+      row.prefecture_json.forEach(obj=>{
+        obj.name = global.C2LINK.ALL_PREF_ID_MAP[obj.id].name;
+      });
+    }
+    row.prefecture_json = JSON.stringify(row.prefecture_json);
+    return row;
+  });
+  return schedule_list;
 };
 
 exports.getScheduleListCount = (data = {user_type:0, date_key: "20180808"}, options = {}) => {

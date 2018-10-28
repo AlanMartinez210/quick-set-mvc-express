@@ -111,8 +111,6 @@ exports.getSchedule = (req, res, next)=>{
       vo.prefectures_field = results.prefectures;
     }
 
-    console.log(vo);
-
     scheduleJson = new scheduleVO.scheduleInfo(vo)
     res.json(scheduleJson);
   })

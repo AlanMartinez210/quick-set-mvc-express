@@ -1,6 +1,31 @@
 -
-  var data = self.data;
+  // var data = self.data;
+  const detail_data = {
+    user_info: {
+      id: 4,
+      name: "test_cosplayer_1",
+      icon: "image/icon.png"
+    },
+    date_info: {
+      key: "2018/10/29",
+      year: 2018,
+      month: 10,
+      day: 29,
+      week: "土"
+    },
+    event_info: {
+      type: 1,
+      title: "世界コスプレサミット",
+      prefectures: ["東京都", "神奈川県"],
+      url: "http://test.com/event/site"
+    },
+    good_review_num: 20,
+    bad_review_num: 1,
+    tags: ["夜間撮影", "カメラ必須"],
+    remarks: "これはテストです。"
+  }
 -
+
 .center-frame
   .board-prm
     .board-hdr._s
@@ -9,7 +34,7 @@
         span: |日時
     .board-cnt
       .label-box
-        span: |#{data.date_txt}
+        span: |#{detail_data.date_info.key} 
 
   .board-prm
     .board-hdr._s
@@ -17,14 +42,14 @@
         i.icon-title.far.fa-flag.fa-fw.c-blue
         span: |イベント名 or 開催地域
     .board-cnt
-      span: |#{data.eventname}
+      span: |#{detail_data.event_info.title}
       //- span.sub-text: |イベント名は設定されていません。
     .board-ftr._s
       .label-box._fb.flex._c
         i.icon-title.fas.fa-link.fa-fw.c-blue
         span: |詳細URL
     .board-ftr
-      a(href=data.eventurl): | #{data.eventurl}
+      a(href=detail_data.date_info.url): | #{detail_data.event_info.url}
 
   .board-prm
     .board-hdr._s
@@ -33,8 +58,10 @@
         span: |開催地
     .board-cnt
       .label-box
-        span: |#{data.prefecture}
-
+        - for(let i=0;i<detail_data.event_info.prefectures.length;i++){ let pref = detail_data.event_info.prefectures[i];
+        span: | #{pref}
+        - }
+        
   .board-prm
     .board-hdr._s
       .label-box._fb.flex._c
@@ -53,6 +80,7 @@
         span: |レビュー評価
     .board-cnt._s
       .group-wrap
+        span: |test
 
   .board-prm
     .board-hdr._s
@@ -60,6 +88,10 @@
         i.icon-title.fas.fa-tag.fa-fw.c-blue
         span: |タグ一覧
     .board-cnt
+      .tag-box
+        - for(let i=0;i<detail_data.tags.length;i++){ let tag = detail_data.tags[i];
+        a: | #{tag}
+        - }
 
   .board-prm
     .board-hdr._s
@@ -67,4 +99,4 @@
         i.icon-title.fas.fa-clipboard-list.fa-fw.c-blue
         span: |備考
     .board-cnt
-      span: pre: |#{data.remarks}
+      span: pre: | #{detail_data.remarks}

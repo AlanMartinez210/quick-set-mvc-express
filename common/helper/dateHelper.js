@@ -53,7 +53,6 @@ function _getDate (datestr, locale = "ja") {
   // 拡張メソッドを定義
   mDt.trueMonth = function(addZero = false){ 
     return this.month() + 1;
-
   }
 	return mDt
 }

@@ -6,6 +6,8 @@ const controllerPath = './controllers/';
 const publicController = require(`${controllerPath}publicController`);
 const userController = require(`${controllerPath}userController`);
 
+const recruitDetailController = require(`${controllerPath}recruitDetailController`);
+
 const validate = require('./common/middleware/validateForm');
 
 
@@ -34,6 +36,12 @@ router.post('/api/login', validate.check(require('./form/loginForm')), validate.
 //
 ///* お問い合わせの表示 index */
 //router.get('/public/contact', publicController.getContact);
+
+/** 
+ * 募集/予定の詳細の表示 entryOutSide
+ * 外部からのアクセス専用
+ *  */
+router.get('/api/recruitlist/detail', recruitDetailController.entryOutSide)
 
 module.exports = router;
 

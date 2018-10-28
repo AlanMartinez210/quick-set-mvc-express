@@ -20,7 +20,7 @@ function renderRecruitList(data, render_obj){
 				return new vo_recruitlist.recruit_list_item({
 					recruit_list_id: row.id,
 					user_info: {id: row.user_id, icon: row.user_icon_url},
-					date_info: dateHelper.dateToObject(row.date_key),
+					date_info: row.date_key,
 					event_info: {
 						type: row.shot_type,
 						title: row.event_name,
@@ -50,9 +50,12 @@ exports.index = function(req, res, next){
 
 	const data = {
 		user_type: sessionHelper.getUserType(req),
-		date_key: req.form_data.date_key,
 		page: req.form_data.page,
 	};
+
+	// 日付をmomentに変換する。
+	data.date_key = req.form_data.date_key ? dateHelper.getDate(req.form_data.date_key) : undefined;
+
 	renderRecruitList(data, render_obj)
 	.then(()=>{
 		res.render('recruitList/index', render_obj);
@@ -73,7 +76,7 @@ exports.indexToday = function(req, res, next){
 
 	const data = {
 		user_type: sessionHelper.getUserType(req),
-		date_key: dateHelper.getToday(),
+		date_key: dateHelper.getDate(),
 		page: req.form_data.page,
 	};
 

@@ -1,21 +1,49 @@
+-const today = false;
+
 #searchModal(data-modal="hide")
-  form(action="", method="post")
+  form(method="post", action="", name="recruitSearchForm")
     .board-prm
 
       .board-cnt._s
-        -const today = true;
-
-        .input-box._s.flex._c(class="#{today?'disabled':''}")
+        .attention-prm
+          p
+            span: |入力した内容で表示する項目を絞ります。
+        
+        - if(!today){
+        .label-input-box._mbs#box_search_date
+          .label-box
+            p.main-label: |日付
+          .input-box._s.flex._c
             i.icon-input.far.fa-calendar.fa-fw
-            input(type="text", placeholder="2018/05/08")
+            input(type="text", data-datepicker, name="search_date_from", placeholder="ここを選択")
+            span: |～&nbsp;
+            i.icon-input.far.fa-calendar.fa-fw
+            input(type="text", data-datepicker, name="search_date_to", placeholder="ここを選択")
+          p.bottom-label
+        - }
+        
+        .label-input-box._mbs#box_prefectures_field
+          .label-box
+            p.main-label: |都道府県
+          .select-box._s.flex._c
+            select#prefectures.js-addPrefectures
+              option(value="")
+              - for(var pref of C2LINK.ALL_PREF_LIST){
+                option(value="#{pref.name}") #{pref.name}
+              - }
+          p.bottom-label
 
-        .input-box._s.flex._c
-          i.icon-input.fas.fa-map-marker-alt.fa-fw
-          input(type="text", placeholder="東京都 港区")
+        p.st-title-tag
+          |対象都道府県
+        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input")
 
-        .input-box._s.flex._c
-          i.icon-input.fas.fa-tags.fa-fw
-          input(type="text", placeholder="一眼レフOK")
+        .label-input-box._mbs#box_prefectures_field
+          .label-box
+              p.main-label: |タグ
+          .input-box._s.flex._c
+            i.icon-input.fas.fa-tags.fa-fw
+            input(type="text", placeholder="一眼レフOK")
+          p.bottom-label
 
         .accordion-prm
           .accordion-label.flex._c

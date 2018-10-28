@@ -1,11 +1,11 @@
 .board-prm.custam-ptn
 
   //- イベント種別
-  .board-cnt(data-shot_type=ei.type)
+  .board-cnt(data-shot_type=ei.type[0])
 
     .recruit-title.flex._c
       //- イベントタイプ名
-      //- p.type-name: |#{ei.type[1]}
+      p.type-name: |#{ei.type[1]}
       //- イベントタイトル
       p.title: |#{ei.title}
 

@@ -151,8 +151,7 @@ router.get('/recruitlist', recruitlistController.index);　
 /* 当日の募集/予定の表示 indexToday */
 router.get('/recruitlist/today', recruitlistController.indexToday);　
 
-/* 募集/予定の詳細の表示 index */
-router.get('/recruitlist/detail/:id(\\d+)', recruitDetailController.index);
+router.get('/recruitlist/detail/:recruit_list_id', recruitDetailController.index)
 
 /* 募集/予定の検索 getSearchRecruit */
 
