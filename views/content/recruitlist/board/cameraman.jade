@@ -28,7 +28,7 @@
           - }
 
   .board-ftr._s.flex._c._jc
-    a.btn-prm.link-btn.st-line-b.shadow-l(href="./recruitlist/detail/" + recruit_item.recruit_list_id)
+    a.btn-prm.link-btn.st-line-b.shadow-l(name="openRecruitDetail" data-recruitlistid=recruit_item.recruit_list_id)
       span: |詳細表示
     a.btn-prm.link-btn.st-back-b.shadow-l(data-doRequest, data-requestid=recruit_item.recruit_list_id)
       span: |依頼する

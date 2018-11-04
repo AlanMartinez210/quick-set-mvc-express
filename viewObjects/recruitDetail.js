@@ -6,25 +6,34 @@ module.exports = {
    * 
    */
   recruit_detail_item: class {
-    constructor({ 
+    constructor({
+      recruit_list_id = "",
+      bgImage = "",
+      good_review_num = 0,
+      bad_review_num = 0,
       user_info = {id: 0, name: "", icon: ""},
       date_info = {/* moment */},
-      event_info = {type: 0, title: "", prefectures: []},
-      good_review_num = 0,
-      tags = []
+      event_info = {shot_type: 0, title: "", url: "", prefectures: [], tags: []},
+      review_info = [],
+      user_tags = [],
+      remarks = ""
     }){
 
+      this.recruit_list_id = recruit_list_id;
+      this.bgImage = bgImage;
+      this.good_review_num = good_review_num;
+      this.bad_review_num = bad_review_num;
       this.user_info = user_info;
       this.date_info = {
         key: date_info.format("YYYYMMDD"),
         year: date_info.year(),
         month: date_info.trueMonth(),
-        day: date_info.day(),
+        day: date_info.date(),
         week: date_info.format('ddd'),
       };
       this.event_info = event_info;
-      this.good_review_num = good_review_num;
-      this.tags = tags;
+      this.review_info = review_info;
+      this.user_tags = user_tags;
       this.remarks = remarks;
     }
   }

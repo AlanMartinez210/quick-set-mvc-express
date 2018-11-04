@@ -1,19 +1,16 @@
--
-  var data = self.data;
--
-
-header(data-bgimage="").bgImage
+header(data-bgimage="#{body_data.bgImage}").bgImage
   .hdr-Gradation
   .hdr-cntnr
     .hdr-cnt-wrap
       .hdr-cnt-box.flex._c
         .hdr-user-data
           .user-name
-            span: |テストユーザー
+            span: |#{body_data.user_info.name}
           .review-wrap.flex._c
             i.icon-title.far.fa-thumbs-up.fa-fw.c-green
-            span.mr: |800
+            span.mr: |#{body_data.good_review_num}
             i.icon-title.far.fa-thumbs-down.fa-fw.c-purple
-            span: | 9
+            span: | #{body_data.bad_review_num}
         .recuit-btn-wrap
-          span.btn-prm.btn-link.st-line-w.shadow-l(data-doRequest, data-requestid=""): |依頼する
+          button(type="submit", name="doRequestPost", data-requestid="#{body_data.recruit_list_id}").btn-prm.btn-link.st-line-w.shadow-l
+            |新規登録

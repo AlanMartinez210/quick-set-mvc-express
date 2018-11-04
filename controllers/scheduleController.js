@@ -23,7 +23,7 @@ exports.index = (req, res, next) => {
   const month = today.trueMonth();
 
   render_obj.contentId = content_id;
-  render_obj.title = c2Util.isCosplayer(user_type) ? "募集の管理" : "予定の管理";
+  render_obj.title = c2Util.getScheduleTitle(user_type);
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),
@@ -57,7 +57,7 @@ exports.getSelectScheduleList = (req, res, next) =>{
   const month = req.params.month;
 
   render_obj.contentId = content_id;
-  render_obj.title = c2Util.isCosplayer(user_type) ? "募集の管理" : "予定の管理";
+  render_obj.title = c2Util.getScheduleTitle(user_type);
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),

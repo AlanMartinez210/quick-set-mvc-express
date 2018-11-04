@@ -39,4 +39,22 @@ exports.bindSchedule = (calendar, schedule) => {
   return calendar;
 }
 
+/**
+ * 種別によるスケジュールコンテンツのタイトルを取得します。
+ * 
+ * @param {*} user_type 
+ */
+exports.getScheduleTitle = (user_type) => {
+  return this.isCosplayer(user_type) ? "募集の管理" : "予定の管理";
+}
+
+/**
+ * 種別による募集/予定一覧コンテンツのタイトルを取得します。
+ * 
+ * @param {*} user_type 
+ */
+exports.getRecruitListTitle = (user_type) => {
+  return this.isCosplayer(user_type) ? "カメラマン一覧" : "募集一覧";
+}
+
 

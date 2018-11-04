@@ -58,6 +58,15 @@
 	
 */
 
+.st-radius{
+	border-radius: 5px !important;
+}
+
+.st-radius-top{
+	border-top-left-radius: 5px !important;
+	border-top-right-radius: 5px !important;
+}
+
 .st-line-w{
 	background: transparent;
 	color: $white !important;

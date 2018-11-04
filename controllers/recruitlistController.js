@@ -2,8 +2,10 @@ const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
 const recruitlistService = require('../services/recruitlistService');
 const vo_recruitlist = require("../viewObjects/recruitlist");
+const c2Util = require("../services/c2link4DiService");
 
 const content_id = "recruit";
+
 
 
 /**
@@ -29,7 +31,7 @@ function renderRecruitList(data, render_obj){
 					good_review_num: 0,
 					bookmark_flg: true,
 					tags: JSON.parse(row.tags_json),
-					anime_info: [],
+					anime_info: []
 				});
 			}),
 			recruit_list_pager: results.pages,
@@ -38,14 +40,41 @@ function renderRecruitList(data, render_obj){
 }
 
 /**
- * 検索結果ページの表示
+ * 募集/予定一覧の表示
  *
  * @param {*} req
  * @param {*} res
  */
 exports.index = function(req, res, next){
-	var render_obj = res.render_obj;
-	render_obj.title = "募集一覧";
+	const render_obj = res.render_obj;
+	const user_type = sessionHelper.getUserType(req);
+
+	render_obj.title = c2Util.getRecruitListTitle(user_type);
+	render_obj.contentId = content_id;
+
+	// TODO ルートを切り替えて、ここの呼び出し(data)を完成させる。
+
+	// 日付をmomentに変換する。
+	data.date_key = req.form_data.date_key ? dateHelper.getDate(req.form_data.date_key) : undefined;
+
+	renderRecruitList(data, render_obj)
+	.then(()=>{
+		res.render('recruitList/index', render_obj);
+	})
+	.catch(next);
+}
+
+/**
+ * 募集/予定一覧の表示(検索結果)
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.searchRecruitList = function(req, res, next){
+	const render_obj = res.render_obj;
+	const user_type = sessionHelper.getUserType(req);
+
+	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
 
 	const data = {
@@ -64,14 +93,16 @@ exports.index = function(req, res, next){
 }
 
 /**
- * 検索結果ページの表示
+ * 募集/予定一覧の表示(当日のみ)
  *
  * @param {*} req
  * @param {*} res
  */
 exports.indexToday = function(req, res, next){
-	var render_obj = res.render_obj;
-	render_obj.title = "当日の募集一覧";
+	const render_obj = res.render_obj;
+	const user_type = sessionHelper.getUserType(req);
+
+	render_obj.title = c2Util.getRecruitListTitle(user_type) + " (当日)";
 	render_obj.contentId = content_id + "Today";
 
 	const data = {
@@ -85,5 +116,4 @@ exports.indexToday = function(req, res, next){
 		res.render('recruitList/index', render_obj);
 	})
 	.catch(next);
-
 }

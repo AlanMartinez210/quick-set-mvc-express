@@ -1,4 +1,4 @@
-import recruitDetail from './recruitDetail';
+import recruit_detail from './recruitDetail';
 import register from './register';
 import mypage from './mypage/mypage';
 import recruit from './recruit';
@@ -16,7 +16,7 @@ import schedule from './mypage/schedule';
 
 // # 必ず紐づくコンテンツIDで定義してください。
 export const contents = {
-  recruitDetail,
+  recruit_detail,
   register,
   mypage,
   recruit,

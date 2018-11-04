@@ -3,9 +3,21 @@ module.exports = {
 	 * 募集一覧
 	 */
   recruit_list_page: class {
-    constructor({recruit_list_item = [], recruit_list_pager = {/* pageObject */}}){
+    constructor({
+      recruit_list_item = [],
+      recruit_list_pager = {/* pageObject */},
+      recruit_search_info = {
+        shot_type: 0,
+        date_from: "",
+        date_to: "",
+        prefectures: [],
+        tags: ""
+      }
+    }){
+
       this.recruit_list_arr = recruit_list_item;
       this.recruit_list_pager = recruit_list_pager;
+      this.recruit_search_info = recruit_search_info;
     }
   },
 
