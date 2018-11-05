@@ -445,4 +445,20 @@ export default class myApp extends baseApp {
   hideDialog(){
     $('#dialog_overlay, #dialog_body').remove();
   }
+
+  /** =======================================================
+   * #### ダイアログ
+   ========================================================== */
+
+  inputClear(){
+    let inputName = "";
+    let target = "";
+    $("[name=inputClear]").each((i, ele) => {
+      $(ele).on('click', e => {
+        inputName = $(ele).data("inputclear");
+        target = `input[data-inputclear="${inputName}"]`;
+        $(target).val("");
+      })
+    })
+  }
 }

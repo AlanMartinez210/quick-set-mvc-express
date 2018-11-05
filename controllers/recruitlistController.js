@@ -48,14 +48,17 @@ function renderRecruitList(data, render_obj){
 exports.index = function(req, res, next){
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
-
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
 
-	// TODO ルートを切り替えて、ここの呼び出し(data)を完成させる。
+	const data = {
+		user_type: user_type,
+		date_key: req.form_data.date_key,
+		page: 1
+	}
 
 	// 日付をmomentに変換する。
-	data.date_key = req.form_data.date_key ? dateHelper.getDate(req.form_data.date_key) : undefined;
+	data.date_key = dateHelper.getDate(req.form_data.date_key);
 
 	renderRecruitList(data, render_obj)
 	.then(()=>{

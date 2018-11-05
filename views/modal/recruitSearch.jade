@@ -15,12 +15,16 @@
             p.main-label: |日付
           .input-box._s.flex._c
             i.icon-input.far.fa-calendar.fa-fw
-            input(type="text", data-datepicker, name="search_date_from", placeholder="ここを選択")
+            input(type="text", data-datepicker, name="search_date_from", readonly="true" placeholder="ここを選択", data-inputclear="dateInput")
             span: |～&nbsp;
             i.icon-input.far.fa-calendar.fa-fw
-            input(type="text", data-datepicker, name="search_date_to", placeholder="ここを選択")
+            input(type="text", data-datepicker, name="search_date_to", readonly="true", placeholder="ここを選択", data-inputclear="dateInput") 
           p.bottom-label
         - }
+
+        .option-box.flex._jr
+          span.option-btn.st-line-b(name="inputClear" data-inputclear="dateInput")
+            |日付をクリア
         
         .label-input-box._mbs#box_prefectures_field
           .label-box

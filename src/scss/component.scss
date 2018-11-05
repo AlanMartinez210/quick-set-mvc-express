@@ -278,6 +278,15 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+.option-box{
+	margin-bottom: 16px;
+	.option-btn{
+		cursor: pointer;
+		border-radius: 5px; 
+		padding: 7px 12px 6px;
+	}
+}
+
 .bottom-label{@include font-small;}
 
 /* ラベル付きインプット */

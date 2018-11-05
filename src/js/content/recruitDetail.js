@@ -49,15 +49,13 @@ export default class recruitDetail{
 
 	detailHeaderDefine(){
 		let hd = ($("body").width()/3)-24;
-		hd = (hd >= 500) ? 500 : (hd <= 200) ? 200 : hd;  
-		$("div.recruitdetail-ptn").find("div.hdr-cntnr").height(hd) ;
+		hd = (hd >= 500) ? 500 : (hd <= 200) ? 200 : hd;
+		$("div.recruitdetail-ptn").find("div.hdr-cntnr").height(hd);
 	}
 
 	detailModalHeaderDefine(){
 		let hd = ($("body").width())-32;
-		// 最小値 240 最大値 300
 		hd = (hd >= 320) ? 300 : (hd <= 200) ? 200 : hd;
-		console.log(hd);
-		$("form.recruitdetail-ptn").find("div.hdr-cntnr").height(hd) ;
+		$("form.recruitdetail-ptn").find("div.hdr-cntnr").height(hd);
 	}
 }

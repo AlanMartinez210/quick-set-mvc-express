@@ -13,6 +13,8 @@ export default class recruit {
 		const openSearchBtn = "#searchBtn";
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
 
+		c2.inputClear();
+
 		this.setShotType();
 
 		// 検索モーダルを開く
