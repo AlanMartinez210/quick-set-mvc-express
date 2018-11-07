@@ -1,11 +1,13 @@
 import plugin_tag from "../../plugin/tag";
 import plugin_prefecture from "../../plugin/prefecture";
+import plugin_convert from "../../plugin/convert";
 
 export default class schedule{
 	constructor(){
 		this.scheduleForm = $('[name=scheduleForm]');
-		this.tag = new plugin_tag();
-		this.prefecture = new plugin_prefecture();
+		this.tags = new plugin_tag();
+		this.prefs = new plugin_prefecture();
+		this.convert = new plugin_convert();
 	}
 	ready(){
 		const scheduleSection = $('#scheduleSection');
@@ -36,9 +38,10 @@ export default class schedule{
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
 				this.modalEnable();
-				
-				this.tag.ready();
-				this.prefecture.ready();
+
+				// タグと都道府県のプラグインをロード
+				this.tags.init().ready();
+				this.prefs.init().ready();
 
 				const modal_mode = event.currentTarget.dataset.mode;
 				const schedule_id = event.currentTarget.dataset.schedule_id;
@@ -67,15 +70,18 @@ export default class schedule{
 						// 値を取りに行く
 						this.getSchedule(schedule_id)
 						.then(res => {
+							
 							// タグと都道府県のみ別設定
 							res.tag_field.forEach(item => {
-								this.tag.addTags(item);
+								this.tags.addTags(item);
 							});
+
 							res.prefectures_field.forEach(item => {
-								this.prefecture.addPrefecture(item);
+								this.prefs.addPrefecture(item);
 							});
-							console.log("bind-data", res);
+
 							this.scheduleForm.setValue(res);
+							
 							resolve();
 						})
 						break;
@@ -84,6 +90,7 @@ export default class schedule{
 			
 		}, c2.showModal);
 
+		// スケジュールが存在するもののみ表示
 		scheduleSection.on('change', isExistSchedule, (e) => {
 			if($("#"+e.target.id).prop("checked")){
 				$(".empty").hide();
@@ -98,7 +105,7 @@ export default class schedule{
 			let path = "/mypage/schedule";
 			let httpMethod;
 			const modal_mode = event.currentTarget.dataset.proc;
-			let data = this.getModalData();
+			const sendData = this.getModalData();
 			let dialog = {};
 
 			if(modal_mode === "delete"){
@@ -122,16 +129,12 @@ export default class schedule{
 			dialog.closelabel("いいえ")
 			.addBtn({
 				callback: function() {
-					c2.onShowProgress();
-					c2[httpMethod](path, data)
-					.always(result=>{
-						c2.onHideProgress();
-						c2.hideDialog();
-					})
+					c2[httpMethod](path, sendData)
 					.done(result => {
 						$('.month-label.seleced').click();
+						c2.hideDialog();
 						c2.showClearAll();
-						c2.showInfo("処理に成功しました。")
+						c2.showInfo("処理に成功しました。");
 					})
 				}
 			})
@@ -147,10 +150,8 @@ export default class schedule{
 
 	// 指定年月のスケジュール一覧の取得。
 	getCalendarList(e, year, month){
-		c2.onShowProgress();
 		c2.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
 		.done(result=>{
-			c2.onHideProgress();
 			$('#calendarSection').html(result);
 		})
 	}
@@ -172,38 +173,16 @@ export default class schedule{
 	}
 
 	getModalData(){
-		const data = {};
-		// セレクト、インプット、テキストボックスの取得
-		this.scheduleForm.find('input, select, textarea').each((idx, ele) => {
-			const ele_name = ele.name;
-			switch(ele_name){
-				case "":
-				case "prefectures":
-					// 無視
-					break;
-				case "date_key":
-					data[ele_name] = $(ele).dateVal();
-					break;
-				default:
-					data[ele_name] = $(ele).val();
-					break;
-			}
-		});
+		const data = this.scheduleForm.getValue();
+		data.date_key = this.convert.serverDate(data.date_key);
 
 		// 都道府県の取得(カメラマン用)
 		if(c2.config.isCam()){
-			data.prefectures_field = $('[name=prefectures]').map((idx, ele) => {
-				return ele.value;
-			}).get();
+			data.prefectures_field = this.prefs.getPrefectureValue();
 		}
 		
 		//タグの取得
-		data.tag_field = $('[name=tags]').map((idx, ele) => {
-			return ele.value;
-		}).get();
-
-		console.log("send-data: ", data);
-
+		data.tag_field = this.tags.getTagValue();
 		return data;
 	}
 }

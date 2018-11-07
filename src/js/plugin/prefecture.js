@@ -1,17 +1,23 @@
 export default class prefecture{
 	constructor(){
-		this.prefectureList = new Array();
+		this.prefectureList = [];
 		this.$Prefectures = $(".js-addPrefectures");
 		this.$prefectures_field = $("#prefectures_field");
 		this.tag_delete_button = ".tag_delete_button";
-		this.prefectureCount = 0;
 		this.limitPrefectureLength = 47;
 		this.errEmitter = (errText) => {
 			c2.showInputErr("prefectures_field", errText);
 			return false;
 		}
 	}
+	init(){
+		this.prefectureList = [];
+		return this;
+	}
 	ready(){
+
+		// 都道府県タグ追加
+		this.$Prefectures.off('change');
 		this.$Prefectures.on('change', () => {
 			const prefectureValue = $("#prefectures option:selected").val();
 			// 初期空白時に処理を飛ばす
@@ -33,14 +39,14 @@ export default class prefecture{
 			this.initSelect();
 		});
 
-		//都道府県タグ削除
+		// 都道府県タグ削除
 		const that = this;
+		this.$prefectures_field.off('click', this.tag_delete_button);
 		this.$prefectures_field.on('click', this.tag_delete_button, function(){
 			// 削除する活動地域名取得
 			var deletePrefectureName = $(this).parent().children("span").first().text();
 			// 削除
 			$(this).parent().remove();
-			that.prefectureCount--;
 			var idx = that.prefectureList.indexOf(deletePrefectureName);
 			if(idx >= 0){
 				that.prefectureList.splice(idx, 1);
@@ -64,7 +70,6 @@ export default class prefecture{
 				</div>
 		`);
 
-		this.prefectureCount++;
 		this.prefectureList.push(prefectureStr);
 	}
 
@@ -82,7 +87,7 @@ export default class prefecture{
 	 * 個数チェック
 	 */
 	checkPrefecturesNum(){
-		if(this.prefectureCount + 1 > this.limitPrefectureLength) return this.errEmitter(`活動地域は${this.limitPrefectureLength}以上設定できません`);
+		if((this.prefectureList.length+1) > this.limitPrefectureLength) return this.errEmitter(`活動地域は${this.limitPrefectureLength}以上設定できません`);
 		return true;
 	}
 
@@ -91,5 +96,11 @@ export default class prefecture{
 	 */
 	initSelect(){
 		$("#prefectures").val("");
+	}
+
+	getPrefectureValue(){
+		return $('[name=prefectures]').map((idx, ele) => {
+			return ele.value;
+		}).get();
 	}
 }
