@@ -1,13 +1,12 @@
 /** 募集を検索フォーム */
 module.exports = {
-	box_search_date:{
+	search_date_from:{
 		in: 'body',
-		isArray:{ errorMessage: 'E00006' }
+	},
+	search_date_to:{
+		in: 'body',
 	},
 	prefectures_field:{
-		in: 'body'
-	},
-	search_date_from:{
 		in: 'body'
 	},
 	search_tag:{
@@ -15,8 +14,5 @@ module.exports = {
 	},
 	shot_type:{
 		in: 'body'
-	},
-	page: {
-		in: 'body'
-	},
+	}
 };
