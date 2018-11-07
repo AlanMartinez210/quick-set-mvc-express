@@ -3,6 +3,5 @@
 module.exports = {
 	schedule_id:{
 		in: 'body',
-		isEmpty: { errorMessage: 'E00002', negated: true }
 	}
 };
