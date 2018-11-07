@@ -62,58 +62,144 @@ export class baseApp {
         shamShow: function(){
           $(this).removeClass("dummy-hide");
         },
+        getValue: function(){
+          const $form = $(this);
+          const formData = {};
+          if($form.prop("tagName") === "FORM"){
+            // form内の属性を取得
+            const $formEle = $form.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
+            $formEle.each(function(){
+              const $t = $(this);
+              const eleName = $t.prop("name");
+              //nameがないものは弾く
+              if(!eleName) return true
+
+              switch($t.prop("tagName")){
+                case "INPUT":
+                case "TEXTAREA":
+                  switch($t.prop("type")){
+                    case "text":
+                    case "textarea":
+                    case "file":
+                    case "hidden":
+                      formData[eleName] = $t.val();
+                      break;
+                    case "radio":
+                      if($t.prop("checked")){
+                        formData[eleName] = $t.val();
+                      }
+                      break;
+                    case "checkbox":
+                        formData[eleName] = $t.prop("checked");
+                      break;
+                  }
+                  break;
+                case "SELECT":
+                  formData[eleName] = $t.val();
+                  break;
+                case "DIV":
+                case "SPAN":
+                case "p":
+                  if($t.data("dummytag") == "input"){
+                    formData[eleName] = $t.text();
+                  }
+                  break;
+              }
+            });
+          }
+          return formData;
+        },
         setValue: function(serverData){
-          console.log(serverData);
-          const formData = this[0];
-          if(formData){
-            Object.keys(serverData).forEach(key => {
-              if(formData[key]){
-                $(formData[key]).val(serverData[key]);
+          const $form = $(this);
+          if($form.prop("tagName") === "FORM"){
+            const $formEle = $form.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
+            $formEle.each(function(){
+              const $t = $(this);
+              const item = serverData[$t.prop("name")];
+              if(!item) return true;
+              switch($t.prop("tagName")){
+                case "INPUT":
+                case "TEXTAREA":
+                  switch($t.prop("type")){
+                    case "text":
+                    case "textarea":
+                    case "file":
+                    case "hidden":
+                      $t.val(item);
+                      break;
+                    case "radio":
+                      // TODO 後でテスト
+                      break;
+                    case "checkbox":
+                      $t.prop("checked", Boolean(item));
+                      break;
+                  }
+                  break;
+                case "SELECT":
+                  $t.val(item);
+                  break;
+                case "DIV":
+                case "SPAN":
+                case "p":
+                  if($t.data("dummytag") == "input"){
+                    $t.text(item);
+                  }
+                  break;
               }
             })
           }
         },
         clearForm: function(){
-          if(this[0]){
-            // formの取得
-            const formData = this.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
-            
+          const $form = $(this);
+          if($form.prop("tagName") === "FORM"){
+
             // エラー表示の要素の取得
-            const errInput = this.find(".error-input");
-            if(errInput.length){
-              for(let i=0;i<errInput.length;i++){
-                $(errInput[i]).removeClass("error-input");
-              }
-            }
+            const $errInput = $form.find(".error-input");
+            $errInput.each(function(){
+              $(this).removeClass("error-input");
+            });
 
             // ボトムラベルの初期化
-            const bottomLabel = this.find(".bottom-label");
-            if(bottomLabel.length){
-              for(let i=0;i<bottomLabel.length;i++){
-                $(bottomLabel[i]).text("");
-              }
-            }
+            const $bottomLabel = $form.find(".bottom-label");
+            $bottomLabel.each(function(){
+              $(this).text("");
+            });
 
-            // 入力系要素の初期化
-            for(let i=0;i<formData.length;i++){
-              let crntEle = formData[i]
-              if(crntEle){
-                switch(crntEle.tagName){
-                  case "INPUT":
-                  case "TEXTAREA":
-                    crntEle.value = "";
-                    break;
-                  case "DIV":
-                    crntEle.textContent = null;
-                    break;
-                  case "SELECT":
-                    $(crntEle).val("");
-                  case "RADIO":
-                  case "CHECK":
-                    break;
-                }
+            // form内の属性を取得
+            const $formEle = $form.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
+            $formEle.each(function(){
+              const $t = $(this);
+              switch($t.prop("tagName")){
+                case "INPUT":
+                case "TEXTAREA":
+                  switch($t.prop("type")){
+                    case "text":
+                    case "textarea":
+                    case "file":
+                    case "hidden":
+                      $t.val("");
+                      break;
+                    case "radio":
+                      $t.attr("checked") ? $t.prop("checked", true) : $t.prop("checked", false);
+                      break;
+                    case "checkbox":
+                      $t.prop("checked", false);
+                      break;
+                  }
+                  break;
+                case "SELECT":
+                  // 先頭のoptionのvalueを設定する。
+                  $t.val($t.prop("options")[0].value);
+                  break;
+                case "DIV":
+                case "SPAN":
+                case "p":
+                  if($t.data("dummytag") == "input"){
+                    $t.text("");
+                  }
+                  break;
               }
-            }
+            });
           }
         }
       })
