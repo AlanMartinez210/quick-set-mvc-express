@@ -1,4 +1,4 @@
--const today = false;
+- const today = false;
 
 #searchModal(data-modal="hide")
   form(method="post", action="", name="recruitSearchForm")
@@ -20,11 +20,11 @@
             i.icon-input.far.fa-calendar.fa-fw
             input(type="text", data-datepicker, name="search_date_to", readonly="true", placeholder="ここを選択", data-inputclear="dateInput") 
           p.bottom-label
-        - }
 
         .option-box.flex._jr
           span.option-btn.st-line-b(name="inputClear" data-inputclear="dateInput")
             |日付をクリア
+        - }
         
         .label-input-box._mbs#box_prefectures_field
           .label-box
@@ -39,7 +39,7 @@
 
         p.st-title-tag
           |対象都道府県
-        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input")
+        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
 
         .label-input-box._mbs#box_search_tag
           .label-box
@@ -63,6 +63,5 @@
                   - }
 
       .board-ftr._s.flex._c._jc
-        button.btn-prm.st-back-b.shadow-l
-          //- i.icon-btn.fas.fa-chevron-left
+        button(type="submit", name="doGetSearchRecruitList").btn-prm.st-back-b.shadow-l
           span: |検索
