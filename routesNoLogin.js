@@ -21,9 +21,9 @@ router.get('/', (req,res,next)=>{
 /* 新規登録ページの表示 */
 router.get('/register', userController.index);
 /* ユーザー新規登録処理 */
-router.post('/api/register', validate.check(require('./form/registerForm')), validate.result, userController.postRegister);
+router.post('/api/register', validate.check(require('./form/postRegisterForm')), validate.result, userController.postRegister);
 /* ログイン処理 */
-router.post('/api/login', validate.check(require('./form/loginForm')), validate.result, userController.postLogin);
+router.post('/api/login', validate.check(require('./form/postLoginForm')), validate.result, userController.postLogin);
 
 ///* 運営情報の表示 */
 //router.get('/public/adminInfo', publicController.getAdminInfo);

@@ -30,7 +30,7 @@ router.post('/api/logout', userController.postLogout);
 /**
  * アカウントの削除
  */
-router.post('/api/delete', validate.check(require('./form/userDeleteForm')), validate.result, userController.postUserDelete);
+router.post('/api/delete', validate.check(require('./form/deleteUserForm')), validate.result, userController.postUserDelete);
 
 
 /** =============================
@@ -107,7 +107,7 @@ router.get('/mypage/review/recieveList', reviewController.getRevieweeHistory);
 
 
 /* レビューの登録/編集 postReview */
-router.post('/mypage/review',validate.check(require('./form/reviewPostForm')), validate.result, reviewController.postReview);
+router.post('/mypage/review',validate.check(require('./form/postReviewForm')), validate.result, reviewController.postReview);
 
 
 /** =============================
@@ -122,13 +122,13 @@ router.get('/mypage/matching', matchingController.index);
 // router.get('/mypage/matching/history', matchingController.getMatchingHistory);
 
 /* 依頼/応募する postRequest */
-router.post('/mypage/matching/request',validate.check(require('./form/requestForm')), validate.result, requestController.postRequest);
+router.post('/mypage/matching/request',validate.check(require('./form/postRequestForm')), validate.result, requestController.postRequest);
 
 /* マッチングの承諾 postConsent */
-router.post('/mypage/matching/consent',validate.check(require('./form/consentForm')), validate.result, requestController.postConsent);
+router.post('/mypage/matching/consent',validate.check(require('./form/postConsentForm')), validate.result, requestController.postConsent);
 
 /* マッチングを却下する postReject */
-router.post('/mypage/matching/reject',validate.check(require('./form/rejectForm')), validate.result, requestController.postReject);
+router.post('/mypage/matching/reject',validate.check(require('./form/postRejectForm')), validate.result, requestController.postReject);
 
 /** =============================
  * メッセージ
@@ -139,7 +139,7 @@ router.get('/message', messageController.index);
 
 /* チャットルーム */
 router.get('/message/room', messageRoomController.index);　
-router.post('/api/room/postMessage', validate.check(require('./form/messagePostForm')), validate.result, messageRoomController.postMessage);　
+router.post('/api/room/postMessage', validate.check(require('./form/postMessageForm')), validate.result, messageRoomController.postMessage);　
 
 /** =============================
  * 募集/予定
@@ -151,12 +151,13 @@ router.get('/recruitlist', recruitlistController.index);　
 /* 当日の募集/予定の表示 indexToday */
 router.get('/recruitlist/today', recruitlistController.indexToday);　
 
-router.get('/recruitlist/detail/:recruit_list_id', recruitDetailController.getRecruitDetail)
-
 /* 募集/予定の検索 getSearchRecruit */
+router.post('/recruitlist/search', validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
 
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
 
+/* 募集/予定の詳細表示 */
+router.get('/recruitlist/detail/:recruit_list_id', recruitDetailController.getRecruitDetail)
 
 
 module.exports = router;
