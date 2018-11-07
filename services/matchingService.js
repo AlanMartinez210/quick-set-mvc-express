@@ -12,7 +12,7 @@ const dateHelper = require('../common/helper/dateHelper');
  * @return {Promise}
  */
 exports.getMatchingList = (user_id) => {
-  return customMatchingRepository.getMatchingList(user_id)
+  return customMatchingRepository.getMatchingList({user_id})
   .then(rows=>{
     rows.forEach(row=>{
       if(user_id == row.from_user_id){
@@ -34,7 +34,7 @@ exports.getMatchingList = (user_id) => {
 };
 
 exports.getMatchingHistoryList = (user_id) => {
-  return customMatchingRepository.getMatchingHistoryList(user_id)
+  return customMatchingRepository.getMatchingHistoryList({user_id})
   .then(rows=>{
     rows.forEach(row=>{
       if(user_id == row.from_user_id){

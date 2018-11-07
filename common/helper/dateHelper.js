@@ -3,8 +3,8 @@ const days_map = ['日','月','火','水','木','金','土']; // 曜日のマッ
 
 /**
  * Dateからmomentオブジェクトを取得します。
- * 
- * @param {Date} sequelize_date 
+ *
+ * @param {Date} sequelize_date
  */
 exports.getDate = (sequelize_date = new Date()) => {
   if(!(sequelize_date instanceof Date)) throw new Error('type of Date is expected.');
@@ -17,23 +17,23 @@ exports.getDateToStr = (dateStr = "") => {
 }
 
 /**
- * 新規にmoment dateを取得します。 
- * 
- * @param {*} year 
- * @param {*} month 
- * @param {*} day 
+ * 新規にmoment dateを取得します。
+ *
+ * @param {*} year
+ * @param {*} month
+ * @param {*} day
  */
 exports.createDate = (year = 0, month = 0, day = 1) => {
   if(isNaN(year) || (Number(year) < 1970 || Number(year) > 9999)) throw new Error('expect year param is 1970 to 9999');
   if(isNaN(month) || Number(month) < 1 || Number(month) > 12) throw new Error('expect month param is 1 to 12');
   if(isNaN(day) || Number(day) < 1 || Number(day) > 31) throw new Error('expect day param is 1 to 31');
-  const dt = new Date(`${year}-${month}-${day} 00:00:00.000z`);
+  const dt = new Date(`${year}-${month}-${day} 00:00:00.000+9:00`);
   return _getDate(dt);
 }
 
 /**
  * week_idから曜日を取得します。
- * 
+ *
  * @param {*} week_id #0-6
  */
 exports.getWeek = (week_id) => {
@@ -51,8 +51,9 @@ function _getDate (datestr, locale = "ja") {
   moment.locale(locale);
   const mDt =  moment(datestr).tz("Asia/Tokyo");
   // 拡張メソッドを定義
-  mDt.trueMonth = function(addZero = false){ 
+  mDt.trueMonth = function(addZero = false){
     return this.month() + 1;
+
   }
 	return mDt
 }

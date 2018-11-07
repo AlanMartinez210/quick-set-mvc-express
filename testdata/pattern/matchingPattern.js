@@ -5,6 +5,8 @@ const matching = abstractRepository('Matching');
 const schedule = abstractRepository('Schedule');
 const chat = abstractRepository('Chat');
 
+const dateHelper = require('../../common/helper/dateHelper');
+
 /**
  * #### マッチングパターン生成クラス
  * ##### このクラスはマッチング機能に特化して、DBデータの状態を生成します。
@@ -34,10 +36,10 @@ const matchingPattern = class extends basePattern {
   constructor(){
     super();
     // スケジュールデータ
-    var future = new Date();
-    var past = new Date();
-
-    this.schedule_future = []
+    var now_date = new Date("2018-9-1 00:00:00+9:00");
+    var future = dateHelper.createDate(now_date.getFullYear(), now_date.getMonth()+1, now_date.getDate()).toDate();
+    var past = dateHelper.createDate(now_date.getFullYear(), now_date.getMonth()+1, now_date.getDate()).toDate();
+    this.schedule_future = [];
     for(var i=1;i<=6;i++){
       const d = {
         user_id: 1,

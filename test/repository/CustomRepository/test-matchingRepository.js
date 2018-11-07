@@ -15,7 +15,7 @@ describe('custom matchingRepository test', ()=>{
 
   describe('getMatchingList', ()=>{
     it('マッチング一覧の取得', async ()=>{
-      let matching_list = await matchingRepository.getMatchingList({user_id:1, date_key: moment(new Date())});
+      let matching_list = await matchingRepository.getMatchingList({user_id:1, date_key: moment(new Date("2018-08-01"))});
       matching_list = matching_list.map(v=>{
         return {
           matching_id: v.matching_id,
@@ -28,12 +28,12 @@ describe('custom matchingRepository test', ()=>{
       expect(matching_list).to.deep.equal(
         [
 //          {matching_id:15,from_user_id:6,to_user_id:1,status_id:5},
-//          {matching_id:14,from_user_id:5,to_user_id:1,status_id:3},
-//          {matching_id:13,from_user_id:6,to_user_id:1,status_id:1},
-//          {matching_id:12,from_user_id:5,to_user_id:1,status_id:1},
+          {matching_id:14,from_user_id:5,to_user_id:1,status_id:3},
+          {matching_id:13,from_user_id:6,to_user_id:1,status_id:1},
+          {matching_id:12,from_user_id:5,to_user_id:1,status_id:1},
 //          {matching_id:11,from_user_id:5,to_user_id:1,status_id:5},
-//          {matching_id:10,from_user_id:5,to_user_id:1,status_id:3},
-//          {matching_id: 9,from_user_id:5,to_user_id:1,status_id:1},
+          {matching_id:10,from_user_id:5,to_user_id:1,status_id:3},
+          {matching_id: 9,from_user_id:5,to_user_id:1,status_id:1},
 //          {matching_id: 8,from_user_id:6,to_user_id:1,status_id:5},
           {matching_id: 7,from_user_id:5,to_user_id:1,status_id:3},
           {matching_id: 6,from_user_id:6,to_user_id:1,status_id:1},
@@ -69,13 +69,13 @@ describe('custom matchingRepository test', ()=>{
           {matching_id:10,from_user_id:5,to_user_id:1,status_id:3},
           {matching_id: 9,from_user_id:5,to_user_id:1,status_id:1},
           {matching_id: 8,from_user_id:6,to_user_id:1,status_id:5},
-//          {matching_id: 7,from_user_id:5,to_user_id:1,status_id:3},
-//          {matching_id: 6,from_user_id:6,to_user_id:1,status_id:1},
-//          {matching_id: 5,from_user_id:5,to_user_id:1,status_id:1},
+          {matching_id: 7,from_user_id:5,to_user_id:1,status_id:3},
+          {matching_id: 6,from_user_id:6,to_user_id:1,status_id:1},
+          {matching_id: 5,from_user_id:5,to_user_id:1,status_id:1},
           {matching_id: 4,from_user_id:5,to_user_id:1,status_id:5},
-//          {matching_id: 3,from_user_id:5,to_user_id:1,status_id:3},
-//          {matching_id: 2,from_user_id:5,to_user_id:1,status_id:1},
-//          {matching_id: 1,from_user_id:5,to_user_id:1,status_id:1},
+          {matching_id: 3,from_user_id:5,to_user_id:1,status_id:3},
+          {matching_id: 2,from_user_id:5,to_user_id:1,status_id:1},
+          {matching_id: 1,from_user_id:5,to_user_id:1,status_id:1},
         ]
       );
     });

@@ -15,9 +15,9 @@
                     span: |テストユーザー
                   .review-wrap.flex._c
                     i.icon-title.far.fa-thumbs-up.fa-fw.c-green
-                    input.mr.st-readonly(readonly="true", name="good_review_num")
+                    span.mr(data-dummytag="input", name="good_review_num"): |10
                     i.icon-title.far.fa-thumbs-down.fa-fw.c-purple
-                    input(name="bad_review_num")
+                    span(data-dummytag="input", name="bad_review_num"): |2
                 .recuit-btn-wrap
                   button(type="submit", name="doRequestPost", data-requestid="").btn-prm.btn-link.st-line-w.shadow-l
                     |依頼する
