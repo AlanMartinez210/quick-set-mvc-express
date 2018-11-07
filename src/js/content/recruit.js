@@ -1,17 +1,20 @@
 import plugin_prefecture from "../plugin/prefecture";
 import recruitDetail from "./recruitDetail";
+import plugin_convert from "../plugin/convert";
 
 export default class recruit {
 	constructor () {
 		this.recruitSearchForm = $('[name=recruitSearchForm]');
 		this.prefecture = new plugin_prefecture();
 		this.recruitDetail = new recruitDetail(true);
+		this.convert = new plugin_convert();
 	}
 	ready(){
 		const $doRequestBtn = $('[name=doRequestPost]');
 		const $recruitSection = $("#recruitSection");
 		const openSearchBtn = "#searchBtn";
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
+		const $doGetSearchRecruitListBtn = $('[name=doGetSearchRecruitList]'); 
 
 		c2.inputClear();
 
@@ -40,49 +43,32 @@ export default class recruit {
 			}
 		}, c2.showModal)
 
-		// 依頼するボタンの処理
-		$doRequestBtn.on('click', (event) => {
-			let path = "/mypage/schedule";
-			let data = {recruit_list_id: 60};
-			let dialog = {};
+		// 検索ボタン処理
+		$doGetSearchRecruitListBtn.on('click', (event) => {
+			c2.onShowProgress();
+			const path = "/recruitlist/search";
+			const sendData = this.getSearchData();
 
-			if(c2.config.isCam()){
-				dialog = c2.showInfoDialog({
-					name: "checkRecest",
-					title: "応募の確認",
-					text: "この募集に応募します。よろしいですか？"
-				})
-			}else{
-				dialog = c2.showInfoDialog({
-					name: "checkRecest",
-					title: "依頼の確認",
-					text: "このカメラマンに依頼します。よろしいですか？"
-				})
-			}
-
-			dialog.closelabel("いいえ")
-			.addBtn({
-				callback: function() {
-					c2.onShowProgress();
-					c2.sendPost(path, data)
-					.always(result=>{
-						c2.onHideProgress();
-						c2.hideDialog();
-					})
-					.done(result => {
-						c2.showClearAll();
-						c2.showInfo("処理に成功しました。")
-					})
-				}
+			c2.sendPost(path, sendData, {dataType: "html"})
+			.done(results => {
+				c2.showClearAll();
+				$('#recruitSection').html(results);
 			})
-	
+
 			return false;
-		});
+		})
 		
 		this.recruitDetail.ready();
 	}
 	getRecruitDetail(recruit_list_id){
 		return c2.sendGet(`/recruitlist/detail/${recruit_list_id}`);
+	}
+	getSearchData(){
+		const formData = this.recruitSearchForm.getValue();
+		formData.search_date_from = this.convert.serverDate(formData.search_date_from);
+		formData.search_date_to = this.convert.serverDate(formData.search_date_to);
+		formData.prefectures_field = this.prefecture.getPrefectureValue();
+		return formData;
 	}
 	setShotType(){
 		const shot_type_arr = $("[data-shot_type]");
