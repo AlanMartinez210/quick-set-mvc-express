@@ -121,11 +121,24 @@ app.use((err, req, res, next) => {
   const render_obj = res.render_obj;
   console.log("response err ->", err);
 
-  if(err.isHelper){
-    // ajax通信の場合はerrをJSON形式で返す
-    if(req.xhr){
-      res.status(err.http_status).json(err.errObj);
-      return;
+  // TODO エラーヘルパーを通らない場合のajaxかそうでないかで切り分けが必要
+
+  // ajaxエラー
+  if(req.xhr){
+    if(!err.isHelper){
+      // エラーヘルパーを通っていなければ、オブジェクトを作成する。
+      err = new errorHelper({http_status: 500});
+      err.setWindowMsg("E00000");
+    }
+    res.status(err.http_status).json(err.errObj);
+  }
+  // 通常エラー
+  else{
+    // エラーヘルパーを通ってきてない場合は予期しないエラー
+    if(!err.isHelper){
+      err = new errorHelper({http_status: 500});
+      err.setWindowMsg("E00000");
+      res.status(err.http_status);
     }
 
     // redirect_toが指定されていたらredirect_toにリダイレクトさせる
@@ -133,24 +146,21 @@ app.use((err, req, res, next) => {
       res.redirect(err.redirect_to);
       return;
     }
+
+    // !!! set Express default err 
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    render_obj.contentId = "error";
+    render_obj.title = "申し訳ございません|エラーページ";
+    
+    render_obj.bodyData = [ err, res.locals ];
+    // render the error page
+    res.render('../error', render_obj);
+
   }
 
-  // エラーヘルパーを通ってきてない場合は予期しないエラー
-  eh = new errorHelper({http_status: 500});
-  eh.setWindowMsg("E00000");
-  res.status(eh.http_status);
-
-  // !!! set Express default err 
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  render_obj.contentId = "error";
-  render_obj.title = "申し訳ございません|エラーページ";
-  
-  render_obj.bodyData = [ eh, res.locals ];
-  // render the error page
-  res.render('../error', render_obj);
   return;
 
 });
