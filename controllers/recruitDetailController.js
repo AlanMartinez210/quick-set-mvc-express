@@ -1,5 +1,4 @@
 var scheduleRepository = require("../repository/scheduleRepository");
-var recruitDetailForm = require("../form/recruitDetailForm");
 const recruitDetailVO = require("../viewObjects/recruitDetail");
 const c2Util = require("../services/c2link4DiService");
 const sessionHelper = require("../common/helper/sessionHelper");

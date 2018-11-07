@@ -1,7 +1,5 @@
 const hashHelper = require("../common/helper/hashHelper");
 const vo_matching = require("../viewObjects/matching");
-const loginForm = require("../form/loginForm");
-const registerForm = require("../form/registerForm");
 const matchingService = require("../services/matchingService");
 const dateHelper = require("../common/helper/dateHelper");
 

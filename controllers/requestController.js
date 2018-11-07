@@ -1,5 +1,3 @@
-var requestForm = require("../form/requestForm");
-var userRepository = require("../repository/userRepository");
 var matchingService = require("../services/matchingService");
 
 const errorHelper = require('../common/helper/errorHelper');
