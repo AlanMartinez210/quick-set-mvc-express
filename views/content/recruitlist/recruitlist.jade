@@ -1,103 +1,7 @@
 -
   const searchConditions = false;
   let recruit_list_arr = self.bodyData.recruit_list_arr;
-
-  console.log(recruit_list_arr);
-
   const pages = self.bodyData.recruit_list_pager;
-  //- レイヤー
-  recruit_list_arr = [
-      {
-        recruit_list_id: 60,
-        user_info: { id: 999999, icon: "./image/icon.png" },
-        date_info: { key: '20180815', year: 2018, month: 8, day: 15, week: [3, "水"]},
-        event_info: {
-          type: [1, "イベント"],
-          title: "世界コスプレサミット",
-          prefectures: [
-            {id: 13, name: "東京都"},
-          ]
-        },
-        good_review_num: 1,
-        bookmark_flg: true,
-        tags: [
-          {id: 1, name: "一眼あり"},
-          {id: 2, name: "データ渡し2週間以内"},
-          {id: 3, name: "夜間撮影OK"}
-        ],
-        anime_info: [
-          {id: 1, title: "カードキャプターさくら"},
-          {id: 2, title: "アイドリッシュセブン"}
-        ]
-      },{
-        recruit_list_id: 61,
-        user_info: { id: 999999, icon: "./image/icon.png" },
-        date_info: { key: '20180815', year: 2018, month: 8, day: 15, week: [3, "水"]},
-        event_info: {
-          type: [1, "イベント"],
-          title: "世界コスプレサミット",
-          prefectures: [
-            {id: 13, name: "東京都"},
-          ]
-        },
-        good_review_num: 1,
-        bookmark_flg: true,
-        tags: [
-          {id: 1, name: "一眼あり"},
-          {id: 2, name: "データ渡し2週間以内"},
-          {id: 3, name: "夜間撮影OK"}
-        ],
-        anime_info: [
-          {id: 1, title: "カードキャプターさくら"},
-          {id: 2, title: "アイドリッシュセブン"}
-        ]
-      },{
-        recruit_list_id: 63,
-        user_info: { id: 999999, icon: "./image/icon.png" },
-        date_info: { key: '20180815', year: 2018, month: 8, day: 15, week: [3, "水"]},
-        event_info: {
-          type: [1, "イベント"],
-          title: "世界コスプレサミット",
-          prefectures: [
-            {id: 13, name: "東京都"},
-          ]
-        },
-        good_review_num: 1,
-        bookmark_flg: true,
-        tags: [
-          {id: 1, name: "一眼あり"},
-          {id: 2, name: "データ渡し2週間以内"},
-          {id: 3, name: "夜間撮影OK"}
-        ],
-        anime_info: [
-          {id: 1, title: "カードキャプターさくら"},
-          {id: 2, title: "アイドリッシュセブン"}
-        ]
-      }
-  ];
-  //- カメラ
-  //- const recruit_list_arr = [
-  //-     {
-  //-       recruit_list_id: 2,
-  //-       user_info: { id: 999999, icon: "./image/icon.png" },
-  //-       date_info: { key: '20180815', year: 2018, month: 8, day: 15, week: [3, "水"]},
-  //-       event_info: {
-  //-         title: "世界コスプレサミット",
-  //-         prefectures: [
-  //-           {id: 13, name: "東京都"},
-  //-           {id: 14, name: "神奈川県"},
-  //-         ]
-  //-       },
-  //-       good_review_num: 1,
-  //-       bookmark_flg: true,
-  //-       tags: [
-  //-         {id: 1, name: "一眼あり"},
-  //-         {id: 2, name: "データ渡し2週間以内"},
-  //-         {id: 3, name: "夜間撮影OK"}
-  //-       ],
-  //-       anime_info: []
-  //-     }
-  //- ];
 -
 .center-frame
 
@@ -153,15 +57,15 @@
       .pager(data-pagerid="recruitlist")
         ul.flex._jc
           -if(pages.now_page > 1){
-            li: a(href="?page=1"): i.icon-pager.fas.fa-angle-double-left.fa-fw
-            li: a(href="?page=#{pages.now_page-1}"): i.icon-pager.fas.fa-angle-left.fa-fw
+            li: span(data-page="1"): i.icon-pager.fas.fa-angle-double-left.fa-fw
+            li: span(data-page="#{pages.now_page-1}"): i.icon-pager.fas.fa-angle-left.fa-fw
           -}
-          -for(let i=1;i<=pages.max_page;i++){
-            li: a(class="#{i==pages.now_page?'selected':''}" href="?page=#{i}"): |#{i}
-          -}
+          - for(let i=0;i<pages.disp_page_list.length;i++){ let p = pages.disp_page_list[i];
+            li: span(class="#{p == pages.now_page ? 'selected' : '' }", data-page="#{p}"): |#{p}
+          - }
           -if(pages.now_page < pages.max_page){
-            li: a(href="?page=#{pages.now_page-0+1}"): i.icon-pager.fas.fa-angle-right.fa-fw
-            li: a(href="?page=#{pages.max_page}"): i.icon-pager.fas.fa-angle-double-right.fa-fw
+            li: span(data-page="#{pages.now_page-0+1}"): i.icon-pager.fas.fa-angle-right.fa-fw
+            li: span(data-page="#{pages.max_page}"): i.icon-pager.fas.fa-angle-double-right.fa-fw
           -}
 
   //- AD表示部
