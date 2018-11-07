@@ -17,6 +17,49 @@ const content_id = "recruit";
 function renderRecruitList(data, render_obj){
   return recruitlistService.getScheduleList(data)
 	.then(results=>{
+
+		// テストデータ
+		results.rows = [
+      {
+				id: 60,
+				user_id: 1,
+				user_icon_url: "./image/icon.png",
+				date_key: dateHelper.getDate(), // moment
+				shot_type: [1, "イベント"],
+				event_name: "世界コスプレサミット",
+				prefectures: [
+					{id: 13, name: "東京都"},
+					{id: 15, name: "神奈川県"},
+				],
+        good_review_num: 13,
+        bookmark_flg: true,
+        tags: [
+          {id: 1, name: "一眼あり"},
+          {id: 2, name: "データ渡し2週間以内"},
+          {id: 3, name: "夜間撮影OK"}
+        ]
+			},
+			{
+				id: 61,
+				user_id: 1,
+				user_icon_url: "./image/icon.png",
+				date_key: dateHelper.getDate(), // moment
+				shot_type: [3, "個人撮影"],
+				event_name: "世界コスプレサミット",
+				prefectures: [
+					{id: 13, name: "東京都"},
+					{id: 15, name: "神奈川県"},
+				],
+        good_review_num: 13,
+        bookmark_flg: false,
+        tags: [
+          {id: 1, name: "一眼あり"},
+          {id: 2, name: "データ渡し2週間以内"},
+          {id: 3, name: "夜間撮影OK"}
+        ]
+      }
+  	];
+
 		render_obj.bodyData = new vo_recruitlist.recruit_list_page({
 			recruit_list_item: results.rows.map(row=>{
 				return new vo_recruitlist.recruit_list_item({
@@ -26,11 +69,11 @@ function renderRecruitList(data, render_obj){
 					event_info: {
 						type: row.shot_type,
 						title: row.event_name,
-						prefectures: JSON.parse(row.prefecture_json),
+						prefectures: row.prefectures
 					},
-					good_review_num: 0,
-					bookmark_flg: true,
-					tags: JSON.parse(row.tags_json),
+					good_review_num: row.good_review_num,
+					bookmark_flg: row.bookmark_flg,
+					tags: row.tags,
 					anime_info: []
 				});
 			}),
@@ -52,13 +95,10 @@ exports.index = function(req, res, next){
 	render_obj.contentId = content_id;
 
 	const data = {
+		date_key: dateHelper.getDate(),
 		user_type: user_type,
-		date_key: req.form_data.date_key,
-		page: 1
-	}
-
-	// 日付をmomentに変換する。
-	data.date_key = dateHelper.getDate(req.form_data.date_key);
+		page: 1,
+	};
 
 	renderRecruitList(data, render_obj)
 	.then(()=>{
@@ -73,7 +113,8 @@ exports.index = function(req, res, next){
  * @param {*} req
  * @param {*} res
  */
-exports.searchRecruitList = function(req, res, next){
+exports.getSearchRecruit = function(req, res, next){
+	console.log("search param", req.form_data);
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
 
@@ -81,6 +122,7 @@ exports.searchRecruitList = function(req, res, next){
 	render_obj.contentId = content_id;
 
 	const data = {
+		date_key: dateHelper.getDate(),
 		user_type: sessionHelper.getUserType(req),
 		page: req.form_data.page,
 	};
@@ -90,9 +132,11 @@ exports.searchRecruitList = function(req, res, next){
 
 	renderRecruitList(data, render_obj)
 	.then(()=>{
-		res.render('recruitList/index', render_obj);
+		res.render('../content/recruitlist/recruitlist', render_obj);
 	})
-	.catch(next);
+	.catch(err => {
+		next(err);
+	});
 }
 
 /**
@@ -111,7 +155,7 @@ exports.indexToday = function(req, res, next){
 	const data = {
 		user_type: sessionHelper.getUserType(req),
 		date_key: dateHelper.getDate(),
-		page: req.form_data.page,
+		page: 1,
 	};
 
 	renderRecruitList(data, render_obj)

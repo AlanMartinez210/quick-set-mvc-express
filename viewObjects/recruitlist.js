@@ -5,7 +5,11 @@ module.exports = {
   recruit_list_page: class {
     constructor({
       recruit_list_item = [],
-      recruit_list_pager = {/* pageObject */},
+      recruit_list_pager = {
+        count:0,
+        now_page: 0,
+        max_page: 0
+      },
       recruit_search_info = {
         shot_type: 0,
         date_from: "",
@@ -29,9 +33,8 @@ module.exports = {
    */
   recruit_list_item: class {
     constructor({recruit_list_id = "", user_info = {id:0 ,icon:""}, date_info = {/* moment */},
-                 event_info = {type: 0, title:"", prefectures:[]},
-                 good_review_num = 0, bookmark_flg = false, tags = [], anime_info = [],
-                 review_num = 0 }){
+                event_info = {type: [0, ""], title:"", prefectures:[]},
+                good_review_num = 0, bookmark_flg = false, tags = [], anime_info = [] }){
 
       this.recruit_list_id = recruit_list_id;
       this.user_info = user_info;
@@ -46,8 +49,7 @@ module.exports = {
       this.good_review_num = good_review_num;
       this.bookmark_flg = bookmark_flg;
       this.tags = tags;
-      this.anime_info = anime_info;
-      this.review_num = review_num;
+      // this.anime_info = anime_info;
     }
   }
 }
