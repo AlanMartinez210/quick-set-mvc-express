@@ -70,6 +70,9 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   sendAjax(method, url, data, option){
+
+    c2.onShowProgress();
+
     const ajaxOption = {
       type: method,
       contentType: (option.contentType||'application/json'),
@@ -81,16 +84,18 @@ export default class myApp extends baseApp {
       }
     }
     if(Object.keys(data).length > 0) Object.assign(ajaxOption, {data: JSON.stringify(data)});
-    console.log("** ajaxOption:")
-    console.log(ajaxOption);
+    console.log(" -> send options: ", ajaxOption);
     return $.ajax(url, ajaxOption)
-    .always(res => {console.log("always", res)})
+    .always(res => {
+      c2.onHideProgress();
+      console.log(" -> response params: ", res)
+    })
     .fail(res => {
       const err_json = res.responseJSON;
       if(err_json){
-
-        if(err_json.http_status === 500){
-
+        c2.hideDialog();
+        if(err_json.http_status === 500 || err_json.http_status === 401){
+          c2.showClearAll();
           /**
            * redirect_toの指定がある場合はエラーを判別せず
            * 画面遷移を行う。
@@ -112,6 +117,20 @@ export default class myApp extends baseApp {
           })
           
         }
+      }
+      else{
+        // 万が一、err_Jsonがなければ致命エラー
+
+        // TODO ログアウト処理
+        // setTimeout(function(){
+        //   location.href = "/register";
+        // }, 3000)
+        
+        c2.showErrDialog({
+          name: "fatalerr",
+          title: "予期せぬエラー",
+          text: "予期せぬエラーが発生しました。<br />※3秒後に自動ログアウトします。"
+        })
       }
     });
   }
