@@ -9,7 +9,7 @@ const dateHelper = require('../../common/helper/dateHelper');
  * @param data.user_id ユーザーのuser_id
  */
 const getUnReviewList = (select, data = {}, options)=>{
-  data.today = data.today||dateHelper.getDate(new Date()).toDate();
+  data.today = data.today||dateHelper.getDate().toDate();
   const query = select + `
     from matchings
     join users as from_user on matchings.user_id = from_user.id

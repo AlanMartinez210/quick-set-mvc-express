@@ -1,5 +1,6 @@
 const {checkSchema, validationResult} = require('express-validator/check')
 const errorHelper = require('../helper/errorHelper');
+const formHelper = require("../helper/formHelper");
 
 /**
  * ヴァリデーション処理を行います。
@@ -13,7 +14,8 @@ module.exports = {
   result:  (req, res, next) => {
     var results = validationResult(req);
     if(results.isEmpty()){
-      req.form_data = req.body;
+      // 特定のキーに対して変換処理を行う。
+      req.form_data = formHelper.converter(req.body);
       next();
     }else{
       // バリデーションエラーの作成

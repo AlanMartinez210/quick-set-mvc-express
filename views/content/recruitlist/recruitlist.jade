@@ -1,6 +1,6 @@
 -
-  const searchConditions = false;
-  let recruit_list_arr = self.bodyData.recruit_list_arr;
+  const recruit_search_info = self.bodyData.recruit_search_info;
+  const recruit_list_arr = self.bodyData.recruit_list_arr;
   const pages = self.bodyData.recruit_list_pager;
 -
 .center-frame
@@ -15,13 +15,30 @@
     //- 検索条件表示部
     .board-hdr
       .label-box
-        if searchConditions
-          p: |#{searchConditions.area}
-          p
-            for val, index in searchConditions.tags
-              span: |#{val}&nbsp;
-        else
-          span: |条件指定なし
+        .label-box._s.flex._c
+          span
+            |期間&nbsp;:&nbsp;
+            |#{recruit_search_info.search_date_from ? recruit_search_info.search_date_from : "指定なし"}&nbsp;
+            |#{recruit_search_info.search_date_to ? " ～ " + recruit_search_info.search_date_to : ""}
+        if recruit_search_info.prefectures_field.length
+          .label-box._s.flex._c
+            span
+              |場所&nbsp;:&nbsp;
+              |#{recruit_search_info.prefectures_field}
+
+        if recruit_search_info.search_tag
+          .label-box._s.flex._c
+            span
+              |タグ&nbsp;:&nbsp;
+              |#{recruit_search_info.search_tag}
+        if recruit_search_info.shot_type
+          .label-box._s.flex._c
+            span
+              |種類&nbsp;:&nbsp;
+              |#{global.C2LINK.SHOT_TYPE_ID_MAP[recruit_search_info.shot_type].name}
+
+        input(type="hidden", name="searchInfo", value="#{JSON.stringify(recruit_search_info)}")
+
 
     //- 表示オプション表示部
     .board-cnt
@@ -54,7 +71,7 @@
   //- ページャー表示部
   .floor-prm
     .floor-hdr._s
-      .pager(data-pagerid="recruitlist")
+      .pager#recruitlistPager
         ul.flex._jc
           -if(pages.now_page > 1){
             li: span(data-page="1"): i.icon-pager.fas.fa-angle-double-left.fa-fw

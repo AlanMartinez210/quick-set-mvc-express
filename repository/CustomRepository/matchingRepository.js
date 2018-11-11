@@ -34,7 +34,7 @@ const matching_select = `
  *
  * @return {Promise}
  */
-exports.getMatchingList = ({user_id, date_key=dateHelper.getDate(new Date())}, options={logging: true})=>{
+exports.getMatchingList = ({user_id, date_key=dateHelper.getDate()}, options={logging: true})=>{
   console.log( date_key);
   const select = matching_select + `
     where ( to_user_id = :user_id or matchings.user_id = :user_id )
@@ -61,7 +61,7 @@ exports.getMatchingList = ({user_id, date_key=dateHelper.getDate(new Date())}, o
  * @param {request}
  * @return {Promise}
  */
-exports.getMatchingHistoryList = ({user_id, date_key=dateHelper.getDate(new Date())}, options={logging: true})=>{
+exports.getMatchingHistoryList = ({user_id, date_key=dateHelper.getDate()}, options={logging: true})=>{
   const select = matching_select + `
     where (to_user_id = :user_id or matchings.user_id = :user_id)
     and (schedules.date_key < :date_key or matchings.status_id in (:status_id))

@@ -57,4 +57,11 @@ exports.getRecruitListTitle = (user_type) => {
   return this.isCosplayer(user_type) ? "カメラマン一覧" : "募集一覧";
 }
 
+exports.getBackMypageBtn = () => {
+  return {
+    href: '/mypage',
+    name: 'マイページに戻る'
+  }
+}
+
 

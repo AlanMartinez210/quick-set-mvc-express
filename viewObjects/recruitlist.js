@@ -10,13 +10,7 @@ module.exports = {
         now_page: 0,
         max_page: 0
       },
-      recruit_search_info = {
-        shot_type: 0,
-        date_from: "",
-        date_to: "",
-        prefectures: [],
-        tags: ""
-      }
+      recruit_search_info = {},
     }){
 
       this.recruit_list_arr = recruit_list_item;
@@ -25,9 +19,21 @@ module.exports = {
     }
   },
 
+  recruit_search_info: class {
+    constructor({ shot_type = 0, search_date_from = ""/* moment */, search_date_to = ""/* moment */,
+    prefectures_field = [], search_tag = ""}){
+
+      this.shot_type = shot_type;
+      this.search_date_from = search_date_from ? search_date_from.format("YYYY/MM/DD") : "",
+      this.search_date_to = search_date_to ? search_date_to.format("YYYY/MM/DD") : "",
+      this.prefectures_field = prefectures_field
+      this.search_tag = search_tag
+    }
+  },
+
   /**
    * 募集一覧中身
-   * 
+   *
    * tags: 形式 [{ id: **, name: ** }, ...]
    * prefectures: 形式 [{ id: **, name: ** }, ...]
    */
@@ -42,7 +48,7 @@ module.exports = {
         key: date_info.format("YYYYMMDD"),
         year: date_info.year(),
         month: date_info.trueMonth(),
-        day: date_info.day(),
+        day: date_info.date(),
         week: date_info.format('ddd'),
       }
       this.event_info = event_info;

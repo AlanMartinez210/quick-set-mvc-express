@@ -29,14 +29,14 @@ module.exports = {
 	event_name: {
 		in: 'body',
 		isLength: {
-			errorMessage: 'E00011',
+			errorMessage: 'E00011,50',
 			options:{ max: 50 },
 		}
 	},
 	remarks:{
 		in: 'body',
 		isLength: {
-			errorMessage: 'E00011',
+			errorMessage: 'E00011,255',
 			options:{ max: 255 },
 		}
 	},
@@ -45,23 +45,23 @@ module.exports = {
 	},
 	cost:{
 		in: 'body',
-		isLength: {
-			errorMessage: 'E00011',
-			options:{ max: 11 },
+		isInt: {
+			options: {gt: 0, lt: 50},
+			errorMessage: 'E00011,50'
 		}
 	},
 	event_url:{
 		in: 'body',
 		isLength: {
-			errorMessage: 'E00011',
 			options:{ max: 255 },
+			errorMessage: 'E00011,255',
 		}
 	},
 	num: {
 		in: 'body',
-		isLength: {
-			errorMessage: 'E00011',
-			options:{ max: 3 },
+		isInt: {
+			options: {gt: 0, lt: 50},
+			errorMessage: 'E00011,50'
 		}
 	}
 

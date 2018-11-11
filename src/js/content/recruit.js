@@ -10,7 +10,6 @@ export default class recruit {
 		this.convert = new plugin_convert();
 	}
 	ready(){
-		const $doRequestBtn = $('[name=doRequestPost]');
 		const $recruitSection = $("#recruitSection");
 		const openSearchBtn = "#searchBtn";
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
@@ -20,11 +19,33 @@ export default class recruit {
 
 		this.setShotType();
 
+		// ページャー処理
+		$recruitSection.on('click', "#recruitlistPager span", (e) => {
+			// undefindなら直近の親要素も捜す
+			const $t = $(e.target)			
+			let pageNum = $t.data("page") || $(e.target).closest("span").data("page");
+
+			if($t.hasClass("selected")) return false;
+			
+			// 検索内容を取得し、getリクエストを行う。
+			const sendData = JSON.parse($("[name=searchInfo]").val());
+			sendData.search_date_from = this.convert.serverDate(sendData.search_date_from);
+			sendData.search_date_to = this.convert.serverDate(sendData.search_date_to);
+			this.postSearchReqest(sendData, pageNum);
+		})
+
+
 		// 検索モーダルを開く
 		$recruitSection.on('click', openSearchBtn, {
 			type: "search",
 			onOpenBrefore: ()=>{
-				this.prefecture.ready();
+				this.recruitSearchForm.clearForm();
+				this.prefecture.init().ready();
+				const searchData = JSON.parse($("[name=searchInfo]").val());
+				this.recruitSearchForm.setValue(searchData);
+				searchData.prefectures_field.forEach(ele => {
+					this.prefecture.addPrefecture(ele);
+				});
 			}
 		}, c2.showModal)
 
@@ -45,24 +66,22 @@ export default class recruit {
 
 		// 検索ボタン処理
 		$doGetSearchRecruitListBtn.on('click', (event) => {
-			c2.onShowProgress();
-			const path = "/recruitlist/search";
 			const sendData = this.getSearchData();
-
-			c2.sendPost(path, sendData, {dataType: "html"})
-			.done(results => {
+			sendData.page = 1;
+			this.postSearchReqest(sendData)
+			.done(() => {
 				c2.showClearAll();
-				$('#recruitSection').html(results);
 			})
-
 			return false;
 		})
 		
 		this.recruitDetail.ready();
 	}
+
 	getRecruitDetail(recruit_list_id){
 		return c2.sendGet(`/recruitlist/detail/${recruit_list_id}`);
 	}
+
 	getSearchData(){
 		const formData = this.recruitSearchForm.getValue();
 		formData.search_date_from = this.convert.serverDate(formData.search_date_from);
@@ -70,6 +89,20 @@ export default class recruit {
 		formData.prefectures_field = this.prefecture.getPrefectureValue();
 		return formData;
 	}
+
+	postSearchReqest(sendData, pageNum = 1){
+
+		console.log("search data", sendData);
+
+		c2.onShowProgress();
+		const path = `/recruitlist/search?p=${pageNum}`;
+
+		return c2.sendPost(path, sendData, {dataType: "html"})
+		.done(results => {
+			$('#recruitSection').html(results);
+		})
+	}
+
 	setShotType(){
 		const shot_type_arr = $("[data-shot_type]");
 

@@ -24,6 +24,7 @@ exports.index = (req, res, next) => {
 
   render_obj.contentId = content_id;
   render_obj.title = c2Util.getScheduleTitle(user_type);
+  render_obj.backBtn = c2Util.getBackMypageBtn();
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),
@@ -142,9 +143,6 @@ exports.postSchedule = (req, res, next) => {
   // タグを纏める
   registData.tags = registData.tag_field;
 
-  // date_keyをmomentに変換する
-  registData.date_key = dateHelper.getDateToStr(registData.date_key)
-
   scheduleService.upsertScheduleData(registData)
   .then(results => {
     res.json({status:'success'});
@@ -161,7 +159,6 @@ exports.postSchedule = (req, res, next) => {
  * @param {*} next 
  */
 exports.deleteSchedule = (req, res, next) => {
-  console.log("aaaa");
   const schedule_id = req.form_data.schedule_id;
   console.log(schedule_id);
   scheduleService.deleteScheduleData(schedule_id)

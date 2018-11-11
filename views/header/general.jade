@@ -16,7 +16,7 @@
     {name: "お問い合わせ",             id:"contact",         type:""},
   ];
 
-  var gnav_menu_list = [
+  const gnav_menu_list = [
     {name:'当日',       id: "recruitToday",  icon_css:"far fa-clock",    href:"/recruitlist/today"},
     {name:'一覧',       id: "recruit",       icon_css:"far fa-calendar", href:"/recruitlist"},
     {name:'あわせ募集', id: "cosgroup",      icon_css:"fas fa-users",    href:"/cosgroup"},
@@ -24,7 +24,7 @@
     {name:'メッセージ', id: "message",       icon_css:"far fa-comments", href:"/message"},
   ]
 
-  var backBtn = null;
+  const backBtn = self.backBtn;
 -
 
 header
@@ -48,12 +48,12 @@ header
       //-       i.fas.fa-caret-down.icon-title
       //- - }
 
-      //- - if (backBtn){
-      //- .hdr-controll
-      //-   a.btn-prm.link-btn.st-btn-icon.st-line-w.flex._c(href="#{backBtn.href}")
-      //-     i.icon-btn.fas.fa-chevron-left.fa-fw
-      //-     span: |#{backBtn.name}
-      //- - }
+      - if (backBtn.href){
+      .hdr-controll
+        a.btn-prm.link-btn.st-btn-icon.st-line-w.flex._c(href="#{backBtn.href}")
+          i.icon-btn.fas.fa-chevron-left.fa-fw
+          span: |#{backBtn.name}
+      - }
 
     .hdr-menu
       .cntnr-balancer

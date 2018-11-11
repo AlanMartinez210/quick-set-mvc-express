@@ -7,27 +7,23 @@
  *
  */
 exports.makePageObject = (count, now_page)=>{
+  count = parseInt(count), now_page = parseInt(now_page);
 
-  const disp_page_Arr = []
-  let disp_page = 5;
-  const max_page = Number(count) > 0 ? Math.ceil(count/10) : 1;
-  disp_page = disp_page > max_page ? max_page : disp_page;
+  const disp_page_list = [];
+  const disp_page = 5;
+  const max_page = Math.ceil(count/global.PAGE_COUNT) > 0 ? Math.ceil(count/global.PAGE_COUNT) : 1;
+  now_page = Math.max(1, Math.min(now_page, max_page)); //now_pageがページャーの範囲外だったら修正する
 
-  const lim = Math.floor(disp_page/2) > 0 ? Math.floor(disp_page/2) : 1;
-  const res = Number(now_page) + lim ;
-  let dispMax = res > max_page ? max_page : res < disp_page ? disp_page : res;
-
-  dispMax += 1;
-  for(var i=disp_page;i>0;i--){
-    const c = (dispMax - i);
-    if(c <= 0) break;
-    disp_page_Arr.push(c);
+  let first_disp_page = Math.max(1, Math.min(max_page-disp_page+1, now_page-parseInt(disp_page/2)));
+  let last_disp_page  = Math.min(max_page, first_disp_page+disp_page-1);
+  for(let i=first_disp_page;i<=last_disp_page;i++){
+    disp_page_list.push(i);
   }
 
   return {
     count: count,
     now_page: now_page,
     max_page: max_page,
-    disp_page_list :disp_page_Arr
+    disp_page_list :disp_page_list,
   };
 }

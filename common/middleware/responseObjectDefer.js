@@ -14,6 +14,7 @@ module.exports = (req, res, next) =>{
     };
     let body = {
       data: {},
+      backBtn: {}
 		}
 
 		return {
@@ -42,6 +43,10 @@ module.exports = (req, res, next) =>{
       get bodyData() {return body.data},
       set bodyData(data = {}) {
         Object.assign(body.data, data);
+      },
+      get backBtn() {return body.backBtn},
+      set backBtn(btnObj = {}) {
+        Object.assign(body.backBtn, btnObj);
       },
     }
 	})();

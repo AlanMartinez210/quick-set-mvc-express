@@ -81,4 +81,4 @@ module.exports = (req, res, next)=>{
 
 
 // vvvvv Todo: 検討中
-PAGE_COUNT = 10;  // 1ページの件数
+global.PAGE_COUNT = 10;  // 1ページの件数
