@@ -116,12 +116,9 @@ app.use((req, res, next) => {
 
 
 // error handler
-// TODO:他のページのコントローラができてからエラー処理を実装する
 app.use((err, req, res, next) => {
   const render_obj = res.render_obj;
   console.log("response err ->", err);
-
-  // TODO エラーヘルパーを通らない場合のajaxかそうでないかで切り分けが必要
 
   // ajaxエラー
   if(req.xhr){

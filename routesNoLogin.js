@@ -43,6 +43,8 @@ router.post('/api/login', validate.check(require('./form/postLoginForm')), valid
  *  */
 router.get('/api/recruitlist/detail', recruitDetailController.entryOutSide)
 
+router.get('/api/notice', publicController.getNoticeData)
+
 module.exports = router;
 
 /* デバッグページ */

@@ -5,6 +5,7 @@ const user = abstractRepository("User");
 const tag = abstractRepository("Tag");
 const schedule_tag = abstractRepository("Schedule_tag");
 const schedule_prefecture = abstractRepository("Schedule_prefecture");
+const notice = abstractRepository("Notice");
 
 const hashHelper = require('../../common/helper/hashHelper');
 const dateHelper = require('../../common/helper/dateHelper');
@@ -116,6 +117,18 @@ module.exports = class {
         this.schedule_prefectures.push(prefectures);
       }
     }
+
+    // お知らせ
+    this.notice_data = []
+    for(var i=1;i<=10;i++){
+      const notice = {};
+      notice.notice_date = dateHelper.createDate(2018, 11, i).toDate();
+      notice.type = (i%3)+1;
+      notice.title = "新しいお知らせ" + i;
+      notice.content = "お知らせ本部<br /><br />これは新しいおしらせです。<br />これは新しいおしらせです。<br />これは新しいおしらせです。";
+      notice.islogin = i%2;
+      this.notice_data.push(notice);
+    }
   }
   /**
    * #### 基盤データの生成  
@@ -142,7 +155,8 @@ module.exports = class {
           schedule.bulkCreate(this.schedule_data),
           tag.bulkCreate(this.tag_data),
           schedule_tag.bulkCreate(this.schedule_tags),
-          schedule_prefecture.bulkCreate(this.schedule_prefectures)
+          schedule_prefecture.bulkCreate(this.schedule_prefectures),
+          notice.bulkCreate(this.notice_data)
         ])
         .then(res => {
           console.log("  -> complate!!");
@@ -268,6 +282,7 @@ module.exports = class {
         abstractRepository().Sequelize.query(`truncate table matchings;`,{}),
         abstractRepository().Sequelize.query(`truncate table chats;`,{}),
         abstractRepository().Sequelize.query(`truncate table authtwitters;`,{}),
+        abstractRepository().Sequelize.query(`truncate table notices;`,{}),
       ])
       .then(res => {
         console.log("  -> complate!!");

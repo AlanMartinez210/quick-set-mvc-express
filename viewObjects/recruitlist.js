@@ -8,7 +8,8 @@ module.exports = {
       recruit_list_pager = {
         count:0,
         now_page: 0,
-        max_page: 0
+        max_page: 0,
+        disp_page_list: []
       },
       recruit_search_info = {},
     }){

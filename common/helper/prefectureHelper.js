@@ -15,12 +15,4 @@ exports.getPrefectureIdByName = (prefNameArr = []) => {
     return prefNameArr.indexOf(v.name) >= 0
   });
   return prefArr.map(v => v.id);
-  
-  // = new Array();
-  // if(prefIds != null){
-  //   for(let id of prefIds){
-  //     prefectureNames.push(global.C2LINK.ALL_PREF_ID_MAP[id].name);
-  //   }  
-  // }
-  // return prefectureNames;
 }

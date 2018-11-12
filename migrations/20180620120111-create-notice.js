@@ -1,19 +1,32 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Tags', {
+    return queryInterface.createTable('Notices', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.BIGINT.UNSIGNED
       },
-      tag_name: {
-        allowNull: false,
-        type: Sequelize.STRING
+      notice_date: {
+        type: Sequelize.DATE,
+        allowNull: false
       },
-      use_count: {
-        type: Sequelize.BIGINT.UNSIGNED
+      type: {
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false,
+      },
+      title: {
+        allowNull: false,
+        type: Sequelize.STRING(255)
+      },
+      content: {
+        allowNull: false,
+        type: Sequelize.STRING(1000)
+      },
+      islogin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
       },
       created_at: {
         type: Sequelize.DATE,
@@ -25,16 +38,9 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
         allowNull: false
       }
-    })
-    .then(() => {
-      queryInterface.addIndex('Tags', {
-        unique: true,
-        fields: ['tag_name'],
-      });
-    })
-
+    });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Tags');
+    return queryInterface.dropTable('Notices');
   }
 };

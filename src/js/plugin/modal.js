@@ -4,7 +4,6 @@ export default () => {
 	var showModal = c2.showModal;
 	var showClearAll = c2.showClearAll;
 	const showModalNameObj = {
-		"#noticeBtn": "notice",
 		".editReview": "editReview",
 	}
 	

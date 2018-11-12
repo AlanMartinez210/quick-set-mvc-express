@@ -32,6 +32,8 @@ html
         .overlay-block
         .modal-cnt#modal-close
           .modal-box.shadow-d
+            #noticeModal(data-modal="hide")
+              include ../modal/notice.jade
             block modal
             .modal-close.shadow-d#modal-close-btn
               i.icon-close.fas.fa-times

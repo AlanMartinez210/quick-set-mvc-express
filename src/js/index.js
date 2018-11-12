@@ -14,7 +14,7 @@ c2.ready(() => {
 	const bodyConfig = c2.bodyParser();
   
 	// デザインパターンの設定
-	setDesignPtn(bodyConfig.cntid);
+	const ptn = setDesignPtn(bodyConfig.cntid);
 
 	// ヘッダーの選択設定
 	setHeaderSelect(bodyConfig.cntid);
@@ -23,7 +23,8 @@ c2.ready(() => {
 	const cnt = getContent(bodyConfig.cntid);
 	if(cnt) cnt.ready();
 
-	c2.plugin.screen();
+  const screen = new c2.plugin.screen;
+  screen.ready();
   c2.plugin.modal();
 
   c2.config = {
@@ -38,19 +39,25 @@ c2.ready(() => {
     },
     _ut: bodyConfig.usertype
   }
+
+  // お知らせモーダルを開く
+  $(".general-ptn").on("click", "#noticeBtn", {
+    type: "notice",
+    onSyncOpenBrefore : (resolve, reject, event) => {
+      c2.sendGet(`/api/notice`, {}, {dataType: "html"})
+      .done(result => {
+        $("#noticeModal").html(result);
+        resolve();
+      });
+    }
+  }, c2.showModal)
+
   
 	// $("#scMenu").on("change", function(){
 	// 	const local = $(this).val();
 	// 	window.location.href = local;
 	// });
 
-	// $("#searchBtn").on('click', function(){
-	// 	console.log(window.innerWidth - document.body.clientWidth);
-	// 	$(".wrapper").css({
-	// 		"paddingRight": (window.innerWidth - document.body.clientWidth) + "px"
-	// 	})
-	// 	$("body").addClass("on-modal");
-	// });
 
 	// // 依頼するボタンの処理
 	// $("[data-doRequest]").on('click',(e)=>{
@@ -70,22 +77,6 @@ c2.load(() => {
 	$('input[data-datepicker]').datepicker();
 });
 
-// c2.showRequestModal = (schedule_id)=>{
-// 	c2.showDialog('PostCheck').yes(()=>{
-// 		c2.onShowProgress();
-// 		c2.sendPost('/mypage/matching/request', {schedule_id})
-// 		.done(result=>{
-// 			c2.showClearAll();
-// 			c2.showMessage({type:"info", messageStr: "依頼を送信しました。"});
-// 		})
-// 		.always(result=>{c2.onHideProgress()});
-
-// 		c2.hideDialog();
-// 	}).no(()=>{
-// 		c2.hideDialog();
-// 	});
-// };
-
 /**
  * デザインパターンを設定します。
  *
@@ -103,7 +94,10 @@ function setDesignPtn(cntId){
       designPtn = "recruitdetail";
       break;
   }
-  $(".wrap-body-content").addClass(`${designPtn}-ptn`);
+
+  const ptn = `${designPtn}-ptn`;
+  $(".wrap-body-content").addClass(ptn);
+  return ptn;
 }
 
 /**

@@ -26,12 +26,19 @@ const msgJson = {
 exports.getMsgObj = (code) => {
 
 	if(!code) throw new Error("require code");
-	// TODO ここでオプションコードをパースする。
 	const codeArr = code.split(",");
-	if(msgJson[code[0]]){
+	let obj = {};
+	codeArr.forEach((ele, i) => {
+		// 初回はコード確定
+		if(!i){
+			obj = msgJson[ele] || msgJson.E00000;
+		}
+		else{
+			// コード値を置換え
+			obj.msg = obj.msg.replace(`#${i}#`, ele);
+		}
+	});
 
-
-
-	}
+	return obj;
 	
 }
