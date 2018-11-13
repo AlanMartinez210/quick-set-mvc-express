@@ -46,6 +46,9 @@ export class baseApp {
       $.datepicker.setDefaults($.datepicker.regional['ja']);
       
       // jqueryの関数拡張
+      $.fn.isVisible = function() {
+        return $.expr.filters.visible(this[0]);
+      };
       $.fn.extend({
         dateVal: function(dateValue){
           if(dateValue){

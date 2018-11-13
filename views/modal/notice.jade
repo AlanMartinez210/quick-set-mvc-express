@@ -1,28 +1,36 @@
 -
   const notice_list_item = self.bodyData.notice_list_item;
   const notice_list_pager = self.bodyData.notice_list_pager;
-  console.log(notice_list_item);
-  console.log(notice_list_pager);
 -
-
 
 form(action="", name="noticeForm")
 
   .board-prm
+    .board-hdr
+      .label-box._fb.flex._c
+        i.icon-title-b.far.fa-bell.fa-fw.c-glay
+        span: |お知らせ一覧
 
+        //- 年度選択
+        //- .select-box._mbn.hdr-right-side
+        //-   select(name="yearSelectList")._s
+        //-     - for(let year=current_year-1, limit=current_year+2; year<=limit; year++){
+        //-       option(value=year, selected=select_year==year) #{year.toString()}
+        //-     - }
+    
     .board-cnt._s
       - if(notice_list_item){
       - for(var notice of notice_list_item){
       .card-prm.notice-box
-        .card-hdr.notice-hdr(data-noticeid="#{notice.id}", data-type="#{notice.type}")
+        .card-hdr.notice-hdr(data-type="#{notice.type}")
           .notice-data-type-set
             span.notice-type: |#{notice.type}
-            span.notice-date: |#{notice.date_info.year}年#{notice.date_info.month}月#{notice.date_info.day}日
+            span.notice-date: |#{notice.date_info.year}年#{notice.date_info.month}月#{notice.date_info.day}日 (#{notice.date_info.week})
           p.notice-title: |#{notice.title}
         .card-cnt
-          article.notice-cnt
+          article.notice-cnt(name="noticeArticle#{notice.id}")
             |#{notice.content}
-          .btn-notice-read: |さらに読み込む
+          .btn-notice-read(name="noticeMore", data-noticeid="#{notice.id}"): |さらに読み込む
       -}
       - }
       

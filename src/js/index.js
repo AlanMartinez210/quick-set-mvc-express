@@ -47,10 +47,23 @@ c2.ready(() => {
       c2.sendGet(`/api/notice`, {}, {dataType: "html"})
       .done(result => {
         $("#noticeModal").html(result);
+        // さらに読み込む
+        $("#noticeModal").off("click", "[name=noticeMore]");
+        $("#noticeModal").on("click", "[name=noticeMore]", (e) => {
+          const notice_id = $(e.target).data("noticeid");
+          const $article = $(`[name=noticeArticle${notice_id}]`)
+          $article.isVisible() ? $article.hide() : $article.show();
+        })
         resolve();
       });
     }
-  }, c2.showModal)
+  }, c2.showModal);
+
+
+
+
+
+
 
   
 	// $("#scMenu").on("change", function(){
@@ -58,13 +71,6 @@ c2.ready(() => {
 	// 	window.location.href = local;
 	// });
 
-
-	// // 依頼するボタンの処理
-	// $("[data-doRequest]").on('click',(e)=>{
-	// 	var requestid = e.currentTarget.dataset.requestid;
-	// 	c2.showRequestModal(requestid);
-  // });
-  
   // input系の標準イベント
   $("input[type='text'], input[type='password']").on('change', e => {
     c2.clearInputMsg(e.target.name);
