@@ -44,27 +44,37 @@ c2.ready(() => {
   $(".general-ptn").on("click", "#noticeBtn", {
     type: "notice",
     onSyncOpenBrefore : (resolve, reject, event) => {
-      c2.sendGet(`/api/notice`, {}, {dataType: "html"})
+      c2.sendGet(`/api/notice?p=1`, {}, {dataType: "html"})
       .done(result => {
-        $("#noticeModal").html(result);
+        const $noticeModal = $("#noticeModal");
+        $noticeModal.html(result);
+        
         // さらに読み込む
-        $("#noticeModal").off("click", "[name=noticeMore]");
-        $("#noticeModal").on("click", "[name=noticeMore]", (e) => {
+        $noticeModal.off("click", "[name=noticeMore]");
+        $noticeModal.on("click", "[name=noticeMore]", (e) => {
           const notice_id = $(e.target).data("noticeid");
           const $article = $(`[name=noticeArticle${notice_id}]`)
           $article.isVisible() ? $article.hide() : $article.show();
         })
+
+        // ページャー処理
+        $noticeModal.off('click', "#noticePager span");
+        $noticeModal.on('click', "#noticePager span", (e) => {
+          // undefindなら直近の親要素も捜す
+          const $t = $(e.target)
+          let pageNum = $t.data("page") || $(e.target).closest("span").data("page");
+
+          if($t.hasClass("selected")) return false;
+          c2.sendGet(`/api/notice?p=${pageNum}`, {}, {dataType: "html"})
+          .done(result => {
+            $noticeModal.html(result);
+          })
+        })
+
         resolve();
       });
     }
   }, c2.showModal);
-
-
-
-
-
-
-
   
 	// $("#scMenu").on("change", function(){
 	// 	const local = $(this).val();

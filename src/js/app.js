@@ -121,6 +121,7 @@ export default class myApp extends baseApp {
       else{
         // 万が一、err_Jsonがなければ致命エラー
 
+        // TODO ログアウト処理
         // setTimeout(function(){
         //   location.href = "/register";
         // }, 3000)

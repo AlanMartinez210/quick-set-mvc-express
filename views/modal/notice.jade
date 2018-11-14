@@ -22,9 +22,9 @@ form(action="", name="noticeForm")
       - if(notice_list_item){
       - for(var notice of notice_list_item){
       .card-prm.notice-box
-        .card-hdr.notice-hdr(data-type="#{notice.type}")
+        .card-hdr.notice-hdr(data-type="#{notice.type[0]}")
           .notice-data-type-set
-            span.notice-type: |#{notice.type}
+            span.notice-type: |#{notice.type[1]}
             span.notice-date: |#{notice.date_info.year}年#{notice.date_info.month}月#{notice.date_info.day}日 (#{notice.date_info.week})
           p.notice-title: |#{notice.title}
         .card-cnt

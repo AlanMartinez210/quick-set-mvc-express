@@ -64,4 +64,85 @@ exports.getBackMypageBtn = () => {
   }
 }
 
+/**
+ * 撮影種別の列挙を操作します。
+ */
+exports.enumShotType = () => {
+  const enumObj = [
+    {code: 1, type: "event", name: "イベント"},
+    {code: 2, type: "portlait", name: "ポートレート"},
+    {code: 3, type: "private", name: "個人撮影"},
+    {code: 4, type: "studio", name: "スタジオ撮影"},
+    {code: 99, type: "other", name: "その他"}
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
+ * お知らせ種別の列挙を操作します。
+ */
+exports.enumNoticeType = () => {
+  const enumObj = [
+    {code: 1, type: "info", name: "お知らせ"},
+    {code: 2, type: "event", name: "イベント"},
+    {code: 3, type: "worn", name: "注意勧告"}
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
+ * マッチング種別の列挙を操作します。
+ */
+exports.enumMatchingStatus = () => {
+  const enumObj = [
+    {code: 1, type: "request", name: "交渉中"},
+    {code: 3, type: "matching", name: "成立済み"},
+    {code: 5, type: "reject", name: "却下済み"}
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
+ * スケジュール種別の列挙を操作します。
+ */
+exports.enumScheduleType = () => {
+  const enumObj = [
+    {code: 1, type: "cos", name: "コスプレイヤー"},
+    {code: 2, type: "cam", name: "カメラマン"}
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
+ * ユーザー種別の列挙を操作します。
+ */
+exports.enumUserType = () => {
+  const enumObj = [
+    {code: 1, type: "cos", name: "コスプレイヤー"},
+    {code: 2, type: "cam", name: "カメラマン"}
+  ]
+  return new enumObject(enumObj);
+}
+
+class enumObject {
+  constructor(enumObj){
+    this.enumObj = enumObj;
+  }
+  getName(code){
+    const o = this.enumObj.filter(v => v.code == code);
+    return o[0] ? o[0].name : "";
+  }
+  getCode(nameOrType){
+    const o = this.enumObj.filter(v => v.name == nameOrType || v.type == nameOrType);
+    return o[0] ? o[0].code : "";
+  }
+  getType(code){
+    const o = this.enumObj.filter(v => v.code == code);
+    return o[0] ? o[0].type : "";
+  }
+  getEnum(){
+    return this.enumObj;
+  }
+}
+
 

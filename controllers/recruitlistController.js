@@ -1,6 +1,7 @@
 const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
 const recruitlistService = require('../services/recruitlistService');
+const recruitBookmarkService = require('../services/recruitBookmarkService');
 const vo_recruitlist = require("../viewObjects/recruitlist");
 const c2Util = require("../services/c2link4DiService");
 
@@ -163,3 +164,19 @@ exports.indexToday = function(req, res, next){
 	})
 	.catch(next);
 }
+
+/**
+ * ブックマークの登録/削除
+ *
+ */
+exports.postRecruitBookmark = (req, res, next)=>{
+  const user_id = sessionHelper.getUserId(req);
+  const schedule_id = req.form_data.schedule_id;
+  const mode    = req.form_data.mode; // 登録する場合 1, 削除する場合 2
+  recruitBookmarkService.process(user_id, schedule_id, mode)
+  .then(()=>{
+    res.json({status:'success'});
+  })
+  .catch(next);
+
+};

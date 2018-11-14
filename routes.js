@@ -88,7 +88,7 @@ router.post('/mypage/schedule/cos',validate.check(require('./form/postCosSchedul
 
 router.post('/mypage/schedule/cam',validate.check(require('./form/postCamScheduleForm')), validate.result, scheduleController.postSchedule);
 
-/* スケジュールの削除 deleteSchedule */ 
+/* スケジュールの削除 deleteSchedule */
 router.delete('/mypage/schedule',validate.check(require('./form/deleteScheduleForm')), validate.result, scheduleController.deleteSchedule);
 
 /** =============================
@@ -155,6 +155,8 @@ router.get('/recruitlist/today', recruitlistController.indexToday);　
 router.post('/recruitlist/search', validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
 
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
+router.post('/recruitlist/bookmark', validate.check(require('./form/postRecruitBookmarkForm')), validate.result, recruitlistController.postRecruitBookmark);
+
 
 /* 募集/予定の詳細表示 */
 router.get('/recruitlist/detail/:recruit_list_id', recruitDetailController.getRecruitDetail)

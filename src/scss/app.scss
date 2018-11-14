@@ -65,6 +65,16 @@ button{ cursor: pointer; }
 	}
 }
 
+@keyframes fadeIn {
+	0% {opacity: 0}
+	100% {opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+	0% {opacity: 0}
+	100% {opacity: 1}
+}
+
 /* モーダル */
 .modal-cntnr{
 	display: none;
@@ -91,6 +101,8 @@ button{ cursor: pointer; }
 			border-radius: 5px;
 			background: $white;
 			margin: 60px auto;
+			animation: fadeIn 0.5s ease 0s 1 normal;
+			-webkit-animation: fadeIn 0.5s ease 0s 1 normal;
 			.modal-close{
 				position: absolute;
 				top: -48px;
@@ -260,7 +272,8 @@ button, a{
 	top: 0;
 	left: 0;
 	z-index: $cnt-progress;
-	background: $blueDopcity-60;
+	background: none;
+	// background: $blueDopcity-60;
 	.loading{
 		position: absolute;
 		width: 32px;

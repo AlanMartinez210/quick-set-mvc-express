@@ -68,13 +68,14 @@ exports.getPrivacyPolicy = (req, res, next) => {
 }
 
 exports.getNoticeData = (req, res, next) => {
+	console.log("page", req.query.p);
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
 
 	const data = {
 		islogin: true,
 		target_year: 2018,
-		now_page: 1,
+		now_page: req.query.p,
 	}
 
   publicService.getNoticeList(data)

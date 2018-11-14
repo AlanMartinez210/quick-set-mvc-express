@@ -14,14 +14,6 @@ module.exports = (req, res, next)=>{
     ALL_PREF_LIST.push(ALL_PREF_ID_MAP[pref.id] = pref);
   }
 
-  // お知らせタイプ
-  const NOTICE_TYPE = {
-    info: 1, // お知らせ
-    event: 2, // イベント
-    worn: 3 // 注意勧告
-  };
-
-
   // 撮影タイプ一覧
   // postテーブルのpost_typeの種類
   const SHOT_TYPE = {EVENT: 1, PORTLAIT:2, PRIVATE:3, STUDIO:4, OTHERS:99};
@@ -83,7 +75,6 @@ module.exports = (req, res, next)=>{
     MATCHING_STATUS_ID_MAP,
     USER_TYPE_ID_MAP,
     SCHEDULE_TYPE_ID_MAP,
-    NOTICE_TYPE
   };
   next();
 };
