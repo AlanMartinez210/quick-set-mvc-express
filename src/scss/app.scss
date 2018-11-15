@@ -23,6 +23,7 @@ button{ cursor: pointer; }
 .on-show {display: block !important;}
 .hdr-menu{transition: .3s;}
 .wrapper{position: relative;}
+.invisible{visibility: hidden;}
 .main-cntnr{position: relative; margin-top: -24px;}
 .center-frame{
 	width: calc(100% - 32px);

@@ -6,7 +6,6 @@ window.c2 = c2;
 
 // init run function.
 c2.init(() => {
-
 });
 // document read complated run function.
 c2.ready(() => {
@@ -41,12 +40,12 @@ c2.ready(() => {
   }
 
   // お知らせモーダルを開く
+  const $noticeModal = $("#noticeModal");
   $(".general-ptn").on("click", "#noticeBtn", {
     type: "notice",
     onSyncOpenBrefore : (resolve, reject, event) => {
       c2.sendGet(`/api/notice?p=1`, {}, {dataType: "html"})
       .done(result => {
-        const $noticeModal = $("#noticeModal");
         $noticeModal.html(result);
         
         // さらに読み込む
@@ -85,6 +84,7 @@ c2.ready(() => {
   $("input[type='text'], input[type='password']").on('change', e => {
     c2.clearInputMsg(e.target.name);
   });
+  c2.inputClear();
 
 });
 

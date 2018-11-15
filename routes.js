@@ -152,7 +152,7 @@ router.get('/recruitlist', recruitlistController.index);　
 router.get('/recruitlist/today', recruitlistController.indexToday);　
 
 /* 募集/予定の検索 getSearchRecruit */
-router.post('/recruitlist/search', validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
+router.get('/recruitlist/search', validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
 
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
 router.post('/recruitlist/bookmark', validate.check(require('./form/postRecruitBookmarkForm')), validate.result, recruitlistController.postRecruitBookmark);

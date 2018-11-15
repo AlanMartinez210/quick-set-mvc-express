@@ -39,17 +39,21 @@ form(action="", name="noticeForm")
       - if(notice_list_pager){
       .pager#noticePager
         ul.flex._jc
-          -if(notice_list_pager.now_page > 1){
-            li: span(data-page="1"): i.icon-pager.fas.fa-angle-double-left.fa-fw
-            li: span(data-page="#{notice_list_pager.now_page-1}"): i.icon-pager.fas.fa-angle-left.fa-fw
-          -}
+          -
+            let np = Number(notice_list_pager.now_page),
+                mp = Number(notice_list_pager.max_page),
+                isMin = np > 1,
+                isMax = np < mp,
+                prev = np - 1,
+                next = np + 1;
+          -
+          li: span(data-page="1", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-left.fa-fw
+          li: span(data-page="#{prev}", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-left.fa-fw
           - for(let i=0;i<notice_list_pager.disp_page_list.length;i++){ let p = notice_list_pager.disp_page_list[i];
-            li: span(class="#{p == notice_list_pager.now_page ? 'selected' : '' }", data-page="#{p}"): |#{p}
+            li: span(class="#{p == np ? 'selected' : '' }", data-page="#{p}"): |#{p}
           - }
-          -if(notice_list_pager.now_page < notice_list_pager.max_page){
-            li: span(data-page="#{notice_list_pager.now_page-0+1}"): i.icon-pager.fas.fa-angle-right.fa-fw
-            li: span(data-page="#{notice_list_pager.max_page}"): i.icon-pager.fas.fa-angle-double-right.fa-fw
-          -}
+          li: span(data-page="#{next}", class="#{isMax ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-right.fa-fw
+          li: span(data-page="#{mp}", class="#{isMax ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-right.fa-fw
       - }
       
             

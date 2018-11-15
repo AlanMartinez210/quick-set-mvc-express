@@ -197,25 +197,25 @@
 		margin-right: 8px;
 		word-break: keep-all;
 	}
-	.st-type-event{
+	[data-shot_type='event']{
 		border-left: 3px solid $blueL;
 		border-radius: 5px 5px 0 0;
 		.type-name{ background: $blueL; }
 	}
 	
-	.st-type-portrait{
+	[data-shot_type='portrait']{
 		border-left: 3px solid $yellowD;
 		border-radius: 5px 5px 0 0;
 		.type-name{ background: $yellowD; }
 	}
 	
-	.st-type-studio{
+	[data-shot_type='studio']{
 		border-left: 3px solid $redL;
 		border-radius: 5px 5px 0 0;
 		.type-name{ background: $redL; }
 	}
 	
-	.st-type-private{
+	[data-shot_type='private']{
 		border-left: 3px solid $purpleL;
 		border-radius: 5px 5px 0 0;
 		.type-name{ background: $purpleL; }

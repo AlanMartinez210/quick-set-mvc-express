@@ -466,7 +466,7 @@ export default class myApp extends baseApp {
   }
 
   /** =======================================================
-   * #### ダイアログ
+   * #### その他
    ========================================================== */
 
   inputClear(){
@@ -479,5 +479,9 @@ export default class myApp extends baseApp {
         $(target).val("");
       })
     })
+  }
+
+  isExistId(id){
+    return document.getElementById(id) != null;
   }
 }

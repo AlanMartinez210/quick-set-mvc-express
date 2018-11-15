@@ -1,18 +1,22 @@
 /** 募集を検索フォーム */
 module.exports = {
 	search_date_from:{
-		in: 'body',
+		in: 'query',
+		isLength: {
+			errorMessage: 'E00008',
+			options:{ min: 8, max: 8 },
+		}
 	},
 	search_date_to:{
-		in: 'body',
+		in: 'query'
 	},
 	prefectures_field:{
-		in: 'body'
+		in: 'query'
 	},
 	search_tag:{
-		in: 'body'
+		in: 'query'
 	},
 	shot_type:{
-		in: 'body'
+		in: 'query'
 	}
 };

@@ -1,3 +1,5 @@
+const c2link4DiService = require("../services/c2link4DiService");
+
 module.exports = {
 	/**
 	 * 募集一覧
@@ -34,17 +36,23 @@ module.exports = {
 
   /**
    * 募集一覧中身
-   *
+   * 
+   * user_info: 形式 {id: ** ,icon: **}
+   * event_info: 形式 {shot_type: **, title: **, prefectures: **}
    * tags: 形式 [{ id: **, name: ** }, ...]
    * prefectures: 形式 [{ id: **, name: ** }, ...]
    */
   recruit_list_item: class {
-    constructor({recruit_list_id = "", user_info = {id:0 ,icon:""}, date_info = {/* moment */},
-                event_info = {type: [0, ""], title:"", prefectures:[]},
+    constructor({recruit_list_id = "", user_info = {}, date_info = {/* moment */}, event_info = {},
                 good_review_num = 0, bookmark_flg = false, tags = [], anime_info = [] }){
+      
+      const enumType = c2link4DiService.enumShotType();
 
       this.recruit_list_id = recruit_list_id;
-      this.user_info = user_info;
+      this.user_info = {
+        id: user_info.id,
+        icon : user_info.icon
+      }
       this.date_info = {
         key: date_info.format("YYYYMMDD"),
         year: date_info.year(),
@@ -52,7 +60,11 @@ module.exports = {
         day: date_info.date(),
         week: date_info.format('ddd'),
       }
-      this.event_info = event_info;
+      this.event_info = {
+        shot_type: [enumType.getType(event_info.shot_type), enumType.getName(event_info.shot_type)],
+        title: event_info.title,
+        prefectures: event_info.prefectures
+      };
       this.good_review_num = good_review_num;
       this.bookmark_flg = bookmark_flg;
       this.tags = tags;

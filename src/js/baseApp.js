@@ -215,8 +215,14 @@ export class baseApp {
     Path = Path ? Path.split("/") : [];
     return Path[Path.length-1];
   }
-  gerUrl(){
+  getUrl(){
     return location.href;
+  }
+  getReferrer(){
+    return document.referrer;
+  }
+  isSameReferrer(){
+    return this.getUrl() == this.getReferrer();
   }
   _getUA(){
     return navigator.userAgent;

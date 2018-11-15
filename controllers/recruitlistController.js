@@ -19,55 +19,13 @@ function renderRecruitList({date_key = dateHelper.getDate(), user_type, search_p
   return recruitlistService.getScheduleList({date_key, user_type, search_param, page})
 	.then(results=>{
 
-		// テストデータ
-		results.rowss = [
-      {
-				id: 60,
-				user_id: 1,
-				user_icon_url: "./image/icon.png",
-				date_key: dateHelper.getDate(), // moment
-				shot_type: [1, "イベント"],
-				event_name: "世界コスプレサミット",
-				prefectures: [
-					{id: 13, name: "東京都"},
-					{id: 15, name: "神奈川県"},
-				],
-        good_review_num: 13,
-        bookmark_flg: true,
-        tags: [
-          {id: 1, name: "一眼あり"},
-          {id: 2, name: "データ渡し2週間以内"},
-          {id: 3, name: "夜間撮影OK"}
-        ]
-			},
-			{
-				id: 61,
-				user_id: 1,
-				user_icon_url: "./image/icon.png",
-				date_key: dateHelper.getDate(), // moment
-				shot_type: [3, "個人撮影"],
-				event_name: "世界コスプレサミット",
-				prefectures: [
-					{id: 13, name: "東京都"},
-					{id: 15, name: "神奈川県"},
-				],
-        good_review_num: 13,
-        bookmark_flg: false,
-        tags: [
-          {id: 1, name: "一眼あり"},
-          {id: 2, name: "データ渡し2週間以内"},
-          {id: 3, name: "夜間撮影OK"}
-        ]
-      }
-		];
-
 		const recruit_list_item = results.rows.map(row=>{
 			return new vo_recruitlist.recruit_list_item({
 				recruit_list_id: row.id,
 				user_info: {id: row.user_id, icon: row.user_icon_url},
 				date_info: row.date_key,
 				event_info: {
-					type: [row.shot_type.id, row.shot_type.name],
+					shot_type: row.shot_type.id,
 					title: row.event_name,
 					prefectures: row.prefectures
 				},
@@ -119,8 +77,9 @@ exports.index = function(req, res, next){
  * @param {*} res
  */
 exports.getSearchRecruit = function(req, res, next){
-	console.log("search param", req.form_data);
-	console.log("page", req.query.p);
+
+	console.log("search param", req.query);
+
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
 
@@ -136,7 +95,8 @@ exports.getSearchRecruit = function(req, res, next){
 
 	renderRecruitList(data, render_obj)
 	.then(()=>{
-		res.render('../content/recruitlist/recruitlist', render_obj);
+		res.render('recruitList/index', render_obj);
+		// res.render('../content/recruitlist/recruitlist', render_obj);
 	})
 	.catch(err => {
 		next(err);
