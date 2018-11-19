@@ -1,5 +1,5 @@
-const userRepository = require('../repository/userRepository');
-const tagRepository = require('../repository/tagRepository');
+const userRepository = require('../repository/userRepository')();
+const tagRepository = require('../repository/tagRepository')();
 const dateHelper = require('../common/helper/dateHelper');
 const hashHelper = require("../common/helper/hashHelper");
 const errorHelper = require('../common/helper/errorHelper');
@@ -93,7 +93,7 @@ exports.setExpirationDate = (user_id) => {
  * @returns プロフィール編集画面表示データ
  */
 exports.getProfileEditViewData = async (user_id) => {
-  const userData = await userRepository().getUserById(user_id, {
+  const userData = await userRepository.getUserById(user_id, {
     attributes: ['user_name', 'icon_url', 'email', 'tags', 'prefectures']
   });
   // ユーザーが存在しない場合はエラー
@@ -104,7 +104,7 @@ exports.getProfileEditViewData = async (user_id) => {
   const prefectures = userData.prefectures;
 
   // 配列tagsからタグ名を取得
-  const tagArray = await tagRepository().getTagById(tags).map(tag => tag.tag_name);
+  const tagArray = await tagRepository.getTagById(tags).map(tag => tag.tag_name);
 
   //配列prefecturesから都道府県名を取得
   const prefectureArray = prefectureHelper.getPrefectureNameByIds(prefectures);
@@ -117,5 +117,59 @@ exports.getProfileEditViewData = async (user_id) => {
     email: userData.email == null ? '' : userData.email,
     tags: tagArray,
     prefectures: prefectureArray,
+  }
+}
+
+/**
+ * プロフィール編集画面から入力された情報を登録します。
+ * @param profileData プロフィールデータ
+ * id: ユーザID
+ * user_name: ユーザー名
+ * email: メールアドレス
+ * tags: タグ
+ * prefectures: 活動地域
+ */
+exports.updateProfileData = async (profileData) => {
+  try {
+    return userRepository.Sequelize.transaction(
+      async (tx) => {
+        // タグの登録/更新
+        const tagsResult = await function () {
+          if (profileData.tags.length <= 0) return;
+          const upsertPromise = [];
+          profileData.tags.forEach(val => {
+            upsertPromise.push(tagRepository.upsertTag(val, {
+              transaction: tx
+            }));
+          })
+          return Promise.all(upsertPromise);
+        }();
+        // ユーザーのタグ部分を登録したタグIDに置き換える
+        await function(){
+          if(!tagsResult) return;
+          const tag_id_arr = [];
+          tagsResult.forEach(obj => {
+            tag_id_arr.push(obj.tag_id);
+          });
+          profileData.tags = tag_id_arr;
+        }();
+        // 活動地域の更新
+        profileData.prefectures = prefectureHelper.getPrefectureIdByName(profileData.prefectures);
+
+        // プロフィールの更新(users)
+        userRepository.update({
+          user_name: profileData.user_name,
+          email: profileData.email,
+          tags: profileData.tags,
+          prefectures: profileData.prefectures
+        }, {
+          where: {
+            id: profileData.id
+          }
+        });
+      }
+    )
+  } catch (err) {
+    return err;
   }
 }

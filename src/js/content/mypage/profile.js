@@ -1,13 +1,24 @@
+import plugin_tag from "../../plugin/tag";
+import plugin_prefecture from "../../plugin/prefecture";
+
 export default class profile{
 	constructor(){
 		this.profileForm = $("[name=profileForm]");
 		this.userDeleteForm = $("[name=userDeleteForm]");
+		this.tags = new plugin_tag();
+		this.prefs = new plugin_prefecture();
 	}
 	ready(){
 		const doUserDeleteBtn = this.userDeleteForm.find('[name=doUserDelete]');
 		const deleteBtn = $("#deleteBtn");
+		const $userUpdateBtn = $("doUserUpdate");
 		const consentDelete = this.userDeleteForm.find("#consentDelete");
+
+		// タグと都道府県のプラグインをロード
+		this.tags.init().ready();
+		this.prefs.init().ready();
 		
+		// アカウント削除ボタン
 		deleteBtn.on('click', {type: "delete"}, c2.showModal);
 		doUserDeleteBtn.on('click', e => {
 			if(consentDelete.prop('checked')){
@@ -17,6 +28,11 @@ export default class profile{
 				c2.showInputErr("consent_delete", "チェックを入れてください。");
 				return false;
 			}
+		});
+
+		// ユーザー情報の更新
+		$userUpdateBtn.on("click", () => {
+			
 		});
 	}
 

@@ -13,17 +13,14 @@ module.exports = {
 		isLength: { errorMessage: 'E00007', options:{max: 255} }
 	},
 	// 地域
-	prefectures: {
+	prefectures_field: {
 		in: 'body',
-		isArray:{
-			errorMessage: 'prefectures must be array',
-		}
+		isArray:{ errorMessage: 'E00006' },
+		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
-	// タグ
-	tags: {
+	// タグ一覧
+	tag_field: {
 		in: 'body',
-		isArray:{
-			errorMessage: 'tags must be array',
-		}
+		isArray:{ errorMessage: 'E00006' }
 	},
 };

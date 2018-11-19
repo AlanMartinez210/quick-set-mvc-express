@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const sequelize = require('../../models/index').sequelize;
 const userService = require("../../services/userService");
 const tagRepository = require("../../repository/tagRepository")();
+const userRepository = require("../../repository/userRepository")();
 const basePattern = require("../../testdata/pattern/basePattern");
 
 const {
@@ -171,6 +172,30 @@ describe('userService test', () => {
         tags: []
       });
       stub.restore();
+    });
+  });
+
+  describe('test : updateProfileData', () => {
+    it('ケース1 タグを登録', async () => {
+      const result = await userService.updateProfileData({
+        id: 1,
+        user_name: 'たかしくん',
+        email: 'henkougo@mail.co.jp',
+        tags: ['あああ', 'いいい'],
+        prefectures: ['沖縄県','鹿児島県']
+      });
+      const updatedData = await userRepository.findOne({attributes:['id','user_name','email', 'tags', 'prefectures'], where:{
+        id: 1
+      }});
+      console.log(updatedData);
+      // assertion
+      chai.assert.deepEqual(updatedData, {
+        id: 1,
+        user_name: 'たかしくん',
+        email: 'henkougo@mail.co.jp',
+        tags: [10, 11],
+        prefectures: [46, 47],
+      });
     });
   });
 });

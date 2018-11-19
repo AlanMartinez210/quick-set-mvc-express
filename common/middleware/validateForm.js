@@ -15,7 +15,7 @@ module.exports = {
     var results = validationResult(req);
     if(results.isEmpty()){
       // 特定のキーに対して変換処理を行う。
-      req.form_data = formHelper.converter(req.body);
+      req.form_data = formHelper.converter(Object.assign(req.body, req.query));
       next();
     }else{
       // バリデーションエラーの作成

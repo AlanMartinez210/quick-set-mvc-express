@@ -133,8 +133,6 @@ exports.upsertScheduleData = (registData) => {
         // スケジュールの取得
         const scheduleResult = await scheduleRepository.getScheduleById(schedule_id, {transaction: tx});
 
-        console.log(scheduleResult);
-
         // 登録したスケジュールに属するタグと都道府県情報を削除
         await Promise.all([
           schedulePrefectureRepository.deleteSchedulePref(scheduleResult.id, {transaction: tx}),

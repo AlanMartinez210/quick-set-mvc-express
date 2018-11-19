@@ -9,12 +9,13 @@ export default class convert{
 		let param = "";
 		Object.keys(jsonParam).forEach((ele, i) => {
 			if(!i){
-				param += `${ele}=${jsonParam[ele]}`;
+				param += `?${ele}=${jsonParam[ele]}`;
 			}
 			else{
 				param += `&${ele}=${jsonParam[ele]}`;
 			}
 		});
+		param = encodeURI(param);
 		return param;
 	}
 }

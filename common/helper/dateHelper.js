@@ -17,6 +17,15 @@ exports.getDateToStr = (dateStr = "") => {
 }
 
 /**
+ * 文字列がmomentに変換可能かどうかチェックする
+ * 空文字の場合は
+ */
+exports.isValidString = (str) => {
+  return moment(str).isValid();
+}
+
+
+/**
  * 新規にmoment dateを取得します。
  *
  * @param {*} year

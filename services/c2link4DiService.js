@@ -129,16 +129,16 @@ class enumObject {
     this.enumObj = enumObj;
   }
   getName(code){
-    const o = this.enumObj.filter(v => v.code == code);
-    return o[0] ? o[0].name : "";
+    const o = this.enumObj.find(v => v.code == code);
+    return o ? o.name : "";
   }
   getCode(nameOrType){
-    const o = this.enumObj.filter(v => v.name == nameOrType || v.type == nameOrType);
-    return o[0] ? o[0].code : "";
+    const o = this.enumObj.find(v => v.name == nameOrType || v.type == nameOrType);
+    return o ? o.code : "";
   }
   getType(code){
-    const o = this.enumObj.filter(v => v.code == code);
-    return o[0] ? o[0].type : "";
+    const o = this.enumObj.find(v => v.code == code);
+    return o ? o.type : "";
   }
   getEnum(){
     return this.enumObj;

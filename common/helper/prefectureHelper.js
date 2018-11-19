@@ -1,18 +1,24 @@
+const prefecture = require("jp-prefecture");
 /**
  * 都道府県IDから都道府県名を取得します。
  * @param {*} prefId 都道府県IDの配列
  */
 exports.getPrefectureNameByIds = (prefIds = []) => {
-  return prefIds.map(v => global.C2LINK.ALL_PREF_ID_MAP[v].name)
+  return prefIds.map(v => {
+    return prefecture.findBy("pref", "id", v, "name");
+  });
 }
 
 /**
- * togouhukenn 
+ * togouhukenn
  * 道府県名から都道府県IDを取得します。
  */
 exports.getPrefectureIdByName = (prefNameArr = []) => {
-  const prefArr = global.C2LINK.ALL_PREF_LIST.filter(v => {
-    return prefNameArr.indexOf(v.name) >= 0
+  return prefNameArr.map(v => {
+    return prefecture.findBy( "pref", "name", v, "id");
   });
-  return prefArr.map(v => v.id);
+}
+
+exports.getAllPrefList = ()=>{
+  return prefecture.getAll("pref", ["id", "name"]);
 }

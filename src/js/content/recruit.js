@@ -16,25 +16,17 @@ export default class recruit {
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
 		const $doGetSearchRecruitListBtn = $('[name=doGetSearchRecruitList]'); 
 
-		// console.log(c2.isSameReferrer());
-		// // 違うページからのアクセスならcookieを消す
-		// if(!c2.isSameReferrer()){
-		// 	document.cookie = "search_info=;path=/recruitlist";
-		// }
-
 		// ページャー処理
 		$recruitSection.on('click', "#recruitlistPager span", (e) => {
-			// undefindなら直近の親要素も捜す
 			const $t = $(e.target);
 			if($t.hasClass("selected")) return false;
-
+			// undefindなら直近の親要素も捜す
 			let pageNum = $t.data("page") || $(e.target).closest("span").data("page");
 
-			// sendData.search_date_from = this.convert.serverDate(sendData.search_date_from);
-			// sendData.search_date_to = this.convert.serverDate(sendData.search_date_to);
-			this.postSearchReqest(sendData, pageNum);
+			// cookieから検索情報を取得する。
+			const sendData = cookies.getJSON("search_info") || {};
+			this.getSearchReqest(sendData, pageNum);
 		})
-
 
 		// 検索モーダルを開く
 		$recruitSection.on('click', openSearchBtn, {
@@ -44,14 +36,14 @@ export default class recruit {
 				this.prefecture.init().ready();
 
 				// cookieから検索データを取得する。
-				console.log(cookies.getJSON("search_info"));
+				const searchData = cookies.getJSON("search_info") || {};
 			
-
-				// const searchData = JSON.parse($("[name=searchInfo]").val());
-				// this.recruitSearchForm.setValue(searchData);
-				// searchData.prefectures_field.forEach(ele => {
-				// 	this.prefecture.addPrefecture(ele);
-				// });
+				this.recruitSearchForm.setValue(searchData);
+				if(searchData.prefectures_field){
+					searchData.prefectures_field.forEach(ele => {
+						this.prefecture.addPrefecture(ele);
+					});
+				}
 			}
 		}, c2.showModal)
 
@@ -72,14 +64,15 @@ export default class recruit {
 		// 検索ボタン処理
 		$doGetSearchRecruitListBtn.on('click', (event) => {
 			const sendData = this.getSearchData();
-			this.postSearchReqest(sendData, 1)
-			// .done(() => {
-			// 	// 検索内容をcookieに保存する。
-			// 	c2.showClearAll();
-			// })
+			console.log("push search", sendData);
+			
+			// cookie作成
+			cookies.set("search_info", sendData, {path: '/recruitlist'})
+			this.getSearchReqest(sendData, 1)
 			return false;
 		})
 		
+		// 募集詳細のjsを呼び出す。
 		this.recruitDetail.ready();
 	}
 
@@ -98,19 +91,13 @@ export default class recruit {
 	}
 
 	// 検索処理を行います。
-	postSearchReqest(sendData, pageNum = 1){
+	getSearchReqest(sendData = {}, pageNum = 1){
 		sendData.page = pageNum;
 		const paramString = this.convert.jsonToUrlParam(sendData);
-		console.log(paramString);
-		const path = `/recruitlist/search?${paramString}`;
+
+		const path = `/recruitlist/search${paramString}`;
 
 		// URLの書き換えを行う。
-		//history.replaceState('', '', path);
 		location.href = path;
-	
-		// return c2.sendGet(path, {}, {dataType: "html"})
-		// .done(results => {
-		// 	$('#recruitSection').html(results);
-		// });
 	}
 }

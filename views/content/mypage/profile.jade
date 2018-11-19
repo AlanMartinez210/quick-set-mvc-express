@@ -36,43 +36,39 @@
             input(type="file", name="usericon")
           p.bottom-label
 
-        .label-input-box#box_username
+        .label-input-box#box_event_name
           .label-box
             p.main-label: |ユーザー名
             span.sub-label: |50文字まで入力できます
           .input-box._s.flex._c.st-required
-            .icon-box
-            //- input(type="text", name="username" value="#{userData.username}")
-            input(type="text", name="username" value="")
-          //- p.bottom-label| #{(isError&&error.errors['username'])?error.errors['username'].message:""}
+            input(type="text", name="user_name")
+          p.bottom-label
 
-        .label-input-box#box_username
+        .label-input-box#box_email
           .label-box
             p.main-label: |メールアドレス
-            span.sub-label: |＠を含むメールアドレスを入力してください。
+            span.sub-label: |＠を含むメールアドレスを入力してください
           .input-box._s.flex._c.st-required
-            //- input(type="text", name="email" value="#{userData.email}")
-            input(type="text", name="email" value="")
-          //- p.bottom-label| #{(isError&&error.errors['email'])?error.errors['email'].message:""}
+            input(type="text", name="email")
+          p.bottom-label
 
-        .label-input-box._mbs#box_prefectureField
+        .label-input-box._mbs#box_prefectures_field
           .label-box
             p.main-label: |活動地域
             span.sub-label: |あなたの活動している地域を選択し追加してください。
           .select-box._s.flex._c
-            select(name="prefecture")#prefectures.js-addPrefectures
+            select#prefectures.js-addPrefectures
               option(value="")
               - for(var pref of C2LINK.ALL_PREF_LIST){
-                option(value="#{pref.id}") #{pref.name}
+                option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label
 
         p.st-title-tag
-          |活動地域一覧
-        .tag-cnt-box.flex._wrap#prefectures_field
+          |追加した活動地域
+        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
 
-
-        .label-input-box._mbs#box_tagField
+        .label-input-box._mbs#box_tag_field
           .label-box
             p.main-label: |タグの設定
             span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
@@ -83,11 +79,11 @@
 
         p.st-title-tag
           |追加したタグ一覧
-        .tag-cnt-box.flex._wrap#tags_field
+        .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
 
-      .board-ftr._s.flex._j
-        button.btn-prm.st-back-b.shadow-l
-          |更新
+      .board-ftr._s.flex._c._jc
+        button(type="submit", name="doUserUpdate").btn-prm.st-back-b.shadow-l
+          span: |更新
 
   .board-prm
     .board-cnt._n

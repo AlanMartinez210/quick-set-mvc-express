@@ -16,7 +16,8 @@ const content_id = "recruit";
  * @param {*} render_obj
  */
 function renderRecruitList({date_key = dateHelper.getDate(), user_type, search_param = {}, page = 1} = data, render_obj){
-  return recruitlistService.getScheduleList({date_key, user_type, search_param, page})
+	console.log("target page", page);
+	return recruitlistService.getScheduleList({date_key, user_type, search_param, page})
 	.then(results=>{
 
 		const recruit_list_item = results.rows.map(row=>{
@@ -90,13 +91,12 @@ exports.getSearchRecruit = function(req, res, next){
 		date_key: dateHelper.getDate(),
 		user_type: user_type,
 		search_param: req.form_data,
-		page: req.query.p,
+		page: req.query.page,
 	};
 
 	renderRecruitList(data, render_obj)
 	.then(()=>{
 		res.render('recruitList/index', render_obj);
-		// res.render('../content/recruitlist/recruitlist', render_obj);
 	})
 	.catch(err => {
 		next(err);

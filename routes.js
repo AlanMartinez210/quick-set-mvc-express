@@ -49,6 +49,7 @@ router.get('/mypage/profile', profileController.index);　/* プロフィール�
 router.get('/mypage/site', siteController.index);
 
 /* サイトの設定の登録/編集 postSiteSetting */
+router.post('/mypage/site/', siteController.postSiteSetting);
 
 /* サンプル写真の設定の表示 index */
 router.get('/mypage/sampleImage', sampleImageController.index);
