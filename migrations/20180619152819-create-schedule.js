@@ -45,11 +45,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       cost: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         comment: '費用'
       },
       num: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         comment: '募集人数'
       },
       cos_chara: {

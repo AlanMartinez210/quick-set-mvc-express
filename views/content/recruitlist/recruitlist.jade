@@ -2,6 +2,7 @@
   const recruit_search_info = self.bodyData.recruit_search_info;
   const recruit_list_arr = self.bodyData.recruit_list_arr;
   const recruit_list_pager = self.bodyData.recruit_list_pager;
+  const search_urlParam = self.bodyData.search_urlParam;
 -
 .center-frame
 
@@ -35,7 +36,7 @@
           .label-box._s.flex._c
             span
               |種類&nbsp;:&nbsp;
-              |#{global.C2LINK.SHOT_TYPE_ID_MAP[recruit_search_info.shot_type].name}
+              |#{recruit_search_info.shot_type}
 
     //- 表示オプション表示部
     .board-cnt
@@ -46,45 +47,63 @@
 
   //- 募集/予定一覧表示
   -let tmp_label_date;
-  -for(let recruit_item of recruit_list_arr){
-    //- 日付を一時保存し、異なった場合はラベルを切り替える。
-    -if(recruit_item.date_info.key != tmp_label_date){ tmp_label_date = recruit_item.date_info.key;
-      // 日付
-      include board/label.jade
+  //- 募集一覧が一件もない場合はメッセージを表示する。
+  -if(recruit_list_arr.length){
+    
+    
+    -for(let recruit_item of recruit_list_arr){
+      //- 日付の表示を行う。一時保存したものと異なるときに再度差し入れる。
+      -if(recruit_item.date_info.key != tmp_label_date){ tmp_label_date = recruit_item.date_info.key;
+        include board/label.jade
+      -}
+
+      -
+        const ui = recruit_item.user_info;
+        const ei = recruit_item.event_info;
+      -
+
+      //- ユーザータイプごとで表示リストを分ける
+      case Number(self.userType)
+        when 1
+          include board/cameraman.jade
+        when 2
+          include board/cosplayer.jade
+
     -}
-    -
-      const ui = recruit_item.user_info;
-      const ei = recruit_item.event_info;
-    -
-    //- ユーザータイプごとで表示リストを分ける
-    case Number(self.userType)
-      when 1
-        include board/cameraman.jade
-      when 2
-        include board/cosplayer.jade
 
+  -}else{
+    .board-prm
+      .board-cnt
+        p: |対象の募集は存在しません。
   -}
-
+  
   //- ページャー表示部
   .floor-prm
     .floor-hdr._s
       .pager#recruitlistPager
         ul.flex._jc
           -
-            let np = Number(recruit_list_pager.now_page),
+            let url = "/recruitlist/search";
+                np = Number(recruit_list_pager.now_page),
                 mp = Number(recruit_list_pager.max_page),
                 isMin = np > 1,
                 isMax = np < mp,
                 prev = np - 1,
-                next = np + 1;
+                next = np + 1
+                param = search_urlParam ? `&${search_urlParam}` : "";
           -
-          li: span(data-page="1", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-left.fa-fw
-          li: span(data-page="#{prev}", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-left.fa-fw
+          li: a(href="#{url}?page=1#{param}", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-left.fa-fw
+          li: a(href="#{url}?page=#{prev}#{param}", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-left.fa-fw
           - for(let i=0;i<recruit_list_pager.disp_page_list.length;i++){ let p = recruit_list_pager.disp_page_list[i];
-            li: span(class="#{p == np ? 'selected' : '' }", data-page="#{p}"): |#{p}
+            li 
+              -if(p == np){
+              span(class="selected"): |#{p}
+              -}else{
+              a(href="#{url}?page=#{p}#{param}"): |#{p}
+              -}
           - }
-          li: span(data-page="#{next}", class="#{isMax ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-right.fa-fw
-          li: span(data-page="#{mp}", class="#{isMax ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-right.fa-fw
+          li: a(href="#{url}?page=#{next}#{param}", class="#{isMax ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-right.fa-fw
+          li: a(href="#{url}?page=#{mp}#{param}", class="#{isMax ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-right.fa-fw
 
 
   //- AD表示部

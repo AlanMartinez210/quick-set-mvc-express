@@ -32,7 +32,7 @@
           .select-box._s.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
-              - for(var pref of C2LINK.ALL_PREF_LIST){
+              - for(var pref of viewParamList.pref){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label
@@ -58,7 +58,7 @@
                 p.main-label: |撮影タイプ
               .select-box._s.flex._c
                 select(name="shot_type")
-                  - for(var shot_type of C2LINK.SHOT_TYPE_LIST){
+                  - for(var shot_type of viewParamList.shot_type){
                     option(value="#{shot_type.id}") #{shot_type.name}
                   - }
 

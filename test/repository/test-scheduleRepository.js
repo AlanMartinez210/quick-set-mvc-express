@@ -51,7 +51,7 @@ describe('scheduleRepository test', function () {
     describe('○正常テスト', function () {
       it('user_id -> 1(カメラマン)のとき指定年月毎に登録しているスケジュール数を取得する。', () => {
         const expect_data = [
-          { group_month: 8, count: 10 }, 
+          { group_month: 8, count: 10 },
           { group_month: 9, count: 10 },
           { group_month: 10, count: 10 }
         ];
@@ -77,8 +77,8 @@ describe('scheduleRepository test', function () {
           shot_type: 1,
           event_name: "テストイベント1",
           event_url: "htt://c2link.com/detail/event/test",
-          cost: 1000,
-          num: 1,
+          cost: "1000",
+          num: "1",
           remarks: "カメラマンテストスケジュール"
         };
         return scheduleRepository.getScheduleById(5)

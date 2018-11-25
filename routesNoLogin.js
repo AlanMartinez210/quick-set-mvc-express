@@ -25,19 +25,19 @@ router.post('/api/register', validate.check(require('./form/postRegisterForm')),
 /* ログイン処理 */
 router.post('/api/login', validate.check(require('./form/postLoginForm')), validate.result, userController.postLogin);
 
-///* 運営情報の表示 */
-//router.get('/public/adminInfo', publicController.getAdminInfo);
-//
-///* プライバシーポリシーの表示 index */
-//router.get('/public/privacyPolicy', publicController.getPrivacyPolicy);
-//
-///* 利用者様のデータについての表示 index */
-//router.get('/public/aboutUserData', publicController.getAboutUserData);
-//
-///* お問い合わせの表示 index */
-//router.get('/public/contact', publicController.getContact);
+/* 運営情報の表示 */
+router.get('/adminInfo', publicController.getAdminInfo);
 
-/** 
+/* プライバシーポリシーの表示 index */
+router.get('/privacyPolicy', publicController.getPrivacyPolicy);
+
+/* 利用者様のデータについての表示 index */
+router.get('/aboutUserData', publicController.getAboutUserData);
+
+/* お問い合わせの表示 index */
+router.get('/contact', publicController.getContact);
+
+/**
  * 募集/予定の詳細の表示 entryOutSide
  * 外部からのアクセス専用
  *  */
@@ -56,9 +56,9 @@ const hashHelper = require("./common/helper/hashHelper");
 
 /**
  * テストでのデータやログインモードをデバックで使用します。
- * 
+ *
  * type(ユーザー種別): cam(カメラマン)/cos(コスプレイヤー)
- * mode(データタイプ): 
+ * mode(データタイプ):
  *    u(ユーザーデータのみ)
  *    s(スケジュールデータ)
  *    m(マッチングデータ)
@@ -117,10 +117,10 @@ router.get('/test/:type/:mode', (req, res, next) => {
     })
   }
 
-  
+
   // prom
   // .then(results => {
-    
+
   // })
   // .then(results => {
   //   sessionHelper.setUserData(req, results[0]);

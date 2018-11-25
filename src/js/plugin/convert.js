@@ -1,21 +1,21 @@
 export default class convert{
 	constructor(){}
-	serverDate(date_key){
-		if(!date_key) return "";
-		return date_key.slice(0,4) + date_key.slice(5,7) + date_key.slice(8,10);
-	}
 
 	jsonToUrlParam(jsonParam){
 		let param = "";
-		Object.keys(jsonParam).forEach((ele, i) => {
-			if(!i){
-				param += `?${ele}=${jsonParam[ele]}`;
+		let init = true;
+		Object.keys(jsonParam).forEach(ele => {
+			if(!jsonParam[ele]) return;
+	
+			const v = encodeURIComponent(jsonParam[ele]);
+			if(init){
+				param += `${ele}=${v}`;
+				init = false;
 			}
 			else{
-				param += `&${ele}=${jsonParam[ele]}`;
+				param += `&${ele}=${v}`;
 			}
 		});
-		param = encodeURI(param);
 		return param;
 	}
 }

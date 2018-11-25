@@ -1,6 +1,7 @@
 const userService = require("../services/userService");
 
 const sessionHelper = require('../common/helper/sessionHelper');
+const isHelper = require('../common/helper/isHelper');
 
 /**
  * 新規登録画面の表示
@@ -12,6 +13,10 @@ exports.index = (req, res, next) => {
 	const render_obj = res.render_obj;
 	render_obj.contentId = "register";
 	render_obj.title = "新規登録";
+	if(isHelper.isLogin(req)){
+		res.redirect('/');
+		return;
+	}
 	res.render('register', render_obj);
 }
 
@@ -90,5 +95,3 @@ exports.postLogout = function(req, res, next){
 	sessionHelper.deleteSession(req);
 	res.status(200).json({success:"success"});
 }
-
-

@@ -24,8 +24,8 @@
             span.sub-label: |可能な撮影を選択してください。
           .select-box._s.flex._c.st-required
             select(name="shot_type")
-              - for(var shot_type of C2LINK.SHOT_TYPE_LIST){
-                  option(value="#{shot_type.id}") #{shot_type.name}
+              - for(var shot_type of viewParamList.shot_type){
+                  option(value="#{shot_type.code}") #{shot_type.name}
               - }
           p.bottom-label
 
@@ -36,7 +36,7 @@
           .select-box._s.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
-              - for(var pref of C2LINK.ALL_PREF_LIST){
+              - for(var pref of viewParamList.pref){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label

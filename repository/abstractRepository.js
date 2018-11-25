@@ -1,5 +1,5 @@
 const db = require('../models/index');
-
+const dateHelper = require('../common/helper/dateHelper');
 
 module.exports = (models_name) => {
 	return {
@@ -96,7 +96,18 @@ module.exports = (models_name) => {
 			if(options.offset){
 				sql += " offset " + options.offset;
 			}
-			return db.sequelize.query(sql, options);
+			return db.sequelize.query(sql, options)
+			.then(result=>{
+				// Date型をMomentに変換する
+				return result.map(row=>{
+					for(var col in row){
+						if(row[col] instanceof Date){
+							row[col] = dateHelper.getDate(row[col]);
+						}
+					}
+					return row;
+				});
+			});
 		},
 
 		queryUpsert: (sql, replacements = {} ,options = {}) =>{

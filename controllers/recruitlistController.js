@@ -1,5 +1,6 @@
 const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
+const prefectureHelper = require("../common/helper/prefectureHelper");
 const recruitlistService = require('../services/recruitlistService');
 const recruitBookmarkService = require('../services/recruitBookmarkService');
 const vo_recruitlist = require("../viewObjects/recruitlist");
@@ -61,6 +62,10 @@ exports.index = function(req, res, next){
 	const user_type = sessionHelper.getUserType(req);
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
+	render_obj.viewParamList = {
+    pref: prefectureHelper.getAllPrefList(),
+    shot_type: c2Util.enumShotType().getEnum()
+  };
 
 	const data = { user_type: user_type };
 
@@ -86,6 +91,10 @@ exports.getSearchRecruit = function(req, res, next){
 
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
+	render_obj.viewParamList = {
+    pref: prefectureHelper.getAllPrefList(),
+    shot_type: c2Util.enumShotType().getEnum()
+  };
 
 	const data = {
 		date_key: dateHelper.getDate(),

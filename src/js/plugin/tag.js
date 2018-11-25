@@ -60,7 +60,7 @@ export default class tag{
 			<div class="tag-label flex _c">
 				<span class="tag-text">#${tagArr}</span>
 				<i data-id="tab-close" class="far fa-times-circle tag_delete_button" ></i>
-				<input type="hidden" name="tags" value="${tagArr}">
+				<input type="hidden" value="${tagArr}">
 			</div>
 		`);
 
@@ -108,7 +108,7 @@ export default class tag{
 	}
 
 	getTagValue(){
-		return $('[name=tags]').map((idx, ele) => {
+		return $('[name=tags_field]').find("input").map((idx, ele) => {
 			return ele.value;
 		}).get();
 	}

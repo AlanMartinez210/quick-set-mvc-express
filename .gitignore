@@ -69,3 +69,4 @@ public/bundle.js
 
 # config
 config/config.json
+.vscode/launch.json

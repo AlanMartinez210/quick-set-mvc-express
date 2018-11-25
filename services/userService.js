@@ -12,7 +12,7 @@ const prefectureHelper = require('../common/helper/prefectureHelper');
  */
 exports.createUser = (user_data) => {
   user_data.password = hashHelper(user_data.password);
-  return userRepository().getUserByEmail(user_data.email)
+  return userRepository.getUserByEmail(user_data.email)
     .then(res => {
       // メールアドレスからユーザーが取得できたらエラー
       if (res.length > 0) return Promise.reject(new errorHelper({
@@ -21,7 +21,7 @@ exports.createUser = (user_data) => {
         view_id: "email",
         code: "E00010"
       }));
-      return userRepository().create(user_data);
+      return userRepository.create(user_data);
     })
     .then(res => {
       return res;
@@ -34,7 +34,7 @@ exports.createUser = (user_data) => {
 exports.getloginUserData = (login_key, password) => {
   password = hashHelper(password);
   // ログインキーがユーザーキーと仮定してユーザーデータを取得する。
-  return userRepository().getUserByUserKeyOrEmail(login_key, password)
+  return userRepository.getUserByUserKeyOrEmail(login_key, password)
     .then(res => {
       const login_user_data = res[0];
       // ユーザーが存在しない場合はエラーを返す。
@@ -62,10 +62,10 @@ exports.checkExpirationDate = (expiration_date) => {
  * 対象のユーザーの有効期限をクリアし、更新したユーザーデータを返します。
  */
 exports.clearExpirationDate = (user_id) => {
-  return userRepository().deleteExpirationDate(user_id)
+  return userRepository.deleteExpirationDate(user_id)
     .then(res => {
       if (res) {
-        return userRepository().getUserById(user_id);
+        return userRepository.getUserById(user_id);
       } else {
         return Promise.reject(new errorHelper().setWindowMsg("E00000"));
       }
@@ -77,10 +77,10 @@ exports.clearExpirationDate = (user_id) => {
  */
 exports.setExpirationDate = (user_id) => {
   const expiration_date = dateHelper.getDate().add(7, 'days').toDate();
-  return userRepository().updateExpirationDate(user_id, expiration_date)
+  return userRepository.updateExpirationDate(user_id, expiration_date)
     .then(res => {
       if (res) {
-        return userRepository().getUserById(user_id);
+        return userRepository.getUserById(user_id);
       } else {
         return Promise.reject(new errorHelper().setWindowMsg("E00000"));
       }

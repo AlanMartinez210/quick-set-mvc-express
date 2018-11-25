@@ -25,7 +25,7 @@ module.exports = {
       this.bad_review_num = bad_review_num;
       this.user_info = user_info;
       this.date_info = {
-        key: date_info.format("YYYYMMDD"),
+        key: date_info.format("L"),
         year: date_info.year(),
         month: date_info.trueMonth(),
         day: date_info.date(),

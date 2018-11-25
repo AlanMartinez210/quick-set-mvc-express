@@ -8,48 +8,18 @@ const sessionHelper = require('../common/helper/sessionHelper');
 
 
 /**
- * 利用者様のデータについての表示
- *
- * @param {*} req
- * @param {*} res
- */
-exports.getAdminInfo = (req, res, next) => {
-	var render_obj = res.render_obj;
-	render_obj.contentId = "about_user_data";
-	render_obj.title = "利用者様のデータについて";
-	render_obj.bodyData = {
-	};
-	res.render('public/aboutUserData',render_obj);
-}
-
-/**
  * 運営情報の表示
  *
  * @param {*} req
  * @param {*} res
  */
-exports.getPrivacyPolicy = (req, res, next) => {
+ exports.getAdminInfo = (req, res, next) => {
 	var render_obj = res.render_obj;
 	render_obj.contentId = "admin_info";
 	render_obj.title = "運営情報";
 	render_obj.bodyData = {
 	};
 	res.render('public/adminInfo',render_obj);
-}
-
-/**
- * お問い合わせ画面の表示
- *
- * @param {*} req
- * @param {*} res
- */
-exports.getContact = (req, res, next) => {
-	var render_obj = res.render_obj;
-	render_obj.contentId = "contact";
-	render_obj.title = "お問い合わせ";
-	render_obj.bodyData = {
-	};
-	res.render('public/contact',render_obj);
 }
 
 /**
@@ -67,6 +37,38 @@ exports.getPrivacyPolicy = (req, res, next) => {
 	res.render('public/privacyPolicy',render_obj);
 }
 
+
+/**
+ * 利用者様のデータについての表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getAboutUserData = (req, res, next) => {
+	var render_obj = res.render_obj;
+	render_obj.contentId = "about_user_data";
+	render_obj.title = "利用者様のデータについて";
+	render_obj.bodyData = {
+	};
+	res.render('public/aboutUserData',render_obj);
+}
+
+
+/**
+ * お問い合わせ画面の表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getContact = (req, res, next) => {
+	var render_obj = res.render_obj;
+	render_obj.contentId = "contact";
+	render_obj.title = "お問い合わせ";
+	render_obj.bodyData = {
+	};
+	res.render('public/contact',render_obj);
+}
+
 exports.getNoticeData = (req, res, next) => {
 	console.log("page", req.query.p);
 	const render_obj = res.render_obj;
@@ -82,8 +84,8 @@ exports.getNoticeData = (req, res, next) => {
   .then(results => {
 		const notice_list_item = results.notice_list.map(item => {
 			return new noticeVO.notice_list_item({
-				id: item.id, 
-				notice_date: item.notice_date, 
+				id: item.id,
+				notice_date: item.notice_date,
 				type: item.type,
 				title: item.title,
 				content: item.content

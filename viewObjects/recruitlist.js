@@ -1,4 +1,5 @@
 const c2link4DiService = require("../services/c2link4DiService");
+const urlHelper = require("../common/helper/urlHelper");
 
 module.exports = {
 	/**
@@ -15,22 +16,22 @@ module.exports = {
       },
       recruit_search_info = {},
     }){
-
       this.recruit_list_arr = recruit_list_item;
       this.recruit_list_pager = recruit_list_pager;
       this.recruit_search_info = recruit_search_info;
+      this.search_urlParam = urlHelper.jsonToUrlParam(recruit_search_info);
     }
   },
 
   recruit_search_info: class {
-    constructor({ shot_type = 0, search_date_from = ""/* moment */, search_date_to = ""/* moment */,
-    prefectures_field = [], search_tag = ""}){
+    constructor({ shot_type = "", search_date_from = ""/* moment */, search_date_to = ""/* moment */,
+    prefectures_field = "", search_tag = ""}){
 
       this.shot_type = shot_type;
-      this.search_date_from = search_date_from ? search_date_from.format("YYYY/MM/DD") : "",
-      this.search_date_to = search_date_to ? search_date_to.format("YYYY/MM/DD") : "",
-      this.prefectures_field = prefectures_field
-      this.search_tag = search_tag
+      this.search_date_from = search_date_from ? search_date_from.format("L") : "";
+      this.search_date_to = search_date_to ? search_date_to.format("L") : "";
+      this.prefectures_field = prefectures_field;
+      this.search_tag = search_tag;
     }
   },
 
@@ -54,7 +55,7 @@ module.exports = {
         icon : user_info.icon
       }
       this.date_info = {
-        key: date_info.format("YYYYMMDD"),
+        key: date_info.format("L"),
         year: date_info.year(),
         month: date_info.trueMonth(),
         day: date_info.date(),

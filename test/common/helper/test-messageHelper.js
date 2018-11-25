@@ -17,7 +17,7 @@ describe('messageHelper test', function() {
 	// 		E00007: {msg: "日付形式で入力してください"},
 	// 		M00002: {msg: "test2"},
 	// 		M00003: {msg: "test2"},
-		
+
 	// 		L00001: {msg: "セッションが切断されました"},
 	// 		L00002: {msg: "すでに依頼済みの募集です"},
 	// 		L00003: {msg: "依頼の承諾に失敗しました"},
@@ -25,7 +25,7 @@ describe('messageHelper test', function() {
 	// 		L00005: {msg: "依頼の取消に失敗しました"},
 	// 	}
 	// 	const msgJson_Key = Object.keys(msgJson);
-		
+
 	// 	for(let i=0; i < msgJson_Key.length; i++) {
 	// 		const checkID = msgJson_Key[i];
 	// 		const checkWord =	msgJson[msgJson_Key[i]].msg;
@@ -37,9 +37,9 @@ describe('messageHelper test', function() {
 	);
 
 	describe('messageHelper test errorパターン', function() {
-		it('不正な値の場合は「invaild code」のエラーを出す', function(){
-			(function() { messageHelper.getMsgObj(null) }).should.throw(Error, 'invaild code');
+		it('不正な値の場合は「require code」のエラーを出す', function(){
+			(function() { messageHelper.getMsgObj(null) }).should.throw(Error, 'require code');
 		});
 	});
-	
+
 });

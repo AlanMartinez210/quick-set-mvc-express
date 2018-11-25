@@ -92,8 +92,6 @@ app.use(logger('dev'));
 /**
  * コントローラー共通処理モデルの呼び出し
  */
-
-app.use(require('./common/middleware/requestObjectDefer'));
 app.use(require('./common/middleware/responseObjectDefer'));
 
 /**

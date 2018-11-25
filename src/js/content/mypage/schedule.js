@@ -37,53 +37,45 @@ export default class schedule{
 		scheduleSection.on('click', openScheduleBtn , {
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
-				this.modalEnable();
+				const modal_mode = event.currentTarget.dataset.mode;
 
+				this.modalEnable();
 				// タグと都道府県のプラグインをロード
 				this.tags.init().ready();
 				this.prefs.init().ready();
 
-				const modal_mode = event.currentTarget.dataset.mode;
-				const schedule_id = event.currentTarget.dataset.schedule_id;
-				const date_key = event.currentTarget.dataset.date_key;
+				// formを初期化する 
+				this.scheduleForm.clearForm();
 
 				// 一旦非表示
 				$(".proc-btn").hide();
 				// ボタンの表示
 				$(`[data-proc=${modal_mode}]`).show();
 
-				// formを初期化する 
-				this.scheduleForm.clearForm();
-
-				// 作成かつ日付がない場合は新規作成モードにし、内容を初期化する。
-				if(modal_mode == "create" && !schedule_id) resolve();
-
-				this.scheduleForm.find('[name=date_key]').dateVal(date_key);
-
 				switch(modal_mode){
 					case "create":
+						const date_key = event.currentTarget.dataset.date_key;
+						this.scheduleForm.find('[name=date_key]').val(date_key);
 						resolve();
 						break;
 					case "delete": // 削除モード
 						this.modalDisable();
 					case "edit": // 編集モード
-						// 値を取りに行く
-						this.getSchedule(schedule_id)
-						.then(res => {
-							
-							// タグと都道府県のみ別設定
-							res.tag_field.forEach(item => {
-								this.tags.addTags(item);
+						const schedule_id = event.currentTarget.dataset.schedule_id;
+						if(!schedule_id){
+							reject();
+						}
+						else{
+							// 値を取りに行く
+							this.getSchedule(schedule_id)
+							.then(res => {
+								// タグと都道府県のみ別設定
+								res.tag_field.forEach(item => this.tags.addTags(item));
+								res.prefectures_field.forEach(item => this.prefs.addPrefecture(item));
+								this.scheduleForm.setValue(res);
+								resolve();
 							});
-
-							res.prefectures_field.forEach(item => {
-								this.prefs.addPrefecture(item);
-							});
-
-							this.scheduleForm.setValue(res);
-							
-							resolve();
-						})
+						}
 						break;
 				}
 			}
@@ -174,7 +166,6 @@ export default class schedule{
 
 	getModalData(){
 		const data = this.scheduleForm.getValue();
-		data.date_key = this.convert.serverDate(data.date_key);
 
 		// 都道府県の取得(カメラマン用)
 		if(c2.config.isCam()){

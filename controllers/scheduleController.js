@@ -2,6 +2,7 @@ const content_id = "schedule";
 
 const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
+const prefectureHelper = require("../common/helper/prefectureHelper");
 const scheduleVO = require("../viewObjects/schedule");
 const c2Util = require("../services/c2link4DiService");
 const scheduleService = require("../services/scheduleService");
@@ -25,6 +26,10 @@ exports.index = (req, res, next) => {
   render_obj.contentId = content_id;
   render_obj.title = c2Util.getScheduleTitle(user_type);
   render_obj.backBtn = c2Util.getBackMypageBtn();
+  render_obj.viewParamList = {
+    pref: prefectureHelper.getAllPrefList(),
+    shot_type: c2Util.enumShotType().getEnum()
+  };
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),

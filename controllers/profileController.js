@@ -27,21 +27,3 @@ exports.index = (req, res, next) => {
 	// });
 	res.render('mypage/myprofile', render_obj);
 }
-//exports.postUserLoginByTwitter = function(req, res){
-//
-//
-//	/**
-//	 * form内のパスワードをhashHelperを使い変換します。
-//	 */
-//	registerData.password = hashHelper(registerData.password);
-//	/**
-//	 * userRepositoryを使いユーザーの取得を行います。
-//	 */
-//	twitterRepository().loginTwitter(registerData)
-//	.then(user=>{
-//
-//	}).catch(err=>{
-//
-//	});
-//
-//}

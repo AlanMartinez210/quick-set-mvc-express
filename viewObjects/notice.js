@@ -22,7 +22,7 @@ module.exports = {
 
 			this.id = id;
 			this.date_info = {
-        key: notice_date.format("YYYYMMDD"),
+        key: notice_date.format("L"),
         year: notice_date.year(),
         month: notice_date.trueMonth(),
         day: notice_date.date(),

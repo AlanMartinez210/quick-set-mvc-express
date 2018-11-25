@@ -1,7 +1,14 @@
+const c2link4DiService = require("../../services/c2link4DiService");
 
+const enumGroup = {
+  enumShotType: c2link4DiService.enumShotType(),
+  enumNoticeType: c2link4DiService.enumNoticeType(),
+  enumMatchingStatus: c2link4DiService.enumMatchingStatus(),
+  enumScheduleType: c2link4DiService.enumScheduleType(),
+  enumUserType: c2link4DiService.enumUserType(),
+}
 
 module.exports = (req, res, next) =>{
-
 	// resにHTMLレンダー用の雛形を設定する。
 	res.render_obj = (function(){
 
@@ -48,9 +55,10 @@ module.exports = (req, res, next) =>{
       set backBtn(btnObj = {}) {
         Object.assign(body.backBtn, btnObj);
       },
+      get globalParam() {return enumGroup}
     }
-	})();
-
+  })();
+  
   // resに返却用のJsonの雛形を定義します。
 	res.resJsonData = {
     data: {},

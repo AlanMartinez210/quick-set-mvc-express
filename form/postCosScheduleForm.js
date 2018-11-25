@@ -1,3 +1,4 @@
+const isHelper = require("../common/helper/isHelper");
 
 /** 予定の作成 (カメラマン/コスプレイヤー) */
 module.exports = {
@@ -43,13 +44,6 @@ module.exports = {
 	cos_chara:{
 		in: 'body',
 	},
-	cost:{
-		in: 'body',
-		isInt: {
-			options: {gt: 0, lt: 50},
-			errorMessage: 'E00011,50'
-		}
-	},
 	event_url:{
 		in: 'body',
 		isLength: {
@@ -59,10 +53,22 @@ module.exports = {
 	},
 	num: {
 		in: 'body',
-		isInt: {
-			options: {gt: 0, lt: 50},
-			errorMessage: 'E00011,50'
+		custom: {
+			errorMessage: 'E00011,半角数字,50',
+			options: value =>{
+				// 値が存在する時に日付形式チェックをする
+				return value.length == 0 || isHelper.isNumber(value);
+			}
+		}
+	},
+	cost:{
+		in: 'body',
+		custom: {
+			errorMessage: 'E00011,半角数字,50',
+			options: value =>{
+				// 値が存在する時に日付形式チェックをする
+				return value.length == 0 || isHelper.isNumber(value);
+			}
 		}
 	}
-
 };

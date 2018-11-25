@@ -72,7 +72,7 @@
 
                 -if(cln.schedule.length)
                   .calendar-event-set.flex._c
-                    p.event-str: |#{cln.schedule[0].eventname || '予定あり'}
+                    p.event-str: |#{cln.schedule[0].event_name.toString() || '予定あり'}
                     a
-                      i.fas.fa-trash-alt(name="createSchedule", data-date_key=cln.date_key.toString(), data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "", data-mode="delete")
+                      i.fas.fa-trash-alt(name="createSchedule", data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "", data-mode="delete")
           -}

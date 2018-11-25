@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     shot_type: DataTypes.INTEGER,
     event_name: DataTypes.STRING,
     event_url: DataTypes.STRING,
-    cost: DataTypes.INTEGER,
-    num: DataTypes.INTEGER,
+    cost: DataTypes.STRING,
+    num: DataTypes.STRING,
     cos_chara: DataTypes.INTEGER,
     remarks: DataTypes.STRING
   }, {});

@@ -48,7 +48,7 @@ exports.getScheduleListResult = async(data = {schedule_type:2, /* date_key: "201
   }, options);
   const schedule_list = await getScheduleList(select, data, options);
   schedule_list.forEach(row=>{
-    row.date_key = dateHelper.getDate(row.date_key);
+    row.date_key = row.date_key;
     row.shot_type = global.C2LINK.SHOT_TYPE_ID_MAP[row.shot_type];
     row.tags = JSON.parse(row.tags_json);
 

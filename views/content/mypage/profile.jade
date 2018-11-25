@@ -59,7 +59,7 @@
           .select-box._s.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
-              - for(var pref of C2LINK.ALL_PREF_LIST){
+              - for(var pref of viewParamList.pref){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label

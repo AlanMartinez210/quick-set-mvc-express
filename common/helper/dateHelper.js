@@ -1,4 +1,5 @@
 const moment = require('moment-timezone');
+moment.locale("ja");
 const days_map = ['日','月','火','水','木','金','土']; // 曜日のマッピング
 
 /**
@@ -11,17 +12,23 @@ exports.getDate = (sequelize_date = new Date()) => {
   return _getDate(sequelize_date);
 }
 
+/**
+ * 日付変換可能な日付文字列のみmomentオブジェクトに変換します。
+ *
+ * @param {*} dateStr
+ */
 exports.getDateToStr = (dateStr = "") => {
-  if(dateStr.length !== 8) throw new Error('expect date string format to YYYYMMDD ex: 20180101.');
+  dateStr = getMomentString(dateStr);
+  if(!this.isValidString(dateStr)) throw new Error('expect date string format');
   return _getDate(dateStr);
 }
 
 /**
  * 文字列がmomentに変換可能かどうかチェックする
- * 空文字の場合は
+ * 空文字の場合はfalseを返す。
  */
-exports.isValidString = (str) => {
-  return moment(str).isValid();
+exports.isValidString = (dateStr) => {
+  return dateStr ? moment(getMomentString(dateStr)).isValid() : false;
 }
 
 
@@ -57,7 +64,7 @@ exports.getWeek = (week_id) => {
  * @returns {Date} {year, month, day, h, m, s}
  */
 function _getDate (datestr, locale = "ja") {
-  moment.locale(locale);
+  // moment.locale(locale);
   const mDt =  moment(datestr).tz("Asia/Tokyo");
   // 拡張メソッドを定義
   mDt.trueMonth = function(addZero = false){
@@ -65,4 +72,13 @@ function _getDate (datestr, locale = "ja") {
 
   }
 	return mDt
+}
+
+/**
+ * 日付文字列からmomentで解析可能な日付文字列を返す
+ * @param {*} dateStr
+ */
+function getMomentString(dateStr){
+  // YYYYMMDDに変換
+  return dateStr.replace(/\//g, "");
 }

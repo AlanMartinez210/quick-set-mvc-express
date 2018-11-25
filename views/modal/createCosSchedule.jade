@@ -52,7 +52,7 @@
             p.main-label: |撮影タイプ
           .select-box._s.flex._c.st-required
             select(name="shot_type")
-              - for(var shot_type of C2LINK.SHOT_TYPE_LIST){
+              - for(var shot_type of viewParamList.shot_type){
                 option(value="#{shot_type.id}") #{shot_type.name}
               - }
           p.bottom-label
@@ -80,7 +80,7 @@
           .select-box._s.flex._c.st-required
             select(name="prefecture")
               option(value="")
-              - for(var pref of C2LINK.ALL_PREF_LIST){
+              - for(var pref of viewParamList.pref){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label
@@ -106,12 +106,11 @@
               p: |詳細オプション
           .accordion-cnt
 
-            .label-input-box#box_cost
+            .label-input-box#box_num
               .label-box
                 p.main-label: |募集人数
               .input-box._s.flex._c
-                input(type="text", name="num").st-input-num
-                span: |人
+                input(type="text", name="num")
               p.bottom-label
 
             .label-input-box#box_cost
@@ -119,8 +118,7 @@
                 p.main-label: |参加費用
                 span.sub-label: |交通費以外にカメラマンが負担する金額を入力してください。
               .input-box._s.flex._c
-                input(type="text", name="cost").st-input-num
-                span: |円
+                input(type="text", name="cost")
               p.bottom-label
 
             .label-input-box#box_character

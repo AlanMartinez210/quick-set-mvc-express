@@ -66,7 +66,7 @@ export default class prefecture{
 			<div class="tag-label flex _c">
 				<span class="tag-text">${prefectureStr}</span>
 				<i data-id="tab-close" class="far fa-times-circle tag_delete_button" ></i>
-				<input type="hidden" name="prefectures" value="${prefectureStr}">
+				<input type="hidden" value="${prefectureStr}">
 				</div>
 		`);
 
@@ -99,7 +99,7 @@ export default class prefecture{
 	}
 
 	getPrefectureValue(){
-		return $('[name=prefectures]').map((idx, ele) => {
+		return $('[name=prefectures_field]').find("input").map((idx, ele) => {
 			return ele.value;
 		}).get();
 	}

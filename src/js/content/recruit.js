@@ -2,6 +2,7 @@ import plugin_prefecture from "../plugin/prefecture";
 import recruitDetail from "./recruitDetail";
 import plugin_convert from "../plugin/convert";
 import cookies from "js-cookie";
+import Barba from "barba.js";
 
 export default class recruit {
 	constructor () {
@@ -16,18 +17,6 @@ export default class recruit {
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
 		const $doGetSearchRecruitListBtn = $('[name=doGetSearchRecruitList]'); 
 
-		// ページャー処理
-		$recruitSection.on('click', "#recruitlistPager span", (e) => {
-			const $t = $(e.target);
-			if($t.hasClass("selected")) return false;
-			// undefindなら直近の親要素も捜す
-			let pageNum = $t.data("page") || $(e.target).closest("span").data("page");
-
-			// cookieから検索情報を取得する。
-			const sendData = cookies.getJSON("search_info") || {};
-			this.getSearchReqest(sendData, pageNum);
-		})
-
 		// 検索モーダルを開く
 		$recruitSection.on('click', openSearchBtn, {
 			type: "search",
@@ -35,12 +24,11 @@ export default class recruit {
 				this.recruitSearchForm.clearForm();
 				this.prefecture.init().ready();
 
-				// cookieから検索データを取得する。
-				const searchData = cookies.getJSON("search_info") || {};
+				const searchData = c2.getUrlParam();
 			
 				this.recruitSearchForm.setValue(searchData);
 				if(searchData.prefectures_field){
-					searchData.prefectures_field.forEach(ele => {
+					searchData.prefectures_field.split(",").forEach(ele => {
 						this.prefecture.addPrefecture(ele);
 					});
 				}
@@ -64,10 +52,6 @@ export default class recruit {
 		// 検索ボタン処理
 		$doGetSearchRecruitListBtn.on('click', (event) => {
 			const sendData = this.getSearchData();
-			console.log("push search", sendData);
-			
-			// cookie作成
-			cookies.set("search_info", sendData, {path: '/recruitlist'})
 			this.getSearchReqest(sendData, 1)
 			return false;
 		})
@@ -84,8 +68,6 @@ export default class recruit {
 	// 検索フォームから検索データを取得します。
 	getSearchData(){
 		const formData = this.recruitSearchForm.getValue();
-		formData.search_date_from = this.convert.serverDate(formData.search_date_from);
-		formData.search_date_to = this.convert.serverDate(formData.search_date_to);
 		formData.prefectures_field = this.prefecture.getPrefectureValue();
 		return formData;
 	}
@@ -95,7 +77,7 @@ export default class recruit {
 		sendData.page = pageNum;
 		const paramString = this.convert.jsonToUrlParam(sendData);
 
-		const path = `/recruitlist/search${paramString}`;
+		const path = `/recruitlist/search?${paramString}`;
 
 		// URLの書き換えを行う。
 		location.href = path;

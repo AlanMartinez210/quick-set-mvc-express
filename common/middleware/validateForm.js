@@ -12,10 +12,12 @@ module.exports = {
     return checkSchema(form);
   },
   result:  (req, res, next) => {
+    // formの初期化
+    req.form_data = {};
     var results = validationResult(req);
     if(results.isEmpty()){
       // 特定のキーに対して変換処理を行う。
-      req.form_data = formHelper.converter(Object.assign(req.body, req.query));
+      req.form_data = formHelper.converter(Object.assign(req.body, req.query, req.params));
       next();
     }else{
       // バリデーションエラーの作成

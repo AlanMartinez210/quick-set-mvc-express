@@ -50,15 +50,6 @@ export class baseApp {
         return $.expr.filters.visible(this[0]);
       };
       $.fn.extend({
-        dateVal: function(dateValue){
-          if(dateValue){
-            return $(this).val(dateValue.replace(/(\d{4})(\d{2})(\d{2})/,'$1/$2/$3'));
-          }
-          else{
-            var baf = $(this).val();
-            return baf.slice(0,4) + baf.slice(5,7) + baf.slice(8,10);
-          }
-        },
         shamHide: function(){
           $(this).addClass("dummy-hide");
         },
@@ -217,6 +208,16 @@ export class baseApp {
   }
   getUrl(){
     return location.href;
+  }
+  getUrlParam(){
+    const jsonObj = {};
+    const pair = location.search.substring(1).split('&');
+    for(var i=0;pair[i];i++) {
+    var kv = pair[i].split('=');
+      jsonObj[kv[0]] = decodeURI(kv[1]) || "";
+    }
+    console.log(jsonObj);
+    return jsonObj;
   }
   getReferrer(){
     return document.referrer;

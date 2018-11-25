@@ -48,7 +48,7 @@ function _getCalendar(year, month){
     if (ele.ghost) return;
     
     const cln = {};
-    cln.date_key = dateHelper.createDate(ele.year, ele.month, ele.day).format("YYYYMMDD");
+    cln.date_key = dateHelper.createDate(ele.year, ele.month, ele.day).format("L");
     cln.year = ele.year;
     cln.month = ele.month;
     cln.day = ele.day;

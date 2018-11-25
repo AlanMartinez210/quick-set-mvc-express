@@ -21,7 +21,7 @@ module.exports = {
 		constructor({schedule_id = "", date_key = {/* moment */}, shot_type = 1, prefectures = "", prefectures_field = [], tags = [], coschara = [],
 		cost = 0, num = 0, start_time = "", end_time = "", event_name = "", event_url = "", remark = ""}){
 			this.schedule_id = schedule_id;
-			this.date_key = date_key.format("YYYY/MM/DD");
+			this.date_key = date_key.format("L");
 			this.shot_type = shot_type;
 			this.prefecture = prefectures;
 			this.prefectures_field = prefectures_field;
