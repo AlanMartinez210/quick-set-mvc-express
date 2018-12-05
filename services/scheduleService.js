@@ -1,14 +1,10 @@
-const dateHelper = require('../common/helper/dateHelper');
 const errorHelper = require('../common/helper/errorHelper');
 const prefectureHelper = require("../common/helper/prefectureHelper");
 const calendarHelper = require("../common/helper/calendarHelper");
 
-const c2Util = require("../services/c2link4DiService");
+const db = require("../models/index");
 
-const scheduleRepository = require("../repository/scheduleRepository")();
-const scheduleTagRepository = require("../repository/scheduleTagRepository")();
-const schedulePrefectureRepository = require("../repository/schedulePrefectureRepository")();
-const tagRepository = require('../repository/tagRepository')();
+const c2Util = require("../services/c2link4DiService");
 
 /**
  * 対象ユーザーの年月カレンダー一覧を取得します。
@@ -20,28 +16,11 @@ const tagRepository = require('../repository/tagRepository')();
  * @returns {object}
  */
 exports.getMonthSchedule = async (user_id, year, month) => {
-  const schedule_list = await scheduleRepository.getScheduleList(user_id, year, month)
+  const schedule_list = await db.Schedule.getScheduleList(user_id, year, month)
   const current_calendar = calendarHelper.getCalendar(year, month);
   return c2Util.bindSchedule(current_calendar, schedule_list);
 }
 
-/**
- * 指定した年の対象ユーザーの月別のスケジュール投稿数を取得します
- *
- * @param {string} user_id 対象ユーザー
- * @param {number} year 年 YYYY
- *
- * @returns {Array}
- *
- */
-exports.getMonthScheduleNumList = async (user_id, year) => {
-  const scheduleNumList = [0,0,0,0,0,0,0,0,0,0,0,0];
-  const rows = await scheduleRepository.getMonthScheduleNumList(user_id, year);
-  rows.forEach(val => {
-    scheduleNumList[val.group_month-1] = val.count
-  })
-  return scheduleNumList;
-}
 
 /**
  * 対象ユーザーの指定した日付のスケジュール情報を取得します。
@@ -52,12 +31,7 @@ exports.getMonthScheduleNumList = async (user_id, year) => {
 exports.getScheduleData = async (schedule_id) => {
   try{
     // スケジュール情報の情報を取得
-    const schedule = await scheduleRepository.getScheduleById(schedule_id)
-    .then(res => {
-      // 日付をmomentに変換
-      res.date_key = dateHelper.getDate(res.date_key);    
-      return res;
-    });
+    const schedule = await db.Schedule.getScheduleById(schedule_id)
 
     // スケジュール情報に紐づいたタグ、都道府県の取得
     const [scheduleTag, schedulePref] = await Promise.all([

@@ -61,26 +61,8 @@ exports.index = function(req, res, next){
   ])
   .then(results=>{
     const matchingList = results[0];
-    const matchingHist = results[1];
-    render_obj.bodyData = new vo_matching.matching_page({
-      matching_item: matchingList.map(obj=>{
-        return new vo_matching.matching_item({
-          matching_id: obj.matching_id,
-          icon_url: obj.icon_url,
-          user_name: obj.user_name,
-          status_type: obj.status_type,
-          datetime_info: obj.datetime_info
-        });
-      }),
-      matching_history_item: matchingHist.map(obj=>{
-        return new vo_matching.matching_history_item({
-          matching_id: obj.matching_id,
-          icon_url: obj.icon_url,
-          user_name: obj.user_name,
-          date_info: obj.date_info
-        });
-      }),
-    });
+    const matchingHistoryList = results[1];
+    render_obj.bodyData = new vo_matching.matching_page(user_id, matchingList, matchingHistoryList);
     res.render('mypage/matching', render_obj);
   }).catch(next);
 

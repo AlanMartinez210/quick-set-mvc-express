@@ -160,7 +160,7 @@ router.post('/recruitlist/bookmark', validate.check(require('./form/postRecruitB
 
 
 /* 募集/予定の詳細表示 */
-router.get('/recruitlist/detail/:recruit_list_id', recruitDetailController.getRecruitDetail)
+router.get('/recruitlist/detail/:schedule_id', recruitDetailController.getRecruitDetail);
 
 
 module.exports = router;

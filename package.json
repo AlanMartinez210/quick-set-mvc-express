@@ -14,24 +14,19 @@
     "pm2:delete": "pm2 delete all",
     "webpack": "webpack --watch",
     "dev": "pm2 start app.json --watch && webpack --watch",
-    "test": "mocha --recursive --timeout 1000000 --exit",
-    "test:h": "mocha --recursive --timeout 10000 test/common/helper/test-*.js",
-    "test:c": "mocha --recursive --timeout 10000 test/controller/test-*.js",
-    "test:s": "mocha --recursive --timeout 10000 test/services/test-*.js",
-    "test:r": "mocha --recursive --timeout 10000 test/repository/test-*.js",
-    "test:m": "mocha --recursive --timeout 10000 test/common/middleware/test-*.js",
-    "test:x": "mocha --recursive --timeout 10000 -- ",
-    "ptn": "node testdata/pattern/patternChecker.js",
+    "test": "mocha --recursive --timeout 1000000 --exit test/*/test-*.js",
+    "test:h": "mocha --recursive --timeout 10000 --exit test/common/helper/test-*.js",
+    "test:c": "mocha --recursive --timeout 10000 --exit test/controller/test-*.js",
+    "test:s": "mocha --recursive --timeout 10000 --exit test/services/test-*.js",
+    "test:r": "mocha --recursive --timeout 10000 --exit test/repository/test-*.js",
+    "test:m": "mocha --recursive --timeout 10000 --exit test/model/test-*.js",
+    "test:x": "mocha --recursive --timeout 10000 --exit -- ",
+    "ptn": "node test/testdata/pattern/patternChecker.js",
     "sequelize": "node_modules/.bin/sequelize --",
     "db:create": "node_modules/.bin/sequelize model:generate",
     "migrate:up": "node_modules/.bin/sequelize db:migrate",
     "migrate:down": "node_modules/.bin/sequelize db:migrate:undo:all",
-    "migrate:reset": "(sequelize db:drop || sequelize db:create) && sequelize db:migrate",
-    "seed:gen:user": "node_modules/.bin/sequelize seed:generate --name test-user",
-    "seed:gen:schedule": "node_modules/.bin/sequelize seed:generate --name test-schedule",
-    "seed:gen:tag": "node_modules/.bin/sequelize seed:generate --name test-tag",
-    "seed:run": "node_modules/.bin/sequelize db:seed:all",
-    "seed:undo": "node_modules/.bin/sequelize db:seed:undo:all"
+    "migrate:reset": "(sequelize db:drop || sequelize db:create) && sequelize db:migrate"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -94,8 +89,6 @@
     "style-loader": "^0.21.0"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "npm test"
-    }
+    "hooks": {}
   }
 }

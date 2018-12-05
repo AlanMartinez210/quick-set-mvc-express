@@ -6,6 +6,7 @@ const enumGroup = {
   enumMatchingStatus: c2link4DiService.enumMatchingStatus(),
   enumScheduleType: c2link4DiService.enumScheduleType(),
   enumUserType: c2link4DiService.enumUserType(),
+  enumPref: c2link4DiService.enumPref(),
 }
 
 module.exports = (req, res, next) =>{
@@ -58,7 +59,7 @@ module.exports = (req, res, next) =>{
       get globalParam() {return enumGroup}
     }
   })();
-  
+
   // resに返却用のJsonの雛形を定義します。
 	res.resJsonData = {
     data: {},

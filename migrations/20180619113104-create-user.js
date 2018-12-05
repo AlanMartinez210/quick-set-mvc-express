@@ -23,9 +23,12 @@ module.exports = {
       icon_url: {
         type: Sequelize.STRING(255)
       },
+      bg_image_url: {
+        type: Sequelize.STRING(255)
+      },
       user_type: {
         type: Sequelize.TINYINT.UNSIGNED,
-        allowNull: false,        
+        allowNull: false,
       },
       tags: {
         type: Sequelize.JSON
@@ -36,6 +39,19 @@ module.exports = {
       expiration_date: {
         type: Sequelize.DATE,
         allowNull: true
+      },
+      allow_bookmark_notification: {
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false,
+        defaultValue: 1
+      },
+      good_review_num: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        defaultValue: 0,
+      },
+      bad_review_num: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        defaultValue: 0,
       },
       created_at: {
         type: Sequelize.DATE,

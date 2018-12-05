@@ -1,4 +1,4 @@
-const c_MessageRepository = require('../repository/CustomRepository/messageRepository');
+const c_MessageRepository = require('../models/repository/CustomRepository/messageRepository');
 /**
  * チャットルームの表示
  *

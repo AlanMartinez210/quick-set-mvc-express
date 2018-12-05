@@ -17,7 +17,7 @@ exports.index = function(req, res, next){
 	render_obj.title = "メッセージ管理";
 
 	const user_id = sessionHelper.getUserId(req);
-	const page = req.form_data.page;
+	const page = (req.form_data&&req.form_data.page)||1;
 	Promise.all([
 		reviewService.getUnReviewList({user_id, page}),
 		reviewService.getRevieweeHistoryList({user_id, page}),
@@ -43,7 +43,7 @@ const parseUnReviewList = (unReviewList) => {
 		rows: unReviewList.rows.map(obj=>{
 			return new vo_review.unReviewItem({
 				matching_id: obj.matching_id,
-				review_date: dateHelper.dateToObject(obj.schedules_date_key),
+				review_date: obj.schedules_date_key,
 				user_name: obj.to_user_name,
 			});
 		}),
@@ -58,6 +58,7 @@ exports.getUnReviewList = async (req, res, next)=>{
 	const unReviewList = await reviewService.getUnReviewList({user_id, page});
 	render_obj.bodyData = {
 		unReviewList: parseUnReviewList(unReviewList),
+
 	};
 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
 };
@@ -73,7 +74,7 @@ const parseRevieweeHistoryList = (revieweeHistoryList) => {
 		rows: revieweeHistoryList.rows.map(obj=>{
 			return new vo_review.revieweeHistoryItem({
 				review_id: obj.review_id,
-				reviewee_date: dateHelper.dateToObject(obj.schedules_date_key),
+				reviewee_date: obj.schedules_date_key,
 				reviewee_user_name: obj.from_user_name,
 				review_type: obj.review_type,
 			});
@@ -105,7 +106,7 @@ const parseReviewHistoryList = (reviewHistoryList) => {
 		rows: reviewHistoryList.rows.map(obj=>{
 			return new vo_review.reviewHistoryItem({
 				review_id: obj.review_id,
-				review_date: dateHelper.dateToObject(obj.schedules_date_key),
+				review_date: obj.schedules_date_key,
 				review_user_name: obj.to_user_name,
 				review_type: obj.review_type,
 			});

@@ -17,7 +17,7 @@ module.exports = {
   unReviewItem: class {
     constructor({matching_id = "", review_date = {}, user_name = ""}){
       this.matching_id = matching_id;
-      this.review_date = review_date;
+      this.date = review_date ? review_date.format("L") : "";
       this.user_name = user_name;
     }
   },
@@ -28,7 +28,7 @@ module.exports = {
   revieweeHistoryItem: class {
     constructor({review_id = "", reviewee_date = {}, reviewee_user_name = "", review_type = ""}){
       this.review_id = review_id;
-      this.reviewee_date = reviewee_date;
+      this.date = reviewee_date ? reviewee_date.format("L") : "";
       this.reviewee_user_name = reviewee_user_name;
       this.review_type = review_type;
     }
@@ -40,7 +40,7 @@ module.exports = {
   reviewHistoryItem: class {
     constructor({review_id = "", review_date = {}, review_user_name = "", review_type = ""}){
       this.review_id = review_id;
-      this.review_date = review_date;
+      this.date = review_date ? review_date.format("L") : "";
       this.review_user_name = review_user_name;
       this.review_type = review_type;
     }

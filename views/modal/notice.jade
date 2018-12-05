@@ -1,6 +1,7 @@
 -
   const notice_list_item = self.bodyData.notice_list_item;
   const notice_list_pager = self.bodyData.notice_list_pager;
+  console.log(notice_list_item);
 -
 
 form(action="", name="noticeForm")
@@ -19,21 +20,22 @@ form(action="", name="noticeForm")
         //-     - }
     
     .board-cnt._s
-      - if(notice_list_item){
-      - for(var notice of notice_list_item){
-      .card-prm.notice-box
-        .card-hdr.notice-hdr(data-type="#{notice.type[0]}")
-          .notice-data-type-set
-            span.notice-type: |#{notice.type[1]}
-            span.notice-date: |#{notice.date_info.year}年#{notice.date_info.month}月#{notice.date_info.day}日 (#{notice.date_info.week})
-          p.notice-title: |#{notice.title}
-        .card-cnt
-          article.notice-cnt(name="noticeArticle#{notice.id}")
-            |#{notice.content}
-          .btn-notice-read(name="noticeMore", data-noticeid="#{notice.id}"): |さらに読み込む
-      -}
-      - }
-      
+      if notice_list_item
+        - for(var notice of notice_list_item){
+        .card-prm.notice-box
+          .card-hdr.notice-hdr(data-type="#{notice.type[0]}")
+            .notice-data-type-set
+              span.notice-type: |#{notice.type[1]}
+              span.notice-date: |#{notice.date_info.year}年#{notice.date_info.month}月#{notice.date_info.day}日 (#{notice.date_info.week})
+            p.notice-title: |#{notice.title}
+          .card-cnt
+            article.notice-cnt(name="noticeArticle#{notice.id}")
+              |#{notice.content}
+            .btn-notice-read(name="noticeMore", data-noticeid="#{notice.id}"): |さらに読み込む
+        - }
+      else
+        p: |お知らせはありません。
+        
 
     .board-ftr._s
       - if(notice_list_pager){

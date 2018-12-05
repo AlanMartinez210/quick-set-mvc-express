@@ -1,8 +1,10 @@
 const content_id = "schedule";
 
+const db = require("../models/index");
+
 const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
-const prefectureHelper = require("../common/helper/prefectureHelper");
+
 const scheduleVO = require("../viewObjects/schedule");
 const c2Util = require("../services/c2link4DiService");
 const scheduleService = require("../services/scheduleService");
@@ -26,27 +28,24 @@ exports.index = (req, res, next) => {
   render_obj.contentId = content_id;
   render_obj.title = c2Util.getScheduleTitle(user_type);
   render_obj.backBtn = c2Util.getBackMypageBtn();
-  render_obj.viewParamList = {
-    pref: prefectureHelper.getAllPrefList(),
-    shot_type: c2Util.enumShotType().getEnum()
-  };
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),
-    scheduleService.getMonthScheduleNumList(user_id, year),
+    db.Schedule.getMonthScheduleNumList(user_id, year),
   ]).then(results => {
+    console.log(results);
     render_obj.bodyData = new scheduleVO.scheduleMonthList({
       calendar: results[0],
       select_year: year,
       select_month: month,
-      month_schedule_num_arr: results[1]
+      month_schedule_num: results[1]
     })
     res.render('mypage/schedule', render_obj);
   })
   .catch(err => {
     next(err);
-  })
-}
+  });
+};
 
 /**
  * ログインユーザーの指定年月のスケジュール付きカレンダーを取得します。
@@ -75,13 +74,13 @@ exports.getSelectScheduleList = (req, res, next) =>{
       select_year: year,
       select_month: month,
       month_schedule_num_arr: results[1]
-    })
+    });
     res.render('../content/mypage/schedule/calendarSection', render_obj);
   })
   .catch(err => {
     next(err);
-  })
-}
+  });
+};
 
 /**
  * 対象ユーザーのスケジュール情報を取得します。
@@ -92,45 +91,51 @@ exports.getSelectScheduleList = (req, res, next) =>{
 exports.getSchedule = (req, res, next)=>{
   const schedule_id = req.params.schedule_id;
 
-  scheduleService.getScheduleData(schedule_id)
-  .then(results => {
-    const vo = {
-      schedule_id: results.id,
-      date_key : results.date_key,
-			shot_type : results.shot_type,
-			tags : results.tags,
-			coschara : results.coschara,
-			cost : results.cost,
-			num :  results.num,
-			start_time : results.time_from,
-			end_time : results.time_to,
-			event_name : results.event_name,
-			event_url : results.event_url,
-			remark : results.remarks
-    }
-
-    // 都道府県だけ別設定
-    if(c2Util.isCosplayer(sessionHelper.getUserType(req))) {
-      vo.prefectures = results.prefectures[0];
-    }
-    else{
-      vo.prefectures_field = results.prefectures;
-    }
-
-    scheduleJson = new scheduleVO.scheduleInfo(vo)
-    res.json(scheduleJson);
-  })
+  db.Schedule.getSchedule(schedule_id)
+  .then(results => console.log(JSON.stringify(results)))
   .catch(err => {
     next(err);
-  })
-}
+  });
+
+  // scheduleService.getScheduleData(schedule_id)
+  // .then(results => {
+  //   const vo = {
+  //     schedule_id: results.id,
+  //     date_key : results.date_key,
+	// 		shot_type : results.shot_type,
+	// 		tags : results.tags,
+	// 		coschara : results.coschara,
+	// 		cost : results.cost,
+	// 		num :  results.num,
+	// 		start_time : results.time_from,
+	// 		end_time : results.time_to,
+	// 		event_name : results.event_name,
+	// 		event_url : results.event_url,
+	// 		remark : results.remarks
+  //   }
+
+  //   // 都道府県だけ別設定
+  //   if(c2Util.isCosplayer(sessionHelper.getUserType(req))) {
+  //     vo.prefectures = results.prefectures[0];
+  //   }
+  //   else{
+  //     vo.prefectures_field = results.prefectures;
+  //   }
+
+  //   scheduleJson = new scheduleVO.scheduleInfo(vo)
+  //   res.json(scheduleJson);
+  // })
+  // .catch(err => {
+  //   next(err);
+  // })
+};
 
 /**
  * スケジュールの登録/編集を行います。
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 exports.postSchedule = (req, res, next) => {
   const registData = req.form_data;
@@ -154,14 +159,14 @@ exports.postSchedule = (req, res, next) => {
   }).catch(err => {
     next(err);
   });
-}
+};
 
 /**
  * スケジュールの削除を行います。
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 exports.deleteSchedule = (req, res, next) => {
   const schedule_id = req.form_data.schedule_id;
@@ -172,4 +177,4 @@ exports.deleteSchedule = (req, res, next) => {
   }).catch(err=>{
     next(err);
   });
-}
+};

@@ -59,7 +59,7 @@
           .select-box._s.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
-              - for(var pref of viewParamList.pref){
+              - for(const pref of globalParam.enumPref.getEnum()){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label

@@ -52,8 +52,8 @@
             p.main-label: |撮影タイプ
           .select-box._s.flex._c.st-required
             select(name="shot_type")
-              - for(var shot_type of viewParamList.shot_type){
-                option(value="#{shot_type.id}") #{shot_type.name}
+              - for(var shot_type of self.globalParam.enumShotType){
+                option(value="#{shot_type.code}") #{shot_type.name}
               - }
           p.bottom-label
 
@@ -80,7 +80,7 @@
           .select-box._s.flex._c.st-required
             select(name="prefecture")
               option(value="")
-              - for(var pref of viewParamList.pref){
+              - for(var pref of self.globalParam.enumPrefList){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label

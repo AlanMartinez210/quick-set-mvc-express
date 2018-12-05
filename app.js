@@ -1,3 +1,5 @@
+const env = process.env.NODE_ENV;
+
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -6,12 +8,13 @@ const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const session = require('express-session');
 const errorHelper = require('./common/helper/errorHelper');
-const globalValiable = require('./common/middleware/globalVariables');
 
-const env = process.env.NODE_ENV;
 const app = express();
 
 console.log('---- start env ------', env);
+// グローバルオブジェクトのセット
+const appConfig = require(__dirname + '/config/env.json');
+global.APPENV = Object.assign(appConfig.common, appConfig[env]);
 
 // CORSを許可する
 app.use(function(req, res, next) {
@@ -46,11 +49,6 @@ app.use(session({
     maxAge:  365 * 24 * 60 * 60 * 1000,
   }
 }));
-
-/**
- * global登録ミドルウェアの呼び出し
-*/
-app.use(globalValiable);
 
 /**
  * view engine setup

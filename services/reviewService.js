@@ -1,4 +1,4 @@
-const customReviewRepository = require("../repository/CustomRepository/reviewRepository");
+const customReviewRepository = require("../models/repository/CustomRepository/reviewRepository");
 const pageHelper = require("../common/helper/pageHelper");
 
 /**

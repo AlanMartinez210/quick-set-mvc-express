@@ -23,7 +23,7 @@
                 img(src=md.icon_url)
             .maching-wrap
               .st-string-set
-                span.sub-text: |#{md.datetime_info.year}/#{md.datetime_info.month}/#{md.datetime_info.day} #{md.datetime_info.hour}:#{md.datetime_info.min}:#{md.datetime_info.sec}
+                span.sub-text: |#{md.datetime_info}
                 p: |#{md.user_name}
               .st-matching-type(date-machingid=md.status_type.id)._req: |#{md.status_type.name}
 
@@ -57,7 +57,7 @@
       - if (matchingHistoryArr.length <= 0)
         p.info-text: |メッセージ履歴はありません
 
-      
+
       ul.st_options
         - for (let matchingHistory of matchingHistoryArr )
           li.label-icon-link
@@ -65,7 +65,7 @@
               .label-icon
                 img(src=matchingHistory.icon_url)
               .st-string-set
-                span.sub-text: |#{matchingHistory.date_info.year}/#{matchingHistory.date_info.month}/#{matchingHistory.date_info.day}
+                span.sub-text: |#{matchingHistory.date_info}
                 p: |#{matchingHistory.user_name}
               i.icon-link.fas.fa-chevron-right.fa-fw
 

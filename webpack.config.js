@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  context: path.resolve(__dirname, 'src'),
+  context: path.resolve(__dirname, 'public'),
 	entry: './js/index',
   output: {
     path: path.resolve(__dirname, 'public'),

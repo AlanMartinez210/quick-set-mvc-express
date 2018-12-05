@@ -22,12 +22,12 @@
 .board-cnt._s
   .calendar-ptn
 
-    //- 月選択
+    月選択
     .month-btn-box(data-select_month=select_month)
-      -for(let month=1; month<=12; ++month){ const month_schedule_num = Number(month_schedule_num_arr[month - 1]);
+      -for(let month=1; month<=12; ++month){
         a(name="selectMonthList", class=['month-label', (month==select_month ? 'seleced' : '')], data-selected_year=select_year, data-selected_month=month): |#{month.toString()}
-          -if(month_schedule_num > 0){
-          span.schedule-count: |#{month_schedule_num.toString()}
+          -if(month_schedule_num_arr > 0){
+          span.schedule-count: |#{month_schedule_num_arr.toString()}
           -}
       -}
 
@@ -48,7 +48,7 @@
       .date-list-wrap
         ul.st_options.date-list
 
-          -for(let i=0,e=calendar.length; i<e; ++i){ const cln = calendar[i];
+          - for(let i=0; i < calendar.length; ++i){ const cln = calendar[i];
               li(class=[
                 cln.day == today ? 'row-green': '',
                 cln.week == '土' ? 'row-blue': '',
@@ -70,9 +70,9 @@
                   //- 曜日
                   span.week-str #{cln.week.toString()}
 
-                -if(cln.schedule.length)
+                - if(cln.schedule.length)
                   .calendar-event-set.flex._c
                     p.event-str: |#{cln.schedule[0].event_name.toString() || '予定あり'}
                     a
                       i.fas.fa-trash-alt(name="createSchedule", data-schedule_id=cln.schedule[0] ? cln.schedule[0].id.toString() : "", data-mode="delete")
-          -}
+          - }

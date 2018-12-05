@@ -1,0 +1,39 @@
+{
+  コピーして config.json にリネームして使う
+  "development": {
+    "username": "root",
+    "password": "password",
+    "database": "c2link",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+09:00",
+    "define":{
+      "underscored": true
+    },
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "root",
+    "password": "password",
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+09:00",
+    "define":{
+      "underscored": true
+    },
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "root",
+    "password": "password",
+    "database": "database_production",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "timezone": "+09:00",
+    "define":{
+      "underscored": true
+    },
+    "operatorsAliases": false
+  }
+}

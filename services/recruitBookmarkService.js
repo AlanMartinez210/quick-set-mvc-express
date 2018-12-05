@@ -1,4 +1,4 @@
-const recruitBookmarkRepository = require("../repository/recruitBookmarkRepository")();
+const recruitBookmarkRepository = require("../models/repository/recruitBookmarkRepository")();
 
 /**
  * ブックマークの登録/削除

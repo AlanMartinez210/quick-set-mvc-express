@@ -49,8 +49,8 @@
   -let tmp_label_date;
   //- 募集一覧が一件もない場合はメッセージを表示する。
   -if(recruit_list_arr.length){
-    
-    
+
+
     -for(let recruit_item of recruit_list_arr){
       //- 日付の表示を行う。一時保存したものと異なるときに再度差し入れる。
       -if(recruit_item.date_info.key != tmp_label_date){ tmp_label_date = recruit_item.date_info.key;
@@ -76,7 +76,7 @@
       .board-cnt
         p: |対象の募集は存在しません。
   -}
-  
+
   //- ページャー表示部
   .floor-prm
     .floor-hdr._s
@@ -95,7 +95,7 @@
           li: a(href="#{url}?page=1#{param}", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-double-left.fa-fw
           li: a(href="#{url}?page=#{prev}#{param}", class="#{isMin ? '': 'invisible'}"): i.icon-pager.fas.fa-angle-left.fa-fw
           - for(let i=0;i<recruit_list_pager.disp_page_list.length;i++){ let p = recruit_list_pager.disp_page_list[i];
-            li 
+            li
               -if(p == np){
               span(class="selected"): |#{p}
               -}else{

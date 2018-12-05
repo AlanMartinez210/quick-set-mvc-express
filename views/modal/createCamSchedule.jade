@@ -24,7 +24,7 @@
             span.sub-label: |可能な撮影を選択してください。
           .select-box._s.flex._c.st-required
             select(name="shot_type")
-              - for(var shot_type of viewParamList.shot_type){
+              - for(var shot_type of self.globalParam.enumShotType.getEnum()){
                   option(value="#{shot_type.code}") #{shot_type.name}
               - }
           p.bottom-label
@@ -36,7 +36,7 @@
           .select-box._s.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
-              - for(var pref of viewParamList.pref){
+              - for(var pref of self.globalParam.enumPref.getEnum()){
                 option(value="#{pref.name}") #{pref.name}
               - }
           p.bottom-label

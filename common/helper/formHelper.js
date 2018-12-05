@@ -16,20 +16,21 @@ const CONVERT_KEY = {
  */
 exports.converter = (formObject) => {
 	Object.keys(formObject).forEach(key => {
-		if(CONVERT_KEY[key]){
+		if(CONVERT_KEY[key] && formObject[key]){
 			switch(CONVERT_KEY[key]){
 				case "moment":
 					// 文字列(YYYY/DD/MM) -> moment
-					formObject[key] = formObject[key] ? dateHelper.getDateToStr(formObject[key]) : "";
+					formObject[key] =  dateHelper.getDateToStr(formObject[key]);
 					break;
 				case "prefectures":
 					// 名称 -> ID
-
+					formObject[key] =  prefectureHelper.getPrefectureIdByName(formObject[key].split(","));
 					break;
 				case "tags":
 					break;
 				case "password":
-				
+					// パスワード -> ハッシュ化
+					formObject[key] = hashHelper(formObject[key]);
 					break;
 			}
 		}

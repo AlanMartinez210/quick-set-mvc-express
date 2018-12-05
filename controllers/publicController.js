@@ -6,6 +6,8 @@ const noticeVO = require("../viewObjects/notice");
 const publicService = require("../services/publicService");
 const sessionHelper = require('../common/helper/sessionHelper');
 
+const db = require("../models/index");
+
 
 /**
  * 運営情報の表示
@@ -70,7 +72,6 @@ exports.getContact = (req, res, next) => {
 }
 
 exports.getNoticeData = (req, res, next) => {
-	console.log("page", req.query.p);
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
 
@@ -80,7 +81,7 @@ exports.getNoticeData = (req, res, next) => {
 		now_page: req.query.p,
 	}
 
-  publicService.getNoticeList(data)
+  publicService.getNoticeList(db, data)
   .then(results => {
 		const notice_list_item = results.notice_list.map(item => {
 			return new noticeVO.notice_list_item({

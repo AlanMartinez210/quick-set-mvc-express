@@ -1,4 +1,4 @@
-const messageRepository = require('../repository/customRepository/messageRepository');
+const messageRepository = require('../models/repository/customRepository/messageRepository');
 
 /**
  * ログインユーザーの未読メッセージの一覧を取得

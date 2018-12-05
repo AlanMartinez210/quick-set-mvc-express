@@ -1,6 +1,5 @@
 -
-  // var unReviewList = self.bodyData.unReviewList;
-  var unReviewList = [
+  var unReviewLists = [
     {
       id: 1,  //request_id
       date: {y:"2018", m:"05", d:"01"},
@@ -11,6 +10,7 @@
       username: "テストユーザー2",
     },
   ];
+  var unReviewList = self.bodyData.unReviewList.rows;
 -
 
 
@@ -31,7 +31,7 @@
               .label-icon
                 img
               .st-string-set
-                span.sub-text: |2018/05/01
+                span.sub-text: |#{obj.date}
                 p: |#{obj.username}
               i.icon-link.fas.fa-chevron-right.fa-fw
         - }

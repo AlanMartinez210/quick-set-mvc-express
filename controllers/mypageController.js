@@ -22,7 +22,7 @@ exports.index = function(req, res, next){
 		console.log(results);
 		render_obj.bodyData = new mypageVO.mypageInit({
       no_review_num: results[0],
-      matching_info_num: results[1]
+      matching_info_num: results[1],
     })
 		res.render('mypage/index', render_obj);
 	})

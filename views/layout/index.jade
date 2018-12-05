@@ -4,8 +4,7 @@
   var header_data = self.headerData;
   var body_data = self.bodyData;
   var backBtn = self.backBtn;
-  var viewParamList = self.viewParamList;
-  
+
   console.log("*******************************************************************");
   console.log(`######## user id : ${user_id} | user type : ${user_type} ##########`);
   console.log(`content id -> : ${self.contentId}`);
@@ -27,7 +26,7 @@ html
     link(rel="stylesheet", href="http://code.jquery.com/ui/1.10.3/themes/cupertino/jquery-ui.min.css")
     <script>FontAwesomeConfig = { searchPseudoElements: true };</script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  
+
   body(data-cntId=self.contentId, data-usertype=user_type)
     .wrap-body-content
       .modal-cntnr
@@ -45,10 +44,9 @@ html
         block header
         .main-cntnr(id=`${self.contentId}Section`)
           block content
-      footer
-        .ftr-cntnr
-          .ftr-cnt
-            p &copy; 2018 TYPEs - c2Link
+      if self.contentId != "register"
+        include ./footer.jade
+        
 
     #progress.progress-cntnr
       .cnt-progress.flex._jc

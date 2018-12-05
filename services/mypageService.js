@@ -1,5 +1,8 @@
-const c_reviewRepository = require('../repository/CustomRepository/ReviewRepository');
-const matchingRepository = require('../repository/matchingRepository')();
+const db = require("../models/index");
+
+
+
+const c2link4DiService = require("../services/c2link4DiService");
 
 /**
  * 未レビューの数を取得します。
@@ -7,21 +10,14 @@ const matchingRepository = require('../repository/matchingRepository')();
  * @return {Number}
  */
 exports.getNoReviewNum = async(user_id) => {
-	const result = await c_reviewRepository.getUnReviewListCount({user_id});
-	return result[0].cnt;
+	return db.Matching.getNoReviewNum(user_id);
 };
 
 /**
- * 自分当てのマッチングの中でマッチングステータスが、保留中の数を取得します。
+ * 未確認のマッチング一覧の数を取得します
  *
  * @return {Number}
  */
 exports.getMatchingRequestNum = async(user_id) => {
-	const result = await matchingRepository.count({
-		where:{
-			to_user_id: user_id,
-			status_id: global.C2LINK.MATCHING_STATUS_ID_MAP.REQUEST,
-		}
-	});
-	return result;
+	return db.Matching.getPendingNum(user_id);
 };

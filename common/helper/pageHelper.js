@@ -6,7 +6,7 @@
  * @return PagerObject
  *
  */
-exports.makePageObject = (count = 0, now_page = 0, p_count = global.PAGE_COUNT)=>{
+exports.makePageObject = (count = 0, now_page = 0, p_count = global.APPENV.PAGE_COUNT)=>{
   count = parseInt(count), now_page = parseInt(now_page);
 
   const disp_page_list = [];

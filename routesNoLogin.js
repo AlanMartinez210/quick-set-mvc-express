@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const isHelper = require('./common/helper/isHelper');
 
 const controllerPath = './controllers/';
 
@@ -19,7 +20,7 @@ router.get('/', (req,res,next)=>{
 });
 
 /* 新規登録ページの表示 */
-router.get('/register', userController.index);
+router.get('/register', (req,res,next)=>{ isHelper.isLogin(req) ? res.redirect('/') : next() }, userController.index);
 /* ユーザー新規登録処理 */
 router.post('/api/register', validate.check(require('./form/postRegisterForm')), validate.result, userController.postRegister);
 /* ログイン処理 */
@@ -48,10 +49,10 @@ router.get('/api/notice', publicController.getNoticeData)
 module.exports = router;
 
 /* デバッグページ */
-const basePattern = require("./testdata/pattern/basePattern");
-const matchingPattern = require("./testdata/pattern/matchingPattern");
-const reviewPattern = require("./testdata/pattern/reviewPattern");
-const userRepository = require("./repository/userRepository");
+const basePattern = require("./test/testdata/pattern/basePattern");
+const matchingPattern = require("./test/testdata/pattern/matchingPattern");
+const reviewPattern = require("./test/testdata/pattern/reviewPattern");
+const db = require("./models/index");
 const hashHelper = require("./common/helper/hashHelper");
 
 /**
@@ -76,7 +77,7 @@ router.get('/test/:type/:mode', (req, res, next) => {
     console.log("データタイプ -> ユーザーデータのみ ");
     const bp = new basePattern();
     bp.genUserAndTags().then(results => {
-      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
     })
     .then(results => {
       sessionHelper.setUserData(req, results[0]);
@@ -87,7 +88,7 @@ router.get('/test/:type/:mode', (req, res, next) => {
     console.log("データタイプ -> スケジュールデータ ");
     const bp = new basePattern();
     bp.genTestData().then(results => {
-      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
     })
     .then(results => {
       sessionHelper.setUserData(req, results[0]);
@@ -98,7 +99,7 @@ router.get('/test/:type/:mode', (req, res, next) => {
     console.log("データタイプ -> マッチングデータ ");
     const mp = new matchingPattern();
     mp.genMatchingData().then(results => {
-      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
     })
     .then(results => {
       sessionHelper.setUserData(req, results[0]);
@@ -109,7 +110,7 @@ router.get('/test/:type/:mode', (req, res, next) => {
     console.log("データタイプ -> レビューデータ ");
     const rp = new reviewPattern();
     rp.genReviewData().then(results => {
-      return userRepository().getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
     })
     .then(results => {
       sessionHelper.setUserData(req, results[0]);

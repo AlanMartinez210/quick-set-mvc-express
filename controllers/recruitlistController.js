@@ -1,6 +1,5 @@
 const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
-const prefectureHelper = require("../common/helper/prefectureHelper");
 const recruitlistService = require('../services/recruitlistService');
 const recruitBookmarkService = require('../services/recruitBookmarkService');
 const vo_recruitlist = require("../viewObjects/recruitlist");
@@ -57,24 +56,18 @@ function renderRecruitList({date_key = dateHelper.getDate(), user_type, search_p
  * @param {*} req
  * @param {*} res
  */
-exports.index = function(req, res, next){
+exports.index = async(req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
-	render_obj.viewParamList = {
-    pref: prefectureHelper.getAllPrefList(),
-    shot_type: c2Util.enumShotType().getEnum()
-  };
 
 	const data = { user_type: user_type };
 
-	renderRecruitList(data, render_obj)
-	.then(()=>{
-		res.render('recruitList/index', render_obj);
-	})
-	.catch(next);
-}
+	const recruitList = await recruitlistService.getRecruitList(data);
+	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruitList);
+	res.render('recruitList/index', render_obj);
+};
 
 /**
  * 募集/予定一覧の表示(検索/ページャー)
@@ -82,35 +75,27 @@ exports.index = function(req, res, next){
  * @param {*} req
  * @param {*} res
  */
-exports.getSearchRecruit = function(req, res, next){
+exports.getSearchRecruit = async(req, res, next)=>{
 
-	console.log("search param", req.query);
+	console.log("search param", req.form_data);
 
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
 
+	const recruit_search_info = req.form_data;
+
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
-	render_obj.viewParamList = {
-    pref: prefectureHelper.getAllPrefList(),
-    shot_type: c2Util.enumShotType().getEnum()
-  };
 
-	const data = {
+	const search_param = Object.assign(recruit_search_info, {
 		date_key: dateHelper.getDate(),
 		user_type: user_type,
-		search_param: req.form_data,
-		page: req.query.page,
-	};
-
-	renderRecruitList(data, render_obj)
-	.then(()=>{
-		res.render('recruitList/index', render_obj);
-	})
-	.catch(err => {
-		next(err);
 	});
-}
+
+	const recruit_list = await recruitlistService.getRecruitList(search_param);
+	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruit_list, recruit_search_info);
+	res.render('recruitList/index', render_obj);
+};
 
 /**
  * 募集/予定一覧の表示(当日のみ)
@@ -118,21 +103,27 @@ exports.getSearchRecruit = function(req, res, next){
  * @param {*} req
  * @param {*} res
  */
-exports.indexToday = function(req, res, next){
+exports.indexToday = async(req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
+
+	const recruit_search_info = {
+		search_date_from: dateHelper.getDate().startOf('day'),
+		search_date_to: dateHelper.getDate().startOf('day'),
+	};
 
 	render_obj.title = c2Util.getRecruitListTitle(user_type) + " (当日)";
 	render_obj.contentId = content_id + "Today";
 
-	const data = { date_key: dateHelper.getDate() };
+	const search_param = Object.assign(recruit_search_info, {
+		date_key: dateHelper.getDate(),
+		user_type: user_type,
+	});
 
-	renderRecruitList(data, render_obj)
-	.then(()=>{
-		res.render('recruitList/index', render_obj);
-	})
-	.catch(next);
-}
+	const recruit_list = await recruitlistService.getRecruitList(search_param);
+	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruit_list, recruit_search_info);
+	res.render('recruitList/index', render_obj);
+};
 
 /**
  * ブックマークの登録/削除
