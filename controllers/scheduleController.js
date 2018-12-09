@@ -33,13 +33,7 @@ exports.index = (req, res, next) => {
     scheduleService.getMonthSchedule(user_id, year, month),
     db.Schedule.getMonthScheduleNumList(user_id, year),
   ]).then(results => {
-    console.log(results);
-    render_obj.bodyData = new scheduleVO.scheduleMonthList({
-      calendar: results[0],
-      select_year: year,
-      select_month: month,
-      month_schedule_num: results[1]
-    })
+    render_obj.bodyData = new scheduleVO.initView(results[0], results[1]);
     res.render('mypage/schedule', render_obj);
   })
   .catch(err => {
@@ -66,15 +60,10 @@ exports.getSelectScheduleList = (req, res, next) =>{
 
   Promise.all([
     scheduleService.getMonthSchedule(user_id, year, month),
-    scheduleService.getMonthScheduleNumList(user_id, year),
+    db.Schedule.getMonthScheduleNumList(user_id, year),
   ])
   .then(results => {
-    render_obj.bodyData = new scheduleVO.scheduleMonthList({
-      calendar: results[0],
-      select_year: year,
-      select_month: month,
-      month_schedule_num_arr: results[1]
-    });
+    render_obj.bodyData = new scheduleVO.getSelectScheduleList(results[0], results[1], year, month);
     res.render('../content/mypage/schedule/calendarSection', render_obj);
   })
   .catch(err => {
@@ -91,43 +80,15 @@ exports.getSelectScheduleList = (req, res, next) =>{
 exports.getSchedule = (req, res, next)=>{
   const schedule_id = req.params.schedule_id;
 
-  db.Schedule.getSchedule(schedule_id)
-  .then(results => console.log(JSON.stringify(results)))
+  scheduleService.getScheduleData(schedule_id)
+  .then(results => {
+    console.log('results: ', results);
+    res.json(new scheduleVO.getScheduleInfo(results));
+  })
   .catch(err => {
     next(err);
-  });
-
-  // scheduleService.getScheduleData(schedule_id)
-  // .then(results => {
-  //   const vo = {
-  //     schedule_id: results.id,
-  //     date_key : results.date_key,
-	// 		shot_type : results.shot_type,
-	// 		tags : results.tags,
-	// 		coschara : results.coschara,
-	// 		cost : results.cost,
-	// 		num :  results.num,
-	// 		start_time : results.time_from,
-	// 		end_time : results.time_to,
-	// 		event_name : results.event_name,
-	// 		event_url : results.event_url,
-	// 		remark : results.remarks
-  //   }
-
-  //   // 都道府県だけ別設定
-  //   if(c2Util.isCosplayer(sessionHelper.getUserType(req))) {
-  //     vo.prefectures = results.prefectures[0];
-  //   }
-  //   else{
-  //     vo.prefectures_field = results.prefectures;
-  //   }
-
-  //   scheduleJson = new scheduleVO.scheduleInfo(vo)
-  //   res.json(scheduleJson);
-  // })
-  // .catch(err => {
-  //   next(err);
-  // })
+  })
+  
 };
 
 /**

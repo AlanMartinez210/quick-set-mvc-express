@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     time_from: DataTypes.STRING,
     time_to: DataTypes.STRING,
-    shot_type: DataTypes.INTEGER,
+    shot_type:{
+      type: DataTypes.INTEGER,
+      get(){
+        return enumShotType.getObj(this.getDataValue('shot_type'));
+      }
+    },
     event_name: DataTypes.STRING,
     event_url: DataTypes.STRING,
     cost: DataTypes.STRING,
@@ -31,17 +36,34 @@ module.exports = (sequelize, DataTypes) => {
     getterMethods:{
       createdAt(){ return dateHelper.getDate(this.created_at) },
       updatedAt(){ return dateHelper.getDate(this.updated_at) },
+      
+      // TODO DELETE
       shot_type_obj(){
         const shot_type = this.getDataValue('shot_type');
         return enumShotType.getObj(shot_type);
       },
+
+      // TODO FIX
       prefectures(){
         const Schedule_prefectures = this.getDataValue('Schedule_prefectures');
         return Schedule_prefectures.map(v=>v.toJSON());
       },
+      // TODO FIX
       tags(){
         const Schedule_tags = this.getDataValue('Schedule_tags');
         return Schedule_tags.map(v=>v.toJSON());
+      },
+
+      // 関連した都道府県データからIDのみを抽出する。
+      getArrPrefById(){
+        const schedule_prefectures = this.getDataValue('Schedule_prefectures');
+        return schedule_prefectures.map(v=>v.toJSON().prefecture_id);
+      },
+
+      // 関連したタグデータから名称のみを抽出する。
+      getArrTagByName(){
+        const schedule_tags = this.getDataValue('Schedule_tags');
+        return schedule_tags.map(v=>v.toJSON().Tag.tag_name);
       }
     },
     timestamps: false
@@ -108,15 +130,6 @@ module.exports = (sequelize, DataTypes) => {
     options.attributes = ["group_month", [sequelize.fn('count', "id"), 'count']]
     options.group = ["group_year", "group_month"]
     return this.findAll(options);
-  };
-
-  /**
-   * 対象ユーザーのスケジュールを取得します。
-   *
-   * @param {string} schedule_id スケジュールID
-   */
-  Schedule.getScheduleById = function(schedule_id, options = {}){
-    return this.findById(schedule_id, options);
   };
 
   /**

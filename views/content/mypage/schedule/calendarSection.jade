@@ -3,7 +3,7 @@
   const select_year = Number(self.bodyData.select_year);
   const select_month = Number(self.bodyData.select_month);
   const current_year = Number(self.bodyData.current_year)
-  const today = Number(self.bodyData.today);
+  const today = self.bodyData.today;
   const month_schedule_num_arr = self.bodyData.month_schedule_num_arr;
 -
 
@@ -22,12 +22,12 @@
 .board-cnt._s
   .calendar-ptn
 
-    月選択
+    //- 月選択
     .month-btn-box(data-select_month=select_month)
-      -for(let month=1; month<=12; ++month){
+      -for(let month=1; month<=12; ++month){ let month_num = month_schedule_num_arr[month-1]
         a(name="selectMonthList", class=['month-label', (month==select_month ? 'seleced' : '')], data-selected_year=select_year, data-selected_month=month): |#{month.toString()}
-          -if(month_schedule_num_arr > 0){
-          span.schedule-count: |#{month_schedule_num_arr.toString()}
+          -if(month_num > 0){
+          span.schedule-count: |#{month_num.toString()}
           -}
       -}
 
@@ -50,7 +50,7 @@
 
           - for(let i=0; i < calendar.length; ++i){ const cln = calendar[i];
               li(class=[
-                cln.day == today ? 'row-green': '',
+                cln.date_key == today ? 'row-green': '',
                 cln.week == '土' ? 'row-blue': '',
                 cln.week == '日' ? 'row-red': '',
                 cln.holiday ? 'row-red' : '',

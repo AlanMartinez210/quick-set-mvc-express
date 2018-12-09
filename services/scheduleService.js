@@ -30,25 +30,10 @@ exports.getMonthSchedule = async (user_id, year, month) => {
  */
 exports.getScheduleData = async (schedule_id) => {
   try{
-    // スケジュール情報の情報を取得
-    const schedule = await db.Schedule.getScheduleById(schedule_id)
-
-    // スケジュール情報に紐づいたタグ、都道府県の取得
-    const [scheduleTag, schedulePref] = await Promise.all([
-      scheduleTagRepository.getScheduleTag(schedule.id),
-      schedulePrefectureRepository.getSchedulePrefsCd(schedule.id)
-    ]);
-  
-    // タグと都道府県情報の取得
-    schedule.tags = scheduleTag.map(obj => obj.tag_id);
-    schedule.prefectures = schedulePref.map(obj => obj.prefecture_id);
+    const instance = await db.Schedule.getSchedule(schedule_id);
+    if(!instance) return Promise.reject(new errorHelper().setWindowMsg("E00000"));
     
-    // タグIDを名称に変換
-    const tagData = await tagRepository.getTagById(schedule.tags);
-    schedule.tags = tagData.map(obj => obj.tag_name);
-    schedule.prefectures = prefectureHelper.getPrefectureNameByIds(schedule.prefectures);
-
-    return schedule;
+    return instance.toJSON();
   }
   catch(err){
     return err;

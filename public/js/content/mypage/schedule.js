@@ -71,7 +71,7 @@ export default class schedule{
 							.then(res => {
 								// タグと都道府県のみ別設定
 								res.tag_field.forEach(item => this.tags.addTags(item));
-								res.prefectures_field.forEach(item => this.prefs.addPrefecture(item));
+								res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
 								this.scheduleForm.setValue(res);
 								resolve();
 							});

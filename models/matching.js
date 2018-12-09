@@ -3,6 +3,8 @@ const enumMatchingStatus = require('../services/c2link4DiService').enumMatchingS
 const dateHelper = require('../common/helper/dateHelper');
 const errorHelper = require("../common/helper/errorHelper");
 
+const PAGE_COUNT = global.APPENV.PAGE_COUNT;
+
 module.exports = (sequelize, DataTypes) => {
   var Matching = sequelize.define('Matching', {
     schedule_id: DataTypes.INTEGER,
@@ -90,6 +92,15 @@ module.exports = (sequelize, DataTypes) => {
     options = ModelOption.noReviewList(user_id, options);
     return this.count(options);
   };
+  /**
+   * 未レビューの一覧を取得する
+   */
+  Matching.getNoReviewList = function(user_id, page, options={}){
+    options = ModelOption.noReviewList(user_id, options);
+    options.limit = PAGE_COUNT;
+    options.offset = PAGE_COUNT * (page-1);
+    return this.findAndCountAll(options);
+  };
 
   /**
    * 保留中の依頼の数を取得する
@@ -104,7 +115,7 @@ module.exports = (sequelize, DataTypes) => {
    */
   Matching.getMatchingList = function(user_id, options={}){
     options = ModelOption.matchingList(user_id, options);
-    return this.findAll(options);
+    return this.findAndCountAll(options);
   };
 
   /**
@@ -112,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
    */
   Matching.getMatchingHistoryList = function(user_id, options={}){
    options = ModelOption.matchingHistoryList(user_id, options);
-   return this.findAll(options);
+   return this.findAndCountAll(options);
   };
 
 

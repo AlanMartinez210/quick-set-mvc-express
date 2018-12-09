@@ -36,7 +36,7 @@ class matching_history_item{
 module.exports = {
   matching_page: class {
     constructor(user_id, matchingList, matchingHistoryList){
-      this.matching_list = matchingList.map(matching=>{
+      this.matching_list = matchingList.rows.map(matching=>{
         // 自分が送ったマッチングと受け取ったマッチングで表示する項目を分ける
         const user = user_id!=matching.get('user_id')?matching.get('user'):matching.get('to_user');
         return new matching_item({
@@ -47,7 +47,7 @@ module.exports = {
           datetime_info: matching.get('updatedAt'),
         });
       });
-      this.matching_history = matchingHistoryList.map(matching=>{
+      this.matching_history = matchingHistoryList.rows.map(matching=>{
         // 自分が送ったマッチングと受け取ったマッチングで表示する項目を分ける
         const user = user_id!=matching.get('user_id')?matching.get('user'):matching.get('to_user');
         return new matching_history_item({

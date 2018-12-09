@@ -17,112 +17,44 @@ exports.index = function(req, res, next){
 	render_obj.title = "メッセージ管理";
 
 	const user_id = sessionHelper.getUserId(req);
-	const page = (req.form_data&&req.form_data.page)||1;
 	Promise.all([
-		reviewService.getUnReviewList({user_id, page}),
-		reviewService.getRevieweeHistoryList({user_id, page}),
-		reviewService.getReviewHistoryList({user_id, page}),
+		reviewService.getUnReviewList(user_id),
+		reviewService.getRevieweeHistoryList(user_id),
+		reviewService.getReviewHistoryList(user_id),
 	]).then(([unReviewList, revieweeHistoryList, reviewHistoryList])=>{
-		render_obj.bodyData = {
-			unReviewList: parseUnReviewList(unReviewList),
-			revieweeHistoryItem: parseRevieweeHistoryList(revieweeHistoryList),
-			reviewHistoryItem: parseReviewHistoryList(reviewHistoryList),
-		};
+		render_obj.bodyData = new vo_review(user_id, {unReviewList, revieweeHistoryList, reviewHistoryList});
 		res.render('mypage/review', render_obj);
-	});
+	}).catch(next);
 }
 
-
-/**
- * unReviewListのページオブジェクトを作成する
- *
- * @param unReviewList reviewService.getUnReviewListの結果
- */
-const parseUnReviewList = (unReviewList) => {
-	return {
-		rows: unReviewList.rows.map(obj=>{
-			return new vo_review.unReviewItem({
-				matching_id: obj.matching_id,
-				review_date: obj.schedules_date_key,
-				user_name: obj.to_user_name,
-			});
-		}),
-		pages: unReviewList.pages,
-	};
-};
 exports.getUnReviewList = async (req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
 	const page = req.form_data.page;
 
 	const unReviewList = await reviewService.getUnReviewList({user_id, page});
-	render_obj.bodyData = {
-		unReviewList: parseUnReviewList(unReviewList),
-
-	};
+	render_obj.bodyData = new vo_review(user_id, {unReviewList}, page);
 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
 };
 
 
-/**
- * revieweeHistoryListのページオブジェクトを作成する
- *
- * @param revieweeHistoryList reviewService.getRevieweeHistoryListの結果
- */
-const parseRevieweeHistoryList = (revieweeHistoryList) => {
-	return {
-		rows: revieweeHistoryList.rows.map(obj=>{
-			return new vo_review.revieweeHistoryItem({
-				review_id: obj.review_id,
-				reviewee_date: obj.schedules_date_key,
-				reviewee_user_name: obj.from_user_name,
-				review_type: obj.review_type,
-			});
-		}),
-		pages: revieweeHistoryList.pages,
-	};
-};
 exports.getRevieweeHistory = async (req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
 	const page = req.form_data.page;
 
 	const revieweeHistoryList = await reviewService.getRevieweeHistoryList({user_id, page});
-	render_obj.bodyData = {
-		revieweeHistoryItem: parseRevieweeHistoryList(revieweeHistoryList),
-	};
+	render_obj.bodyData = new vo_review(user_id, {revieweeHistoryList}, page);
 	res.render('../content/mypage/review/revieweeHistorySection', render_obj);
 };
 
-
-
-/**
- * reviewHistoryListのページオブジェクトを作成する
- *
- * @param reviewHistoryList reviewService.getReviewHistoryListの結果
- */
-const parseReviewHistoryList = (reviewHistoryList) => {
-	return {
-		rows: reviewHistoryList.rows.map(obj=>{
-			return new vo_review.reviewHistoryItem({
-				review_id: obj.review_id,
-				review_date: obj.schedules_date_key,
-				review_user_name: obj.to_user_name,
-				review_type: obj.review_type,
-			});
-		}),
-		pages: reviewHistoryList.pages,
-	};
-};
 exports.getReviewHistory = async (req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
 	const page = req.form_data.page;
 
 	const reviewHistoryList = await reviewService.getReviewHistoryList({user_id, page});
-	render_obj.bodyData = {
-		reviewHistoryItem: parseReviewHistoryList(reviewHistoryList),
-	};
+	render_obj.bodyData = new vo_review(user_id, {reviewHistoryList}, page);
 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
 };
 
