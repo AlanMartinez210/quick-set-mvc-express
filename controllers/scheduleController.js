@@ -102,19 +102,22 @@ exports.postSchedule = (req, res, next) => {
   const registData = req.form_data;
   registData.user_id = sessionHelper.getUserId(req);
   registData.schedule_type = sessionHelper.getUserType(req);
-  // 都道府県を纏める
-  registData.prefectures = [];
-  if(c2Util.isCosplayer(registData.schedule_type)){
-    registData.prefectures.push(registData.prefecture);
-  }
-  else{
-    registData.prefectures = registData.prefectures_field;
-  }
 
-  // タグを纏める
-  registData.tags = registData.tag_field;
+  // // 都道府県を纏める
+  // registData.prefectures = [];
+  // if(c2Util.isCosplayer(registData.schedule_type)){
+  //   registData.prefectures.push(registData.prefecture);
+  // }
+  // else{
+  //   registData.prefectures = registData.prefectures_field;
+  // }
 
-  scheduleService.upsertScheduleData(registData)
+  // // タグを纏める
+  // registData.tags = registData.tag_field;
+
+  console.log('registData: ', registData);
+
+  db.Schedule.createSchedule(registData)
   .then(results => {
     res.json({status:'success'});
   }).catch(err => {

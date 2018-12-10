@@ -16,6 +16,7 @@ export default class schedule{
 		const doScheduleBtn = $('[name=doSchedulePost]');
 		// モーダルの表示
 		const openScheduleBtn = "[name=createSchedule]";
+		const showScheduleBtn = "[name=showSchedule]";
 		// 日付のみ表示のチェック
 		const isExistSchedule = "#isCheckDate";
 
@@ -32,6 +33,47 @@ export default class schedule{
 			const month = e.currentTarget.dataset.selected_month;
 			this.getCalendarList(e, year, month);
 		});
+
+		// モーダルを参照モードで開く
+		scheduleSection.on('click', showScheduleBtn , {
+			type: "createSchedule",
+			onSyncOpenBrefore : (resolve, reject, event) => {
+				this.modalDisable();
+
+				// タグと都道府県のプラグインをロード
+				this.tags.init().ready();
+				this.prefs.init().ready();
+
+				// formを初期化する 
+				this.scheduleForm.clearForm();
+
+				// 操作ボタン非表示
+				$(".proc-box").hide();
+
+				const schedule_id = event.currentTarget.dataset.schedule_id;
+				if(!schedule_id){
+					reject();
+				}
+				else{
+					// 値を取りに行く
+					this.getSchedule(schedule_id)
+					.then(res => {
+						// タグと都道府県のみ別設定
+						res.tag_field.forEach(item => this.tags.addTags(item));
+						res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
+						this.scheduleForm.setValue(res);
+						resolve();
+					});
+				}
+			},
+			onSyncCloseBrefore : (resolve, reject) => {
+				setTimeout(function(){
+					alert("aaaaa");
+					resolve();
+				}, 3000);
+			}
+		}, c2.showModal);
+		
 
 		// モーダルを開く
 		scheduleSection.on('click', openScheduleBtn , {
@@ -50,6 +92,7 @@ export default class schedule{
 				// 一旦非表示
 				$(".proc-btn").hide();
 				// ボタンの表示
+				$(".proc-box").show();
 				$(`[data-proc=${modal_mode}]`).show();
 
 				switch(modal_mode){

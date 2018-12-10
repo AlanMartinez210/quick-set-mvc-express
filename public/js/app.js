@@ -253,7 +253,7 @@ export default class myApp extends baseApp {
 
     // 同期版
     if(e.data.onOpenBrefore){
-      c2.onShowProgress(e);
+      c2.onShowProgress();
       e.data.onOpenBrefore(e);
       c2.onHideProgress();
     }
@@ -279,6 +279,43 @@ export default class myApp extends baseApp {
       $("#"+ e.data.type + "Modal").attr("data-modal", "show");
     }
 
+    const modal_close_obj = $("#modal-close, #modal-close-btn");
+    
+    if(e.data.onCloseBrefore){  // 閉じる処理(同期)
+      // 登録イベントを一旦破棄する。
+      modal_close_obj.on('click', function(ev){
+        c2.onShowProgress();
+        e.data.onCloseBrefore(ev);
+        c2.onHideProgress();
+        c2.showClearAll();
+      });
+    }
+    else if(e.data.onSyncCloseBrefore){ // 閉じる処理(非同期)
+      modal_close_obj.on('click', function(ev){
+        c2.onShowProgress();
+        const preCloseProc = new Promise((resolve, reject) => {
+          return e.data.onSyncCloseBrefore(resolve, reject, ev);
+        })
+        preCloseProc
+        .then(() => {
+          c2.onHideProgress();
+          c2.showClearAll();
+        })
+        .catch(err => {
+          c2.onHideProgress();
+          c2.showClearAll();
+          c2.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。");
+        })
+      });
+    }
+    else{
+      modal_close_obj.on('click', c2.showClearAll);
+    }
+
+    $(".modal-box").on('click', e=>{
+      e.stopPropagation();
+    });
+
   	return false;
   };
 
@@ -289,7 +326,8 @@ export default class myApp extends baseApp {
   	$(".on-show").removeClass("on-show");
   	$(".wrapper").css({"paddingRight": "0px"});
   	$("body").removeClass("on-modal");
-  	$(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");
+    $(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");
+    $("#modal-close, #modal-close-btn").off('click');
   }
 
 

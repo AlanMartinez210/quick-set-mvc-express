@@ -6,11 +6,23 @@ const days_map = ['日','月','火','水','木','金','土']; // 曜日のマッ
  * Dateからmomentオブジェクトを取得します。
  *
  * @param {Date} sequelize_date
+ * @param {Boolean} time_expect -> trueなら日付情報を未設定にする
  */
-exports.getDate = (sequelize_date = new Date()) => {
+exports.getDate = (sequelize_date = new Date(), time_expect = false) => {
   if(!(sequelize_date instanceof Date)) throw new Error('type of Date is expected.');
+  if(time_expect) sequelize_date = new Date(`${sequelize_date.getFullYear()}/${sequelize_date.getMonth() + 1}/${sequelize_date.getDate()}`)
   return _getDate(sequelize_date);
 }
+
+/**
+ * 日付情報のみを設定した日付を取得します。
+ * ※ 時間は(00:00:00+9:00)がデフォルトです
+ * 
+ * @param {Date} sequelize_date
+ */
+exports.getDateOnly = (sequelize_date = new Date()) => {
+  return this.getDate(sequelize_date, true);
+} 
 
 /**
  * 日付変換可能な日付文字列のみmomentオブジェクトに変換します。
@@ -43,7 +55,7 @@ exports.createDate = (year = 0, month = 0, day = 1) => {
   if(isNaN(year) || (Number(year) < 1970 || Number(year) > 9999)) throw new Error('expect year param is 1970 to 9999');
   if(isNaN(month) || Number(month) < 1 || Number(month) > 12) throw new Error('expect month param is 1 to 12');
   if(isNaN(day) || Number(day) < 1 || Number(day) > 31) throw new Error('expect day param is 1 to 31');
-  const dt = new Date(`${year}-${month}-${day} 00:00:00.000+9:00`);
+  const dt = new Date(`${year}/${month}/${day}`);
   return _getDate(dt);
 }
 

@@ -11,13 +11,6 @@ export default () => {
 	Object.keys(showModalNameObj).forEach(IdOrClass => {
 		$(IdOrClass).on('click', {type: showModalNameObj[IdOrClass]}, showModal);
 	});
-	
-	//close
-	$("#modal-close").on('click',  showClearAll);
-	$("#modal-close-btn").on('click', showClearAll);
-	$(".modal-box").on('click', e=>{
-		e.stopPropagation();
-	});
 
 	// other menu
 	$("#editerMenuBtn").on('click', function(){

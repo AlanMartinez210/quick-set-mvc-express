@@ -709,6 +709,11 @@
 						color: $redD;
 						//border-bottom: 2px solid $grayL;
 					}
+					&.row-gray{
+						background: $grayD-opcity-30 !important;
+						color: $grayD !important;
+						//border-bottom: 2px solid $grayL;
+					}
 					&.row-green{
 						background: $yellowD-opacity-30 !important;
 						color: $greenblueD !important;

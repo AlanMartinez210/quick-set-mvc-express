@@ -41,6 +41,7 @@ function _getCalendar(year, month){
   koyomi.startMonth = 1;
   koyomi.startWeek = '月';
   var list = koyomi.getCalendarData(year + "/" + month);
+  const today = dateHelper.getDateOnly();
 
   // var holidayClass = '';
   list.forEach((ele, i) => {
@@ -48,7 +49,9 @@ function _getCalendar(year, month){
     if (ele.ghost) return;
     
     const cln = {};
-    cln.date_key = dateHelper.createDate(ele.year, ele.month, ele.day).format("L");
+    const date_key = dateHelper.createDate(ele.year, ele.month, ele.day);
+    cln.past = date_key.isBefore(today);
+    cln.date_key = date_key.format("L");
     cln.year = ele.year;
     cln.month = ele.month;
     cln.day = ele.day;

@@ -1,8 +1,6 @@
 import plugin_prefecture from "../plugin/prefecture";
 import recruitDetail from "./recruitDetail";
 import plugin_convert from "../plugin/convert";
-import cookies from "js-cookie";
-import Barba from "barba.js";
 
 export default class recruit {
 	constructor () {

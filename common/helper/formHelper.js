@@ -15,6 +15,7 @@ const CONVERT_KEY = {
  * formの特定のキーを持つプロパティに対して変換処理を行います。
  */
 exports.converter = (formObject) => {
+	console.log('formObject: ', formObject);
 	Object.keys(formObject).forEach(key => {
 		if(CONVERT_KEY[key] && formObject[key]){
 			switch(CONVERT_KEY[key]){
@@ -24,7 +25,7 @@ exports.converter = (formObject) => {
 					break;
 				case "prefectures":
 					// 名称 -> ID
-					formObject[key] =  prefectureHelper.getPrefectureIdByName(formObject[key].split(","));
+					formObject[key] =  prefectureHelper.getPrefectureIdByName(formObject[key]);
 					break;
 				case "tags":
 					break;
