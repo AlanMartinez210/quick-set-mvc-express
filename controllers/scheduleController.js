@@ -82,7 +82,6 @@ exports.getSchedule = (req, res, next)=>{
 
   scheduleService.getScheduleData(schedule_id)
   .then(results => {
-    console.log('results: ', results);
     res.json(new scheduleVO.getScheduleInfo(results));
   })
   .catch(err => {
@@ -103,21 +102,11 @@ exports.postSchedule = (req, res, next) => {
   registData.user_id = sessionHelper.getUserId(req);
   registData.schedule_type = sessionHelper.getUserType(req);
 
-  // // 都道府県を纏める
-  // registData.prefectures = [];
-  // if(c2Util.isCosplayer(registData.schedule_type)){
-  //   registData.prefectures.push(registData.prefecture);
-  // }
-  // else{
-  //   registData.prefectures = registData.prefectures_field;
-  // }
-
-  // // タグを纏める
-  // registData.tags = registData.tag_field;
-
   console.log('registData: ', registData);
 
-  db.Schedule.createSchedule(registData)
+  const procResult = registData.schedule_id ? db.Schedule.updateSchedule(registData, db) : db.Schedule.createSchedule(registData, db);
+
+  procResult
   .then(results => {
     res.json({status:'success'});
   }).catch(err => {
@@ -135,7 +124,7 @@ exports.postSchedule = (req, res, next) => {
 exports.deleteSchedule = (req, res, next) => {
   const schedule_id = req.form_data.schedule_id;
   console.log(schedule_id);
-  scheduleService.deleteScheduleData(schedule_id)
+  db.Schedule.deleteSchedule(schedule_id, db)
   .then(results=>{
     res.json({status:'success'});
   }).catch(err=>{

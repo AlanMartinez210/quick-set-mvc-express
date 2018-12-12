@@ -6,8 +6,8 @@ const CONVERT_KEY = {
 	date_key: "moment",
 	search_date_from: "moment",
 	search_date_to: "moment",
-	prefectures_field: "prefectures",
 	password: "password",
+	prefecture: "prefecture",
 	login_password: "password",
 };
 
@@ -23,9 +23,10 @@ exports.converter = (formObject) => {
 					// 文字列(YYYY/DD/MM) -> moment
 					formObject[key] =  dateHelper.getDateToStr(formObject[key]);
 					break;
-				case "prefectures":
-					// 名称 -> ID
-					formObject[key] =  prefectureHelper.getPrefectureIdByName(formObject[key]);
+				case "prefecture":
+					// カメラマンの登録に合わせる。
+					formObject.prefectures_field = [ formObject[key] ];
+					delete formObject[key];
 					break;
 				case "tags":
 					break;

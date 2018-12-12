@@ -65,12 +65,6 @@ export default class schedule{
 						resolve();
 					});
 				}
-			},
-			onSyncCloseBrefore : (resolve, reject) => {
-				setTimeout(function(){
-					alert("aaaaa");
-					resolve();
-				}, 3000);
 			}
 		}, c2.showModal);
 		

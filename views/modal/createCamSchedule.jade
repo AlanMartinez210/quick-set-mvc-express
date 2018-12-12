@@ -37,7 +37,7 @@
             select#prefectures.js-addPrefectures
               option(value="")
               - for(var pref of self.globalParam.enumPref.getEnum()){
-                option(value="#{pref.name}") #{pref.name}
+                option(value="#{pref.id}") #{pref.name}
               - }
           p.bottom-label
 

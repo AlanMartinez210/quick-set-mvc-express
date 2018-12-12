@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const isHelper = require('./common/helper/isHelper');
+const sessionHelper = require('./common/helper/sessionHelper');
 
 const controllerPath = './controllers/';
 
@@ -20,7 +20,7 @@ router.get('/', (req,res,next)=>{
 });
 
 /* 新規登録ページの表示 */
-router.get('/register', (req,res,next)=>{ isHelper.isLogin(req) ? res.redirect('/') : next() }, userController.index);
+router.get('/register', (req,res,next)=>{ sessionHelper.isLogin(req) ? res.redirect('/') : next() }, userController.index);
 /* ユーザー新規登録処理 */
 router.post('/api/register', validate.check(require('./form/postRegisterForm')), validate.result, userController.postRegister);
 /* ログイン処理 */

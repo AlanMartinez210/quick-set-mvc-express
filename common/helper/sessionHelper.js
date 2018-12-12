@@ -1,4 +1,4 @@
-const isHelper = require('../helper/isHelper');
+const _ = require('lodash');
 
 /**
  * セッション内にユーザー情報をセットします。
@@ -7,8 +7,8 @@ const isHelper = require('../helper/isHelper');
  * @param {*} userObj
  */
 exports.setUserData = function(req, userObj, callback){
-	if(!isHelper.isObject(req)) throw new Error('request object does not exist');
-	if(!isHelper.isObject(userObj)) throw new Error('user object does not exist');
+	if(!_.isObject(req)) throw new Error('request object does not exist');
+	if(!_.isObject(userObj)) throw new Error('user object does not exist');
 	req.session.user = {
 		id: userObj.id,
 		user_type: userObj.user_type,
@@ -20,7 +20,7 @@ exports.setUserData = function(req, userObj, callback){
  * セッションを破棄します。
  */
 exports.deleteSession = function(req, callback = function(err){}){
-	if(!isHelper.isObject(req)) throw new Error('request object does not exist');
+	if(!_.isObject(req)) throw new Error('request object does not exist');
 	req.session.destroy(callback);
 }
 
@@ -30,7 +30,7 @@ exports.deleteSession = function(req, callback = function(err){}){
  * @param {*} req
  */
 exports.getUserData = function(req){
-	if(!isHelper.isObject(req)) throw new Error('request object does not exist');
+	if(!_.isObject(req)) throw new Error('request object does not exist');
 	return req.session.user;
 }
 
@@ -39,7 +39,7 @@ exports.getUserData = function(req){
  * @param {*} req
  */
 exports.getUserId = function(req){
-	if(!isHelper.isObject(req)) throw new Error('request object does not exist');
+	if(!_.isObject(req)) throw new Error('request object does not exist');
 	return req.session.user.id;
 }
 
@@ -48,6 +48,13 @@ exports.getUserId = function(req){
  * @param {*} req
  */
 exports.getUserType = function(req){
-	if(!isHelper.isObject(req)) throw new Error('request object does not exist');
+	if(!_.isObject(req)) throw new Error('request object does not exist');
 	return req.session.user.user_type;
+}
+
+/* ログインしている状態かどうか
+ * @param {*} req
+ */
+exports.isLogin = function(req){
+	return (req.session.user && req.session.user.id);
 }

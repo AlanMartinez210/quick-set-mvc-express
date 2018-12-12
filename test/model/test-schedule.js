@@ -41,62 +41,24 @@ describe('Schedule model test', function () {
           group_month: 8,
           time_from: '11:00',
           time_to: '17:00',
-          shot_type: 1,
+          shot_type: { code: 1, name: "イベント", type: "event" },
           event_name: 'テストイベント1',
           event_url: 'htt://c2link.com/detail/event/test',
           cost: '1000',
           num: '1',
+          getArrPrefById: [],
+          getArrTagByName: [],
           cos_chara: null,
           remarks: 'カメラマンテストスケジュール',
-          Schedule_tags: [{
-              schedule_id: 5,
-              tag_id: 1,
-              Tag: {
-                id: 1,
-                tag_name: 'カメラOK',
-                use_count: 15
-              }
-            },
-            {
-              schedule_id: 5,
-              tag_id: 2,
-              Tag: {
-                id: 2,
-                tag_name: '会員のみ',
-                use_count: 1
-              }
-            },
-            {
-              schedule_id: 5,
-              tag_id: 3,
-              Tag: {
-                id: 3,
-                tag_name: 'データ一週間渡し',
-                use_count: 12
-              }
-            }
-          ],
-          Schedule_prefectures: [{
-              prefecture_name: '神奈川県',
-              schedule_id: 5,
-              prefecture_id: 14
-            },
-            {
-              prefecture_name: '新潟県',
-              schedule_id: 5,
-              prefecture_id: 15
-            }
-          ]
         }
-        return db.Schedule.getSchedule(db, test_schedule_id)
+        return db.Schedule.getSchedule(test_schedule_id)
           .then(instance => {
             const data = instance.toJSON();
-            console.log('data: ', data.Schedule_tags);
             // 日付照合が出来ないため、意図的に消す
             delete data.createdAt;
             delete data.updatedAt;
             delete data.date_key;
-            // expect(expect_data).to.deep.equal(data);
+            expect(expect_data).to.deep.equal(data);
           })
       });
     });
@@ -136,7 +98,7 @@ describe('Schedule model test', function () {
           schedule_type: 2,
           time_from: '11:00',
           time_to: '17:00',
-          shot_type: 1,
+          shot_type: { code: 1, name: "イベント", type: "event" },
           event_name: 'テストイベント1',
           event_url: 'htt://c2link.com/detail/event/test',
           cost: '1000',
@@ -151,7 +113,9 @@ describe('Schedule model test', function () {
           Schedule_prefectures: [
             { prefecture_name: '神奈川県', schedule_id: 181, prefecture_id: 14 },
             { prefecture_name: '新潟県', schedule_id: 181, prefecture_id: 15 }
-          ]
+          ],
+          getArrPrefById: [ 14, 15 ],
+          getArrTagByName: [ {},{},{} ]
         };
         
         const test_schedule_data = {
@@ -168,7 +132,7 @@ describe('Schedule model test', function () {
           cos_chara: null,
           remarks: 'カメラマンテストスケジュール',
           tag_field: ["コンデシOK", "夜間撮影あり", "性別不問"],
-          prefecture_field: [14, 15]
+          prefectures_field: [14, 15]
         };
         return db.Schedule.createSchedule(test_schedule_data, db)
           .then(instance => {
@@ -201,7 +165,7 @@ describe('Schedule model test', function () {
           cos_chara: null,
           remarks: 'カメラマンテストスケジュール2',
           tag_field: ["コンデシOK", "衣装複数あり"],
-          prefecture_field: [14, 13]
+          prefectures_field: [14, 13]
         };
         return db.Schedule.updateSchedule(test_schedule_data, db)
         .then(instance => {

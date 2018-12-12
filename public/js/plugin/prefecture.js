@@ -70,14 +70,14 @@ export default class prefecture{
 				</div>
 		`);
 
-		this.prefectureList.push(pref_id);
+		this.prefectureList.push(Number(pref_id));
 	}
 
 	/**
 	 * 重複チェック
 	 */
 	checkDuplicate(pref_id){
-		const idx = this.prefectureList.indexOf(pref_id);
+		const idx = this.prefectureList.indexOf(Number(pref_id));
 		if(idx >= 0) return this.errEmitter(`すでに登録されています`);
 		
 		return true;

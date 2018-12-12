@@ -38,11 +38,10 @@ module.exports = {
 	 */
 	getScheduleInfo: class {
 		constructor(scheduleInfo = {}){
-			console.log('scheduleInfo: ', scheduleInfo);
 			this.schedule_id = scheduleInfo.id;
 			this.date_key = scheduleInfo.date_key.format("L");
 			this.shot_type = scheduleInfo.shot_type.code;
-			// this.prefecture = prefectures;
+			this.prefecture = scheduleInfo.Schedule_prefectures[0].prefecture_id;
 			this.prefectures_field = scheduleInfo.Schedule_prefectures;
 			this.tag_field = scheduleInfo.getArrTagByName;
 			this.coschara = scheduleInfo.cos_chara;

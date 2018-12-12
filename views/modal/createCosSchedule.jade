@@ -41,7 +41,7 @@
               option(value="") 未定
               option(value="要相談") 要相談
 
-              - for(let i=0;i<24;i++){ const time = ("0"+((i+6)%24)).slice(-2);
+              - for(let i=0;i<24;i++){ const time = ((i+6)%24);
                   option(value="#{time}:00") #{time}:00
                   option(value="#{time}:30") #{time}:30
               - }
@@ -52,8 +52,8 @@
             p.main-label: |撮影タイプ
           .select-box._s.flex._c.st-required
             select(name="shot_type")
-              - for(var shot_type of self.globalParam.enumShotType){
-                option(value="#{shot_type.code}") #{shot_type.name}
+              - for(var shot_type of self.globalParam.enumShotType.getEnum()){
+                  option(value="#{shot_type.code}") #{shot_type.name}
               - }
           p.bottom-label
 
@@ -80,8 +80,8 @@
           .select-box._s.flex._c.st-required
             select(name="prefecture")
               option(value="")
-              - for(var pref of self.globalParam.enumPrefList){
-                option(value="#{pref.name}") #{pref.name}
+              - for(var pref of self.globalParam.enumPref.getEnum()){
+                option(value="#{pref.id}") #{pref.name}
               - }
           p.bottom-label
 

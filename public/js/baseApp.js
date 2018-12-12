@@ -1,6 +1,3 @@
-import jquery from 'jquery';
-import jqueryUI from "jquery-ui";
-
 import '../scss/general/reset.scss';
 import '../scss/app.scss';
 import '../scss/pattern.scss';
@@ -8,7 +5,6 @@ import '../scss/component.scss';
 import '../scss/style.scss';
 import 'slick/slick.scss';
 import 'slick/slick-theme.scss';
-import 'jquery-ui-bundle';
 
 /**
  * アプリケーションの基本機能を定義します。
@@ -18,7 +14,6 @@ import 'jquery-ui-bundle';
  */
 export class baseApp {
   constructor(){
-    window.$ = jquery;
     this.root = this._getRoot();
     this.ua = this._getUA();
   };
@@ -155,7 +150,6 @@ export class baseApp {
 
             // ボトムラベルの初期化
             const $bottomLabel = $form.find(".bottom-label");
-            console.log('$bottomLabel: ', $bottomLabel);
             $bottomLabel.each(function(){
               $(this).text("");
             });
@@ -217,7 +211,6 @@ export class baseApp {
     var kv = pair[i].split('=');
       jsonObj[kv[0]] = decodeURI(kv[1]) || "";
     }
-    console.log(jsonObj);
     return jsonObj;
   }
   getReferrer(){

@@ -1,3 +1,6 @@
+import 'webpack-jquery-ui/datepicker';
+import 'webpack-jquery-ui/css';
+
 import myApp from './app';
 import { contents } from './content/index';
 

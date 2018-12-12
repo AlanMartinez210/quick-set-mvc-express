@@ -17,16 +17,24 @@ module.exports = {
 				use: ["babel-loader"]
 			},
 			{
-				test: /\.scss$/,
+				test: /\.(css|scss)$/,
 				loaders: ['style-loader', 'css-loader', 'sass-loader']
 			},
-			{ test: /\.(eot|svg|woff|ttf|gif)$/, loader: 'url-loader'}
+			{ test: /\.(eot|svg|woff|ttf|gif|jpg|png)$/, loader: 'url-loader'}
 		]
 	},
   resolve: {
 		extensions: ["*", ".js", ".css"],
 		alias: {
-			slick: path.resolve(__dirname, 'node_modules/slick-carousel/slick/'),
+			slick: path.resolve(__dirname, 'node_modules/slick-carousel/slick/')
 		}
-	}
+	},
+	plugins: [
+		new webpack.ProvidePlugin({
+			$: "jquery",
+			jQuery: "jquery",
+			"window.jQuery": "jquery'",
+      "window.$": "jquery"
+		})
+	]
 };

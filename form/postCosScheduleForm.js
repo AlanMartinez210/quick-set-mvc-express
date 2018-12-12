@@ -1,4 +1,4 @@
-const isHelper = require("../common/helper/isHelper");
+const _ = require("lodash");
 
 /** 予定の作成 (カメラマン/コスプレイヤー) */
 module.exports = {
@@ -32,7 +32,8 @@ module.exports = {
 		isLength: {
 			errorMessage: 'E00011,50',
 			options:{ max: 50 },
-		}
+		},
+		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
 	remarks:{
 		in: 'body',
@@ -57,7 +58,7 @@ module.exports = {
 			errorMessage: 'E00011,半角数字,50',
 			options: value =>{
 				// 値が存在する時に日付形式チェックをする
-				return value.length == 0 || isHelper.isNumber(value);
+				return value.length == 0 || _.isNumber(value);
 			}
 		}
 	},
@@ -67,7 +68,7 @@ module.exports = {
 			errorMessage: 'E00011,半角数字,50',
 			options: value =>{
 				// 値が存在する時に日付形式チェックをする
-				return value.length == 0 || isHelper.isNumber(value);
+				return value.length == 0 || _.isNumber(value);
 			}
 		}
 	}

@@ -54,17 +54,20 @@ module.exports = (sequelize, DataTypes) => {
       //   return Schedule_tags.map(v=>v.toJSON());
       // },
 
-      // // 関連した都道府県データからIDのみを抽出する。
-      // getArrPrefById(){
-      //   const schedule_prefectures = this.getDataValue('Schedule_prefectures');
-      //   return schedule_prefectures.map(v=>v.toJSON().prefecture_id);
-      // },
+      // 関連した都道府県データからIDのみを抽出する。
+      getArrPrefById(){
+        const schedule_prefectures = this.getDataValue('Schedule_prefectures') || [];
+        return schedule_prefectures.map(v=>v.toJSON().prefecture_id);
+      },
 
-      // // 関連したタグデータから名称のみを抽出する。
-      // getArrTagByName(){
-      //   const schedule_tags = this.getDataValue('Schedule_tags');
-      //   return schedule_tags.map(v=>v.toJSON().Tag.tag_name);
-      // }
+      // 関連したタグデータから名称のみを抽出する。
+      getArrTagByName(){
+        const schedule_tags = this.getDataValue('Schedule_tags') || [];
+        return schedule_tags.map(v=> {
+          const Tag = v.toJSON().Tag;
+          return Tag && Tag.tag_name || {};
+        });
+      }
     },
     timestamps: false
   });
@@ -146,8 +149,8 @@ module.exports = (sequelize, DataTypes) => {
         schedule_data.Schedule_tags = await convertTags(schedule_data, model, options);
       }
       // 都道府県データがあるときだけ処理を行う。
-      if(schedule_data.prefecture_field){
-        schedule_data.Schedule_prefectures = schedule_data.prefecture_field.map(v => { return {prefecture_id: v} })
+      if(schedule_data.prefectures_field){
+        schedule_data.Schedule_prefectures = schedule_data.prefectures_field.map(v => { return {prefecture_id: v} })
       }
 
       options.include = [ "Schedule_tags", "Schedule_prefectures" ];
@@ -179,8 +182,8 @@ module.exports = (sequelize, DataTypes) => {
         await model.Schedule_tag.createScheduleTag(schedule_data.Schedule_tags, options)
       }
       // 都道府県データがあるときだけ処理を行う。
-      if(schedule_data.prefecture_field){
-        schedule_data.Schedule_prefectures = schedule_data.prefecture_field.map(v => { return { schedule_id: schedule_data.schedule_id, prefecture_id: v} });
+      if(schedule_data.prefectures_field){
+        schedule_data.Schedule_prefectures = schedule_data.prefectures_field.map(v => { return { schedule_id: schedule_data.schedule_id, prefecture_id: v} });
         await model.Schedule_prefecture.createSchedulePrefs(schedule_data.Schedule_prefectures, options);
       }
 
