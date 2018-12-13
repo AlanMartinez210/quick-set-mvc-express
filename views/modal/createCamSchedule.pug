@@ -1,0 +1,112 @@
+#createScheduleModal(data-modal="hide")
+  form(method="post", action="", name="scheduleForm")
+
+    .board-prm
+
+      .board-cnt._s
+        .attention-prm
+          p
+            span.st-required(style="border-radius:5px;display: inline-block;")
+              |&emsp;&emsp;&emsp;
+            |&nbsp;は必須項目です。
+
+        .label-input-box#box_date_key
+          .label-box
+            p.main-label: |日付
+          .input-box._s.flex._c.st-readonly
+            input(type="text", name="date_key")
+            input(type="hidden", name="schedule_id")
+          p.bottom-label
+
+        .label-input-box#box_shot_type
+          .label-box
+            p.main-label: |撮影タイプ
+            span.sub-label: |可能な撮影を選択してください。
+          .select-box._s.flex._c.st-required
+            select(name="shot_type")
+              each shot_type in self.globalParam.enumShotType.getEnum()
+                option(value=shot_type.code) #{shot_type.name}
+          p.bottom-label
+
+        .label-input-box._mbs#box_prefectures_field
+          .label-box
+            p.main-label: |活動地域
+            span.sub-label: |あなたの活動している地域を選択し追加してください。
+          .select-box._s.flex._c
+            select#prefectures.js-addPrefectures
+              option(value="")
+                each pref in self.globalParam.enumPref.getEnum()
+                  option(value=pref.id) #{pref.name}
+          p.bottom-label
+
+        p.st-title-tag
+          |追加した活動地域
+        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field").st-required
+
+        .label-input-box._mbs#box_tag_field
+          .label-box
+            p.main-label: |タグの設定
+            span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
+          .input-box._s.flex._c
+            input(type="text")#tags
+            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
+          p.bottom-label
+
+        p.st-title-tag
+          |追加したタグ一覧
+        .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
+
+        .accordion-prm
+
+          .accordion-label.flex._c
+            .accordion-title
+              p: |詳細オプション
+          .accordion-cnt
+
+            .label-input-box#box_time_from
+              .label-box
+                p.main-label: |開始時間
+              .select-box._s.flex._c
+                select(name="time_from")
+                  option(value="") 未定
+                  - for(let i=0;i<24;i++){ const time = ((i+6)%24);
+                    option(value=`${time}:00`) #{time}:00
+                    option(value=`${time}:30`) #{time}:30
+                  - }
+
+              p.bottom-label
+
+            .label-input-box#box_time_to
+              .label-box
+                p.main-label: |終了時間
+              .select-box._s.flex._c
+                select(name="time_to")
+                  option(value="") 未定
+                  - for(let i=0;i<24;i++){ const time = ((i+6)%24);
+                    option(value=`${time}:00`) #{time}:00
+                    option(value=`${time}:30`) #{time}:30
+                  - }
+              p.bottom-label
+
+            .label-input-box#box_event_name
+              .label-box
+                p.main-label: |イベント名 or 開催地
+                span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
+              .input-box._s.flex._c
+                input(type="text", name="event_name", placeholder="世界コスプレサミット")
+              p.bottom-label
+
+            .label-input-box#box_remarks
+              .label-box
+                p.main-label: |備考
+              .textarea-box._s.flex._c
+                textarea(name="remarks", rows="3")
+              p.bottom-label
+
+      .board-ftr._s.flex._c._jc.proc-box
+        button(type="submit", data-proc="create", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
+            |登録
+        button(type="submit", data-proc="edit", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
+            |更新
+        button(type="submit", data-proc="delete", name="doSchedulePost").btn-prm.st-back-r.shadow-l.proc-btn
+            |削除

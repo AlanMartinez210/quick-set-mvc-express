@@ -1,0 +1,74 @@
+-
+  const sc_menu_list = [
+    {name: "予定の管理",               id:"schedule",        type:"2"},
+    {name: "募集の管理",               id:"schedule",        type:"1"},
+    {name: "レビューの管理",           id:"review",          type:""},
+    {name: "マッチングの管理",         id:"matching",        type:""},
+    {name: "ユーザー情報設定",         id:"profile",         type:""},
+    {name: "サイト設定",               id:"site",            type:""},
+    {name: "所持機材設定",             id:"equipment",       type:"2"},
+    {name: "所持コスプレ設定",         id:"costume",         type:"1"},
+    {name: "サンプル写真設定",         id:"sample_image",    type:""},
+    {name: "外部サービス連携設定",     id:"ext_service",     type:""},
+    {name: "運営情報",                 id:"admin_info",      type:""},
+    {name: "プライバシーポリシー",     id:"privacy_policy",  type:""},
+    {name: "利用者様のデータについて", id:"about_user_data", type:""},
+    {name: "お問い合わせ",             id:"contact",         type:""},
+  ];
+
+  const gnav_menu_list = [
+    {name:'当日',       id: "recruitToday",  icon_css:"far fa-clock",    href:"/recruitlist/today"},
+    {name:'一覧',       id: "recruit",       icon_css:"far fa-calendar", href:"/recruitlist"},
+    {name:'あわせ募集', id: "cosgroup",      icon_css:"fas fa-users",    href:"/cosgroup"},
+    {name:'マイページ', id: "mypage",        icon_css:"far fa-user",     href:"/mypage"},
+    {name:'メッセージ', id: "message",       icon_css:"far fa-comments", href:"/message"},
+  ]
+-
+
+header
+  .hdr-cntnr
+    .cntnr-balancer
+      .header-spacer
+
+      //- - if (ShortcutMenu){
+      //- .hdr-controll
+      //-   .hdr-select-box._s.flex._c.shadow-l
+          
+      //-     label.selectBox.flex._c
+      //-       select#scMenu(data-scMenuSelected="")
+              
+      //-         - for (let i=0;i<sc_menu_list.length;i++){ const m = sc_menu_list[i];
+      //-           - if (ml[i].type == session.user.type){
+      //-             option(value=m.id, data-href=m.id) #{m.name}
+      //-           - }
+      //-         - }
+
+      //-       i.fas.fa-caret-down.icon-title
+      //- - }
+
+      - if (backBtn.href){
+      .hdr-controll
+        a.btn-prm.link-btn.st-btn-icon.st-line-w.flex._c(href=backBtn.href)
+          i.icon-btn.fas.fa-chevron-left.fa-fw
+          span: |#{backBtn.name}
+      - }
+
+    .hdr-menu
+      .cntnr-balancer
+        //-title
+        .hdr-title.flex._c
+          .hdr-logo
+            img(src="../image/c2logo.svg", alt="", srcset="")
+          h1: |#{self.title}
+          span#noticeBtn.act-back-blue.shadow-d.on-notice
+            i.icon_notice.far.fa-bell
+        //-navigation
+        nav
+          ul.hdr-g-nav.flex._c
+            each menu in gnav_menu_list
+              - if(menu.id == "cosgroup" && self.userType == "2") continue;
+              li(id=menu.id)
+                a.flex._c._j(href=menu.href)
+                  span.menu-icon-poti-lock
+                    i.icon-menu.fa-fw(class=menu.icon_css)
+

@@ -1,0 +1,115 @@
+-
+  const recruit_search_info = self.bodyData.recruit_search_info;
+  const recruit_list_arr = self.bodyData.recruit_list_arr;
+  const recruit_list_pager = self.bodyData.recruit_list_pager;
+  const search_urlParam = self.bodyData.search_urlParam;
+-
+.center-frame
+
+  //- 条件表示部
+  .board-prm
+    //- 検索ボタン
+    .float-cntnr.st-search-btn
+      span#searchBtn.btn-prm.st-btn-circle.st-back-b.shadow-d
+        i.icon-btn.fas.fa-search.fa-fw
+
+    //- 検索条件表示部
+    .board-hdr
+      .label-box
+        .label-box._s.flex._c
+          span
+            |期間&nbsp;:&nbsp;
+            |#{recruit_search_info.search_date_from ? recruit_search_info.search_date_from : "指定なし"}&nbsp;
+            |#{recruit_search_info.search_date_to ? " ～ " + recruit_search_info.search_date_to : ""}
+        if recruit_search_info.prefectures_field.length
+          .label-box._s.flex._c
+            span
+              |場所&nbsp;:&nbsp;
+              |#{recruit_search_info.prefectures_field}
+
+        if recruit_search_info.search_tag
+          .label-box._s.flex._c
+            span
+              |タグ&nbsp;:&nbsp;
+              |#{recruit_search_info.search_tag}
+        if recruit_search_info.shot_type
+          .label-box._s.flex._c
+            span
+              |種類&nbsp;:&nbsp;
+              |#{recruit_search_info.shot_type}
+
+    //- 表示オプション表示部
+    .board-cnt
+      .check-box._n.flex._c
+        input(id="bookmark" type="checkbox")
+        label(for="bookmark")
+          |ブックマークのみ表示
+
+  //- 募集/予定一覧表示
+  -let tmp_label_date;
+  //- 募集一覧が一件もない場合はメッセージを表示する。
+  -if(recruit_list_arr.length){
+
+    each recruit_item in recruit_list_arr
+
+      //- 日付の表示を行う。一時保存したものと異なるときに再度差し入れる。
+      -if(recruit_item.date_info.key != tmp_label_date){ tmp_label_date = recruit_item.date_info.key;
+        include board/label.pug
+      -}
+
+      -
+        const ui = recruit_item.user_info;
+        const ei = recruit_item.event_info;
+      -
+
+      //- ユーザータイプごとで表示リストを分ける
+      case Number(self.userType)
+        when 1
+          include board/cameraman.pug
+        when 2
+          include board/cosplayer.pug
+
+  -}else{
+    .board-prm
+      .board-cnt
+        p: |対象の募集は存在しません。
+  -}
+
+  //- ページャー表示部
+  .floor-prm
+    .floor-hdr._s
+      .pager#recruitlistPager
+        ul.flex._jc
+          -
+            let url = "/recruitlist/search";
+                np = Number(recruit_list_pager.now_page),
+                mp = Number(recruit_list_pager.max_page),
+                isMin = np > 1,
+                isMax = np < mp,
+                prev = np - 1,
+                next = np + 1
+                param = search_urlParam ? `&${search_urlParam}` : "";
+          -
+          li
+            a(href=`${url}?page=1${param}`, class= isMin ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-left.fa-fw
+          li
+            a(href=`${url}?page=${prev}${param}`, class= isMin ? '': 'invisible' ): i.icon-pager.fas.fa-angle-left.fa-fw
+          - for(let i=0;i<recruit_list_pager.disp_page_list.length;i++){ let p = recruit_list_pager.disp_page_list[i];
+            li
+              -if(p == np){
+              span(class="selected"): |#{p}
+              -}else{
+              a(href=`${url}?page=${p}${param}`): |#{p}
+              -}
+          - }
+          li
+            a(href=`${url}?page=${next}${param}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-right.fa-fw
+          li
+            a(href=`${url}?page=#${mp}${param}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-right.fa-fw
+
+
+  //- AD表示部
+  //- .floor-prm
+  //-   .floor-cnt
+      //- .ad-box
+      //-   img(src="/image/ad.jpg")

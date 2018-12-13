@@ -1,9 +1,0 @@
-extends layout/frame
-
-block content
-  h1 #{self.title}
-  ul
-    - for(var i=0;i<self.users.length;i++)
-      li #{JSON.stringify(self.users[i])}
-
-  div #{JSON.stringify(self.session)}

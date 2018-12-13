@@ -17,6 +17,14 @@ export default class profile{
 		// タグと都道府県のプラグインをロード
 		this.tags.init().ready();
 		this.prefs.init().ready();
+
+		// ユーザー情報の取得
+		const user_id = $("[name=user_id]").val();
+		c2.sendGet(`/mypege/profile/${user_id}`)
+		.then(res => {
+			res.prefectures.forEach(item => this.prefs.addPrefecture(item.pref_id, item.pref_name));
+			this.profileForm.setValue(res);
+		})
 		
 		// アカウント削除ボタン
 		deleteBtn.on('click', {type: "delete"}, c2.showModal);

@@ -1,4 +1,5 @@
 const userService = require("../services/userService");
+const generalVO = require("../viewObjects/general");
 const db = require("../models/index");
 const sessionHelper = require('../common/helper/sessionHelper');
 
@@ -97,4 +98,22 @@ exports.postLogout = function (req, res, next) {
 	res.status(200).json({
 		success: "success"
 	});
+}
+
+/**
+ * ユーザー情報の取得
+ */
+exports.getUserData = (req, res, next) => {
+	// ユーザーID(user_key)
+	const user_id = req.form_data.user_id;
+	console.log('user_id: ', user_id);
+
+	db.User.getUserByKey(user_id)
+	.then(instance => {
+		console.log('instance: ', instance);
+		res.json(new generalVO.userInfo(instance))
+	})
+	.catch(err=>{
+    next(err);
+  });
 }

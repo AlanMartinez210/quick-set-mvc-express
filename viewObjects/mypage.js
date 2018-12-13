@@ -7,13 +7,9 @@ module.exports = {
 		}
 	},
 
-	profileInfo: class {
-		constructor({icon_url = "", user_name = "", email = "", prefectures = [], tags = []}){
-			this.icon_url = icon_url;
-			this.user_name = user_name;
-			this.email = email;
-			this.prefectures = prefectures;
-			this.tags = tags;
+	profileInit: class {
+		constructor(profile_init = {}){
+			this.user_id = profile_init.get("user_key");
 		}
 	},
 

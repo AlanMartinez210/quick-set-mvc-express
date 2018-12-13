@@ -1,0 +1,78 @@
+-
+  var newMessages = self.bodyData.newMessages;
+-
+.center-frame
+  .board-prm
+    .board-hdr
+      .label-box._fb.flex._c
+        i.icon-title-b.far.fa-bell.fa-fw.c-glay
+        span: |新着メッセージ
+    .board-cnt._s.list-board
+      //- p.info-text: |新しいメッセージはありません
+      ul.st_options
+
+        - for(var obj of newMessages){
+          li.label-icon-link
+            a(href=`/message/room?r=${obj.id}`).flex._c
+              .label-icon
+                img(src=obj.icon_url)
+              .st-string-set
+                p: |#{obj.username}
+                span.sub-text: |#{obj.last_message}
+              i.icon-link.fas.fa-chevron-right.fa-fw
+          - }
+
+  .board-prm
+    .board-hdr
+      .label-box._fb.flex._c
+        i.icon-title-b.fas.fa-history.fa-fw.c-glay
+        span: |メッセージ履歴
+    .board-cnt._s.list-board
+      //- p.info-text: |メッセージ履歴はありません
+      ul.st_options
+        li.label-icon-link
+          a(href="/message/room").flex._c
+            .label-icon
+              img
+            .st-string-set
+              span.sub-text: |2018/05/01
+              p: |テストユーザー
+            i.icon-link.fas.fa-chevron-right.fa-fw
+
+        li.label-icon-link
+          a(href="/message/room").flex._c
+            .label-icon
+              img
+            .st-string-set
+              span.sub-text: |2018/05/01
+              p: |テストユーザー
+            i.icon-link.fas.fa-chevron-right.fa-fw
+
+        li.label-icon-link
+          a(href="/message/room").flex._c
+            .label-icon
+              img
+            .st-string-set
+              span.sub-text: |2018/05/01
+              p: |テストユーザー
+            i.icon-link.fas.fa-chevron-right.fa-fw
+
+        li.label-icon-link
+          a(href="/message/room").flex._c
+            .label-icon
+              img
+            .st-string-set
+              span.sub-text: |2018/05/01
+              p: |テストユーザー
+            i.icon-link.fas.fa-chevron-right.fa-fw
+
+    .board-ftr._s
+      .pager(data-pagerid="messagehistry")
+        ul.flex._jc
+          li: a: i.icon-pager.fas.fa-angle-double-left.fa-fw
+          li: a: i.icon-pager.fas.fa-angle-left.fa-fw
+          -for(let i=1;i<=3;i++){
+            li: a(data-selectdata= i==1 ? 'selected' : '' ): |#{i}
+          -}
+          li: a: i.icon-pager.fas.fa-angle-right.fa-fw
+          li: a: i.icon-pager.fas.fa-angle-double-right.fa-fw

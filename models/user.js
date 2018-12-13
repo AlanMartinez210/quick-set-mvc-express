@@ -1,4 +1,5 @@
 const dateHelper = require("../common/helper/dateHelper");
+const prefectureHelper = require("../common/helper/prefectureHelper");
 const errorHelper = require('../common/helper/errorHelper');
 
 'use strict';
@@ -17,7 +18,19 @@ module.exports = (sequelize, DataTypes) => {
     bg_image_url: DataTypes.STRING,
     user_type: DataTypes.INTEGER,
     tags: DataTypes.JSON,
-    prefectures: DataTypes.JSON,
+    prefectures: {
+      type: DataTypes.JSON,
+      field: "prefectures",
+      get(){
+        let pref = this.getDataValue('prefectures');
+        if(pref){
+          pref = pref.map(v=>  {
+            return {pref_id: v, pref_name: prefectureHelper.getPrefectureNameById(v) }
+          });
+        }
+        return pref;
+      },
+    },
     good_review_num: DataTypes.BIGINT.UNSIGNED,
     bad_review_num: DataTypes.BIGINT.UNSIGNED,
     expiration_date: {
@@ -49,6 +62,19 @@ module.exports = (sequelize, DataTypes) => {
    */
   User.getUserById = function(user_id, options = {}){
     return this.findById(user_id, options);
+  };
+
+  /**
+   * ユーザーIDからユーザーデータを取得する。
+   *
+   * @param {*} user_id
+   * @param {*} options
+   */
+  User.getUserByKey = function(user_key, options = {}){
+    options.where = {
+      user_key: user_key
+    };
+    return this.findOne(options);
   };
 
   /**

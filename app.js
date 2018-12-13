@@ -56,7 +56,7 @@ app.use(session({
 
 //viewのルートを設定
 app.set('views', path.join(__dirname, 'views/pages'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 
 /**
