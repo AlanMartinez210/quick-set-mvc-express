@@ -112,7 +112,6 @@ export class baseApp {
                   switch($t.prop("type")){
                     case "text":
                     case "textarea":
-                    case "file":
                     case "hidden":
                       $t.val(item);
                       break;
@@ -121,6 +120,9 @@ export class baseApp {
                       break;
                     case "checkbox":
                       $t.prop("checked", Boolean(item));
+                      break;
+                    case "file":
+                      // TODO 後でテスト
                       break;
                   }
                   break;

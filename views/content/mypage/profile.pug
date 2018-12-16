@@ -2,6 +2,16 @@
   form(method="post", action="", name="profileForm")
 
     .board-prm
+      .board-hdr
+        .label-box._fb.flex._c
+            i.icon-title-b.far.fa-id-card.fa-fw.c-orange
+            span: |あなたのユーザーID
+
+      .board-cnt._s
+        .input-box._s.flex._c.st-readonly
+            input(type="text", name="user_id", value=body_data.user_id, readonly=true)
+
+    .board-prm
 
       .board-hdr
 
@@ -16,23 +26,20 @@
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
-        .label-input-box#box_event_name
-          .label-box
-            p.main-label: |ユーザーID
-            span.sub-label: |あなたのユーザーIDです。
-          .input-box._s.flex._c.st-readonly
-            input(type="text", name="user_id", value=body_data.user_id, readonly=true)
-          p.bottom-label
-
-        .label-input-box#box_username
+        .label-input-box#box_icon_url
           .label-box
             p.main-label: |アイコン
             span.sub-label: |200kまでの画像(jpg/gif/png)が設定できます。
-          .input-box._s.flex._c
-            input(type="file", name="usericon")
+          .custom-box._s
+            .icon-box-wrap
+              .icon-box.shadow-d
+                img.icon_img(src="/image/icon2.png")
+              button(type="submit", name="doEditProfileIcon").btn-prm-n.st-line-w.shadow-l
+                span: |アイコンを変更
+
           p.bottom-label
 
-        .label-input-box#box_event_name
+        .label-input-box#box_user_name
           .label-box
             p.main-label: |ユーザー名
             span.sub-label: |50文字まで入力できます

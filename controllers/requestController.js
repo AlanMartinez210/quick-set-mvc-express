@@ -1,5 +1,4 @@
-var matchingService = require("../services/matchingService");
-
+const matchingService = require("../services/matchingService");
 const errorHelper = require('../common/helper/errorHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
 

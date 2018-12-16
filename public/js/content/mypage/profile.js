@@ -11,8 +11,9 @@ export default class profile{
 	ready(){
 		const doUserDeleteBtn = this.userDeleteForm.find('[name=doUserDelete]');
 		const deleteBtn = $("#deleteBtn");
-		const $userUpdateBtn = $("doUserUpdate");
+		const $userUpdateBtn = $("[name=doUserUpdate]");
 		const consentDelete = this.userDeleteForm.find("#consentDelete");
+		const $editProfileIconBtn = $("[name=doEditProfileIcon]")
 
 		// タグと都道府県のプラグインをロード
 		this.tags.init().ready();
@@ -20,11 +21,43 @@ export default class profile{
 
 		// ユーザー情報の取得
 		const user_id = $("[name=user_id]").val();
-		c2.sendGet(`/mypege/profile/${user_id}`)
+		c2.sendGet(`/mypage/profile/${user_id}`)
 		.then(res => {
-			res.prefectures.forEach(item => this.prefs.addPrefecture(item.pref_id, item.pref_name));
+			console.log('res: ', res);
 			this.profileForm.setValue(res);
+			res.tags.forEach(item => this.tags.addTags(item.tag_name));
+			res.prefectures.forEach(item => this.prefs.addPrefecture(item.pref_id, item.pref_name));
+			
 		})
+
+		// ユーザー情報の更新
+		$userUpdateBtn.on("click", () => {
+
+			const sendData = this.profileForm.getValue();
+			
+			// 都道府県の取得(カメラマン用)
+			sendData.prefectures_field = this.prefs.getPrefectureValue();
+			//タグの取得
+			sendData.tag_field = this.tags.getTagValue();
+
+			c2.showInfoDialog({
+				name: "checkCmf",
+				title: "更新の確認",
+				text: "この内容で更新します。よろしいですか？",
+			})
+			.closelabel("いいえ")
+			.addBtn({
+				callback: function() {
+					c2.sendPost("/mypage/profile", sendData)
+					.done(result => {
+						c2.refresh({showInfo: "処理が完了しました。"});
+					})
+				}
+			});
+
+			return false;
+
+		});
 		
 		// アカウント削除ボタン
 		deleteBtn.on('click', {type: "delete"}, c2.showModal);
@@ -38,10 +71,7 @@ export default class profile{
 			}
 		});
 
-		// ユーザー情報の更新
-		$userUpdateBtn.on("click", () => {
-			
-		});
+		$editProfileIconBtn.on('click', {type: 'editProfileIcon'}, c2.showModal);
 	}
 
 	/**
@@ -54,6 +84,7 @@ export default class profile{
 		}
 		c2.sendPost('/api/delete', data)
 		.done(() => {
+			c2.plugin.sessionMsg.setAccessMode('proc_comp');
 			location.href = '/register';
 		})
 		return false;

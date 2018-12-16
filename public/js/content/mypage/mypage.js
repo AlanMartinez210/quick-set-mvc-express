@@ -6,6 +6,8 @@ export default class register {
 		const doLogoutBtn = this.logoutForm.find('[name=doLogout]');
 		const logoutBtn = $("#logoutBtn");
 
+		c2.plugin.screen.setContentBorder(36);
+
 		logoutBtn.on('click', {type: "logout"}, c2.showModal);
 
 		doLogoutBtn.on('click', e => {
@@ -19,7 +21,7 @@ export default class register {
 	logout(e){
 		c2.sendPost('/api/logout', {})
 		.done(() => {
-			window.sessionStorage.setItem(['access_mode'],['logout']);
+			c2.plugin.sessionMsg.setAccessMode('logout');
 			location.href = '/register';
 		})
 		return false;

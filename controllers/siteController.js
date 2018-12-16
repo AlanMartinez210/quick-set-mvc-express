@@ -1,5 +1,6 @@
 const mypageVO = require("../viewObjects/mypage");
 const userService = require("../services/userService");
+const c2Util = require("../services/c2link4DiService");
 const sessionHelper = require('../common/helper/sessionHelper');
 
 /**
@@ -11,7 +12,9 @@ const sessionHelper = require('../common/helper/sessionHelper');
 exports.index = function(req, res){
 	var render_obj = res.render_obj;
 	render_obj.contentId = "site";
-	render_obj.title = "サイト設定";
+  render_obj.title = "サイト設定";
+  render_obj.backBtn = c2Util.getBackMypageBtn();
+  
   var user_id  = sessionHelper.getUserId(req);
   userService.getSiteSettingData(user_id)
   .then(result=>{

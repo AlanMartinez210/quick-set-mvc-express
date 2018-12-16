@@ -1,13 +1,11 @@
 import plugin_tag from "../../plugin/tag";
 import plugin_prefecture from "../../plugin/prefecture";
-import plugin_convert from "../../plugin/convert";
 
 export default class schedule{
 	constructor(){
 		this.scheduleForm = $('[name=scheduleForm]');
 		this.tags = new plugin_tag();
 		this.prefs = new plugin_prefecture();
-		this.convert = new plugin_convert();
 	}
 	ready(){
 		const scheduleSection = $('#scheduleSection');

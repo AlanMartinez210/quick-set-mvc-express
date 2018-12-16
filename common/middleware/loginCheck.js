@@ -9,7 +9,7 @@ const sessionHelper = require('../helper/sessionHelper');
 module.exports =  function(req, res, next) {
   var userData = sessionHelper.getUserData(req);
   if(!userData){
-    const error_obj = new errorHelper({http_status: 401, redirect_to: "/register"});
+    const error_obj = new errorHelper({http_status: 401, redirect_to: "/register?unauthorized=true"});
     error_obj.addErrorData({code: "L00001"});
     next(error_obj);
   }else{

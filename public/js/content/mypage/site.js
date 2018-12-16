@@ -3,7 +3,7 @@ export default class site{
 		this.siteSettingForm = $("[name=siteSettingForm]")
 	}
 	ready(){
-		$doSiteSettingBtn = $("[name=doSiteSettingPost]");
+		const $doSiteSettingBtn = $("[name=doSiteSettingPost]");
 
 		$doSiteSettingBtn.on("click", (e) => {
 			

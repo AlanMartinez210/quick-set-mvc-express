@@ -1,5 +1,6 @@
 const profileVO = require("../viewObjects/mypage");
 const db = require("../models/index");
+const c2Util = require("../services/c2link4DiService");
 const sessionHelper = require("../common/helper/sessionHelper");
 
 /**
@@ -13,6 +14,8 @@ exports.index = (req, res, next) => {
 	const render_obj = res.render_obj;
 	render_obj.contentId = "profile";
 	render_obj.title = "プロフィール編集";
+	render_obj.backBtn = c2Util.getBackMypageBtn();
+
 	var user_id  = sessionHelper.getUserId(req);
 
 	db.User.getUserById(user_id)

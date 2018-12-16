@@ -10,10 +10,17 @@ const errorHelper = require('../common/helper/errorHelper');
  * @param {Object} user_data
  */
 exports.createUser = (new_user_data) => {
-  return db.User.getUserByEmail(new_user_data.email, {row: true})
+  return db.User.getUserByEmail(new_user_data.email, {
+      row: true
+    })
     .then(instances => {
-      if (instances.length > 0){
-        return Promise.reject(new errorHelper({ http_status: 400 }).addErrorData({ view_id: "email", code: "E00010" }));
+      if (instances.length > 0) {
+        return Promise.reject(new errorHelper({
+          http_status: 400
+        }).addErrorData({
+          view_id: "email",
+          code: "E00010"
+        }));
       }
       return db.User.createUser(new_user_data)
     })
@@ -58,6 +65,24 @@ exports.clearExpirationDate = (user_id) => {
 }
 
 /**
+ * 対象のユーザー情報を取得します。
+ * 
+ * @param {string} user_id
+ */
+exports.getUserData = async (user_id) => {
+  const user_data = await db.User.getUserByKey(user_id);
+  if (!user_data) return Promise.reject(new errorHelper().setWindowMsg("E00001"));
+
+  // タグデータ取得
+  if (user_data.get("tags")) {
+    const tags = await db.Tag.getTagById(user_data.get("tags"));
+    if (tags) user_data.set("tags", tags.map(v => v.toJSON()));
+  }
+  return user_data;
+
+}
+
+/**
  * プロフィール編集画面から入力された情報を登録します。
  * @param profileData プロフィールデータ
  * id: ユーザID
@@ -67,48 +92,56 @@ exports.clearExpirationDate = (user_id) => {
  * prefectures: 活動地域
  */
 exports.updateProfileData = async (profileData) => {
-  try {
-    return userRepository.Sequelize.transaction(
-      async (tx) => {
-        // タグの登録/更新
-        const tagsResult = await function () {
-          if (profileData.tags.length <= 0) return;
-          const upsertPromise = [];
-          profileData.tags.forEach(val => {
-            upsertPromise.push(tagRepository.upsertTag(val, {
-              transaction: tx
-            }));
-          })
-          return Promise.all(upsertPromise);
-        }();
-        // ユーザーのタグ部分を登録したタグIDに置き換える
-        await function(){
-          if(!tagsResult) return;
-          const tag_id_arr = [];
-          tagsResult.forEach(obj => {
-            tag_id_arr.push(obj.tag_id);
-          });
-          profileData.tags = tag_id_arr;
-        }();
-        // 活動地域の更新
-        profileData.prefectures = prefectureHelper.getPrefectureIdByName(profileData.prefectures);
+  return db.sequelize.transaction(async function (tx) {
+    // タグの登録/更新
+    const tagsResult = await
+    function () {
+      if (profileData.tag_field.length <= 0) return;
+      const upsertPromise = [];
+      profileData.tag_field.forEach(val => {
+        upsertPromise.push(db.Tag.upsertTag(val, {
+          transaction: tx
+        }));
+      })
+      return Promise.all(upsertPromise);
+    }();
 
-        // プロフィールの更新(users)
-        userRepository.update({
-          user_name: profileData.user_name,
-          email: profileData.email,
-          tags: profileData.tags,
-          prefectures: profileData.prefectures
-        }, {
-          where: {
-            id: profileData.id
-          }
-        });
-      }
-    )
-  } catch (err) {
-    return err;
-  }
+    // タグID取得
+    await
+    function () {
+      if (!tagsResult) return;
+      const tag_id_arr = [];
+      tagsResult.forEach(obj => {
+        tag_id_arr.push(obj.tag_id);
+      });
+      profileData.tag_field = tag_id_arr;
+    }();
+
+    // 都道府県IDを文字列から数値に変換
+    const prefecture_id_arr = [];
+    profileData.prefectures_field.forEach(prefecture_id => {
+      prefecture_id_arr.push(Number(prefecture_id));
+    });
+    profileData.prefectures_field = prefecture_id_arr;
+
+    // プロフィール情報の更新
+    const profileResult = await
+    function () {
+      options = {
+        where: {
+          user_key: profileData.user_id
+        },
+        transaction: tx
+      };
+      const values = {
+        user_name: profileData.user_name,
+        email: profileData.email,
+        tags: profileData.tag_field,
+        prefectures: profileData.prefectures_field
+      };
+      return db.User.update(values, options);
+    }();
+  });
 }
 /**
  * サイト設定画面に必要な情報を取得します。
@@ -116,7 +149,7 @@ exports.updateProfileData = async (profileData) => {
  * @returns サイト設定画面表示データ
  */
 exports.getSiteSettingData = async (user_id) => {
-  const userData = await userRepository.getUserById(user_id, {
+  const userData = await db.User.getUserById(user_id, {
     attributes: ['allow_bookmark_notification']
   });
   // ユーザーが存在しない場合はエラー

@@ -30,7 +30,7 @@ module.exports = {
 	event_name: {
 		in: 'body',
 		isLength: {
-			errorMessage: 'E00011',
+			errorMessage: 'E00011,50',
 			options:{ max: 50 },
 		}
 	},

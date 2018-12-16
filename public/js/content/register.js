@@ -31,6 +31,14 @@ export default class register {
 			return this.login(e);
 		});
 	}
+
+	load(){
+		const url = c2.getUrlParam();
+		if(url.unauthorized){
+			c2.showErrMsg("ログインの有効期間が切れました、再度ログインをお願いします")
+		}
+	}
+
 	registerHeaderDefine(margin){
 		$("#register_bg_i_size").height($(window).height() - ((margin/2) + 16));
 		$(".register-ptn").find(".main-cntnr").css({
@@ -87,7 +95,7 @@ export default class register {
 		}
 		c2.sendPost('/api/login', data)
 		.done(() => {
-			window.sessionStorage.setItem(['access_mode'],['login']);
+			c2.plugin.sessionMsg.setAccessMode('login');
 			location.href = '/mypage';
 		})
 		return false;

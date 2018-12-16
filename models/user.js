@@ -168,17 +168,5 @@ module.exports = (sequelize, DataTypes) => {
 		return this.update(values, options);
 	};
 
-  /**
-   * 対象のユーザーのプロフィール編集画面に表示するデータを取得します。
-   */
-  User.getProfileEditViewData = async function(user_id, options = {}){
-    options.attributes = ['user_name', 'icon_url', 'email', 'tags', 'prefectures'];
-    const result = await this.findById(user_id, options);
-    if(!result){
-      throw new errorHelper().setWindowMsg('E0000');
-    }
-    return result;
-  };
-
   return User;
 };

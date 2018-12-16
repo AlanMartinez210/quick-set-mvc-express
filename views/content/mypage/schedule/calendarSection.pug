@@ -13,8 +13,8 @@
     span: |スケジュール
 
     //- 年度選択
-    .select-box._mbn.hdr-right-side
-      select(name="yearSelectList")._s
+    .select-box._mbn.hdr-right-side.flex._c
+      select(name="yearSelectList")._s._pr
         - for(let year=current_year-1, limit=current_year+2; year<=limit; year++){
           option(value=year, selected=select_year==year) #{year.toString()}
         - }

@@ -1,5 +1,6 @@
 import { baseApp } from './baseApp';
 import { Plagins } from './plugin/index';
+import _ from 'lodash';
 
 /**
  * アプリケーションの標準機能を提供します。
@@ -17,7 +18,8 @@ import { Plagins } from './plugin/index';
 export default class myApp extends baseApp {
   constructor() {
     super();
-    this.plugin = Plagins;
+    this.plugin = {};
+    _.forEach(Plagins, (plg, key) => this.plugin[key] = new plg());
   }
 
   /** =======================================================
@@ -37,8 +39,39 @@ export default class myApp extends baseApp {
 
     // 画面の表示
     super.ready(()=>{
+
+      // readyメソッドを持つプラグインの実行
+      _.forEach(this.plugin, p => {
+        if(p.ready) p.ready();
+      })
+
       const $mainFrame = $('.wrap-body-content');
       $mainFrame.fadeIn("fast");
+    });
+  }
+
+  load(fn){
+    // index.jsの共通処理
+    super.load(fn);
+
+    super.load(() => {
+
+      // refresh_eventの確認 TODO 後で拡張する。
+      let refresh_event = window.sessionStorage.getItem(['refresh_event'])
+      if(refresh_event){
+        console.log('refresh_event: ', refresh_event);
+        refresh_event = JSON.parse(refresh_event);
+        Object.keys(refresh_event).forEach(key => {
+          c2[key](refresh_event[key]);
+        })
+      }
+
+      window.sessionStorage.removeItem(['refresh_event']);
+
+      // loadメソッドを持つプラグインの実行
+      _.forEach(this.plugin, p => {
+        if(p.load) p.load();
+      })
     });
   }
 
@@ -102,7 +135,7 @@ export default class myApp extends baseApp {
              * そうでなければそのままエラーメッセージをインスタントメッセージ表示する。
              */
             if(err_json.redirect_to){
-              location.href = error.redirect_to; 
+              location.href = error.redirect_to;
             }
             else{
               c2.showErrMsg(err_json.window_msg);
@@ -521,5 +554,27 @@ export default class myApp extends baseApp {
     return document.getElementById(id) != null;
   }
 
-  
+  /**
+   * 画面の再読み込みをします。
+   * 
+   * afterMsgObj -> {appのメッセージ系(ダイアログ/インスタントメッセージ)}
+   * 
+   * @param {*} url 
+   * @param {*} afterMsgObj 
+   */
+  refresh(afterMsgObj){
+
+    // cookieにオブジェクトを格納する。
+    window.sessionStorage.setItem(['refresh_event'],[JSON.stringify(afterMsgObj)]);
+    
+    // リロード
+    location.reload()
+  }
+
+  /**
+   * urlのパラメーターをJSON形式で取得します。
+   */
+  getUrlParam(url = location.search){
+    return _.chain(url).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
+  }
 }

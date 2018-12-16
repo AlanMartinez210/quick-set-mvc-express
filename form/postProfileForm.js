@@ -1,5 +1,14 @@
 /** プロフィール編集するフォーム */
 module.exports = {
+	// ユーザーID
+	user_id: {
+		in: 'body',
+		isEmpty: { errorMessage: 'E00002', negated: true }
+	},
+	// ユーザーアイコン
+	icon_url: {
+		in: 'body',
+	},
 	// ユーザー名
 	user_name: {
 		in: 'body',
@@ -16,7 +25,6 @@ module.exports = {
 	prefectures_field: {
 		in: 'body',
 		isArray:{ errorMessage: 'E00006' },
-		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
 	// タグ一覧
 	tag_field: {

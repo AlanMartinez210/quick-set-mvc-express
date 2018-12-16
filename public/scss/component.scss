@@ -172,6 +172,30 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+// 拡張系
+.custom-box{
+	margin: 8px 0 16px;
+	background: $white;
+	.icon-box-wrap{
+		text-align: center;
+		padding: 8px 8px 16px;
+		border-radius: 5px;
+		background: $grayDW;
+		.icon-box{
+			margin: 8px auto 16px;
+			width: 128px;
+			height: 128px;
+			background-color: $grayL;
+			border-radius: 5px;
+			overflow: hidden;
+			img.icon_img {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}
+
 // 入力系
 .input-box{
 	border-radius: 5px;
@@ -216,6 +240,10 @@ $fontAwesome : "Font Awesome 5 Free";
 		padding: 0.8em 0.4em 0.6em 0.4em;;
 		@include font-normal;
 		&._s{padding: 0.4em 0;}
+		//  セレクトボックスの三角アイコン表示用に余白を設定
+		&._pr {
+			padding-right: 27px;
+		}
 	}
 
 	//  セレクトボックスの三角アイコンを設定
@@ -229,6 +257,7 @@ $fontAwesome : "Font Awesome 5 Free";
 			font-weight: 900;
 			font-family: $fontAwesome;
 			color: $grayDW;
+			pointer-events: none;
 		}
 	}
 }
@@ -415,13 +444,26 @@ $fontAwesome : "Font Awesome 5 Free";
 	margin-bottom: 8px;
 }
 
+// アコーディオン
 .accordion-prm{
+	// インラインモード
+	&.inline{
+		border: 1px solid $grayD;
+		border-radius: 5px;
+		margin-bottom: 8px;
+		.accordion-label{
+			border-bottom: 0;
+		}
+		.accordion-cnt{
+			border-top: 1px solid $grayL;
+		}
+	}
 	.accordion-label{
 		width: 100%;
 		border-bottom: 1px solid $grayD;
 		cursor: pointer;
 		.accordion-title{
-			padding: 8px;
+			padding: 12px 8px;
 			width: 100%;
 		}
 		&::after{

@@ -678,9 +678,13 @@
         	overflow: hidden;
 			.date-list{
 				border-left: $grayL solid 1px;
+				li.board-hdr:last-child{
+					border-bottom: none;
+				}
 				li{
 					.calendar-date-set{
 						width: 66px;
+						height: 21px;
 						.date-str, .week-str{font-size: 13px;}
 						.week-str{margin-left: 4px;}
 						a{color: $blueL-opcity-80; margin-right: 6px;}

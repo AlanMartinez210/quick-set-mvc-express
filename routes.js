@@ -43,10 +43,10 @@ router.get('/mypage', mypageController.index);
 router.get('/mypage/profile', profileController.index);　/* プロフィール編集の表示 */
 
 /* プロフィール情報の取得 */
-router.get('/mypege/profile/:user_id', validate.check(require('./form/getUserData')), validate.result, userController.getUserData)
+router.get('/mypage/profile/:user_id', validate.check(require('./form/getUserData')), validate.result, userController.getUserData)
 
-/* プロフィール設定の登録/編集 postProfile */
-
+/* プロフィール設定の編集 postProfile */
+router.post('/mypage/profile', validate.check(require('./form/postProfileForm')), validate.result, userController.postUserUpdate)
 
 /* サイトの設定の表示 index */
 router.get('/mypage/site', siteController.index);

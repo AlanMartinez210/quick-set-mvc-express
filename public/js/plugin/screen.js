@@ -3,46 +3,50 @@ export default class screen{
 	constructor(){
 		this.$window = $(window);
 		this.$mainFrame = $('.wrap-body-content');
-		this.$generalHeaderMenu = $(".hdr-menu");
 		this.startPos = 0;
 	}
 	ready(){
-
 		// スクロール時にヘッダーを一時的に非表示にする。
 		this.$window.scroll(() => {
 			const currentPos = $(window).scrollTop();
 			if(Math.abs(currentPos - this.startPos) > 50){
 				if (currentPos > this.startPos) {
-					if($(window).scrollTop() >= 100) this.$generalHeaderMenu.css("top", "-" + 100 + "px");
+					if(currentPos >= 100) $(".hdr-menu").css("top", "-" + 100 + "px");
 				}
 				else {
-					this.$generalHeaderMenu.css("top", 0 + "px");
+					$(".hdr-menu").css("top", 0 + "px");
 				}
 				this.startPos = currentPos;
 			}
 		});
 
-			$(".accordion-label").on("click", function(e){
-				const acCnt = $(this).parent();
-				if(acCnt.hasClass("on-show")){
-					acCnt.removeClass("on-show");
-				}else{
-					acCnt.addClass("on-show");
-				}
-			})
+		// アコーディオンの開閉イベント
+		$(".accordion-label").on("click", function(e){
+			const acCnt = $(this).parent();
+			if(acCnt.hasClass("on-show")){
+				acCnt.removeClass("on-show");
+			}else{
+				acCnt.addClass("on-show");
+			}
+		})
 
-			$(".board-accordion").find(".board-hdr").on("click", function(e){
-				const acCnt = $(this).parent();
-				if(acCnt.hasClass("on-show")){
-					acCnt.removeClass("on-show");
-				}else{
-					acCnt.addClass("on-show");
-				}
-			})
+		// ボードラベル用アコーディオンの開閉イベント
+		$(".board-accordion").find(".board-hdr").on("click", function(e){
+			const acCnt = $(this).parent();
+			if(acCnt.hasClass("on-show")){
+				acCnt.removeClass("on-show");
+			}else{
+				acCnt.addClass("on-show");
+			}
+		})
 
-			const $head = $('.profile-ptn .hdr-cntnr');
-			$head.height($head.width() * 0.38);
-
+	}
+	/**
+	 * コンテンツボーダー(general-ptnのみ)
+	 */
+	setContentBorder(height){
+		$(".general-ptn .main-cntnr").css("margin-top", -height);
+		$(".general-ptn .hdr-cntnr").css("padding-bottom", height);
 	}
 }
 

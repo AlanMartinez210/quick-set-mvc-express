@@ -101,9 +101,7 @@ exports.postSchedule = (req, res, next) => {
   const registData = req.form_data;
   registData.user_id = sessionHelper.getUserId(req);
   registData.schedule_type = sessionHelper.getUserType(req);
-
-  console.log('registData: ', registData);
-
+  
   const procResult = registData.schedule_id ? db.Schedule.updateSchedule(registData, db) : db.Schedule.createSchedule(registData, db);
 
   procResult

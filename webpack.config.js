@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
-  },
+	},
   mode: 'development',
   module: {
 		rules: [
@@ -36,5 +36,9 @@ module.exports = {
 			"window.jQuery": "jquery'",
       "window.$": "jquery"
 		})
-	]
+	],
+	performance: {
+		maxEntrypointSize: 500000,
+		maxAssetSize: 500000
+  }
 };

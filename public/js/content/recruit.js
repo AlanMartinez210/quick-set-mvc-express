@@ -1,13 +1,11 @@
 import plugin_prefecture from "../plugin/prefecture";
 import recruitDetail from "./recruitDetail";
-import plugin_convert from "../plugin/convert";
 
 export default class recruit {
 	constructor () {
 		this.recruitSearchForm = $('[name=recruitSearchForm]');
 		this.prefecture = new plugin_prefecture();
 		this.recruitDetail = new recruitDetail(true);
-		this.convert = new plugin_convert();
 	}
 	ready(){
 		const $recruitSection = $("#recruitSection");
@@ -50,6 +48,8 @@ export default class recruit {
 		// 検索ボタン処理
 		$doGetSearchRecruitListBtn.on('click', (event) => {
 			const sendData = this.getSearchData();
+			console.log('sendData: ', sendData);
+
 			this.getSearchReqest(sendData, 1)
 			return false;
 		})
@@ -73,7 +73,7 @@ export default class recruit {
 	// 検索処理を行います。
 	getSearchReqest(sendData = {}, pageNum = 1){
 		sendData.page = pageNum;
-		const paramString = this.convert.jsonToUrlParam(sendData);
+		const paramString = $.param(sendData);
 
 		const path = `/recruitlist/search?${paramString}`;
 

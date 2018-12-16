@@ -5,6 +5,8 @@ import myApp from './app';
 import { contents } from './content/index';
 
 const c2 = new myApp();
+let bodyConfig = "";
+let currently_content = "";
 window.c2 = c2;
 
 // init run function.
@@ -13,7 +15,7 @@ c2.init(() => {
 // document read complated run function.
 c2.ready(() => {
 	// bodyのデータ属性を解析し、設定情報を取得する。
-	const bodyConfig = c2.bodyParser();
+	bodyConfig = bodyConfig || c2.bodyParser();
   
 	// デザインパターンの設定
 	const ptn = setDesignPtn(bodyConfig.cntid);
@@ -22,12 +24,8 @@ c2.ready(() => {
 	setHeaderSelect(bodyConfig.cntid);
 
 	// コンテンツIDで指定されたコンテンツを実行します。
-	const cnt = getContent(bodyConfig.cntid);
-	if(cnt) cnt.ready();
-
-  const screen = new c2.plugin.screen;
-  screen.ready();
-  c2.plugin.modal();
+	currently_content = currently_content || getContent(bodyConfig.cntid);
+  if(currently_content.ready) currently_content.ready();
 
   c2.config = {
     isCos(){
@@ -99,34 +97,14 @@ c2.ready(() => {
 
 // window load complated run function.
 c2.load(() => {
+  // bodyのデータ属性を解析し、設定情報を取得する。
+	bodyConfig = bodyConfig || c2.bodyParser();
+
+  // コンテンツIDで指定されたコンテンツを実行します。
+  currently_content = currently_content || getContent(bodyConfig.cntid);
+  if(currently_content.load) currently_content.load();
+
   $('input[data-datepicker]').datepicker();
-  
-  // セッションからアクセスモードを取り出し、モードごとの処理を行う。
-  switch(window.sessionStorage.getItem(['access_mode'])){
-    case "register":
-      // 案内用ダイアログを表示する。
-      c2.showInfoDialog({
-        name: "registerInfo",
-        title: "c2Linkへようこそ！",
-        text: "<p>まずは自分のスケジュールを入力して、みんなに広めましょう！</p>",
-      }).closelabel("閉じる")
-      .addBtn({
-        label: "移動する",
-        callback: function() {
-          location.href = '/mypage/schedule';
-        }
-      })
-      break;
-    case "login":
-      // ログインしたことを通知する。
-      c2.showInfo("ログインしました。")
-      break;
-    case "logout":
-      // ログアウトしたことを通知する。
-      c2.showInfo("ログアウトしました。")
-      break;
-  }
-  window.sessionStorage.removeItem(['access_mode']);
 });
 
 /**

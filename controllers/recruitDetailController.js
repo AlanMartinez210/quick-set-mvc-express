@@ -1,8 +1,9 @@
-const recruitlistService = require("../services/recruitlistService");
 const recruitDetailVO = require("../viewObjects/recruitDetail");
 const c2Util = require("../services/c2link4DiService");
 const sessionHelper = require("../common/helper/sessionHelper");
 const dateHelper = require("../common/helper/dateHelper");
+
+const db = require("../models/index");
 
 /**
  * 募集の詳細ページ
@@ -40,27 +41,9 @@ exports.getRecruitDetail = async(req, res, next)=>{
 	// 	],
 	// 	remarks: "これはテストです。"
 	// };
-	const result = (await recruitlistService.getScheduleDetail(schedule_id))[0];
-
-	console.log(result);
-	const recruit_detail_item = new recruitDetailVO.recruit_detail_item({
-		recruit_list_id: result.schedule_id,
-		bg_image: result.user_bg_image_url,
-		good_review_num: result.user_good_review_num,
-		bad_review_num: result.user_bad_review_num,
-		user_info: {id: result.user_id, name: result.user_user_name, icon: result.user_icon_url},
-		date_info: result.schedule_date_key,
-		event_info: {
-			shot_type: result.schedule_shot_type,
-			title: result.schedule_event_name,
-			url: result.schedule_event_url,
-			prefectures: result.prefecture_json,
-			tags: result.schedule_tags_json,
-		},
-		review_info: result.reviews_json,
-		user_tags: result.user_tags,
-		remarks: result.schedule_remarks,
-	});
+	// const result = (await recruitlistService.getScheduleDetail(schedule_id))[0];
+	const schedule = await db.Schedule.getSchedule(schedule_id);
+	const recruit_detail_item = new recruitDetailVO.recruit_detail_item(schedule);
 	res.json(recruit_detail_item);
 }
 

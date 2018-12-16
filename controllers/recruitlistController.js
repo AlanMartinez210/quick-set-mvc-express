@@ -7,49 +7,6 @@ const c2Util = require("../services/c2link4DiService");
 
 const content_id = "recruit";
 
-
-
-/**
- * 検索結果ページのrender_objを作成する
- *
- * @param {*} data
- * @param {*} render_obj
- */
-function renderRecruitList({date_key = dateHelper.getDate(), user_type, search_param = {}, page = 1} = data, render_obj){
-	console.log("target page", page);
-	return recruitlistService.getScheduleList({date_key, user_type, search_param, page})
-	.then(results=>{
-
-		const recruit_list_item = results.rows.map(row=>{
-			return new vo_recruitlist.recruit_list_item({
-				recruit_list_id: row.id,
-				user_info: {id: row.user_id, icon: row.user_icon_url},
-				date_info: row.date_key,
-				event_info: {
-					shot_type: row.shot_type.id,
-					title: row.event_name,
-					prefectures: row.prefectures
-				},
-				good_review_num: row.good_review_num,
-				bookmark_flg: row.bookmark_flg,
-				tags: row.tags,
-				anime_info: []
-			});
-		});
-
-		const recruit_list_pager = results.pages;
-
-		const recruit_search_info = new vo_recruitlist.recruit_search_info(search_param);
-
-		render_obj.bodyData = new vo_recruitlist.recruit_list_page({
-			recruit_list_item,
-			recruit_list_pager,
-			recruit_search_info
-		});
-
-	});
-}
-
 /**
  * 募集/予定一覧の表示
  *
@@ -65,6 +22,7 @@ exports.index = async(req, res, next)=>{
 	const data = { user_type: user_type };
 
 	const recruitList = await recruitlistService.getRecruitList(data);
+	console.log('recruitList: ', recruitList);
 	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruitList);
 	res.render('recruitList/index', render_obj);
 };
@@ -136,7 +94,6 @@ exports.postRecruitBookmark = (req, res, next)=>{
   recruitBookmarkService.process(user_id, schedule_id, mode)
   .then(()=>{
     res.json({status:'success'});
-  })
-  .catch(next);
+  });
 
 };

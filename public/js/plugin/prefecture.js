@@ -47,7 +47,7 @@ export default class prefecture{
 			var pref_id = $(this).parent().children("input").val();
 			// 削除
 			$(this).parent().remove();
-			var idx = that.prefectureList.indexOf(pref_id);
+			var idx = that.prefectureList.indexOf(Number(pref_id));
 			if(idx >= 0){
 				that.prefectureList.splice(idx, 1);
 			}

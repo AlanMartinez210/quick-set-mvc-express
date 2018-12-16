@@ -36,23 +36,15 @@ module.exports = (sequelize, DataTypes) => {
     getterMethods:{
       createdAt(){ return dateHelper.getDate(this.created_at) },
       updatedAt(){ return dateHelper.getDate(this.updated_at) },
-      
-      // TODO DELETE
-      // shot_type_obj(){
-      //   const shot_type = this.getDataValue('shot_type');
-      //   return enumShotType.getObj(shot_type);
-      // },
 
-      // // TODO FIX
-      // prefectures(){
-      //   const Schedule_prefectures = this.getDataValue('Schedule_prefectures');
-      //   return Schedule_prefectures.map(v=>v.toJSON());
-      // },
-      // // TODO FIX
-      // tags(){
-      //   const Schedule_tags = this.getDataValue('Schedule_tags');
-      //   return Schedule_tags.map(v=>v.toJSON());
-      // },
+      prefectures(){
+        const Schedule_prefectures = this.getDataValue('Schedule_prefectures')||[];
+        return Schedule_prefectures.map(v=>v.toJSON());
+      },
+      tags(){
+        const Schedule_tags = this.getDataValue('Schedule_tags')||[];
+        return Schedule_tags.map(v=>v.toJSON());
+      },
 
       // 関連した都道府県データからIDのみを抽出する。
       getArrPrefById(){
@@ -74,10 +66,10 @@ module.exports = (sequelize, DataTypes) => {
 
   Schedule.associate = function(models) {
     // スケジュールタグとの結合
-    models.Schedule_tag.belongsTo(this, { foreignKey: "schedule_id", targetKey: "id" })
+    //models.Schedule_tag.belongsTo(this, { foreignKey: "schedule_id", targetKey: "id" })
     this.hasMany(models.Schedule_tag, { foreignKey: "schedule_id", targetKey: "id" })
     // スケジュール都道府県との結合
-    models.Schedule_prefecture.belongsTo(this, { foreignKey: "schedule_id", targetKey: "id" })
+    //models.Schedule_prefecture.belongsTo(this, { foreignKey: "schedule_id", targetKey: "id" })
     this.hasMany(models.Schedule_prefecture, { foreignKey: "schedule_id", targetKey: "id" })
 
     // スケジュールとの結合
@@ -114,7 +106,8 @@ module.exports = (sequelize, DataTypes) => {
    * @param {*} options
    */
   Schedule.getSchedule = function(schedule_id, options = {}){
-    return this.findById(schedule_id, options)
+    options.include = [{ all: true, nested: true}];
+    return this.findByPk(schedule_id, options);
   };
 
   /**

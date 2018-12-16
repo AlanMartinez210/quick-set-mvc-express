@@ -106,14 +106,25 @@ exports.postLogout = function (req, res, next) {
 exports.getUserData = (req, res, next) => {
 	// ユーザーID(user_key)
 	const user_id = req.form_data.user_id;
-	console.log('user_id: ', user_id);
-
-	db.User.getUserByKey(user_id)
+	userService.getUserData(user_id)
 	.then(instance => {
-		console.log('instance: ', instance);
 		res.json(new generalVO.userInfo(instance))
 	})
 	.catch(err=>{
     next(err);
   });
+}
+
+/**
+ * ユーザー情報更新
+ */
+exports.postUserUpdate = (req, res, next) => {
+	const form_data = req.form_data;
+	userService.updateProfileData(form_data)
+  .then(results => {
+    res.json({status:'success'});
+  }).catch(err => {
+    next(err);
+  });
+
 }

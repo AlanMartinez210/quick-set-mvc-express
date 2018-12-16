@@ -56,12 +56,23 @@
           |追加したタグ一覧
         .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
 
-        .accordion-prm
+
+        .label-input-box#box_allow_recruit_flg
+          .label-box
+            p.main-label: |公開設定
+            span.sub-label: |チェックするとコスプレイヤーが依頼できる状態になります。
+          .check-box._s.flex._c
+            input(id="allowrRecruitFlg" type="checkbox", name="allow_recruit_flg")
+            label(for="allowrRecruitFlg")
+              |公開する
+          p.bottom-label
+
+        .accordion-prm.inline.shadow-l
 
           .accordion-label.flex._c
             .accordion-title
               p: |詳細オプション
-          .accordion-cnt
+          .accordion-cnt._s
 
             .label-input-box#box_time_from
               .label-box
@@ -102,6 +113,7 @@
               .textarea-box._s.flex._c
                 textarea(name="remarks", rows="3")
               p.bottom-label
+
 
       .board-ftr._s.flex._c._jc.proc-box
         button(type="submit", data-proc="create", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
