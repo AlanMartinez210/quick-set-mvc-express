@@ -1,6 +1,10 @@
 import { baseApp } from './baseApp';
 import { Plagins } from './plugin/index';
+import { contents } from './content/index';
+
 import _ from 'lodash';
+
+let currently_content = "";
 
 /**
  * アプリケーションの標準機能を提供します。
@@ -18,8 +22,15 @@ import _ from 'lodash';
 export default class myApp extends baseApp {
   constructor() {
     super();
+    this.config = {};
     this.plugin = {};
-    _.forEach(Plagins, (plg, key) => this.plugin[key] = new plg());
+    _.forEach(Plagins, (plg, key) => {
+      let c = new plg(this);
+      c.app = this;
+      this.plugin[key] = c;
+    });
+
+    // window[app_name] = this;
   }
 
   /** =======================================================
@@ -34,23 +45,44 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   ready(fn){
+
+    // appコンフィグにbodyConfigを追加
+    super.ready(() => {
+      this.config = this.bodyParser()
+    });
+
     // index.jsの共通処理
     super.ready(fn);
 
-    // 画面の表示
-    super.ready(()=>{
+    // コンテンツの読み込み
+    super.ready(() => {
+      // コンテンツIDで指定されたコンテンツを実行します。
+      currently_content = getContent(this);
+      if(currently_content.ready) currently_content.ready();
 
+      
       // readyメソッドを持つプラグインの実行
       _.forEach(this.plugin, p => {
         if(p.ready) p.ready();
       })
 
+      // 画面の表示
       const $mainFrame = $('.wrap-body-content');
       $mainFrame.fadeIn("fast");
-    });
+    })
   }
 
   load(fn){
+
+    // 事前処理
+    super.load(() => {
+    // bodyのデータ属性を解析し、設定情報を取得する。
+
+    // コンテンツIDで指定されたコンテンツを実行します。
+    currently_content = currently_content || getContent(this);
+      if(currently_content.load) currently_content.load();
+    });
+
     // index.jsの共通処理
     super.load(fn);
 
@@ -59,10 +91,9 @@ export default class myApp extends baseApp {
       // refresh_eventの確認 TODO 後で拡張する。
       let refresh_event = window.sessionStorage.getItem(['refresh_event'])
       if(refresh_event){
-        console.log('refresh_event: ', refresh_event);
         refresh_event = JSON.parse(refresh_event);
         Object.keys(refresh_event).forEach(key => {
-          c2[key](refresh_event[key]);
+          this[key](refresh_event[key]);
         })
       }
 
@@ -82,11 +113,18 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   bodyParser(){
-    const bodyConfig = {};
     const body = document.getElementsByTagName('body')[0];
-    bodyConfig.cntid = body.dataset.cntid;
-    bodyConfig.usertype = body.dataset.usertype;
-    return bodyConfig;
+    return _.isObject(body.dataset) ? Object.assign({}, body.dataset) : {};
+  }
+
+  /**
+   * app.configに値を追加します。
+   * 
+   * @param {*} obj 
+   */
+  setConfig(obj = {}){
+    this.config = this.config || {}
+    Object.assign(this.config, obj);
   }
 
   /** =======================================================
@@ -104,7 +142,7 @@ export default class myApp extends baseApp {
    */
   sendAjax(method, url, data, option){
 
-    c2.onShowProgress();
+    this.onShowProgress();
 
     const ajaxOption = {
       type: method,
@@ -120,15 +158,15 @@ export default class myApp extends baseApp {
       console.log(" -> send options: ", ajaxOption);
       return $.ajax(url, ajaxOption)
         .always(res => {
-        c2.onHideProgress();
+        this.onHideProgress();
         console.log(" -> response params: ", res)
       })
       .fail(res => {
         const err_json = res.responseJSON;
         if(err_json){
-          c2.hideDialog();
+          this.hideDialog();
           if(err_json.http_status === 500 || err_json.http_status === 401){
-            c2.showClearAll();
+            this.showClearAll();
             /**
              * redirect_toの指定がある場合はエラーを判別せず
              * 画面遷移を行う。
@@ -138,7 +176,7 @@ export default class myApp extends baseApp {
               location.href = error.redirect_to;
             }
             else{
-              c2.showErrMsg(err_json.window_msg);
+              this.showErrMsg(err_json.window_msg);
             }
           }
           else{
@@ -157,7 +195,7 @@ export default class myApp extends baseApp {
         //   location.href = "/register";
         // }, 3000)
         
-        c2.showErrDialog({
+        this.showErrDialog({
           name: "fatalerr",
           title: "予期せぬエラー",
           text: "予期せぬエラーが発生しました。<br />※3秒後に自動ログアウトします。"
@@ -280,32 +318,32 @@ export default class myApp extends baseApp {
    * @param {*} e
    */
   showModal(e){
-
     $(".wrapper").css({"paddingRight": (window.innerWidth - document.body.clientWidth) + "px"});
     $("body").addClass("on-modal");
 
     // 同期版
     if(e.data.onOpenBrefore){
-      c2.onShowProgress();
+      this.onShowProgress();
+      
       e.data.onOpenBrefore(e);
-      c2.onHideProgress();
+      this.onHideProgress();
     }
 
     // 非同期版
     if(e.data.onSyncOpenBrefore){
-      c2.onShowProgress();
+      this.onShowProgress();
       const preModalProc = new Promise((resolve, reject) => {
         return e.data.onSyncOpenBrefore(resolve, reject, e);
       });
       preModalProc
       .then(() => {
-        c2.onHideProgress();
+        this.onHideProgress();
         $("#"+ e.data.type + "Modal").attr("data-modal", "show");
       })
       .catch(err => {
-        c2.onHideProgress();
-        c2.showClearAll();
-        c2.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。")
+        this.onHideProgress();
+        this.showClearAll();
+        this.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。")
       })
     }
     else{
@@ -316,36 +354,36 @@ export default class myApp extends baseApp {
     
     if(e.data.onCloseBrefore){  // 閉じる処理(同期)
       // 登録イベントを一旦破棄する。
-      modal_close_obj.on('click', function(ev){
-        c2.onShowProgress();
+      modal_close_obj.on('click', (ev) => {
+        this.onShowProgress();
         e.data.onCloseBrefore(ev);
-        c2.onHideProgress();
-        c2.showClearAll();
+        this.onHideProgress();
+        this.showClearAll();
       });
     }
     else if(e.data.onSyncCloseBrefore){ // 閉じる処理(非同期)
-      modal_close_obj.on('click', function(ev){
-        c2.onShowProgress();
+      modal_close_obj.on('click', (ev) => {
+        this.onShowProgress();
         const preCloseProc = new Promise((resolve, reject) => {
           return e.data.onSyncCloseBrefore(resolve, reject, ev);
         })
         preCloseProc
         .then(() => {
-          c2.onHideProgress();
-          c2.showClearAll();
+          this.onHideProgress();
+          this.showClearAll();
         })
         .catch(err => {
-          c2.onHideProgress();
-          c2.showClearAll();
-          c2.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。");
+          this.onHideProgress();
+          this.showClearAll();
+          this.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。");
         })
       });
     }
     else{
-      modal_close_obj.on('click', c2.showClearAll);
+      modal_close_obj.on('click', this.showClearAll);
     }
 
-    $(".modal-box").on('click', e=>{
+    $(".modal-box").on('click', e => {
       e.stopPropagation();
     });
 
@@ -380,12 +418,18 @@ export default class myApp extends baseApp {
     let delay = (mesObj.messageStr.length / 6) * 1000;
     delay = delay < 3000 ? 3000 : delay;
 
+
     // メッセージの生成と表示
     const mesHtml = `
       <div class="instantMessage shadow-d">
         <p class="message-str msg-${mesObj.type}">${mesObj.messageStr}</p>
-        <span class="msg-close" onClick="c2.clearMessage();"><i class="fas fa-times"></span></i>
+        <span class="msg-close"><i class="fas fa-times"></span></i>
       </div>`;
+
+    // クリアメッセージの設定
+    $("body").on('click',  ".msg-close", () => {
+      this.clearMessage();
+    })
 
     $("body").prepend(mesHtml);
     $("body").find(".instantMessage").animate({
@@ -394,7 +438,7 @@ export default class myApp extends baseApp {
     }, 300);
 
     setTimeout(()=>{
-      c2.clearMessage();
+      this.clearMessage();
     }, delay);
 
   }
@@ -406,7 +450,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   showInfo(msgStr){
-    c2.showMessage({type: "info", messageStr: msgStr});
+    this.showMessage({type: "info", messageStr: msgStr});
   }
 
   /**
@@ -416,7 +460,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   showAlert(alertMsg){
-    c2.showMessage({type: "warn", messageStr: alertMsg});
+    this.showMessage({type: "warn", messageStr: alertMsg});
   }
 
   /**
@@ -426,7 +470,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   showErrMsg(errMsg){
-    c2.showMessage({type: "err", messageStr: errMsg});
+    this.showMessage({type: "err", messageStr: errMsg});
   }
 
   /**
@@ -453,21 +497,21 @@ export default class myApp extends baseApp {
    * インフォメーション用のダイアログを表示します。
    */
   showInfoDialog({name, title, text} = dialogObj){
-    return c2._showDialog(name, title, text, "info");
+    return this._showDialog(name, title, text, "info");
   }
 
   /**
    * 警告用のダイアログを表示します。
    */
   showWarnDialog({name, title, text} = dialogObj){
-    return c2._showDialog(name, title, text, "warn");
+    return this._showDialog(name, title, text, "warn");
   }
 
   /**
    * エラー用のダイアログを表示します。
    */
   showErrDialog({name, title, text} = dialogObj){
-    return c2._showDialog(name, title, text, "err");
+    return this._showDialog(name, title, text, "err");
   }
 
   /**
@@ -504,7 +548,7 @@ export default class myApp extends baseApp {
 
     const $footer = $(`[name=${name}] .dialog-ftr`);
     const $closeBtn = $(`[name=${name}] [name=dialogClose]`);
-    $closeBtn.on('click', c2.hideDialog);
+    $closeBtn.on('click', this.hideDialog);
 
     /**
      * メソッドが呼ばれた時に生成されます。
@@ -577,4 +621,28 @@ export default class myApp extends baseApp {
   getUrlParam(url = location.search){
     return _.chain(url).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
   }
+}
+
+/**
+ * ページ単位に分割したjsファイルのコンテンツオブジェクトを取得します。
+ *
+ * @param {*} cntId contentId
+ * @memberof myApp
+ */
+function getContent(app){
+  // 実際のcntIdと違うものはswitchで変換します。
+  let contenId = "";
+  switch (app.config.cntid){
+    case "recruitToday":
+      contenId = "recruit";
+      break;
+    default:
+      contenId = app.config.cntid;
+  }
+  if(contents[contenId]) {
+    const cnt = new contents[contenId]();
+    cnt.app = app;
+    return cnt;
+  } 
+  return false;
 }

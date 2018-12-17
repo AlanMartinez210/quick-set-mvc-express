@@ -22,7 +22,7 @@ export default class register {
 			onOpenBrefore: () => {
 				this.loginForm.clearForm();
 			}
-		}, c2.showModal);
+		}, e => this.app.showModal(e));
 
 		doRegisterBtn.on('click', (e)=>{
 			return this.regist(e);
@@ -33,9 +33,9 @@ export default class register {
 	}
 
 	load(){
-		const url = c2.getUrlParam();
+		const url = this.app.getUrlParam();
 		if(url.unauthorized){
-			c2.showErrMsg("ログインの有効期間が切れました、再度ログインをお願いします")
+			this.app.showErrMsg("ログインの有効期間が切れました、再度ログインをお願いします")
 		}
 	}
 
@@ -59,7 +59,7 @@ export default class register {
 		}
 
 		// 登録確認用ダイアログを表示する。
-		c2.showWarnDialog({
+		this.app.showWarnDialog({
 			name: "confRegister",
 			title: "ユーザータイプの確認",
 			text: `
@@ -71,8 +71,8 @@ export default class register {
 			`,
 		}).closelabel("新規登録へ戻る")
 		.addBtn({
-			callback: function() {
-				c2.sendPost('/api/register', data)
+			callback: () => {
+				this.app.sendPost('/api/register', data)
 				.done(() => {
 					// 新規登録モードをセッションに保持する。
 					window.sessionStorage.setItem(['access_mode'],['register']);
@@ -93,9 +93,9 @@ export default class register {
 			login_key: this.loginForm.find('[name=login_key]').val(),
 			login_password: this.loginForm.find('[name=login_password]').val()
 		}
-		c2.sendPost('/api/login', data)
+		this.app.sendPost('/api/login', data)
 		.done(() => {
-			c2.plugin.sessionMsg.setAccessMode('login');
+			this.app.plugin.sessionMsg.setAccessMode('login');
 			location.href = '/mypage';
 		})
 		return false;

@@ -2,43 +2,32 @@ import 'webpack-jquery-ui/datepicker';
 import 'webpack-jquery-ui/css';
 
 import myApp from './app';
-import { contents } from './content/index';
 
 const c2 = new myApp();
-let bodyConfig = "";
-let currently_content = "";
-window.c2 = c2;
 
 // init run function.
 c2.init(() => {
 });
 // document read complated run function.
 c2.ready(() => {
-	// bodyのデータ属性を解析し、設定情報を取得する。
-	bodyConfig = bodyConfig || c2.bodyParser();
   
 	// デザインパターンの設定
-	const ptn = setDesignPtn(bodyConfig.cntid);
-
+	setDesignPtn(c2.config.cntid);
 	// ヘッダーの選択設定
-	setHeaderSelect(bodyConfig.cntid);
+	setHeaderSelect(c2.config.cntid);
 
-	// コンテンツIDで指定されたコンテンツを実行します。
-	currently_content = currently_content || getContent(bodyConfig.cntid);
-  if(currently_content.ready) currently_content.ready();
-
-  c2.config = {
+  // アプリケーションの独自コンフィグを設定
+  c2.setConfig({
     isCos(){
-      return Number(this._ut) === 1;
+      return Number(c2.config.usertype) === 1;
     },
     isCam(){
-      return Number(this._ut) === 2;
+      return Number(c2.config.usertype) === 2;
     },
     getUserType(){
-      return this._ut;
+      return c2.config.usertype;
     },
-    _ut: bodyConfig.usertype
-  }
+  })
 
   // お知らせモーダルを開く
   const $noticeModal = $("#noticeModal");
@@ -74,8 +63,7 @@ c2.ready(() => {
         resolve();
       });
     }
-  }, c2.showModal);
-
+  }, e => c2.showModal(e));
 
   // アンカーイベント
 	$('a[href^="#"]').on("click", function() {
@@ -97,13 +85,6 @@ c2.ready(() => {
 
 // window load complated run function.
 c2.load(() => {
-  // bodyのデータ属性を解析し、設定情報を取得する。
-	bodyConfig = bodyConfig || c2.bodyParser();
-
-  // コンテンツIDで指定されたコンテンツを実行します。
-  currently_content = currently_content || getContent(bodyConfig.cntid);
-  if(currently_content.load) currently_content.load();
-
   $('input[data-datepicker]').datepicker();
 });
 
@@ -127,27 +108,6 @@ function setDesignPtn(cntId){
 
   const ptn = `${designPtn}-ptn`;
   $(".wrap-body-content").addClass(ptn);
-  return ptn;
-}
-
-/**
- * ページ単位に分割したjsファイルのコンテンツオブジェクトを取得します。
- *
- * @param {*} cntId contentId
- * @memberof myApp
- */
-function getContent(cntId){
-  // 実際のcntIdと違うものはswitchで変換します。
-  let contenId = "";
-  switch (cntId){
-    case "recruitToday":
-      contenId = "recruit";
-      break;
-    default:
-      contenId = cntId;
-  }
-  if(contents[contenId]) return new contents[contenId]();
-  return false;
 }
 
 /**

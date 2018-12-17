@@ -1,14 +1,14 @@
 export default class tag{
-	constructor(){
+	constructor(app){
+		this.app = app;
 		this.taglist = [];
-
 		this.$input_tag = $("#tags");
 		this.$tag_field = $("#tags_field");
 		this.$tag_add_button = $("#tag_add_button");
 		this.tag_delete_button = ".tag_delete_button";
 		this.limitTagLength = 10;
 		this.errEmitter = (errText) => {
-			c2.showInputErr("tag_field", errText);
+			this.app.showInputErr("tag_field", errText);
 			return false;
 		}
 	}
@@ -20,7 +20,7 @@ export default class tag{
 		// タグ追加ボタン
 		this.$tag_add_button.off('click');
 		this.$tag_add_button.on('click', () => {
-			c2.clearInputMsg("tag_field");
+			this.app.clearInputMsg("tag_field");
 			const tagStr = this.$input_tag.val();
 			var addTagName = tagStr.replace(/^\s+|\s+$/g, "")
 			if(!this.checkDuplicate(addTagName)) return false;
@@ -47,7 +47,7 @@ export default class tag{
 				that.taglist.splice(idx, 1); 
 			}
 			// エラー表示を消す
-			c2.clearInputMsg("tag_field");
+			that.app.clearInputMsg("tag_field");
 		});
 		
 	}

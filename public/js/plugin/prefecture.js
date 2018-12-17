@@ -1,12 +1,13 @@
 export default class prefecture{
-	constructor(){
+	constructor(app){
+		this.app = app;
 		this.prefectureList = [];
 		this.$Prefectures = $(".js-addPrefectures");
 		this.$prefectures_field = $("#prefectures_field");
 		this.tag_delete_button = ".tag_delete_button";
 		this.limitPrefectureLength = 47;
 		this.errEmitter = (errText) => {
-			c2.showInputErr("prefectures_field", errText);
+			this.app.showInputErr("prefectures_field", errText);
 			return false;
 		}
 	}
@@ -32,7 +33,7 @@ export default class prefecture{
 				return false;
 			} 
 
-			c2.clearInputMsg("prefectures_field");
+			this.app.clearInputMsg("prefectures_field");
 
 			const pref_name = $("#prefectures option:selected").text();
 			this.addPrefecture(pref_id, pref_name);
@@ -52,7 +53,7 @@ export default class prefecture{
 				that.prefectureList.splice(idx, 1);
 			}
 			// エラー表示を消す
-			c2.clearInputMsg("prefectureField");
+			that.app.clearInputMsg("prefectureField");
 		});
 
 	}

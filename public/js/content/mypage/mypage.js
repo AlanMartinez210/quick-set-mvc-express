@@ -6,9 +6,9 @@ export default class register {
 		const doLogoutBtn = this.logoutForm.find('[name=doLogout]');
 		const logoutBtn = $("#logoutBtn");
 
-		c2.plugin.screen.setContentBorder(36);
+		this.app.plugin.screen.setContentBorder(36);
 
-		logoutBtn.on('click', {type: "logout"}, c2.showModal);
+		logoutBtn.on('click', {type: "logout"}, e => this.app.showModal(e));
 
 		doLogoutBtn.on('click', e => {
 			return this.logout(e)
@@ -19,9 +19,9 @@ export default class register {
 	 * ログアウト処理を行います。
 	 */
 	logout(e){
-		c2.sendPost('/api/logout', {})
+		this.app.sendPost('/api/logout', {})
 		.done(() => {
-			c2.plugin.sessionMsg.setAccessMode('logout');
+			this.app.plugin.sessionMsg.setAccessMode('logout');
 			location.href = '/register';
 		})
 		return false;

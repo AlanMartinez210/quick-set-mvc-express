@@ -4,10 +4,11 @@ import plugin_prefecture from "../../plugin/prefecture";
 export default class schedule{
 	constructor(){
 		this.scheduleForm = $('[name=scheduleForm]');
-		this.tags = new plugin_tag();
-		this.prefs = new plugin_prefecture();
 	}
 	ready(){
+		this.tags = new plugin_tag(this.app);
+		this.prefs = new plugin_prefecture(this.app);
+
 		const scheduleSection = $('#scheduleSection');
 		const calendarSection = $('#calendarSection');
 		// 処理ボタン
@@ -64,7 +65,7 @@ export default class schedule{
 					});
 				}
 			}
-		}, c2.showModal);
+		}, e => this.app.showModal(e));
 		
 
 		// モーダルを開く
@@ -115,7 +116,7 @@ export default class schedule{
 				}
 			}
 			
-		}, c2.showModal);
+		}, e => this.app.showModal(e));
 
 		// スケジュールが存在するもののみ表示
 		scheduleSection.on('change', isExistSchedule, (e) => {
@@ -137,16 +138,16 @@ export default class schedule{
 
 			if(modal_mode === "delete"){
 				httpMethod = "sendDelete";
-				dialog = c2.showWarnDialog({
+				dialog = this.app.showWarnDialog({
 					name: "checkDel",
 					title: "削除の確認",
 					text: "この内容を削除します。よろしいですか？"
 				})	
 			}
 			else{
-				path = c2.config.isCam() ? path + "/cam" : path + "/cos";
+				path = this.app.config.isCam() ? path + "/cam" : path + "/cos";
 				httpMethod = "sendPost";
-				dialog = c2.showInfoDialog({
+				dialog = this.app.showInfoDialog({
 					name: "checkCmf",
 					title: modal_mode === "create" ?  "登録の確認" : "更新の確認",
 					text: modal_mode === "create" ?  "この内容で登録します。よろしいですか？" : "この内容で更新します。よろしいですか？",
@@ -155,13 +156,13 @@ export default class schedule{
 
 			dialog.closelabel("いいえ")
 			.addBtn({
-				callback: function() {
-					c2[httpMethod](path, sendData)
+				callback: () => {
+					this.app[httpMethod](path, sendData)
 					.done(result => {
 						$('.month-label.seleced').click();
-						c2.hideDialog();
-						c2.showClearAll();
-						c2.showInfo("処理に成功しました。");
+						this.app.hideDialog();
+						this.app.showClearAll();
+						this.app.showInfo("処理に成功しました。");
 					})
 				}
 			})
@@ -172,12 +173,12 @@ export default class schedule{
 	}
 	// スケジュールの取得
 	getSchedule(schedule_id){
-		return c2.sendGet(`/mypage/schedule/${schedule_id}`);
+		return this.app.sendGet(`/mypage/schedule/${schedule_id}`);
 	}
 
 	// 指定年月のスケジュール一覧の取得。
 	getCalendarList(e, year, month){
-		c2.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
+		this.app.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
 		.done(result=>{
 			$('#calendarSection').html(result);
 		})
@@ -203,7 +204,7 @@ export default class schedule{
 		const data = this.scheduleForm.getValue();
 
 		// 都道府県の取得(カメラマン用)
-		if(c2.config.isCam()){
+		if(this.app.config.isCam()){
 			data.prefectures_field = this.prefs.getPrefectureValue();
 		}
 		

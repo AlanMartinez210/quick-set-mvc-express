@@ -4,23 +4,26 @@ import recruitDetail from "./recruitDetail";
 export default class recruit {
 	constructor () {
 		this.recruitSearchForm = $('[name=recruitSearchForm]');
-		this.prefecture = new plugin_prefecture();
+		
 		this.recruitDetail = new recruitDetail(true);
 	}
 	ready(){
+		this.prefecture = new plugin_prefecture(this.app);
+
 		const $recruitSection = $("#recruitSection");
 		const openSearchBtn = "#searchBtn";
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
-		const $doGetSearchRecruitListBtn = $('[name=doGetSearchRecruitList]'); 
+		const doPostRequestBtn = "[name=doPostRequest]";
+		const $doGetSearchRecruitListBtn = $('[name=doGetSearchRecruitList]');
 
 		// 検索モーダルを開く
 		$recruitSection.on('click', openSearchBtn, {
 			type: "search",
-			onOpenBrefore: ()=>{
+			onOpenBrefore: () => {
 				this.recruitSearchForm.clearForm();
 				this.prefecture.init().ready();
 
-				const searchData = c2.getUrlParam();
+				const searchData = this.app.getUrlParam();
 			
 				this.recruitSearchForm.setValue(searchData);
 				if(searchData.prefectures_field){
@@ -29,7 +32,7 @@ export default class recruit {
 					});
 				}
 			}
-		}, c2.showModal)
+		}, e => this.app.showModal(e))
 
 		// 募集詳細モーダルを開く
 		$recruitSection.on('click', opneRecruitDetailBtn, {
@@ -43,7 +46,7 @@ export default class recruit {
 					resolve();
 				})
 			}
-		}, c2.showModal)
+		}, e => this.app.showModal(e))
 
 		// 検索ボタン処理
 		$doGetSearchRecruitListBtn.on('click', (event) => {
@@ -53,6 +56,12 @@ export default class recruit {
 			this.getSearchReqest(sendData, 1)
 			return false;
 		})
+
+		// 依頼するボタン
+		$recruitSection.on('click', doPostRequestBtn, (event) => {
+			const $t = $(event.currentTarget)
+			alert($t.data('requestid'))
+		});
 		
 		// 募集詳細のjsを呼び出す。
 		this.recruitDetail.ready();
@@ -60,7 +69,7 @@ export default class recruit {
 
 	// 募集詳細情報を取得します。
 	getRecruitDetail(recruit_list_id){
-		return c2.sendGet(`/recruitlist/detail/${recruit_list_id}`);
+		return this.app.sendGet(`/recruitlist/detail/${recruit_list_id}`);
 	}
 
 	// 検索フォームから検索データを取得します。

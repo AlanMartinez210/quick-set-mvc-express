@@ -5,10 +5,11 @@ export default class profile{
 	constructor(){
 		this.profileForm = $("[name=profileForm]");
 		this.userDeleteForm = $("[name=userDeleteForm]");
-		this.tags = new plugin_tag();
-		this.prefs = new plugin_prefecture();
 	}
 	ready(){
+		this.tags = new plugin_tag(this.app);
+		this.prefs = new plugin_prefecture(this.app);
+
 		const doUserDeleteBtn = this.userDeleteForm.find('[name=doUserDelete]');
 		const deleteBtn = $("#deleteBtn");
 		const $userUpdateBtn = $("[name=doUserUpdate]");
@@ -21,7 +22,7 @@ export default class profile{
 
 		// ユーザー情報の取得
 		const user_id = $("[name=user_id]").val();
-		c2.sendGet(`/mypage/profile/${user_id}`)
+		this.app.sendGet(`/mypage/profile/${user_id}`)
 		.then(res => {
 			console.log('res: ', res);
 			this.profileForm.setValue(res);
@@ -40,17 +41,17 @@ export default class profile{
 			//タグの取得
 			sendData.tag_field = this.tags.getTagValue();
 
-			c2.showInfoDialog({
+			this.app.showInfoDialog({
 				name: "checkCmf",
 				title: "更新の確認",
 				text: "この内容で更新します。よろしいですか？",
 			})
 			.closelabel("いいえ")
 			.addBtn({
-				callback: function() {
-					c2.sendPost("/mypage/profile", sendData)
+				callback: () => {
+					this.app.sendPost("/mypage/profile", sendData)
 					.done(result => {
-						c2.refresh({showInfo: "処理が完了しました。"});
+						this.app.refresh({showInfo: "処理が完了しました。"});
 					})
 				}
 			});
@@ -60,18 +61,18 @@ export default class profile{
 		});
 		
 		// アカウント削除ボタン
-		deleteBtn.on('click', {type: "delete"}, c2.showModal);
+		deleteBtn.on('click', {type: "delete"}, e => this.app.showModal(e));
 		doUserDeleteBtn.on('click', e => {
 			if(consentDelete.prop('checked')){
 				return this.userDelete(e);
 			}
 			else{
-				c2.showInputErr("consent_delete", "チェックを入れてください。");
+				this.app.showInputErr("consent_delete", "チェックを入れてください。");
 				return false;
 			}
 		});
 
-		$editProfileIconBtn.on('click', {type: 'editProfileIcon'}, c2.showModal);
+		$editProfileIconBtn.on('click', {type: 'editProfileIcon'}, e => this.app.showModal(e));
 	}
 
 	/**
@@ -82,9 +83,9 @@ export default class profile{
 			consent_delete: this.userDeleteForm.find('[name=consent_delete]').val(),
 			password: this.userDeleteForm.find('[name=password]').val()
 		}
-		c2.sendPost('/api/delete', data)
+		this.app.sendPost('/api/delete', data)
 		.done(() => {
-			c2.plugin.sessionMsg.setAccessMode('proc_comp');
+			this.app.plugin.sessionMsg.setAccessMode('proc_comp');
 			location.href = '/register';
 		})
 		return false;

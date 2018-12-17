@@ -2,6 +2,7 @@ const db = require("../models/index");
 
 const dateHelper = require('../common/helper/dateHelper');
 const errorHelper = require('../common/helper/errorHelper');
+const _ = require('lodash');
 
 /**
  * ユーザーの作成を行います。
@@ -91,56 +92,88 @@ exports.getUserData = async (user_id) => {
  * tags: タグ
  * prefectures: 活動地域
  */
-exports.updateProfileData = async (profileData) => {
-  return db.sequelize.transaction(async function (tx) {
-    // タグの登録/更新
-    const tagsResult = await
-    function () {
-      if (profileData.tag_field.length <= 0) return;
-      const upsertPromise = [];
-      profileData.tag_field.forEach(val => {
-        upsertPromise.push(db.Tag.upsertTag(val, {
-          transaction: tx
-        }));
-      })
-      return Promise.all(upsertPromise);
-    }();
+exports.updateProfileData = (profileData) => { // <- async不要、二重になってる
+  return db.sequelize.transaction(async function (tx) { // あくまで、transaction()の引数がpromiseでなくてはいけないのでここはasyncなので、ここだけでOK
+    const options = {};
 
-    // タグID取得
-    await
-    function () {
-      if (!tagsResult) return;
-      const tag_id_arr = [];
-      tagsResult.forEach(obj => {
-        tag_id_arr.push(obj.tag_id);
-      });
-      profileData.tag_field = tag_id_arr;
-    }();
+    // オプションにトランザクションを追加
+    options.transaction = tx;
 
-    // 都道府県IDを文字列から数値に変換
-    const prefecture_id_arr = [];
-    profileData.prefectures_field.forEach(prefecture_id => {
-      prefecture_id_arr.push(Number(prefecture_id));
-    });
-    profileData.prefectures_field = prefecture_id_arr;
+    let tagsResult = {};
+    if (!_.isEmpty(profileData.tag_field)){
+      tagsResult = await function(){
+        const upsertPromise = profileData.tag_field.map(v => db.Tag.upsertTag(v, options));
+        return Promise.all(upsertPromise);
+      }();
+    }
 
-    // プロフィール情報の更新
-    const profileResult = await
-    function () {
-      options = {
-        where: {
-          user_key: profileData.user_id
-        },
-        transaction: tx
-      };
-      const values = {
-        user_name: profileData.user_name,
-        email: profileData.email,
-        tags: profileData.tag_field,
-        prefectures: profileData.prefectures_field
-      };
-      return db.User.update(values, options);
-    }();
+    if(!_.isEmpty(tagsResult)){
+      profileData.tag_field = tagsResult.map(v => v.tag_id);
+    }
+
+    if(!_.isEmpty(profileData.prefectures_field)){
+      profileData.prefectures_field = profileData.prefectures_field.map(v => Number(v))
+    }
+
+    options.where = { user_key: profileData.user_id };
+    const values = {
+      user_name: profileData.user_name,
+      email: profileData.email,
+      tags: profileData.tag_field,
+      prefectures: profileData.prefectures_field
+    }
+
+    return await db.User.update(values, options);
+    
+    // // タグの登録/更新
+    // const tagsResult = await function () {
+    //   if (profileData.tag_field.length) return;
+    //   const upsertPromise = [];
+    //   profileData.tag_field.forEach(val => {
+    //     upsertPromise.push(db.Tag.upsertTag(val, {
+    //       transaction: tx
+    //     }));
+    //   })
+    //   return Promise.all(upsertPromise);
+    // }();
+
+    // // タグID取得
+    // await // promiseでない処理なら、awaitはいらない
+    // function () {
+    //   if (!tagsResult) return;
+    //   const tag_id_arr = []; // 新しい配列を用意して、forEachに入れるならmapを使う
+    //   tagsResult.forEach(obj => {
+    //     tag_id_arr.push(obj.tag_id);
+    //   });
+    //   profileData.tag_field = tag_id_arr;
+    // }();
+
+    
+    // // 都道府県IDを文字列から数値に変換
+    // const prefecture_id_arr = []; // 新しい配列を用意して、forEachに入れるならmapを使う
+    // profileData.prefectures_field.forEach(prefecture_id => {
+    //   prefecture_id_arr.push(Number(prefecture_id));
+    // });
+    // profileData.prefectures_field = prefecture_id_arr;
+
+    // // プロフィール情報の更新
+    // const profileResult = await
+    // function () {
+    //   options = {
+    //     where: {
+    //       user_key: profileData.user_id
+    //     },
+    //     transaction: tx
+    //   };
+    //   const values = {
+    //     user_name: profileData.user_name,
+    //     email: profileData.email,
+    //     tags: profileData.tag_field,
+    //     prefectures: profileData.prefectures_field
+    //   };
+    //   return db.User.update(values, options);
+    // }();
+
   });
 }
 /**
