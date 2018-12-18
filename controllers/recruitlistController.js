@@ -21,8 +21,8 @@ exports.index = async(req, res, next)=>{
 
 	const data = { user_type: user_type };
 
-	const recruitList = await recruitlistService.getRecruitList(data);
-	console.log('recruitList: ', recruitList);
+	const recruitList = await recruitlistService.getRecruitList(data).catch(err => next(err));
+
 	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruitList);
 	res.render('recruitList/index', render_obj);
 };
@@ -34,23 +34,21 @@ exports.index = async(req, res, next)=>{
  * @param {*} res
  */
 exports.getSearchRecruit = async(req, res, next)=>{
-
-	console.log("search param", req.form_data);
+	const recruit_search_info = req.form_data;
 
 	const render_obj = res.render_obj;
 	const user_type = sessionHelper.getUserType(req);
 
-	const recruit_search_info = req.form_data;
-
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
 
-	const search_param = Object.assign(recruit_search_info, {
+	const search_param = Object.assign({
 		date_key: dateHelper.getDate(),
-		user_type: user_type,
-	});
+		user_type: user_type
+	}, recruit_search_info);
 
-	const recruit_list = await recruitlistService.getRecruitList(search_param);
+	const recruit_list = await recruitlistService.getRecruitList(search_param).catch(err => next(err));
+
 	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruit_list, recruit_search_info);
 	res.render('recruitList/index', render_obj);
 };

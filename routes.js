@@ -10,7 +10,6 @@ const scheduleController = require(`${controllerPath}scheduleController`);
 const reviewController = require(`${controllerPath}reviewController`);
 const siteController = require(`${controllerPath}siteController`);
 const matchingController = require(`${controllerPath}matchingController`);
-const requestController = require(`${controllerPath}requestController`);
 const sampleImageController = require(`${controllerPath}sampleImageController`);
 const extServiceController = require(`${controllerPath}extServiceController`);
 const messageController = require(`${controllerPath}messageController`);
@@ -89,7 +88,6 @@ router.get('/mypage/schedule/:schedule_id', scheduleController.getSchedule);　
 
 /* スケジュールの登録/編集 postSchedule */
 router.post('/mypage/schedule/cos',validate.check(require('./form/postCosScheduleForm')), validate.result, scheduleController.postSchedule);
-
 router.post('/mypage/schedule/cam',validate.check(require('./form/postCamScheduleForm')), validate.result, scheduleController.postSchedule);
 
 /* スケジュールの削除 deleteSchedule */
@@ -119,20 +117,20 @@ router.post('/mypage/review',validate.check(require('./form/postReviewForm')), v
  ================================*/
 
 /* マッチング一覧の表示(マッチング一覧と、マッチング履歴の表示) */
-
 router.get('/mypage/matching', matchingController.index);
+
+/* 依頼/応募する postRequest */
+router.post('/mypage/matching/request',validate.check(require('./form/postRequestForm')), validate.result, matchingController.postRequest);
+
 
 /* マッチング履歴の取得(マッチング履歴の取得) getMatchingHistory */
 // router.get('/mypage/matching/history', matchingController.getMatchingHistory);
 
-/* 依頼/応募する postRequest */
-router.post('/mypage/matching/request',validate.check(require('./form/postRequestForm')), validate.result, requestController.postRequest);
-
 /* マッチングの承諾 postConsent */
-router.post('/mypage/matching/consent',validate.check(require('./form/postConsentForm')), validate.result, requestController.postConsent);
+router.post('/mypage/matching/consent',validate.check(require('./form/postConsentForm')), validate.result, matchingController.postConsent);
 
 /* マッチングを却下する postReject */
-router.post('/mypage/matching/reject',validate.check(require('./form/postRejectForm')), validate.result, requestController.postReject);
+router.post('/mypage/matching/reject',validate.check(require('./form/postRejectForm')), validate.result, matchingController.postReject);
 
 /** =============================
  * メッセージ
@@ -160,7 +158,6 @@ router.get('/recruitlist/search', validate.check(require('./form/getSearchRecrui
 
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
 router.post('/recruitlist/bookmark', validate.check(require('./form/postRecruitBookmarkForm')), validate.result, recruitlistController.postRecruitBookmark);
-
 
 /* 募集/予定の詳細表示 */
 router.get('/recruitlist/detail/:schedule_id', recruitDetailController.getRecruitDetail);

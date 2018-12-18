@@ -1,10 +1,10 @@
 const c2link4DiService = require("../services/c2link4DiService");
-const enumShotType = c2link4DiService.enumShotType();
-const enumPref = c2link4DiService.enumPref();
 
 const urlHelper = require("../common/helper/urlHelper");
 const pageHelper = require("../common/helper/pageHelper");
 const prefectureHelper = require("../common/helper/prefectureHelper");
+
+const _ = require("lodash");
 
 /**
  * 募集一覧中身
@@ -19,7 +19,7 @@ class recruitListItem{
     const user_info = schedule.get("user");
     const date_info = schedule.get("date_key");
 
-    this.recruit_list_id = schedule.get("id");
+    this.schedule_id = schedule.get("id");
 
     this.user_info = {
       id: user_info.id,
@@ -47,16 +47,29 @@ class recruitListItem{
   }
 }
 
+/**
+ * 検索結果の挿入 -> 基本リクエストの値をそのまま設定する。
+ */
 class recruitSearchInfo{
-  constructor(recruit_search_info){
+  constructor(info){
+    // shot_type＿objに変換
+    this.shot_type = info.shot_type && c2link4DiService.enumShotType().getObj(info.shot_type);
+    
+    this.search_date_from = info.search_date_from && info.search_date_from.format("L");
+    this.search_date_to = info.search_date_to && info.search_date_to.format("L");
 
-    this.enumPrefList =  enumPref.getEnum();
-    this.enumShotType = enumShotType.getEnum();
-    this.shot_type = undefined; // {code: 1, type: "event", name: "イベント"};
-    this.search_date_from = undefined; // moment.format("L")
-    this.search_date_to = undefined; // moment.format("L")
-    this.prefectures_field = []; // [{  }]
-    this.search_tag = []; // [{  }]
+    // 変換
+    let pref = info.prefectures_field || [];
+    this.prefectures_field = pref.map(v => {
+      return {pref_id: v, pref_name: prefectureHelper.getPrefectureNameById(v)}
+    });
+
+    this.search_tag = info.search_tag || "";
+
+    // コピーして使う
+    const copy = Object.assign({}, info)
+    delete copy.page
+    this.search_url_param = urlHelper.jsonToUrlParam(copy);
   }
 }
 

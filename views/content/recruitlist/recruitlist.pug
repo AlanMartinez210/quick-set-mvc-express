@@ -1,8 +1,9 @@
 -
-  const recruit_search_info = self.bodyData.recruit_search_info;
+  
   const recruit_list_arr = self.bodyData.recruit_list_arr;
   const recruit_list_pager = self.bodyData.recruit_list_pager;
-  const search_urlParam = self.bodyData.search_urlParam;
+  const search_url_param = self.bodyData.recruit_search_info.search_url_param;
+  const search_info = self.bodyData.recruit_search_info;
 -
 .center-frame
 
@@ -19,24 +20,32 @@
         .label-box._s.flex._c
           span
             |期間&nbsp;:&nbsp;
-            |#{recruit_search_info.search_date_from ? recruit_search_info.search_date_from : "指定なし"}&nbsp;
-            |#{recruit_search_info.search_date_to ? " ～ " + recruit_search_info.search_date_to : ""}
-        if recruit_search_info.prefectures_field.length
+            |#{search_info.search_date_from ? search_info.search_date_from : "指定なし"}&nbsp;
+            |#{search_info.search_date_to ? " ～ " + search_info.search_date_to : ""}
+          input(type="hidden", name='search_date_from' value=search_info.search_date_from)
+          input(type="hidden", name='search_date_to' value=search_info.search_date_to)
+
+        if search_info.prefectures_field.length
           .label-box._s.flex._c
             span
               |場所&nbsp;:&nbsp;
-              |#{recruit_search_info.prefectures_field}
+              each p in search_info.prefectures_field
+                |#{p.pref_name}
+            input(type="hidden", name='prefectures_field' value=search_info.prefectures_field)
 
-        if recruit_search_info.search_tag
+        if search_info.search_tag.length
           .label-box._s.flex._c
             span
               |タグ&nbsp;:&nbsp;
-              |#{recruit_search_info.search_tag}
-        if recruit_search_info.shot_type
+              |#{search_info.search_tag}
+            input(type="hidden", name='search_tag' value=search_info.search_tag)
+
+        if search_info.shot_type
           .label-box._s.flex._c
             span
               |種類&nbsp;:&nbsp;
-              |#{recruit_search_info.shot_type}
+              |#{search_info.shot_type.name}
+            input(type="hidden", name='shot_type' value=search_info.shot_type)
 
     //- 表示オプション表示部
     .board-cnt
@@ -59,9 +68,7 @@
 
       -
         const ui = recruit_item.user_info;
-        console.log('ui: ', ui);
         const ei = recruit_item.event_info;
-        console.log('ei: ', ei);
       -
 
       //- ユーザータイプごとで表示リストを分ける
@@ -90,7 +97,7 @@
                 isMax = np < mp,
                 prev = np - 1,
                 next = np + 1
-                param = search_urlParam ? `&${search_urlParam}` : "";
+                param = search_url_param ? `&${search_url_param}` : "";
           -
           li
             a(href=`${url}?page=1${param}`, class= isMin ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-left.fa-fw

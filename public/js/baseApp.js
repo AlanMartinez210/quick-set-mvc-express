@@ -6,6 +6,8 @@ import '../scss/style.scss';
 import 'slick/slick.scss';
 import 'slick/slick-theme.scss';
 
+import _ from "lodash";
+
 /**
  * アプリケーションの基本機能を定義します。
  *
@@ -51,15 +53,18 @@ export class baseApp {
         shamShow: function(){
           $(this).removeClass("dummy-hide");
         },
-        getValue: function(){
+        // allowEmpty -> false :値がない場合に項目から除外する
+        getValue: function(allowEmpty = true){
           const $form = $(this);
           const formData = {};
           if($form.prop("tagName") === "FORM"){
             // form内の属性を取得
             const $formEle = $form.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
+
             $formEle.each(function(){
               const $t = $(this);
               const eleName = $t.prop("name");
+
               //nameがないものは弾く
               if(!eleName) return true
 
@@ -71,6 +76,9 @@ export class baseApp {
                     case "textarea":
                     case "file":
                     case "hidden":
+                      if(!allowEmpty){
+                        if(!$t.val() || _.isEmpty($t.val())) break;
+                      }
                       formData[eleName] = $t.val();
                       break;
                     case "radio":
@@ -84,27 +92,34 @@ export class baseApp {
                   }
                   break;
                 case "SELECT":
+                  if(!allowEmpty){
+                    if(!$t.val() || _.isEmpty($t.val())) break;
+                  }
                   formData[eleName] = $t.val();
                   break;
                 case "DIV":
                 case "SPAN":
                 case "p":
-                  if($t.data("dummytag") == "input"){
-                    formData[eleName] = $t.text();
+                  if(!allowEmpty){
+                    if(!$t.val() || _.isEmpty($t.val())) break;
                   }
+
+                  if($t.data("dummytag") == "input") formData[eleName] = $t.text();
                   break;
               }
             });
           }
+          console.debug('formGetData: ', formData);
           return formData;
         },
-        setValue: function(serverData){
+        setValue: function(formSetObj){
+          console.debug('formSetObj: ', formSetObj);
           const $form = $(this);
           if($form.prop("tagName") === "FORM"){
             const $formEle = $form.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
             $formEle.each(function(){
               const $t = $(this);
-              const item = serverData[$t.prop("name")];
+              const item = formSetObj[$t.prop("name")];
               if(!item) return true;
               switch($t.prop("tagName")){
                 case "INPUT":

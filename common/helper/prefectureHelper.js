@@ -6,7 +6,7 @@ const prefecture = require("jp-prefecture");
  */
 exports.getPrefectureNameByIds = (prefIds = []) => {
   return prefIds.map(v => {
-    return prefecture.findBy("pref", "id", v, "name");
+    return prefecture.findBy("pref", "id", Number(v), "name");
   });
 }
 
@@ -15,7 +15,7 @@ exports.getPrefectureNameByIds = (prefIds = []) => {
  * @param {*} prefId
  */
 exports.getPrefectureNameById = (prefId) => {
-  return prefecture.findBy("pref", "id", prefId, "name");
+  return prefecture.findBy("pref", "id", Number(prefId), "name");
 }
 
 /**

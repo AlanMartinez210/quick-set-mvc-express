@@ -89,7 +89,9 @@ export default class myApp extends baseApp {
     super.load(() => {
 
       // refresh_eventの確認 TODO 後で拡張する。
-      let refresh_event = window.sessionStorage.getItem(['refresh_event'])
+      let refresh_event = window.sessionStorage.getItem(['refresh_event']);
+      // すぐ消す
+      window.sessionStorage.removeItem(['refresh_event']);
       if(refresh_event){
         refresh_event = JSON.parse(refresh_event);
         Object.keys(refresh_event).forEach(key => {
@@ -97,7 +99,7 @@ export default class myApp extends baseApp {
         })
       }
 
-      window.sessionStorage.removeItem(['refresh_event']);
+      
 
       // loadメソッドを持つプラグインの実行
       _.forEach(this.plugin, p => {
@@ -619,6 +621,8 @@ export default class myApp extends baseApp {
    * urlのパラメーターをJSON形式で取得します。
    */
   getUrlParam(url = location.search){
+    // デコードする。
+    url = decodeURIComponent(url);
     return _.chain(url).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
   }
 }

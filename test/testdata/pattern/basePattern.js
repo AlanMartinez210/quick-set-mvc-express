@@ -9,7 +9,7 @@ module.exports = class {
   constructor(){
     // カメラマンデータ
     this.cam_user_data = [];
-    for(var i=1;i<=3;i++){
+    for(let i=1;i<=3;i++){
       const user_data = {}
       user_data.user_name = "test_camera_man_" + i;
       const password = "password" + i;
@@ -23,7 +23,7 @@ module.exports = class {
     }
     // コスプレイヤーデータ
     this.cos_user_data = [];
-    for(var i=1;i<=3;i++){
+    for(let i=1;i<=3;i++){
       const user_data = {}
       user_data.user_name = "test_cosplayer_" + i;
       const password = "password" + i;
@@ -36,42 +36,62 @@ module.exports = class {
       this.cos_user_data.push(user_data)
     }
 
+    // 3ヶ月前を取得
     // スケジュールデータ
     this.schedule_data = [];
-    for(var i=1;i<=3;i++){ // 3ヶ月分
-      for(var l=1;l<=6;l++){ // 6人分
-        for(var j=1;j<=10;j++){ // 10日分のスケジュール
-          var schedule = {};
-          if(l <= 3){
-            // 種別cam
-            schedule = {
-              user_id: l,
-              schedule_type: 2,
-              time_from: (6 + j) + ":00",
-              time_to: (12 + j) + ":00",
-              event_url: "htt://c2link.com/detail/event/test",
-              shot_type: 1,
-              cost: 1000,
-              num: 1,
-              remarks: "カメラマンテストスケジュール"
-            }
-          }else{
-            // 種別cos
-            schedule = {
-              user_id: l,
-              schedule_type: 1,
-              time_from: (6 + j) + ":00",
-              time_to: (12 + j) + ":00",
-              event_url: "htt://c2link.com/detail/event/test",
-              shot_type: 1,
-              cost: 1000,
-              num: 1,
-              remarks: "コスプレイヤーテストスケジュール"
-            }
-          }
-          schedule.date_key = dateHelper.createDate(2018, (7 + i), j);
-          schedule.event_name = "テストイベント" + i;
-          this.schedule_data.push(schedule);
+    
+    // cam
+    for(let i=1;i<=3;i++){ // 3人分 
+
+      const month = []
+      month[1] = dateHelper.getDate().subtract(1, 'M');
+      month[2] = dateHelper.getDate();
+      month[3] = dateHelper.getDate().add(1, 'M');
+
+      for(let l=1;l<=3;l++){ // 3ヶ月分        
+        for(let j=1;j<=10;j++){ // 10日分のスケジュール
+          this.schedule_data.push({
+            date_key: month[l].add(1, 'd').clone(),
+            user_id: i,
+            schedule_type: 2,
+            time_from: (6 + j) + ":00",
+            time_to: (12 + j) + ":00",
+            event_url: "htt://c2link.com/detail/event/test",
+            shot_type: 1,
+            cost: 1000,
+            num: 1,
+            event_name: "テストカメイベント",
+            remarks: "カメラマンテストスケジュール"
+          });
+        }
+      }
+    }
+
+
+    // cos
+    for(let i=1;i<=3;i++){  // 3人分
+
+      const month = []
+      month[1] = dateHelper.getDate().subtract(1, 'M');
+      month[2] = dateHelper.getDate();
+      month[3] = dateHelper.getDate().add(1, 'M');
+
+      for(let l=1;l<=3;l++){ // 3ヶ月分
+        for(let j=1;j<=10;j++){ // 10日分のスケジュール
+          this.schedule_data.push({
+            date_key: month[l].add(1, 'd').clone(),
+            user_id: i+3,
+            schedule_type: 1,
+            time_from: (6 + j) + ":00",
+            time_to: (12 + j) + ":00",
+            event_url: "htt://c2link.com/detail/event/test",
+            shot_type: 1,
+            cost: 1000,
+            num: 1,
+            event_name: "テストコスイベント",
+            remarks: "コスプレイヤーテストスケジュール"
+          });
+
         }
       }
     }
@@ -94,8 +114,13 @@ module.exports = class {
     for(var i=1;i<=180;i++){
       for(var j=1;j<=3;j++){
         const tags = {};
-        tags.schedule_id = i;
-        tags.tag_id = j;
+        if(i <= 90){
+          tags.schedule_id = i;
+          tags.tag_id = j;
+        }else{
+          tags.schedule_id = i;
+          tags.tag_id = j+3;
+        }
         this.schedule_tags.push(tags);
       }
     }
@@ -105,8 +130,13 @@ module.exports = class {
     for(var i=1;i<=180;i++){
       for(var j=1;j<=2;j++){
         const prefectures = {};
-        prefectures.schedule_id = i;
-        prefectures.prefecture_id = j%2+14;
+        if(i <= 90){
+          prefectures.schedule_id = i;
+          prefectures.prefecture_id = j%2+14;
+        }else{
+          prefectures.schedule_id = i;
+          prefectures.prefecture_id = j%2+23;
+        }
         this.schedule_prefectures.push(prefectures);
       }
     }

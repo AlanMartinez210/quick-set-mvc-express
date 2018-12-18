@@ -142,7 +142,7 @@ export default class schedule{
 					name: "checkDel",
 					title: "削除の確認",
 					text: "この内容を削除します。よろしいですか？"
-				})	
+				})
 			}
 			else{
 				path = this.app.config.isCam() ? path + "/cam" : path + "/cos";
