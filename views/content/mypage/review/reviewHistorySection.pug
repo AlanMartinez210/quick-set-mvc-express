@@ -1,22 +1,8 @@
-- // レビューした履歴
 -
-  var reviewLists = [
-    {
-      id: 1,  //request_id
-      date: {y:"2018", m:"05", d:"01"},
-      username: "テストユーザー1",
-      type: 1,  // good
-    },{
-      id: 2,  //request_id
-      date: {y:"2018", m:"05", d:"02"},
-      username: "テストユーザー2",
-      type: 2,  // bad
-    },
-  ];
-  var reviewList = self.bodyData.reviewHistoryItem.rows;
+  // レビューした履歴
+  var reviewHistorys = self.bodyData.reviewHistoryItem.rows;
+  console.log('reviewHistorys: ', reviewHistorys);
 -
-
-
 .board-hdr
   .label-box._fb.flex._c
     i.icon-title-b.fas.fa-history.fa-fw.c-glay
@@ -26,20 +12,20 @@
   ul.st_options
     - var goodIcon = ["icon-title-b","far","fa-fw", "fa-thumbs-up","c-blue"]; // goodアイコンのcssセット
     - var badIcon  = ["icon-title-b","far","fa-fw", "fa-thumbs-down","c-purple"]; //badアイコンのcssセット
-    - for(var obj of reviewList){
-      li.label-icon-link
+    - for(var rh of reviewHistorys){
+      li.label-icon-link(name="editReviewBtn", data-review_id=rh.review_id)
         .link-wrap.flex._c.editReview
           .label-icon
             img
-          i(class=obj.type==1?goodIcon:badIcon)
+          i(class=rh.type==1?goodIcon:badIcon)
           .st-string-set
-            span.sub-text: |#{obj.date}
-            p: |#{obj.username}
+            span.sub-text: |#{rh.date_info.year}年#{rh.date_info.month}月#{rh.date_info.day}日(#{rh.date_info.week})
+            p: |#{rh.username}
           i.icon-link.fas.fa-chevron-right.fa-fw
     - }
 
 .board-ftr._s
-  .pager(data-pagerid="reviewhistry")
+  .pager(data-pagerid="reviewHistry")
     ul.flex._jc
       li: a: i.icon-pager.fas.fa-angle-double-left.fa-fw
       li: a: i.icon-pager.fas.fa-angle-left.fa-fw

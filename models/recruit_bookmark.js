@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var recruit_bookmark = sequelize.define('recruit_bookmarks', {
+  var Recruit_bookmark = sequelize.define('Recruit_bookmark', {
     user_id: {
       type: DataTypes.BIGINT.UNSIGNED,
       primaryKey: true,
@@ -13,25 +13,27 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: false,
     updatedAt: false,
   });
-  recruit_bookmark.associate = function(models) {
+  Recruit_bookmark.associate = function(models) {
     // associations can be defined here
   };
 
   /**
    * ブックマークをつける
    */
-  recruit_bookmark.createBookmark = function(user_id, schedule_id, options = {}){
+  Recruit_bookmark.createBookmark = function(user_id, schedule_id, options = {}){
     return this.create({
       user_id, schedule_id
     }, options);
   }
+
   /**
    * ブックマークを外す
    */
-  recruit_bookmark.deleteBookmark = function(user_id, schedule_id, options = {}){
+  Recruit_bookmark.deleteBookmark = function(user_id, schedule_id, options = {}){
     return this.destroy({
       where: {user_id, schedule_id}
     }, options);
   }
-  return recruit_bookmark;
+  
+  return Recruit_bookmark;
 };

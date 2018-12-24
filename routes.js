@@ -51,7 +51,7 @@ router.post('/mypage/profile', validate.check(require('./form/postProfileForm'))
 router.get('/mypage/site', siteController.index);
 
 /* サイトの設定の登録/編集 postSiteSetting */
-router.post('/mypage/site/', siteController.postSiteSetting);
+router.post('/mypage/site/', validate.check(require('./form/postSiteForm')), validate.result, siteController.postSiteSetting);
 
 /* サンプル写真の設定の表示 index */
 router.get('/mypage/sampleImage', sampleImageController.index);
@@ -127,10 +127,10 @@ router.post('/mypage/matching/request',validate.check(require('./form/postReques
 // router.get('/mypage/matching/history', matchingController.getMatchingHistory);
 
 /* マッチングの承諾 postConsent */
-router.post('/mypage/matching/consent',validate.check(require('./form/postConsentForm')), validate.result, matchingController.postConsent);
+router.post('/mypage/matching/consent', validate.check(require('./form/postMatchingStateForm')), validate.result, matchingController.postConsent);
 
 /* マッチングを却下する postReject */
-router.post('/mypage/matching/reject',validate.check(require('./form/postRejectForm')), validate.result, matchingController.postReject);
+router.post('/mypage/matching/reject', validate.check(require('./form/postMatchingStateForm')), validate.result, matchingController.postReject);
 
 /** =============================
  * メッセージ
@@ -148,13 +148,10 @@ router.post('/api/room/postMessage', validate.check(require('./form/postMessageF
  ================================*/
 
 /* 募集/予定一覧の表示 index */
-router.get('/recruitlist', recruitlistController.index);　
-
-/* 当日の募集/予定の表示 indexToday */
-router.get('/recruitlist/today', recruitlistController.indexToday);　
+router.get('/recruitlist/:type', validate.check(require('./form/getRecruitListForm')), validate.result, recruitlistController.index);　
 
 /* 募集/予定の検索 getSearchRecruit */
-router.get('/recruitlist/search', validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
+router.get('/recruitlist/:type/search', validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
 
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
 router.post('/recruitlist/bookmark', validate.check(require('./form/postRecruitBookmarkForm')), validate.result, recruitlistController.postRecruitBookmark);

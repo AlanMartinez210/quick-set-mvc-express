@@ -31,8 +31,6 @@ module.exports = (sequelize, DataTypes) => {
         return pref;
       },
     },
-    good_review_num: DataTypes.BIGINT.UNSIGNED,
-    bad_review_num: DataTypes.BIGINT.UNSIGNED,
     expiration_date: {
       type: DataTypes.DATE,
       field: "expiration_date",
@@ -42,7 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       set(v){
         return this.setDataValue('expiration_date', v && v.toDate());
       }
-    }
+    },
+    allow_bookmark_notification: DataTypes.TINYINT.UNSIGNED,
+    good_review_num: DataTypes.BIGINT.UNSIGNED,
+    bad_review_num: DataTypes.BIGINT.UNSIGNED,
   }, {
     getterMethods:{
       createdAt(){ return dateHelper.getDate(this.created_at) },

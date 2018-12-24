@@ -40,7 +40,7 @@ class recruitListItem{
       prefectures: schedule.get("prefectures"),
     }
 
-    this.bookmark_flg = true;
+    this.bookmark_flg = schedule.get("bookmark_flg");
     this.tags = schedule.get("tags") && schedule.get("tags").map(v=>v.Tag);
     this.good_review_num = user_info.get("good_review_num")
     this.anime_info = {}; //anime_info;
@@ -65,11 +65,7 @@ class recruitSearchInfo{
     });
 
     this.search_tag = info.search_tag || "";
-
-    // コピーして使う
-    const copy = Object.assign({}, info)
-    delete copy.page
-    this.search_url_param = urlHelper.jsonToUrlParam(copy);
+    this.search_url_param = info.search_url_param;
   }
 }
 

@@ -13,6 +13,7 @@ import about_user_data from './mypage/aboutUserData';
 import contact from './mypage/contact';
 import matching from './mypage/matching';
 import schedule from './mypage/schedule';
+import review from './mypage/review';
 
 // # 必ず紐づくコンテンツIDで定義してください。
 export const contents = {
@@ -30,5 +31,6 @@ export const contents = {
   about_user_data,
   contact,
   matching,
-  schedule
+  schedule,
+  review
 };

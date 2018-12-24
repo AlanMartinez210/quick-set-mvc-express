@@ -10,11 +10,29 @@ export default class recruit {
 		this.prefecture = new plugin_prefecture(this.app);
 		this.recruitDetail = new recruitDetail(true);
 
-		const $recruitSection = $("#recruitSection");
+		const $recruitSection = $("#recruitSection, #recruitTodaySection");
 		const openSearchBtn = "#searchBtn";
 		const opneRecruitDetailBtn = "[name=openRecruitDetail]";
 		const doPostRequestBtn = "[name=doPostRequest]";
 		const $doGetSearchRecruitListBtn = $('[name=doGetSearchRecruitList]');
+		const $hiddenInputParam = $('input[type=hidden]');
+		const $bookmarkCheck = $('.bookmark-box');
+
+		// ブックマークボタンを開く
+		$bookmarkCheck.on('click', 'input[type=checkbox]', e => {
+			this.app.onShowProgress();
+			const t = $(e.target);
+			const sendData = {
+				schedule_id: t.data("schedule_id"),
+				mode: t.prop("checked") ? 1 : 0
+			}
+
+			this.app.sendPost("/recruitlist/bookmark", sendData)
+			.done(result => {
+				this.app.onHideProgress();
+				this.app.showInfo("処理が完了しました。");
+			})
+		})
 
 		// 検索モーダルを開く
 		$recruitSection.on('click', openSearchBtn, {
@@ -22,14 +40,29 @@ export default class recruit {
 			onOpenBrefore: () => {
 				this.recruitSearchForm.clearForm();
 				this.prefecture.init().ready();
-
-				const searchData = this.app.getUrlParam();
-				console.log('searchData: ', searchData);
+				
+				// 検索データの取得
+				const searchData = {};
+				$hiddenInputParam.each(function(){
+					let v = $(this).val();
+					if($(this).val()){
+						const n = $(this).attr("name");
+						switch(n){
+							case "prefectures_field":
+								v = JSON.parse(v);
+								break;
+							case "shot_type":
+								v = JSON.parse(v).code;
+								break;
+						}
+						searchData[n] = v;
+					}
+				});
 			
 				this.recruitSearchForm.setValue(searchData);
 				if(searchData.prefectures_field){
-					searchData.prefectures_field.split(",").forEach(ele => {
-						this.prefecture.addPrefecture(ele);
+					searchData.prefectures_field.forEach(ele => {
+						this.prefecture.addPrefecture(ele.pref_id, ele.pref_name);
 					});
 				}
 			}
@@ -85,6 +118,8 @@ export default class recruit {
 		this.recruitDetail.ready();
 	}
 
+	// ===============================================================================
+
 	// 募集詳細情報を取得します。
 	getRecruitDetail(schedule_id){
 		return this.app.sendGet(`/recruitlist/detail/${schedule_id}`);
@@ -103,7 +138,7 @@ export default class recruit {
 	// 検索処理を行います。
 	getSearchReqest(sendData = {}, pageNum = 1){
 		const paramString = _.isEmpty(sendData) ? "" :  `&${$.param(sendData)}`;
-		const path = `/recruitlist/search?page=${pageNum}${paramString}`;
+		const path = `/recruitlist/${this.app.config.cntid === "recruit" ? "every" : "today"}/search?page=${pageNum}${paramString}`;
 
 		// URLの書き換えを行う。
 		location.href = path;

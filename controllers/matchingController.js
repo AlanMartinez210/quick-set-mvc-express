@@ -59,7 +59,7 @@ exports.index = function(req, res, next){
     matchingService.getMatchingList(user_id),
     matchingService.getMatchingHistoryList(user_id),
   ])
-  .then(([matchingList,matchingHistoryList])=>{
+  .then(([matchingList, matchingHistoryList])=>{
     render_obj.bodyData = new vo_matching.matching_page(user_id, matchingList, matchingHistoryList);
     res.render('mypage/matching', render_obj);
   }).catch(next);

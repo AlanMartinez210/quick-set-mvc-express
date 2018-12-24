@@ -1,5 +1,4 @@
 -
-  
   const recruit_list_arr = self.bodyData.recruit_list_arr;
   const recruit_list_pager = self.bodyData.recruit_list_pager;
   const search_url_param = self.bodyData.recruit_search_info.search_url_param;
@@ -90,14 +89,14 @@
       .pager#recruitlistPager
         ul.flex._jc
           -
-            let url = "/recruitlist/search";
+            let url = `/recruitlist/${self.bodyData.isToday ? "today" : "every"}/search`;
                 np = Number(recruit_list_pager.now_page),
                 mp = Number(recruit_list_pager.max_page),
                 isMin = np > 1,
                 isMax = np < mp,
                 prev = np - 1,
                 next = np + 1
-                param = search_url_param ? `&${search_url_param}` : "";
+                param = search_url_param ? `${search_url_param}` : "";
           -
           li
             a(href=`${url}?page=1${param}`, class= isMin ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-left.fa-fw
@@ -114,7 +113,7 @@
           li
             a(href=`${url}?page=${next}${param}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-right.fa-fw
           li
-            a(href=`${url}?page=#${mp}${param}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-right.fa-fw
+            a(href=`${url}?page=${mp}${param}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-right.fa-fw
 
 
   //- AD表示部

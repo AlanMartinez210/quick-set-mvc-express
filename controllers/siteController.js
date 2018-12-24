@@ -9,21 +9,17 @@ const sessionHelper = require('../common/helper/sessionHelper');
  * @param {*} req
  * @param {*} res
  */
-exports.index = function(req, res){
-	var render_obj = res.render_obj;
-	render_obj.contentId = "site";
+exports.index = function (req, res) {
+  var render_obj = res.render_obj;
+  render_obj.contentId = "site";
   render_obj.title = "サイト設定";
   render_obj.backBtn = c2Util.getBackMypageBtn();
-  
-  var user_id  = sessionHelper.getUserId(req);
+  const user_id = sessionHelper.getUserId(req);
   userService.getSiteSettingData(user_id)
-  .then(result=>{
-		render_obj.bodyData = new mypageVO.siteInfo
-		({
-			allow_bookmark_notification: result.allow_bookmark_notification,
-		});
-		res.render('mypage/site', render_obj);
-	});
+    .then(result => {
+      render_obj.bodyData = new mypageVO.siteInfo(result);
+      res.render('mypage/site', render_obj);
+    });
 }
 
 /**
@@ -34,14 +30,12 @@ exports.index = function(req, res){
  * @param {*} next 
  */
 exports.postSiteSetting = (req, res, next) => {
-  const registData = req.form_data;
-	registData.user_id = sessionHelper.getUserId(req);
-	
-
-  // scheduleService.upsertScheduleData(registData)
-  // .then(results => {
-  //   res.json({status:'success'});
-  // }).catch(err => {
-  //   next(err);
-  // });
+  const formData = req.form_data;
+  const user_id = sessionHelper.getUserId(req);
+  userService.updateSiteSetting(user_id, formData)
+  .then(result => {
+    res.json({status:'success'});
+  }).catch(err => {
+    next(err);
+  });
 }

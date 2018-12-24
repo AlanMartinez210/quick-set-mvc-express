@@ -63,7 +63,7 @@ $fontAwesome : "Font Awesome 5 Free";
 		}
 	}
 	.btn-board{
-		a.btn-prm{
+		a.btn-prm, button.btn-prm{
 			&:last-child{
 				margin-right: 0;
 			}
@@ -333,6 +333,7 @@ $fontAwesome : "Font Awesome 5 Free";
 }
 
 .label-icon-link, .label-icon-box{
+	cursor: pointer;
 	a, .link-wrap{
 		//padding: 0.4em;
 		.label-icon{
@@ -360,7 +361,11 @@ $fontAwesome : "Font Awesome 5 Free";
 			text-align: center;
 			padding: 6px 8px;
 			border-radius: 5px;
-			&._req{
+			&._matching{
+				color: $orangeL;
+				border: 1px $orangeL solid;
+			}
+			&._request{
 				color: $blueL;
 				border: 1px $blueL solid;
 			}

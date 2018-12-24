@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('recruit_bookmarks', {
+    return queryInterface.createTable('Recruit_bookmarks', {
       user_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         primaryKey: true,
@@ -13,6 +13,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('recruit_bookmarks');
+    return queryInterface.dropTable('Recruit_bookmarks');
   }
 };

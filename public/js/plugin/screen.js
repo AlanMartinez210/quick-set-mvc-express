@@ -40,17 +40,6 @@ export default class screen{
 			}
 		})
 
-	}
-	/**
-	 * コンテンツボーダー(general-ptnのみ)
-	 */
-	setContentBorder(height){
-		$(".general-ptn .main-cntnr").css("margin-top", -height);
-		$(".general-ptn .hdr-cntnr").css("padding-bottom", height);
-	}
-}
-
-
 		// メッセージチャットアクセス時のみ、bodyのスクロールを消す。
 		// if($mainFrame.hasClass("message-ptn")){
 		// 	$("body").css({"overflow": "hidden"});
@@ -62,3 +51,19 @@ export default class screen{
 		// 		scrollTop: $(".center-frame")[0].scrollHeight
 		// 	}, "fast", "swing");
 		// });
+
+
+	}
+	/**
+	 * コンテンツボーダー(general-ptnのみ)
+	 */
+	setContentBorder(height){
+		$(".general-ptn .main-cntnr").css("margin-top", -height);
+		$(".general-ptn .hdr-cntnr").css("padding-bottom", height);
+	}
+}
+
+
+		
+
+		

@@ -66,7 +66,7 @@ exports.clearExpirationDate = (user_id) => {
 }
 
 /**
- * 対象のユーザー情報を取得します。
+ * プロフィール編集画面のユーザー情報を取得します。
  * 
  * @param {string} user_id
  */
@@ -85,95 +85,52 @@ exports.getUserData = async (user_id) => {
 
 /**
  * プロフィール編集画面から入力された情報を登録します。
+ * @param user_id ユーザーID
  * @param profileData プロフィールデータ
- * id: ユーザID
  * user_name: ユーザー名
  * email: メールアドレス
  * tags: タグ
  * prefectures: 活動地域
  */
-exports.updateProfileData = (profileData) => { // <- async不要、二重になってる
-  return db.sequelize.transaction(async function (tx) { // あくまで、transaction()の引数がpromiseでなくてはいけないのでここはasyncなので、ここだけでOK
+exports.updateProfileData = (user_id, profileData) => {
+  return db.sequelize.transaction(async function (tx) {
     const options = {};
 
     // オプションにトランザクションを追加
     options.transaction = tx;
 
+    // タグの登録/更新
     let tagsResult = {};
-    if (!_.isEmpty(profileData.tag_field)){
-      tagsResult = await function(){
+    if (!_.isEmpty(profileData.tag_field)) {
+      tagsResult = await
+
+      function () {
         const upsertPromise = profileData.tag_field.map(v => db.Tag.upsertTag(v, options));
         return Promise.all(upsertPromise);
       }();
     }
 
-    if(!_.isEmpty(tagsResult)){
+    // タグID取得
+    if (!_.isEmpty(tagsResult)) {
       profileData.tag_field = tagsResult.map(v => v.tag_id);
     }
 
-    if(!_.isEmpty(profileData.prefectures_field)){
+    // 都道府県IDを文字列から数値に変換
+    if (!_.isEmpty(profileData.prefectures_field)) {
       profileData.prefectures_field = profileData.prefectures_field.map(v => Number(v))
     }
 
-    options.where = { user_key: profileData.user_id };
+    // プロフィール情報の更新
+    options.where = {
+      id: user_id
+    };
     const values = {
       user_name: profileData.user_name,
       email: profileData.email,
       tags: profileData.tag_field,
       prefectures: profileData.prefectures_field
     }
-
     return await db.User.update(values, options);
-    
-    // // タグの登録/更新
-    // const tagsResult = await function () {
-    //   if (profileData.tag_field.length) return;
-    //   const upsertPromise = [];
-    //   profileData.tag_field.forEach(val => {
-    //     upsertPromise.push(db.Tag.upsertTag(val, {
-    //       transaction: tx
-    //     }));
-    //   })
-    //   return Promise.all(upsertPromise);
-    // }();
-
-    // // タグID取得
-    // await // promiseでない処理なら、awaitはいらない
-    // function () {
-    //   if (!tagsResult) return;
-    //   const tag_id_arr = []; // 新しい配列を用意して、forEachに入れるならmapを使う
-    //   tagsResult.forEach(obj => {
-    //     tag_id_arr.push(obj.tag_id);
-    //   });
-    //   profileData.tag_field = tag_id_arr;
-    // }();
-
-    
-    // // 都道府県IDを文字列から数値に変換
-    // const prefecture_id_arr = []; // 新しい配列を用意して、forEachに入れるならmapを使う
-    // profileData.prefectures_field.forEach(prefecture_id => {
-    //   prefecture_id_arr.push(Number(prefecture_id));
-    // });
-    // profileData.prefectures_field = prefecture_id_arr;
-
-    // // プロフィール情報の更新
-    // const profileResult = await
-    // function () {
-    //   options = {
-    //     where: {
-    //       user_key: profileData.user_id
-    //     },
-    //     transaction: tx
-    //   };
-    //   const values = {
-    //     user_name: profileData.user_name,
-    //     email: profileData.email,
-    //     tags: profileData.tag_field,
-    //     prefectures: profileData.prefectures_field
-    //   };
-    //   return db.User.update(values, options);
-    // }();
-
   });
 }
 /**
@@ -182,14 +139,29 @@ exports.updateProfileData = (profileData) => { // <- async不要、二重にな�
  * @returns サイト設定画面表示データ
  */
 exports.getSiteSettingData = async (user_id) => {
-  const userData = await db.User.getUserById(user_id, {
+  const userData = await db.User.findById(user_id, {
     attributes: ['allow_bookmark_notification']
   });
   // ユーザーが存在しない場合はエラー
   if (!userData) {
     throw new errorHelper().setWindowMsg('E00000');
   }
-  return {
-    allow_bookmark_notification: userData.allow_bookmark_notification == null ? 0 : userData.allow_bookmark_notification
-  }
+  return userData;
+}
+
+/**
+ * サイト設定画面から入力された情報を登録します。
+ * @param id ユーザID
+ * @param formData フォームから入力されたデータ
+ * allow_bookmark_notification: ブックマーク通知許可
+ */
+exports.updateSiteSetting = (user_id, profileData) => {
+  const values = {
+    allow_bookmark_notification: profileData.allow_bookmark_flg === 'on' ? '1' : '0'
+  };
+  const options = {};
+  options.where = {
+    id : user_id
+  };
+  return db.User.update(values, options);
 }

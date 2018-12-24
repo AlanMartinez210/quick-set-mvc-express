@@ -64,6 +64,7 @@ const hashHelper = require("./common/helper/hashHelper");
  *    s(スケジュールデータ)
  *    m(マッチングデータ)
  *    r(レビューデータ)
+ * 
  */
 router.get('/test/:type/:mode', (req, res, next) => {
   const sessionHelper = require('./common/helper/sessionHelper');
@@ -117,7 +118,17 @@ router.get('/test/:type/:mode', (req, res, next) => {
       res.redirect('/');
     })
   }
-
+  else if(data_mode == "l"){
+    console.log("データタイプ -> レビューデータ ");
+    const rp = new reviewPattern();
+    bp.genTestData().then(results => {
+      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
+    })
+    .then(results => {
+      sessionHelper.setUserData(req, results[0]);
+      res.redirect('/');
+    })
+  }
 
   // prom
   // .then(results => {

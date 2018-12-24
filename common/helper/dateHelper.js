@@ -17,12 +17,12 @@ exports.getDate = (sequelize_date = new Date(), time_expect = false) => {
 /**
  * 日付情報のみを設定した日付を取得します。
  * ※ 時間は(00:00:00+9:00)がデフォルトです
- * 
+ *
  * @param {Date} sequelize_date
  */
 exports.getDateOnly = (sequelize_date = new Date()) => {
   return this.getDate(sequelize_date, true);
-} 
+}
 
 /**
  * 日付変換可能な日付文字列のみmomentオブジェクトに変換します。
@@ -71,6 +71,13 @@ exports.getWeek = (week_id) => {
 }
 
 /**
+ * 一番過去の日付を取得します
+ */
+exports.max = (...args)=>{
+  return moment.max(args);
+}
+
+/**
  * 日付が格納されたオブジェクトを取得します。
  *   - `default` 現在の日付を取得します。
  * @returns {Date} {year, month, day, h, m, s}
@@ -81,7 +88,6 @@ function _getDate (datestr, locale = "ja") {
   // 拡張メソッドを定義
   mDt.trueMonth = function(addZero = false){
     return this.month() + 1;
-
   }
 	return mDt
 }

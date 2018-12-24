@@ -1,7 +1,6 @@
 const dateHelper = require('../common/helper/dateHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
 const recruitlistService = require('../services/recruitlistService');
-const recruitBookmarkService = require('../services/recruitBookmarkService');
 const vo_recruitlist = require("../viewObjects/recruitlist");
 const c2Util = require("../services/c2link4DiService");
 
@@ -13,18 +12,34 @@ const content_id = "recruit";
  * @param {*} req
  * @param {*} res
  */
-exports.index = async(req, res, next)=>{
+exports.index = (req, res, next)=>{
 	const render_obj = res.render_obj;
+	const form_data = req.form_data;
 	const user_type = sessionHelper.getUserType(req);
+	const user_id = sessionHelper.getUserId(req);
+
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
+	render_obj.bodyData.isToday = false;
 
-	const data = { user_type: user_type };
+	const search_param = { user_type: user_type }
 
-	const recruitList = await recruitlistService.getRecruitList(data).catch(err => next(err));
+	// 当日
+	if(form_data.type === 'today'){
+		render_obj.title = render_obj.title + " (当日)";
+		render_obj.contentId = render_obj.contentId + "Today";
 
-	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruitList);
-	res.render('recruitList/index', render_obj);
+		// 日付検索に当日を追加
+		search_param.search_date_from = dateHelper.getDate().startOf('day');
+		search_param.search_date_to = search_param.search_date_from;
+		render_obj.bodyData.isToday = true;
+	};
+
+	recruitlistService.getRecruitList(user_id, search_param)
+	.then(recruitList=>{
+		render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruitList, search_param);
+		res.render('recruitList/index', render_obj);
+	}).catch(next);
 };
 
 /**
@@ -33,52 +48,39 @@ exports.index = async(req, res, next)=>{
  * @param {*} req
  * @param {*} res
  */
-exports.getSearchRecruit = async(req, res, next)=>{
-	const recruit_search_info = req.form_data;
-
+exports.getSearchRecruit = (req, res, next)=>{
 	const render_obj = res.render_obj;
+	const form_data = req.form_data;
 	const user_type = sessionHelper.getUserType(req);
+	const user_id = sessionHelper.getUserId(req);
+	let search_param = {};
 
 	render_obj.title = c2Util.getRecruitListTitle(user_type);
 	render_obj.contentId = content_id;
+	render_obj.bodyData.isToday = false;
 
-	const search_param = Object.assign({
-		date_key: dateHelper.getDate(),
-		user_type: user_type
-	}, recruit_search_info);
+	// 検索項目の作成
+	search_param.date_key = dateHelper.getDate();
+	search_param.user_type = user_type;
+	search_param = Object.assign(search_param, form_data);
 
-	const recruit_list = await recruitlistService.getRecruitList(search_param).catch(err => next(err));
+	// 当日
+	if(form_data.type === 'today'){
+		render_obj.title = render_obj.title + " (当日)";
+		render_obj.contentId = render_obj.contentId + "Today";
 
-	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruit_list, recruit_search_info);
-	res.render('recruitList/index', render_obj);
-};
+		render_obj.bodyData.isToday = true;
+	}
 
-/**
- * 募集/予定一覧の表示(当日のみ)
- *
- * @param {*} req
- * @param {*} res
- */
-exports.indexToday = async(req, res, next)=>{
-	const render_obj = res.render_obj;
-	const user_type = sessionHelper.getUserType(req);
+	recruitlistService.getRecruitList(user_id, search_param)
+	.then(recruit_list=>{
+		// urlパラメーターを検索情報に含める
+		const param_str = String(req.url).match(/&.*/);
+		search_param.search_url_param = param_str ? param_str[0] : "";
 
-	const recruit_search_info = {
-		search_date_from: dateHelper.getDate().startOf('day'),
-		search_date_to: dateHelper.getDate().startOf('day'),
-	};
-
-	render_obj.title = c2Util.getRecruitListTitle(user_type) + " (当日)";
-	render_obj.contentId = content_id + "Today";
-
-	const search_param = Object.assign(recruit_search_info, {
-		date_key: dateHelper.getDate(),
-		user_type: user_type,
-	});
-
-	const recruit_list = await recruitlistService.getRecruitList(search_param);
-	render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruit_list, recruit_search_info);
-	res.render('recruitList/index', render_obj);
+		render_obj.bodyData = new vo_recruitlist.recruit_list_page(recruit_list, search_param);
+		res.render('recruitList/index', render_obj);
+	}).catch(next);
 };
 
 /**
@@ -88,10 +90,10 @@ exports.indexToday = async(req, res, next)=>{
 exports.postRecruitBookmark = (req, res, next)=>{
   const user_id = sessionHelper.getUserId(req);
   const schedule_id = req.form_data.schedule_id;
-  const mode    = req.form_data.mode; // 登録する場合 1, 削除する場合 2
-  recruitBookmarkService.process(user_id, schedule_id, mode)
+	const mode    = req.form_data.mode; // 登録する場合 1, 削除する場合 0
+
+  recruitlistService.switchingBookmark(user_id, schedule_id, mode)
   .then(()=>{
     res.json({status:'success'});
-  });
-
+  }).catch(next);
 };

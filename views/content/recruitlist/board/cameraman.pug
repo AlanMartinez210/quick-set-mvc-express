@@ -10,7 +10,7 @@
         span: |#{recruit_item.good_review_num}
       //- ブックマーク
       .bookmark-box.shadow-l
-        input(id=`bookmark${recruit_item.schedule_id}`, type="checkbox", checked=(recruit_item.bookmark_flg ? "checked" : undefined ))
+        input(id=`bookmark${recruit_item.schedule_id}`, type="checkbox", data-schedule_id=recruit_item.schedule_id checked=(recruit_item.bookmark_flg ? "checked" : undefined ))
         label(for=`bookmark${recruit_item.schedule_id}`)
 
     .inner-right
@@ -26,7 +26,7 @@
             a(href="http://") #{tag.tag_name}
 
   .board-ftr._s.flex._c._jc
-    a.btn-prm.link-btn.st-line-b.shadow-l.st-mr(name="openRecruitDetail" data-schedule_id=recruit_item.schedule_id)
+    button.btn-prm.link-btn.st-line-b.shadow-l.st-mr(name="openRecruitDetail" data-schedule_id=recruit_item.schedule_id)
       span: |詳細表示
-    a.btn-prm.link-btn.st-back-b.shadow-l(type="submit", name="doPostRequest", data-schedule_id=recruit_item.schedule_id)
+    button.btn-prm.link-btn.st-back-b.shadow-l(type="submit", name="doPostRequest", data-schedule_id=recruit_item.schedule_id)
       span: |依頼する

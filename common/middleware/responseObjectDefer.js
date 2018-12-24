@@ -30,7 +30,7 @@ module.exports = (req, res, next) =>{
       get session() {return session},
       //
       get userType(){return session.user ? session.user.user_type : ""},
-      get userId(){return session.user ? session.user.userid : ""},
+      get userId(){return session.user ? session.user.id : ""},
       get userName(){return session.user ? session.user.user_name : ""},
       //
       get title() {return header.title},

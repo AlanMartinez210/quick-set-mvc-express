@@ -107,12 +107,12 @@ exports.getUserData = (req, res, next) => {
 	// ユーザーID(user_key)
 	const user_id = req.form_data.user_id;
 	userService.getUserData(user_id)
-	.then(instance => {
-		res.json(new generalVO.userInfo(instance))
-	})
-	.catch(err=>{
-    next(err);
-  });
+		.then(instance => {
+			res.json(new generalVO.userInfo(instance))
+		})
+		.catch(err => {
+			next(err);
+		});
 }
 
 /**
@@ -120,11 +120,14 @@ exports.getUserData = (req, res, next) => {
  */
 exports.postUserUpdate = (req, res, next) => {
 	const form_data = req.form_data;
-	userService.updateProfileData(form_data)
-  .then(results => {
-    res.json({status:'success'});
-  }).catch(err => {
-    next(err);
-  });
-
+	//ユーザーIDをセッションから取得
+	const user_id = sessionHelper.getUserId(req);
+	userService.updateProfileData(user_id, form_data)
+		.then(results => {
+			res.json({
+				status: 'success'
+			});
+		}).catch(err => {
+			next(err);
+		});
 }

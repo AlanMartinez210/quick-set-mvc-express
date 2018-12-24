@@ -1,6 +1,3 @@
-- const today = false;
-- const enumPrefList = self.bodyData.recruit_search_info.enumPrefList;
-- const enumShotType = self.bodyData.recruit_search_info.enumShotType;
 #searchModal(data-modal="hide")
   form(method="post", action="", name="recruitSearchForm")
     .board-prm
@@ -9,14 +6,14 @@
         .attention-prm
           p
             span: |入力した内容で表示する項目を絞ります。
-
-        - if(!today){
+          
+        - if(!self.bodyData.isToday){
         .label-input-box._mbs#box_search_date
           .label-box
             p.main-label: |日付
           .input-box._s.flex._c
             i.icon-input.far.fa-calendar.fa-fw
-            input(type="text", data-datepicker, name="search_date_from", readonly="true" placeholder="ここを選択", data-inputclear="dateInput")
+            input(type="text", data-datepicker, name="search_date_from", readonly="true", placeholder="ここを選択", data-inputclear="dateInput")
             span: |～&nbsp;
             i.icon-input.far.fa-calendar.fa-fw
             input(type="text", data-datepicker, name="search_date_to", readonly="true", placeholder="ここを選択", data-inputclear="dateInput")
@@ -25,6 +22,17 @@
         .option-box.flex._jr
           span.option-btn.st-line-b(name="inputClear" data-inputclear="dateInput")
             |日付をクリア
+        - } else {
+        .label-input-box._mbs#box_search_date
+          .label-box
+            p.main-label: |日付
+          .input-box._s.flex._c
+            i.icon-input.far.fa-calendar.fa-fw
+            input(type="text", name="search_date_from", readonly="true")
+            span: |～&nbsp;
+            i.icon-input.far.fa-calendar.fa-fw
+            input(type="text", name="search_date_to", readonly="true")
+          p.bottom-label
         - }
 
         .label-input-box._mbs#box_prefectures_field

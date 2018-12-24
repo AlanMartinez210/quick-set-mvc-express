@@ -11,7 +11,7 @@ module.exports = {
 		in: 'body',
 		isIn: {
 			errorMessage: 'E00008',
-			options: [['1','2']],
+			options: [['1','0']],
 		},
 		isEmpty: {
 			errorMessage: `E00008`,

@@ -2,60 +2,82 @@
  * マッチング一覧中身
  */
 class matching_item{
-  constructor({
-    matching_id = "",
-    icon_url = "",
-    user_name = "",
-    status_type = {id: "", name:""},
-    datetime_info = {/* moment */}
-  }){
-    this.matching_id = matching_id;
-    this.icon_url = icon_url;
-    this.user_name = user_name;
-    this.status_type = status_type;
-    this.datetime_info = datetime_info;
+  constructor(isMine, user, matching){
+    this.isMine = isMine;
+
+    this.matching_id = matching.get('id');
+    this.schedule_id = matching.get('schedule_id');
+    this.icon_url = user.get('icon_url');
+    this.user_name = user.get('user_name');
+    this.status_type = matching.get('status');
+    const d = matching.get('updatedAt')
+    this.datetime_info = {
+      key: d.format("L"),
+      year: d.year(),
+      month: d.trueMonth(),
+      day: d.date(),
+      week: d.format('ddd'),
+      hour: d.hour(),
+      minute: d.minute(),
+      seconds: d.second(),
+    }
   }
 };
 /**
  * マッチング履歴中身
  */
 class matching_history_item{
-  constructor({
-    matching_id = "",
-    icon_url = "",
-    date_info = "",
-    user_name = ""
-  }){
-    this.matching_id = matching_id;
-    this.icon_url = icon_url;
-    this.date_info = date_info;
-    this.user_name = user_name;
+  constructor(isMine, user, matching){
+    this.isMine = isMine;
+
+    this.matching_id = matching.get('id');
+    this.icon_url = user.get('icon_url');
+    const d = matching.get('updatedAt');
+    this.date_info = {
+      key: d.format("L"),
+      year: d.year(),
+      month: d.trueMonth(),
+      day: d.date(),
+      week: d.format('ddd')
+    }
+    this.user_name = user.get('user_name');
   }
 };
 
 module.exports = {
+  /**
+   * 
+   * 
+   * @param {String} user_id ログイン者のユーザーID
+   */
   matching_page: class {
     constructor(user_id, matchingList, matchingHistoryList){
-      this.matching_list = matchingList.rows.map(matching=>{
-        // 自分が送ったマッチングと受け取ったマッチングで表示する項目を分ける
-        const user = user_id!=matching.get('user_id')?matching.get('user'):matching.get('to_user');
-        return new matching_item({
-          matching_id: matching.get('id'),
-          icon_url: user.get('icon_url'),
-          user_name: user.get('user_name'),
-          status_type: matching.get('status'),
-          datetime_info: matching.get('updatedAt'),
-        });
+      this.matching_list = matchingList.rows.map(matching => {
+
+        let isMine = false;
+        let user = matching.get('user');
+
+        // 自分とuser_idが同じだったら
+        if(user_id == matching.get('user_id')){
+          isMine = true;
+          user = matching.get('to_user');
+        }
+
+        return new matching_item(isMine, user, matching);
       });
+
       this.matching_history = matchingHistoryList.rows.map(matching=>{
-        // 自分が送ったマッチングと受け取ったマッチングで表示する項目を分ける
-        const user = user_id!=matching.get('user_id')?matching.get('user'):matching.get('to_user');
-        return new matching_history_item({
-          matching_id: matching.get('id'),
-          icon_url: user.get('icon_url'),
-          user_name: user.get('user_name'),
-          date_info: matching.get('updatedAt'),
-        });
+
+        let isMine = false;
+        let user = matching.get('user');
+
+        // 自分とuser_idが同じだったら
+        if(user_id == matching.get('user_id')){
+          isMine = true;
+          user = matching.get('to_user');
+        }
+
+        return new matching_history_item(isMine, user, matching);
       });
     }
   },

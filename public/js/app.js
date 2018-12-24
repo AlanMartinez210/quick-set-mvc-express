@@ -326,7 +326,6 @@ export default class myApp extends baseApp {
     // 同期版
     if(e.data.onOpenBrefore){
       this.onShowProgress();
-      
       e.data.onOpenBrefore(e);
       this.onHideProgress();
     }

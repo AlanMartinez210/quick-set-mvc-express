@@ -58,7 +58,7 @@ module.exports = {
 			errorMessage: 'E00011,半角数字,50',
 			options: value =>{
 				// 値が存在する時に日付形式チェックをする
-				return value.length == 0 || _.isNumber(value);
+				return value ? _.isNumber(Number(value)) : true;
 			}
 		}
 	},
@@ -68,7 +68,7 @@ module.exports = {
 			errorMessage: 'E00011,半角数字,50',
 			options: value =>{
 				// 値が存在する時に日付形式チェックをする
-				return value.length == 0 || _.isNumber(value);
+				return value ? _.isNumber(Number(value)) : true;
 			}
 		}
 	}

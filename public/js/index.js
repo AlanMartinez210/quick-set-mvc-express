@@ -99,6 +99,7 @@ function setDesignPtn(cntId){
   let designPtn = "general";
   switch (cntId){
     case "register":
+    case "message":
       designPtn = cntId;
       break;
     case "recruit_detail":

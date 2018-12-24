@@ -8,7 +8,7 @@ const c_MessageRepository = require('../models/repository/CustomRepository/messa
 exports.index = (req, res, next)=>{
 	var render_obj = res.render_obj;
 	render_obj.title = "メッセージルーム";
-	render_obj.contentId = "room";
+	render_obj.contentId = "message";
 	render_obj.bodyData.messages = [
 		{user_id:999998, message:'aaaa'},
 		{user_id:999999, message:'bbbbb'},

@@ -1,0 +1,42 @@
+-
+  var user_id = self.userId;
+  var user_type = self.userType;
+  var header_data = self.headerData;
+  var body_data = self.bodyData;
+  var backBtn = self.backBtn;
+  var main_logo = `/image/c2logo.svg`;
+
+  console.log("*******************************************************************");
+  console.log(`######## user id : ${user_id} | user type : ${user_type} ##########`);
+  console.log(`content id -> : ${self.contentId}`);
+  console.log("header data -> :");
+  console.log(header_data);
+  console.log("body data -> :");
+  console.log(body_data);
+  console.log("*******************************************************************");
+
+  var sc_menu_list = [
+    {name: "予定の管理",               id:"schedule",        type:"2"},
+    {name: "募集の管理",               id:"schedule",        type:"1"},
+    {name: "レビューの管理",           id:"review",          type:""},
+    {name: "マッチングの管理",         id:"matching",        type:""},
+    {name: "ユーザー情報設定",         id:"profile",         type:""},
+    {name: "サイト設定",               id:"site",            type:""},
+    {name: "所持機材設定",             id:"equipment",       type:"2"},
+    {name: "所持コスプレ設定",         id:"costume",         type:"1"},
+    {name: "サンプル写真設定",         id:"sample_image",    type:""},
+    {name: "外部サービス連携設定",     id:"ext_service",     type:""},
+    {name: "運営情報",                 id:"admin_info",      type:""},
+    {name: "プライバシーポリシー",     id:"privacy_policy",  type:""},
+    {name: "利用者様のデータについて", id:"about_user_data", type:""},
+    {name: "お問い合わせ",             id:"contact",         type:""},
+  ];
+
+  var gnav_menu_list = [
+    {name:'当日',       id: "recruitToday",  icon_css:"far fa-clock",    href:"/recruitlist/today"},
+    {name:'一覧',       id: "recruit",       icon_css:"far fa-calendar", href:"/recruitlist/every"},
+    {name:'あわせ募集', id: "cosgroup",      icon_css:"fas fa-users",    href:"/cosgroup"},
+    {name:'マイページ', id: "mypage",        icon_css:"far fa-user",     href:"/mypage"},
+    {name:'メッセージ', id: "message",       icon_css:"far fa-comments", href:"/message"},
+  ]
+-

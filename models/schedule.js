@@ -212,12 +212,16 @@ module.exports = (sequelize, DataTypes) => {
    *
    * @param {*} searchParam
    */
-  Schedule.getRecruitList = function(search_param, options = {}){
+  Schedule.getRecruitList = function(user_id, search_param, options = {}){
     const page_count = global.APPENV.PAGE_COUNT;
-    options = ModelOption.recruitList(search_param, options);
+    options = ModelOption.recruitList(user_id, search_param, options);
     options.limit = page_count;
     options.offset = page_count * ((search_param.page?search_param.page:1)-1);
-    options.order = [["date_key", "DESC"]];
+    options.order = [["date_key", "ASC"]];
+    options.attributes = {
+      // ブックマーク有無の条件
+      include: [[sequelize.literal(`EXISTS(select * from Recruit_bookmarks where schedule_id = schedule.id and user_id = ${user_id} )`), 'bookmark_flg']]
+    };
     return this.findAndCountAll(options);
   }
   /* == instance method == */
@@ -228,22 +232,33 @@ module.exports = (sequelize, DataTypes) => {
     /**
      * 募集一覧のoption
      */
-    recruitList: (search_param, options={})=>{
+    recruitList: (user_id, search_param, options={})=>{
       options.include = [{ all: true, nested: true}];
       options.distinct = true;
       const where = options.where = {};
-
+      where[sequelize.Op.and] = [
+        sequelize.literal(`NOT EXISTS( \
+          select * \
+          from   matchings \
+          where  schedule_id = schedule.id \
+          and    matchings.user_id = ${user_id} \
+        )`)
+      ];
       if(search_param.schedule_type){
         where.schedule_type = search_param.schedule_type;
       }
       if(search_param.search_date_from){
         if(!where.date_key)where.date_key = {};
-        where.date_key[sequelize.Op.gte] = search_param.search_date_from.toDate();
+        where.date_key[sequelize.Op.gte] = dateHelper.max(search_param.search_date_from, dateHelper.getDateOnly()).toDate();
+      }else{
+        if(!where.date_key)where.date_key = {};
+        where.date_key[sequelize.Op.gte] = dateHelper.getDateOnly().toDate();
       }
       if(search_param.search_date_to){
         if(!where.date_key)where.date_key = {};
         where.date_key[sequelize.Op.lte] = search_param.search_date_to.toDate();
       }
+      console.log("where.date_key", where.date_key);
       if(search_param.shot_type){
         where.shot_type = search_param.shot_type;
       }

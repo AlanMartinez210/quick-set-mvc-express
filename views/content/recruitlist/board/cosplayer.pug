@@ -20,7 +20,7 @@
           span: |#{recruit_item.good_review_num}
         //- ブックマーク
         .bookmark-box.shadow-l
-          input(id=`bookmark${recruit_item.schedule_id}`, type="checkbox", checked=(recruit_item.bookmark_flg ? "checked" : undefined ))
+          input(id=`bookmark${recruit_item.schedule_id}`, type="checkbox", data-schedule_id=recruit_item.schedule_id checked=(recruit_item.bookmark_flg ? "checked" : undefined ))
           label(for=`bookmark${recruit_item.schedule_id}`)
 
       .inner-right
