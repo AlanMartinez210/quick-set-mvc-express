@@ -4,32 +4,35 @@
     .board-prm
       .board-cnt
         .attention-prm
-          p: |テストユーザーさんにレビューをします。
+          p#reviewMsg: |テストユーザーさんにレビューをします。
 
-        .label-input-box#box_type
-            .label-box
-              p.main-label: |レビュー
-            .radio-box._s.flex._c._jc
-              .radio-set
-                input(type="radio", id="good", name="type", value="good")
-                label(for="good").btn-prm.st-line-bl.shadow-l.st-mr
-                  i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
-                  |GOOD!!
-              .radio-set
-                input(type="radio", id="bad", name="type", value="bad")
-                label(for="bad").btn-prm.st-line-bl.shadow-l
-                  i.icon-title-b.far.fa-thumbs-down.fa-fw.c-purple
-                  |BAD...
-            p.bottom-label
+        .label-input-box#box_review_type
+          .label-box
+            p.main-label: |レビュー
+          .radio-box._s.flex._c._jc
+            .radio-set
+              input(type="radio", id="good", name="type", value="good", checked)
+              label(for="good").btn-prm.st-line-bl.shadow-l.st-mr
+                i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+                |GOOD!!
+            .radio-set
+              input(type="radio", id="bad", name="type", value="bad")
+              label(for="bad").btn-prm.st-line-bl.shadow-l
+                i.icon-title-b.far.fa-thumbs-down.fa-fw.c-purple
+                |BAD...
+              input(type="hidden", name="select_id")
+          p.bottom-label
 
-        .label-input-box#box_remarks
+        .label-input-box#box_review_comment
           .label-box
             p.main-label: |コメント
             span.sub-text: |BAD...の時は必須入力です。
           .textarea-box._s.flex._c
-            textarea(name="remarks", rows="5")
+            textarea(name="review_comment", rows="5")
           p.bottom-label
 
-      .board-ftr._s.flex._c._jc
-        button(type="submit", name="doPost").btn-prm.st-back-b.shadow-l
+      .board-ftr._s.flex._c._jc.proc-board
+        button(type="submit", name="doPostReview", data-proc="create").btn-prm.st-back-b.shadow-l.proc-btn
           |登録
+        button(type="submit", name="doPostReview", data-proc="edit").btn-prm.st-back-b.shadow-l.proc-btn
+          |編集

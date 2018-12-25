@@ -332,8 +332,11 @@ $fontAwesome : "Font Awesome 5 Free";
 	a{padding: 0.8em;}
 }
 
-.label-icon-link, .label-icon-box{
+.label-icon-link{
 	cursor: pointer;
+}
+
+.label-icon-link, .label-icon-box{
 	a, .link-wrap{
 		//padding: 0.4em;
 		.label-icon{

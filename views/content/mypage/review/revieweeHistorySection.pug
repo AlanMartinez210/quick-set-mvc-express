@@ -12,7 +12,7 @@
     - var goodIcon = ["icon-title-b","far","fa-fw", "fa-thumbs-up","c-blue"]; // goodアイコンのcssセット
     - var badIcon  = ["icon-title-b","far","fa-fw", "fa-thumbs-down","c-purple"]; //badアイコンのcssセット
     - for(var reh of revieweeHistorys){
-      li.label-icon-link(name="editReviewBtn", data-review_id="reh.review_id")
+      li.label-icon-link(name="editReviewBtn", data-review_id=reh.review_id, data-user=reh.username)
         .link-wrap.flex._c.editReview
           .label-icon
             img

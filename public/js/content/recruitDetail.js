@@ -44,7 +44,6 @@ export default class recruitDetail{
 				this.detailHeaderDefine();
 			})
 		}
-
 	}
 
 	detailHeaderDefine(){

@@ -1,7 +1,6 @@
 const reviewService = require("../services/reviewService");
-const dateHelper = require('../common/helper/dateHelper');
-const errorHelper = require('../common/helper/errorHelper');
 const sessionHelper = require('../common/helper/sessionHelper');
+const c2Util = require('../services/c2link4DiService');
 
 const vo_review = require('../viewObjects/review');
 
@@ -14,7 +13,8 @@ const vo_review = require('../viewObjects/review');
 exports.index = function(req, res, next){
 	const render_obj = res.render_obj;
 	render_obj.contentId = "review";
-	render_obj.title = "メッセージ管理";
+	render_obj.title = "レビューの管理";
+	render_obj.backBtn = c2Util.getBackMypageBtn();
 
 	const user_id = sessionHelper.getUserId(req);
 	Promise.all([

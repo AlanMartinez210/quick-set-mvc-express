@@ -1,7 +1,7 @@
 #recruitDetailModal(data-modal="hide")
   form(method="post", action="", name="recruitDetailForm", class="recruitdetail-ptn st-radius")
 
-    .board-prm
+    .board-prm.ena-btm-margin
 
       .board-cnt._n
 
@@ -12,15 +12,20 @@
               .hdr-cnt-box.flex._c
                 .hdr-user-data
                   .user-name
-                    span: |テストユーザー
+                    span(data-dummytag="input", data-name="user_name")
                   .review-wrap.flex._c
                     i.icon-title.far.fa-thumbs-up.fa-fw.c-green
-                    span.mr(data-dummytag="input", name="good_review_num"): |10
+                    span.mr(data-dummytag="input", data-name="good_review_num")
                     i.icon-title.far.fa-thumbs-down.fa-fw.c-purple
-                    span(data-dummytag="input", name="bad_review_num"): |2
-                .recuit-btn-wrap
-                  button(type="submit", name="doRequestPost", data-requestid="").btn-prm.btn-link.st-line-w.shadow-l
-                    |依頼する
+                    span(data-dummytag="input", data-name="bad_review_num")
+                if self.contentId == "recruit"
+                  .recuit-btn-wrap
+                    button(type="submit", name="doPostRequest", data-schedule_id="").btn-prm.btn-link.st-line-w.shadow-l
+                      case Number(self.userType)
+                        when 1
+                          |依頼する
+                        when 2
+                          |応募する
 
         .main-cntnr
           .center-frame
@@ -29,25 +34,34 @@
               .board-hdr._s
                 .label-box._fb.flex._c
                   i.icon-title.far.fa-clock.fa-fw.c-blue
-                  span: |日時
+                  span: |日付
               .board-cnt
                 .label-box
-                  //- span: |#{body_data.date_info.year}/#{body_data.date_info.month}/#{body_data.date_info.day} (#{body_data.date_info.week})
-                  span: |2018/10/26
+                  span(data-dummytag="input", data-name="date_key")
+
+            .board-prm
+              .board-hdr._s
+                .label-box._fb.flex._c
+                  i.icon-title.fas.fa-camera.fa-fw.c-blue
+                  span: |撮影タイプ
+              .board-cnt
+                .label-box
+                  span(data-dummytag="input", data-name="shot_type")
+
             .board-prm
               .board-hdr._s
                 .label-box._fb.flex._c
                   i.icon-title.far.fa-flag.fa-fw.c-blue
                   span: |イベント名 or 開催地域
               .board-cnt
-                //- span: |#{body_data.event_info.title}
-                //- span.sub-text: |イベント名は設定されていません。
+                span(data-dummytag="input", data-name="event_name")
+                
               .board-ftr._s
                 .label-box._fb.flex._c
                   i.icon-title.fas.fa-link.fa-fw.c-blue
                   span: |詳細URL
               .board-ftr
-                //- a(href=body_data.date_info.url): | #{body_data.event_info.url}
+                a(target="_blank", data-dummytag="input", data-name="event_url")
 
             .board-prm
               .board-hdr._s
@@ -56,10 +70,7 @@
                   span: |開催地
               .board-cnt
                 .label-box
-                  .deco-label
-                    //- - for(let i=0;i<body_data.event_info.prefectures.length;i++){ let pref = body_data.event_info.prefectures[i];
-                    //- span: | #{pref}
-                    //- - }
+                  #prefectures_box.deco-label
 
 
             .board-prm
@@ -80,11 +91,7 @@
                   span: |レビュー評価
               .board-cnt._s
                 .group-wrap
-                  .review-wrap
-                    //- - for(let i=0;i<body_data.review_info.length;i++){ let type = body_data.review_info[i].type, comment = body_data.review_info[i].comment;
-                    //- span: | #{type}
-                    //- span: | #{comment}
-                    //- - }
+                  #review_box.review-wrap
 
             .board-prm
               .board-hdr._s
@@ -93,13 +100,7 @@
                   span: |タグ一覧
               .board-cnt
                 .label-box
-                  .deco-label
-                    //- - for(let i=0;i<body_data.event_info.tags.length;i++){ let tag = body_data.event_info.tags[i];
-                    //- span: | #{tag}
-                    //- - }
-                    //- - for(let i=0;i<body_data.user_tags.length;i++){ let tag = body_data.user_tags[i];
-                    //- span: | #{tag}
-                    //- - }
+                  #tag_box.deco-label
 
             .board-prm
               .board-hdr._s
@@ -107,8 +108,4 @@
                   i.icon-title.fas.fa-clipboard-list.fa-fw.c-blue
                   span: |備考
               .board-cnt
-                //- span: pre: | #{body_data.remarks}
-
-      .board-ftr._s.flex._c._jc
-        button(type="submit", name="doRequestPost", data-requestid="").btn-prm.st-back-b.shadow-l.proc-btn
-          |依頼する
+                span(data-dummytag="input", data-name="remarks")

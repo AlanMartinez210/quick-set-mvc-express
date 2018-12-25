@@ -15,13 +15,14 @@
       //- p.info-text: |新しいメッセージはありません
       ul.st_options
         - for(var unrl of unReviewList){
-          li.label-icon-link(name="editReviewBtn", data-matching_id=unrl.matching_id)
+          li.label-icon-link(name="editReviewBtn", data-matching_id=unrl.matching_id, data-user=unrl.username)
             .link-wrap.flex._c
               .label-icon
                 img
               .st-string-set
                 span.sub-text: |#{unrl.date_info.year}年#{unrl.date_info.month}月#{unrl.date_info.day}日(#{unrl.date_info.week})
                 p: |#{unrl.username}
+                input(type="hidden", name="username", value=unrl.username)
               i.icon-link.fas.fa-chevron-right.fa-fw
         - }
 

@@ -106,7 +106,6 @@ module.exports = (sequelize, DataTypes) => {
    * @param {*} options
    */
   Schedule.getSchedule = function(schedule_id, options = {}){
-    options.include = [{ all: true, nested: true}];
     return this.findByPk(schedule_id, options);
   };
 

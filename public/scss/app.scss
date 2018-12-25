@@ -24,6 +24,7 @@ button{ cursor: pointer; }
 .hdr-menu{transition: .3s;}
 .wrapper{position: relative;}
 .invisible{visibility: hidden;}
+.ena-btm-margin{padding-bottom: 1px;} //margin-bottomを有効にする。
 .main-cntnr{position: relative; margin-top: -24px;}
 .center-frame{
 	width: calc(100% - 32px);

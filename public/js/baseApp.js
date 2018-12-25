@@ -119,8 +119,8 @@ export class baseApp {
             const $formEle = $form.find("input,select,textarea,radio,checkbox,[data-dummytag='input']");
             $formEle.each(function(){
               const $t = $(this);
-              const item = formSetObj[$t.prop("name")];
-              if(!item) return true;
+              const item = formSetObj[$t.prop("name")] || formSetObj[$t.data("name")];
+              if(_.isUndefined(item) || _.isNull(item)) return true;
               switch($t.prop("tagName")){
                 case "INPUT":
                 case "TEXTAREA":
@@ -151,6 +151,12 @@ export class baseApp {
                     $t.text(item);
                   }
                   break;
+                case "A":
+                  if($t.data("dummytag") == "input"){
+                    $t.text(item);
+                    $t.attr("href", item);
+                  }
+                break;
               }
             })
           }

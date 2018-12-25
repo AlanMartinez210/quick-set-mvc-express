@@ -5,6 +5,7 @@ import _ from 'lodash';
 export default class recruit {
 	constructor () {
 		this.recruitSearchForm = $('[name=recruitSearchForm]');
+		this.recruitDetailForm = $('[name=recruitDetailForm]');
 	}
 	ready(){
 		this.prefecture = new plugin_prefecture(this.app);
@@ -77,28 +78,8 @@ export default class recruit {
 		})
 
 		// 依頼/応募するボタン
-		$recruitSection.on('click', doPostRequestBtn, (event) => {
-			const sendData = $(event.currentTarget).data();
-
-			this.app.showWarnDialog({
-				name: "checkRecruit",
-				title: this.app.config.isCos() ? "依頼の確認" : "応募の確認",
-				text:　this.app.config.isCos() ? "依頼します。よろしいですか？" : "応募します。よろしいですか？" 
-			})
-			.closelabel("いいえ")
-			.addBtn({
-				callback: () => {
-					this.app.sendPost("/mypage/matching/request", sendData)
-					.done(result => {
-						this.app.onShowProgress()
-						this.app.hideDialog();
-						
-						this.app.refresh({showInfo: "処理が完了しました。"});
-					})
-				}
-			})
-
-		});
+		$recruitSection.on('click', doPostRequestBtn, (event) => this.sendReqest(event));
+		this.recruitDetailForm.on('click', doPostRequestBtn, (event) => this.sendReqest(event));
 
 		// 募集詳細モーダルを開く
 		$recruitSection.on('click', opneRecruitDetailBtn, {
@@ -106,9 +87,28 @@ export default class recruit {
 			onSyncOpenBrefore: (resolve, reject, event) => {
 				// 募集IDの取得
 				const schedule_id = event.currentTarget.dataset.schedule_id;
+				// ボタンにセット
+				this.recruitDetailForm.find(doPostRequestBtn).attr("data-schedule_id", schedule_id)
+
 				// 値を取りに行く
 				this.getRecruitDetail(schedule_id)
 				.then(res => {
+					this.recruitDetailForm.setValue(res);
+					
+					// 日付
+					this.recruitDetailForm.find("[data-name=date_key]").text(`${res.date_info.year}年${res.date_info.month}月${res.date_info.day}日(${res.date_info.week})`)
+					
+					// タグ
+					const $tags = this.recruitDetailForm.find("#tag_box");
+					$tags.empty();
+					res.tags.forEach(tag => $tags.append(`<span>${tag}</span>`));
+
+					// 開催地
+					const $prefectures = this.recruitDetailForm.find("#prefectures_box");
+					$prefectures.empty();
+					res.prefectures.forEach(pref => $prefectures.append(`<span>${pref.prefecture_name}</span>`));
+					
+
 					resolve();
 				})
 			}
@@ -142,5 +142,29 @@ export default class recruit {
 
 		// URLの書き換えを行う。
 		location.href = path;
+	}
+
+	sendReqest(event){
+		const sendData = $(event.currentTarget).data();
+
+		this.app.showWarnDialog({
+			name: "checkRecruit",
+			title: this.app.config.isCos() ? "依頼の確認" : "応募の確認",
+			text:　this.app.config.isCos() ? "依頼します。よろしいですか？" : "応募します。よろしいですか？" 
+		})
+		.closelabel("いいえ")
+		.addBtn({
+			callback: () => {
+				this.app.sendPost("/mypage/matching/request", sendData)
+				.done(result => {
+					this.app.onShowProgress()
+					this.app.hideDialog();
+					
+					this.app.refresh({showInfo: "処理が完了しました。"});
+				})
+			}
+		});
+
+		return false;
 	}
 }

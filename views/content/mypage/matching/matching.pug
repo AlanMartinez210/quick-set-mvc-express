@@ -37,7 +37,7 @@
             i.icon-btn-s.fas.fa-times.fa-fw
             span: |取消
 
-          if md.isMine
+          if md.isMine || md.status_type.code == 3
             a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-schedule_id=md.schedule_id, data-proc="confirm")
               i.icon-btn-s.far.fa-check-circle.fa-fw
               span: |確認

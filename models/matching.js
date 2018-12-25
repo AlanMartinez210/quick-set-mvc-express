@@ -1,7 +1,6 @@
 'use strict';
 const enumMatchingStatus = require('../services/c2link4DiService').enumMatchingStatus();
 const dateHelper = require('../common/helper/dateHelper');
-const errorHelper = require("../common/helper/errorHelper");
 
 const PAGE_COUNT = global.APPENV.PAGE_COUNT;
 
@@ -122,8 +121,8 @@ module.exports = (sequelize, DataTypes) => {
    * マッチング履歴を取得
    */
   Matching.getMatchingHistoryList = function(user_id, options={}){
-   options = ModelOption.matchingHistoryList(user_id, options);
-   return this.findAndCountAll(options);
+    options = ModelOption.matchingHistoryList(user_id, options);
+    return this.findAndCountAll(options);
   };
 
 

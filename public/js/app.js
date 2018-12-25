@@ -167,6 +167,7 @@ export default class myApp extends baseApp {
         const err_json = res.responseJSON;
         if(err_json){
           this.hideDialog();
+
           if(err_json.http_status === 500 || err_json.http_status === 401){
             this.showClearAll();
             /**
@@ -174,12 +175,17 @@ export default class myApp extends baseApp {
              * 画面遷移を行う。
              * そうでなければそのままエラーメッセージをインスタントメッセージ表示する。
              */
+            if(err_json.http_status === 401){
+              location.href = "/register?unauthorized=true";
+              return;
+            }
+
             if(err_json.redirect_to){
-              location.href = error.redirect_to;
+              location.href = error.redirect_to
+              return;
             }
-            else{
-              this.showErrMsg(err_json.window_msg);
-            }
+
+            this.showErrMsg(err_json.window_msg);
           }
           else{
             // 項目にエラーを反映する。
@@ -193,9 +199,9 @@ export default class myApp extends baseApp {
         // 万が一、err_Jsonがなければ致命エラー
 
         // TODO ログアウト処理
-        // setTimeout(function(){
-        //   location.href = "/register";
-        // }, 3000)
+        setTimeout(function(){
+          location.href = "/register";
+        }, 3000)
         
         this.showErrDialog({
           name: "fatalerr",
