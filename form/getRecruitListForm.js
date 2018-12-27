@@ -3,11 +3,9 @@ const dateHelper = require('../common/helper/dateHelper');
 module.exports = {
 	type:{
 		in: 'params',
-		custom: {
-			errorMessage: 'E00015',
-			options: value =>{
-				return value === "every" || value === "today"
-			}
-		}
+		isIn: {
+			errorMessage: "E00017",
+			options: [['every', 'today']]
+		} 
 	}
 };

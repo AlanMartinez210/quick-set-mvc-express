@@ -41,7 +41,7 @@ exports.getScheduleData = async (schedule_id) => {
       { model: db.Schedule_prefecture }
     ];
     const instance = await db.Schedule.getSchedule(schedule_id, options);
-    if(!instance) return Promise.reject(new errorHelper().setWindowMsg("E00000"));
+    if(!instance) return Promise.reject(new errorHelper({code: "E00000"}));
     
     return instance.toJSON();
   }

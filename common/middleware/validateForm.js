@@ -22,14 +22,30 @@ module.exports = {
     }else{
       // バリデーションエラーの作成
       const vaild_err_arr = results.array();
-      console.log("---- valid error ----", vaild_err_arr);
-      const eh = new errorHelper({http_status: 400});
-      vaild_err_arr.forEach(ele => {
+      console.log('vaild_err_arr: ', vaild_err_arr);
+
+      /** =====================================================================================
+       * fatal -> このエラーが発生した場合を致命的エラーとし、500で落とす。
+       * ※これらのエラーコードはID関係等の通常操作では欠落しないパラメーターに対して設定する。
+       * location === params -> 不正URL扱いとし、404で落とす。
+       ========================================================================================*/
+      let eh = new errorHelper({ status: 400, code: "E00018" });
+      for(const err of vaild_err_arr){
+        if(err.msg === 'fatal'){
+          eh = new errorHelper({ status: 500, logout: true });
+          break;
+        }
+
+        if(err.location === 'params'){
+          eh = new errorHelper({ status: 404 });
+          break;
+        }
+
         eh.addErrorData({
-          view_id: ele.param,
-          code: ele.msg
+          view_id: err.param,
+          code: err.msg
         })
-      })
+      }
       next(eh);
     }
   }

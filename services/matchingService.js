@@ -34,7 +34,7 @@ exports.postRequest = (user_id, schedule_id) => {
   return db.Matching.postRequest(user_id, schedule_id)
   .catch(err=>{
     if(err.errors[0].path == 'matchings_user_id_schedule_id'){
-      throw new errorHelper().setWindowMsg("L00002");
+      throw new errorHelper({code: "L00002"});
     }
     throw err;
   });
@@ -50,7 +50,7 @@ exports.postRequest = (user_id, schedule_id) => {
 exports.postConsent = async (user_id, matching_id) => {
   const canConsent = await db.Matching.canPostConsent(user_id, matching_id);
   if(!canConsent){
-    throw new errorHelper().setWindowMsg("L00003");
+    throw new errorHelper({code: "L00003"});
   }
   await db.Matching.updateMatchingStatus(
     matching_id,
@@ -68,7 +68,7 @@ exports.postConsent = async (user_id, matching_id) => {
 exports.postReject = async (user_id, matching_id) => {
   const canReject = await db.Matching.canPostReject(user_id, matching_id);
   if(!canReject){
-    throw new errorHelper().setWindowMsg("L00005");
+    throw new errorHelper({code: "L00005"});
   }
   await db.Matching.updateMatchingStatus(
     matching_id,

@@ -44,14 +44,14 @@ exports.switchingBookmark = (user_id, schedule_id, mode)=>{
       .catch(err=>{
         if(err.name == 'SequelizeUniqueConstraintError'){
           // ブックマーク済みの場合
-          return Promise.reject(new errorHelper().setWindowMsg("E00016"));
+          return Promise.reject(new errorHelper({code: "E00016"}))
         }
-        return Promise.reject(new errorHelper().setWindowMsg("E00016"));
+        return Promise.reject(new errorHelper({code: "E00016"}))
       });
     case 0:
       return db.Recruit_bookmark.deleteBookmark(user_id, schedule_id)
       .catch(()=>{
-        return Promise.reject(new errorHelper().setWindowMsg("E00000"));
+        return Promise.reject(new errorHelper({code: "E00000"}))
       });
   }
 }

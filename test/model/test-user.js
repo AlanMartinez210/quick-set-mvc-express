@@ -209,7 +209,7 @@ describe('user model test', function () {
     it('存在しないユーザーIDを指定した場合にエラーになる。', () => {
       return db.User.getProfileEditViewData(100)
       .catch(err=>{
-        expect(err.window_msg).to.equal('エラーが発生しました。');
+        expect(err.inst.message).to.equal('エラーが発生しました。');
       })
     });
 	});

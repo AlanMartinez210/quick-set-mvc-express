@@ -1,6 +1,9 @@
-/** 依頼するフォーム */
 module.exports = {
 	schedule_id: {
-		in: 'body'
+		in: 'body',
+		isEmpty: { 
+			errorMessage: 'fatal',
+			negated: true
+		},
 	},
 };

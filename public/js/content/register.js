@@ -31,14 +31,6 @@ export default class register {
 			return this.login(e);
 		});
 	}
-
-	load(){
-		const url = this.app.getUrlParam();
-		if(url.unauthorized){
-			this.app.showErrMsg("ログインの有効期間が切れました、再度ログインをお願いします")
-		}
-	}
-
 	registerHeaderDefine(margin){
 		$("#register_bg_i_size").height($(window).height() - ((margin/2) + 16));
 		$(".register-ptn").find(".main-cntnr").css({

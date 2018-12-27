@@ -21,7 +21,7 @@ exports.setUserData = function(req, userObj, callback){
  */
 exports.deleteSession = function(req, callback = function(err){}){
 	if(!_.isObject(req)) throw new Error('request object does not exist');
-	req.session.destroy(callback);
+	if(req.session) req.session.destroy(callback);
 }
 
 /**

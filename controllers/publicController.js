@@ -9,7 +9,6 @@ const c2Util = require("../services/c2link4DiService");
 
 const db = require("../models/index");
 
-
 /**
  * 運営情報の表示
  *
@@ -22,8 +21,7 @@ exports.getAdminInfo = (req, res, next) => {
 	render_obj.title = "運営情報";
 	render_obj.backBtn = c2Util.getBackMypageBtn();
 
-	render_obj.bodyData = {
-	};
+	render_obj.bodyData = {};
 	res.render('public/adminInfo',render_obj);
 }
 

@@ -111,7 +111,7 @@ describe('MatchingService test', ()=>{
       try{
         await matchingService.postRequest(2, 1);
       }catch(err){
-        expect(err).to.deep.equal(new errorHelper().setWindowMsg('L00002'));
+        expect(err).to.deep.equal(new errorHelper({code: "L00002"}));
       }
       stub.restore();
     });
@@ -140,7 +140,7 @@ describe('MatchingService test', ()=>{
       try{
         await matchingService.postRequest(2, 1);
       }catch(err){
-        expect(err).to.deep.equal(new errorHelper().setWindowMsg('L00002'));
+        expect(err).to.deep.equal(new errorHelper({code: "L00002"}));
       }
       stub.restore();
     });
@@ -191,7 +191,7 @@ describe('MatchingService test', ()=>{
       try{
         const results = (await matchingService.postReject(user_id, matching_id));
       }catch(err){
-        expect(err).to.deep.equal(new errorHelper().setWindowMsg('L00005'));
+        expect(err).to.deep.equal(new errorHelper({code: "L00002"}));
       }
       
       stub.findOne.restore();

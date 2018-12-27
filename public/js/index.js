@@ -81,6 +81,10 @@ c2.ready(() => {
   });
   c2.inputClear();
 
+  // test
+  $(".ajaxtest").click(() => {
+    c2.sendGet("/t/e/403", {});
+  })
 });
 
 // window load complated run function.

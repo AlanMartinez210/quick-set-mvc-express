@@ -152,62 +152,56 @@ export default class myApp extends baseApp {
       dataType: (option.dataType||'json'),
       timeout : 30000,
       cache: false,
-      header: {
-
-      }
+      header: {}
     }
+
     if(Object.keys(data).length > 0) Object.assign(ajaxOption, {data: JSON.stringify(data)});
-      console.log(" -> send options: ", ajaxOption);
-      return $.ajax(url, ajaxOption)
-        .always(res => {
-        this.onHideProgress();
-        console.log(" -> response params: ", res)
-      })
-      .fail(res => {
-        const err_json = res.responseJSON;
-        if(err_json){
-          this.hideDialog();
+    console.log(" -> send options: ", ajaxOption);
 
-          if(err_json.http_status === 500 || err_json.http_status === 401){
-            this.showClearAll();
-            /**
-             * redirect_toの指定がある場合はエラーを判別せず
-             * 画面遷移を行う。
-             * そうでなければそのままエラーメッセージをインスタントメッセージ表示する。
-             */
-            if(err_json.http_status === 401){
-              location.href = "/register?unauthorized=true";
-              return;
-            }
+    return $.ajax(url, ajaxOption)
+    .always(res => {
+      console.log(" -> response params: ", res)
+    })
+    .done(() => {
+      this.onHideProgress();
+    })
+    .fail(res => {
+      // ajaxエラー処理
 
-            if(err_json.redirect_to){
-              location.href = error.redirect_to
-              return;
-            }
+      this.hideDialog();
 
-            this.showErrMsg(err_json.window_msg);
+      // エラーレスポンスがない場合は500エラー
+      if(!res.responseJSON) location.href = "/500/error";
+      
+      const err_json = res.responseJSON;
+      console.log('err_json: ', err_json);
+
+      // 規定のエラーでなければ500エラー
+      if(err_json.name !== 'ErrorHelper') location.href = "/500/error";
+      
+      // HTTPエラーによってエラー工程を振り分ける
+      switch(Number(err_json.status)){
+        case 401: 
+        case 403:
+          //認証エラー
+          location.href = "/401/error";
+          break;
+        case 400:
+          this.onHideProgress();
+          if(err_json.window_msg) this.showErrMsg(err_json.window_msg);
+          
+          //form項目エラー
+
+          // 項目にエラーを反映する。
+          for(const ed of  err_json.error_data){
+            const $box_item = $(`#box_${ed.view_id}`);
+            if(!$box_item[0]) continue;
+            $box_item.addClass('error-input').find(".bottom-label").text(ed.err_message);
           }
-          else{
-            // 項目にエラーを反映する。
-            const error_data = err_json.error_data;
-            error_data.forEach(obj => {
-              $(`#box_${obj.view_id}`).addClass('error-input').find(".bottom-label").text(obj.err_message);
-            })
-          }
-      }
-      else{
-        // 万が一、err_Jsonがなければ致命エラー
 
-        // TODO ログアウト処理
-        setTimeout(function(){
-          location.href = "/register";
-        }, 3000)
-        
-        this.showErrDialog({
-          name: "fatalerr",
-          title: "予期せぬエラー",
-          text: "予期せぬエラーが発生しました。<br />※3秒後に自動ログアウトします。"
-        })
+          break;
+        default:
+          location.href = err_json.redirect_to || "/500/error";
       }
     });
   }
@@ -645,6 +639,9 @@ function getContent(app){
     case "recruitToday":
       contenId = "recruit";
       break;
+    case "error":
+      errProc();
+      break;
     default:
       contenId = app.config.cntid;
   }
@@ -654,4 +651,9 @@ function getContent(app){
     return cnt;
   } 
   return false;
+}
+
+function errProc(){
+  // URLをerrorに書きかけ
+  history.replaceState('','','/error');
 }

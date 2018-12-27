@@ -17,7 +17,7 @@ exports.createUser = (new_user_data) => {
     .then(instances => {
       if (instances.length > 0) {
         return Promise.reject(new errorHelper({
-          http_status: 400
+          status: 400
         }).addErrorData({
           view_id: "email",
           code: "E00010"
@@ -36,7 +36,7 @@ exports.getloginUserData = (login_key, password) => {
     .then(res => {
       const login_user_data = res[0];
       // ユーザーが存在しない場合はエラーを返す。
-      if (!login_user_data) return Promise.reject(new errorHelper().setWindowMsg("E00001"));
+      if (!login_user_data) return Promise.reject(new errorHelper({code: "E00001"}));
       return login_user_data;
     });
 }
@@ -50,7 +50,7 @@ exports.checkExpirationDate = (expiration_date) => {
     if (expiration_date.isSameOrAfter(today)) {
       resolve();
     } else {
-      reject(new errorHelper().setWindowMsg("E00009"));
+      reject(new errorHelper({code: "E00009"}));
     }
   })
 }
@@ -72,7 +72,7 @@ exports.clearExpirationDate = (user_id) => {
  */
 exports.getUserData = async (user_id) => {
   const user_data = await db.User.getUserByKey(user_id);
-  if (!user_data) return Promise.reject(new errorHelper().setWindowMsg("E00001"));
+  if (!user_data) return Promise.reject(new errorHelper({code: "E00001"}));
 
   // タグデータ取得
   if (user_data.get("tags")) {
@@ -144,7 +144,7 @@ exports.getSiteSettingData = async (user_id) => {
   });
   // ユーザーが存在しない場合はエラー
   if (!userData) {
-    throw new errorHelper().setWindowMsg('E00000');
+    throw new errorHelper({code: "E00000"});
   }
   return userData;
 }

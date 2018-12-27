@@ -1,4 +1,8 @@
 const env = process.env.NODE_ENV;
+// グローバルオブジェクトのセット
+const appConfig = require(__dirname + '/config/env.json');
+console.log('---- start env ------', env);
+global.APPENV = Object.assign(appConfig.common, appConfig[env]);
 
 const express = require('express');
 const path = require('path');
@@ -11,24 +15,8 @@ const errorHelper = require('./common/helper/errorHelper');
 
 const app = express();
 
-console.log('---- start env ------', env);
-// グローバルオブジェクトのセット
-const appConfig = require(__dirname + '/config/env.json');
-global.APPENV = Object.assign(appConfig.common, appConfig[env]);
-
 // CORSを許可する
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, c2linkApiKey");
-  next();
-});
-
-app.options('*', (req, res) => {
-  console.log('----- cros ------');
-  res.sendStatus(200);
-});
-
+app.use(require('./common/middleware/corsFilter'));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -60,16 +48,14 @@ app.set('view engine', 'pug');
 
 
 /**
- * setting logger
+ * setting favicon
 */
-
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 
 /**
  * setting logger
 */
-
 app.use(logger('dev'));
 
 
@@ -95,67 +81,67 @@ app.use(require('./common/middleware/responseObjectDefer'));
 /**
  * generate routing
 */
-
-// if(env == "development") app.use(require('./common/middleware/dev/debugSurvei'));
-
-app.use(require('./routesNoLogin'));
-/** login check */
-app.use(require('./common/middleware/loginCheck'));
 app.use(require('./routes'));
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
+
+/**
+ * error handler
+ */
+app.use(notfoundErrorHandler);
+app.use(errorObjectWrapper);
+app.use(logHandler);
+
+app.use(require('./common/middleware/clientErrorHandler'));
+app.use(require('./common/middleware/errorHandler'));
+
+
+/**
+ * catch 404 and forward to error handler
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function notfoundErrorHandler(req, res, next){
+  next(new errorHelper({status: 404}))
+}
+
+/**
+ * throw、またはキャッチされたErrorオブジェクトをerrorHelperオブジェクトでラップします。
+ * 
+ * @param {*} err 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function errorObjectWrapper(err, req, res, next){
+  // errorHelperオブジェクトか判定します。
+  if(err.name !== 'ErrorHelper'){
+    // errorHelperのcustamErrorObjectに置き換えます。
+    err = new errorHelper(err instanceof Error ? {err: err} : {});
+  }
+
   next(err);
-});
+}
 
-
-// error handler
-app.use((err, req, res, next) => {
-  const render_obj = res.render_obj;
-  console.log("response err ->", err);
-
-  // ajaxエラー
-  if(req.xhr){
-    if(!err.isHelper){
-      // エラーヘルパーを通っていなければ、オブジェクトを作成する。
-      err = new errorHelper({http_status: 500});
-      err.setWindowMsg("E00000");
-    }
-    res.status(err.http_status).json(err.errObj);
+/**
+ * エラー情報のログ出力をハンドリングします。
+ * 
+ * @param {*} err 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function logHandler(err, req, res, next){
+  if(env === 'development'){
+    console.debug("development error message: ", err.message);
+    console.debug("development error obj: ", err);
+    // console.error("error stack log: ", err.stack);
   }
-  // 通常エラー
   else{
-    // エラーヘルパーを通ってきてない場合は予期しないエラー
-    if(!err.isHelper){
-      err = new errorHelper({http_status: 500});
-      err.setWindowMsg("E00000");
-      res.status(err.http_status);
-    }
-
-    // redirect_toが指定されていたらredirect_toにリダイレクトさせる
-    if(err.redirect_to){
-      res.redirect(err.redirect_to);
-      return;
-    }
-
-    // !!! set Express default err 
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    render_obj.contentId = "error";
-    render_obj.title = "申し訳ございません|エラーページ";
-    
-    render_obj.bodyData = [ err, res.locals ];
-    // render the error page
-    res.render('../error', render_obj);
-
+    // ログファイルに書き出します。
   }
-
-  return;
-
-});
+  next(err);
+}
 
 module.exports = app;
