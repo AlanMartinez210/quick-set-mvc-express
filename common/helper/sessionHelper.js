@@ -22,7 +22,7 @@ exports.setUserData = function(req, userObj, callback){
 exports.deleteSession = function(req, callback = function(err){}){
 	if(!_.isObject(req)) throw new Error('request object does not exist');
 	if(req.session) req.session.destroy(callback);
-}
+};
 
 /**
  * セッション内のユーザー情報をすべて取得します。
@@ -32,7 +32,7 @@ exports.deleteSession = function(req, callback = function(err){}){
 exports.getUserData = function(req){
 	if(!_.isObject(req)) throw new Error('request object does not exist');
 	return req.session.user;
-}
+};
 
 /**
  * セッション内のユーザー情報からユーザーIDを取得します。
@@ -40,8 +40,10 @@ exports.getUserData = function(req){
  */
 exports.getUserId = function(req){
 	if(!_.isObject(req)) throw new Error('request object does not exist');
-	return req.session.user.id;
-}
+	if(req.session.user) return req.session.user.id;
+
+	return false;
+};
 
 /**
  * セッション内のユーザー情報からユーザー種別を取得します。
@@ -49,12 +51,15 @@ exports.getUserId = function(req){
  */
 exports.getUserType = function(req){
 	if(!_.isObject(req)) throw new Error('request object does not exist');
-	return req.session.user.user_type;
-}
+	if(req.session.user) return req.session.user.user_type;
+
+	return false;
+};
 
 /* ログインしている状態かどうか
  * @param {*} req
  */
 exports.isLogin = function(req){
-	return (req.session.user && req.session.user.id);
-}
+	if(!_.isObject(req)) throw new Error('request object does not exist');
+	return Boolean(req.session.user && req.session.user.id);
+};

@@ -5,5 +5,5 @@
 module.exports = {
 	password: {
 		in: 'body'
-	},
+	}
 }

@@ -3,7 +3,7 @@ module.exports = {
 	// ユーザーID
 	user_id: {
 		in: 'body',
-		isEmpty: { errorMessage: 'E00002', negated: true }
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	},
 	// ユーザーアイコン
 	icon_url: {

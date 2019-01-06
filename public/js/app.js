@@ -99,8 +99,6 @@ export default class myApp extends baseApp {
         })
       }
 
-      
-
       // loadメソッドを持つプラグインの実行
       _.forEach(this.plugin, p => {
         if(p.load) p.load();
@@ -215,7 +213,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   sendPost(url, data = {}, option = {}){
-    return this.sendAjax("post", url, data, option);
+    return this.sendAjax("POST", url, data, option);
   }
 
   /**
@@ -227,7 +225,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   sendGet(url, data = {}, option = {}){
-    return this.sendAjax("get", url, data, option);
+    return this.sendAjax("GET", url, data, option);
   }
 
   /**
@@ -239,7 +237,19 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   sendDelete(url, data = {}, option = {}){
-    return this.sendAjax("delete", url, data, option);
+    return this.sendAjax("DELETE", url, data, option);
+  }
+
+  /**
+   * DELETEでajaxを実行します。
+   *
+   * @param {string} url
+   * @param {JSON} data
+   * @return {jqXHR}
+   * @memberof myApp
+   */
+  sendPut(url, data = {}, option = {}){
+    return this.sendAjax("PUT", url, data, option);
   }
 
 

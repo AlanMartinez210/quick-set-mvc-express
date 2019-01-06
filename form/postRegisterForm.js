@@ -2,10 +2,7 @@
 module.exports = {
 	user_name: {
 		in: 'body',
-		isEmpty: {
-			errorMessage: 'E00002',
-			negated: true
-		}
+		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
 	password: {
 		in: 'body',
@@ -31,9 +28,6 @@ module.exports = {
 			errorMessage: 'E00006',
 			options: [['1','2']],
 		},
-		isEmpty: {
-			errorMessage: `E00005`,
-			negated: true
-		}
+		isEmpty: { errorMessage: `E00005`, negated: true }
 	}
 }

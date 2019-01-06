@@ -2,8 +2,6 @@
 module.exports = {
 	matching_id: {
 		in: 'body',
-		exists: {
-      errorMessage: 'L00003',
-		},
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	},
 }

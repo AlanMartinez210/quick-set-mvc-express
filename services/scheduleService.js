@@ -1,6 +1,6 @@
 const errorHelper = require('../common/helper/errorHelper');
-const prefectureHelper = require("../common/helper/prefectureHelper");
 const calendarHelper = require("../common/helper/calendarHelper");
+const _ = require('lodash');
 
 const db = require("../models/index");
 
@@ -48,4 +48,20 @@ exports.getScheduleData = async (schedule_id) => {
   catch(err){
     return err;
   }
+}
+
+/**
+ * スケジュールの更新
+ * 
+ * @param {String} user_id
+ * @param {Object} schedule_data
+ */
+exports.updateScheduleData = async(schedule_data) => {
+
+  const res = await db.Schedule.updateSchedule(schedule_data, db)
+  
+  // 更新出来なかったらエラー
+  if(!_.isArray(res) || res[0] === 0) return Promise.reject(new errorHelper({ status: 400, code: "E00000" })); 
+  
+  return res;
 }

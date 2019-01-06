@@ -1,9 +1,6 @@
 module.exports = {
 	schedule_id: {
 		in: 'body',
-		isEmpty: { 
-			errorMessage: 'fatal',
-			negated: true
-		},
+		isEmpty: { errorMessage: 'fatal', negated: true }
 	},
 };

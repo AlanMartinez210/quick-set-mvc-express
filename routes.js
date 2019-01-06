@@ -22,6 +22,7 @@ const recruitlistController = require(`${controllerPath}recruitlistController`);
 const recruitDetailController = require(`${controllerPath}recruitDetailController`);
 const publicController = require(`${controllerPath}publicController`);
 const userController = require(`${controllerPath}userController`)
+const costumeController = require(`${controllerPath}costumeController`);
 
 
 // ルートにきたときの処理
@@ -80,8 +81,38 @@ router.get('/mypage/sampleImage', loginCheck, sampleImageController.index);
 /* 所持機材設定(カメラマンのみ)の登録/編集 postEquipment */
 
 /* 所持衣装設定(コスプレイヤーのみ) index */
+router.get('/mypage/costume', loginCheck, validate.check(require('./form/getSearchContentTilteFrom')), validate.result, costumeController.index);
 
-/* 所持機材設定(コスプレイヤーのみ)の登録/編集 postCostume */
+/* コスプレ作品登録 */
+router.post('/mypage/costume/createtitle', loginCheck, validate.check(require('./form/postRegistTitleForm')), validate.result, costumeController.createContentTitle);
+
+/* コスプレキャラクター登録 */
+router.post('/mypage/costume/createchara', loginCheck, validate.check(require('./form/postRegistCharaForm')), validate.result, costumeController.createContentChara);
+
+/* コスプレ衣装設定(コスプレイヤーのみ)の登録 postCreate */
+router.post('/mypage/costume', loginCheck, validate.check(require('./form/postCostumeCreateForm')), validate.result, costumeController.postCreate);
+
+/* コスプレ衣装設定(コスプレイヤーのみ)の編集 putUpdate */
+router.put('/mypage/costume', loginCheck, validate.check(require('./form/putCostumeForm')), validate.result, costumeController.putUpdate);
+
+/* コスプレ衣装設定(コスプレイヤーのみ)の削除 delete */
+router.delete('/mypage/costume', loginCheck, validate.check(require('./form/deleteCostumeForm')), validate.result, costumeController.delete);
+
+/* 運営情報の表示 */
+router.get('/adminInfo', publicController.getAdminInfo);
+
+/* プライバシーポリシーの表示 index */
+router.get('/privacyPolicy', publicController.getPrivacyPolicy);
+
+/* 利用者様のデータについての表示 index */
+router.get('/aboutUserData', publicController.getAboutUserData);
+
+/* お問い合わせの表示 index */
+router.get('/contact', publicController.getContact);
+
+/** お知らせ getNoticeData */
+router.get('/api/notice', publicController.getNoticeData)
+
 
 /* 外部サービス連携の表示 postExtService */
 router.get('/mypage/extService', loginCheck, extServiceController.index);　
@@ -100,9 +131,13 @@ router.get('/mypage/schedule/:year(\\d{4})/:month(\\d{1,2})', loginCheck, schedu
 /* 選択した日付のスケジュールを取得 getSchedule */
 router.get('/mypage/schedule/:schedule_id', loginCheck, validate.check(require('./form/getScheduleData')), validate.result, scheduleController.getSchedule);　
 
-/* スケジュールの登録/編集 postSchedule */
+/* スケジュールの登録 postSchedule */
 router.post('/mypage/schedule/cos', loginCheck, validate.check(require('./form/postCosScheduleForm')), validate.result, scheduleController.postSchedule);
 router.post('/mypage/schedule/cam', loginCheck, validate.check(require('./form/postCamScheduleForm')), validate.result, scheduleController.postSchedule);
+
+router.put('/mypage/schedule/cos', loginCheck, validate.check(require('./form/putCosScheduleForm')), validate.result, scheduleController.putSchedule);
+router.put('/mypage/schedule/cam', loginCheck, validate.check(require('./form/putCamScheduleForm')), validate.result, scheduleController.putSchedule);
+
 
 /* スケジュールの削除 deleteSchedule */
 router.delete('/mypage/schedule', loginCheck, validate.check(require('./form/deleteScheduleForm')), validate.result, scheduleController.deleteSchedule);
@@ -117,10 +152,8 @@ router.get('/mypage/review', loginCheck, reviewController.index);
 /* 自分がしたレビュー履歴の取得 getReviewHistory */
 router.get('/mypage/review/sendList', loginCheck, reviewController.getReviewHistory);
 
-
 /* 自分にされたレビュー履歴の取得 getRevieweeHistory */
 router.get('/mypage/review/recieveList', loginCheck, reviewController.getRevieweeHistory);
-
 
 /* レビューの登録/編集 postReview */
 router.post('/mypage/review', loginCheck, validate.check(require('./form/postReviewForm')), validate.result, reviewController.postReview);
@@ -177,25 +210,6 @@ router.get('/recruitlist/detail/:schedule_id', loginCheck, recruitDetailControll
  * 外部からのアクセス専用
  *  */
 router.get('/api/recruitlist/detail', recruitDetailController.entryOutSide)
-
-/** =============================
- * マイページ
- ================================*/
-
-/* 運営情報の表示 */
-router.get('/adminInfo', publicController.getAdminInfo);
-
-/* プライバシーポリシーの表示 index */
-router.get('/privacyPolicy', publicController.getPrivacyPolicy);
-
-/* 利用者様のデータについての表示 index */
-router.get('/aboutUserData', publicController.getAboutUserData);
-
-/* お問い合わせの表示 index */
-router.get('/contact', publicController.getContact);
-
-/** お知らせ getNoticeData */
-router.get('/api/notice', publicController.getNoticeData)
 
 
 /**

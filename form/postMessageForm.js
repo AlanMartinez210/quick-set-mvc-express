@@ -2,15 +2,13 @@
 module.exports = {
 	request_id: {
 		in: 'body',
-		exists: {
-      errorMessage: 'E00001',
-		},
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	},
-  message: {
+	message: {
 		in: 'body',
 		isLength: {
-      errorMessage: 'message is required',
-      options: { min: 1 }
+			errorMessage: 'message is required',
+			options: { min: 1 }
 		}
 	},
 }

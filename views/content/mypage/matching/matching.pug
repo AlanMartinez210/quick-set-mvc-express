@@ -1,8 +1,7 @@
 -
--
-  const matchingDataArr = self.bodyData.matching_list;
+  const matchingDataArr = self.bodyData.matching_list || [];
   console.log('matchingDataArr: ', matchingDataArr);
-  const matchingHistoryArr = self.bodyData.matching_history;
+  const matchingHistoryArr = self.bodyData.matching_history || [];
 -
 
 .center-frame
@@ -15,6 +14,7 @@
 
     #matching_group.board-cnt._s.list-board
       //- p.info-text: |新しいメッセージはありません
+      if(matchingDataArr.length)
 
       - for(let md of matchingDataArr){
       .board-prm._s._border

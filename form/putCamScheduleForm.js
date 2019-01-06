@@ -1,9 +1,9 @@
 
-/** 予定の作成 (カメラマン/コスプレイヤー) */
+/** 予定の作成 (カメラマン) */
 module.exports = {
 	schedule_id:{
 		in: 'body',
-		isEmpty: { errorMessage: 'fatal' },
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	},
 	date_key: {
 		in: 'body',

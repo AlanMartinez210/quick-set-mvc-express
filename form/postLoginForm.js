@@ -2,10 +2,7 @@
 module.exports = {
 	login_key: {
 		in: 'body',
-		isEmpty: {
-			errorMessage: 'E00002',
-			negated: true
-		}
+		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
 	login_password: {
 		in: 'body',

@@ -91,20 +91,38 @@ exports.getSchedule = (req, res, next)=>{
 };
 
 /**
- * スケジュールの登録/編集を行います。
+ * スケジュールの登録を行います。
  *
  * @param {*} req
  * @param {*} res
  * @param {*} next
  */
 exports.postSchedule = (req, res, next) => {
-  const registData = req.form_data;
-  registData.user_id = sessionHelper.getUserId(req);
-  registData.schedule_type = sessionHelper.getUserType(req);
+  const scheduleData = req.form_data;
+  scheduleData.user_id = sessionHelper.getUserId(req);
+  scheduleData.schedule_type = sessionHelper.getUserType(req);
   
-  const procResult = registData.schedule_id ? db.Schedule.updateSchedule(registData, db) : db.Schedule.createSchedule(registData, db);
+  db.Schedule.createSchedule(scheduleData, db)
+  .then(results => {
+    res.json({status:'success'});
+  }).catch(err => {
+    next(err);
+  });
+};
 
-  procResult
+/**
+ * スケジュールの編集を行います。
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+exports.putSchedule = (req, res, next) => {
+  const scheduleData = req.form_data;
+  scheduleData.user_id = sessionHelper.getUserId(req);
+  scheduleData.schedule_type = sessionHelper.getUserType(req);
+
+  scheduleService.updateScheduleData(scheduleData)
   .then(results => {
     res.json({status:'success'});
   }).catch(err => {

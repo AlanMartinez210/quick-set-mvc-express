@@ -11,7 +11,7 @@ export default class screen{
 			const currentPos = $(window).scrollTop();
 			if(Math.abs(currentPos - this.startPos) > 50){
 				if (currentPos > this.startPos) {
-					if(currentPos >= 100) $(".hdr-menu").css("top", "-" + 100 + "px");
+					if(currentPos >= 60) $(".hdr-menu").css("top", "-" + 100 + "px");
 				}
 				else {
 					$(".hdr-menu").css("top", 0 + "px");
@@ -62,8 +62,3 @@ export default class screen{
 		$(".general-ptn .hdr-cntnr").css("padding-bottom", height);
 	}
 }
-
-
-		
-
-		

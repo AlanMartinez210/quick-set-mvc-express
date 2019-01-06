@@ -6,6 +6,7 @@ module.exports = {
 		isIn: {
 			errorMessage: "E00017",
 			options: [['every', 'today']]
-		} 
+		},
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	}
 };

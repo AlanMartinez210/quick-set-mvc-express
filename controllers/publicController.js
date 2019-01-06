@@ -83,23 +83,14 @@ exports.getNoticeData = (req, res, next) => {
 
   publicService.getNoticeList(db, data)
   .then(results => {
-		const notice_list_item = results.notice_list.map(item => {
-			return new noticeVO.notice_list_item({
-				id: item.id,
-				notice_date: item.notice_date,
-				type: item.type,
-				title: item.title,
-				content: item.content
-			});
-		});
-
+		const notice_list = results.notice_list.map(item => new noticeVO.notice_list_item(item));
 		const notice_list_pager = results.pages;
 
-		render_obj.bodyData = new noticeVO.notice_list({
-			notice_list_item,
+		render_obj.bodyData = new noticeVO.notice_obj({
+			notice_list,
 			notice_list_pager
 		});
-
+		
     res.render('../modal/notice', render_obj);
   })
   .catch(err => {

@@ -1,10 +1,10 @@
 const _ = require("lodash");
 
-/** 予定の作成 (カメラマン/コスプレイヤー) */
+/** 募集の更新 (コスプレイヤー) */
 module.exports = {
 	schedule_id:{
 		in: 'body',
-		isEmpty: { errorMessage: 'fatal' },
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	},
 	date_key: {
 		in: 'body',

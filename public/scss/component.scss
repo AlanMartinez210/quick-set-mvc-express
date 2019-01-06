@@ -3,6 +3,10 @@
 
 $fontAwesome : "Font Awesome 5 Free";
 
+.content-space-top{
+	margin-top: 32px;
+}
+
 .hdr-controll{
 	padding: 0 16px 16px;
 }
@@ -199,7 +203,6 @@ $fontAwesome : "Font Awesome 5 Free";
 // 入力系
 .input-box{
 	border-radius: 5px;
-	padding: 0 8px;
 	border: 1px $grayL solid;
 	margin-bottom: 16px;
 	background: $white;
@@ -207,8 +210,9 @@ $fontAwesome : "Font Awesome 5 Free";
 	&:last-child{margin-bottom: 0;}
 	input[type="text"], input[type="password"]{
 		width: 100%;
+		border-radius: 5px;
 		@include font-normal;
-		padding: 0.8em 0.4em 0.6em 0.4em;;
+		padding: 0.8em;
 	}
 }
 
@@ -327,8 +331,7 @@ $fontAwesome : "Font Awesome 5 Free";
 }
 
 .label-link{
-// 	padding: 16px 0;
-// 	background: #FFF;
+	border-radius: 5px;
 	a{padding: 0.8em;}
 }
 
@@ -539,4 +542,43 @@ $fontAwesome : "Font Awesome 5 Free";
 	top: -110%;
 	right: -2%;
 	z-index: $next-touch;
+}
+
+.no_list_box{
+	width: 100%;
+	height: 100px;
+	p{
+		text-align: center;
+		color: $grayD;
+	}
+}
+
+ul.line-list{
+	li{
+		line-height: 1.4em;
+    padding: 8px;
+    border-left: 4px solid $orangeL;
+    border-radius: 4px;
+		margin-bottom: 8px;
+		&._lmb{
+			&:last-child{
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+ul.inner_list{
+	overflow: scroll;
+	height: 150px;
+	border: 1px solid $grayL;
+	border-radius: 5px;
+	margin-bottom: 16px;
+	li{
+		padding: 8px;
+		color: $blueL;
+		&:nth-child(odd){
+			background-color: $grayLW;
+		}
+	}
 }

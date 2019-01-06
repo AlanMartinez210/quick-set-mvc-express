@@ -146,7 +146,7 @@ export default class schedule{
 			}
 			else{
 				path = this.app.config.isCam() ? path + "/cam" : path + "/cos";
-				httpMethod = "sendPost";
+				httpMethod = modal_mode === "create" ? "sendPost" : "sendPut";
 				dialog = this.app.showInfoDialog({
 					name: "checkCmf",
 					title: modal_mode === "create" ?  "登録の確認" : "更新の確認",

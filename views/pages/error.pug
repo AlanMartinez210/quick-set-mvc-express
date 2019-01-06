@@ -10,6 +10,10 @@ html
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
   body(data-cntId=self.contentId)
 
+    a(href="register")
+      |新規登録画面に戻る
+
     h2= self.bodyData.error.message
     p= self.bodyData.error.status
     pre #{self.bodyData.error.stack}
+

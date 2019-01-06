@@ -160,8 +160,19 @@ module.exports = (sequelize, DataTypes) => {
    */
   Schedule.updateSchedule = function(schedule_data, model, options = {}){
     return sequelize.transaction(async t => {
-      options.transaction = t;
 
+      // スケジュールの更新(必ずuser_idを添える)
+      const update_result = await this.update(schedule_data, {
+        where: {
+          [sequelize.Op.and]: [
+            { id: schedule_data.schedule_id },
+            { user_id: schedule_data.user_id }
+          ]
+        },
+        transaction: t
+      });
+
+      options = {transaction : t}
       await Promise.all([
         model.Schedule_tag.deleteScheduleTag(schedule_data.schedule_id, options),
         model.Schedule_prefecture.deleteSchedulePref(schedule_data.schedule_id, options)
@@ -179,8 +190,7 @@ module.exports = (sequelize, DataTypes) => {
         await model.Schedule_prefecture.createSchedulePrefs(schedule_data.Schedule_prefectures, options);
       }
 
-      options.where = { id: schedule_data.schedule_id };
-      return await this.update(schedule_data, options);
+      return update_result
     });
   }
 

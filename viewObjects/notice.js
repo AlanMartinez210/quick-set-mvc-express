@@ -1,36 +1,40 @@
 const c2link4DiService = require("../services/c2link4DiService");
+const _ = require('lodash');
 
 module.exports = {
 	/**
 	 * スケジュール一覧
 	 */
-	notice_list: class {
+	notice_obj: class {
 		constructor({
-			notice_list_item = [],
+			notice_list = [],
 			notice_list_pager = {} 
 		}){
-			
-			this.notice_list_item = notice_list_item;
+			// 配列を必ず返す。
+			this.notice_list = notice_list;
       this.notice_list_pager = notice_list_pager;
 		}
 	},
 
 	notice_list_item: class {
-		constructor({id = "", notice_date = {/* moment */}, type = "", title = "", content = ""}){
+		constructor(notice_list_item = {}){
 
 			const enumType = c2link4DiService.enumNoticeType();
+			const type = notice_list_item.get("type");
 
-			this.id = id;
+			this.id = notice_list_item.get("id");
+
+			const d = notice_list_item.get("notice_date");
 			this.date_info = {
-        key: notice_date.format("L"),
-        year: notice_date.year(),
-        month: notice_date.trueMonth(),
-        day: notice_date.date(),
-        week: notice_date.format('ddd'),
+        key: d.format("L"),
+        year: d.year(),
+        month: d.trueMonth(),
+        day: d.date(),
+        week: d.format('ddd'),
 			};
 			this.type = [enumType.getType(type), enumType.getName(type)];
-			this.title = title;
-			this.content = content;
+			this.title = notice_list_item.get("title");
+			this.content = notice_list_item.get("content");
 		}
 	}
 }

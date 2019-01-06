@@ -2,10 +2,7 @@
 module.exports = {
 	schedule_id: {
 		in: 'body',
-		isEmpty: {
-			errorMessage: `E00008`,
-			negated: true
-		}
+		isEmpty: { errorMessage: 'fatal', negated: true },
 	},
 	mode: {
 		in: 'body',

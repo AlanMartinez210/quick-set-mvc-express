@@ -2,20 +2,17 @@
 module.exports = {
 	select_id: {
 		in: 'body',
-		exists: {
-			errorMessage: 'L00004',
-		},
+		isEmpty: { errorMessage: 'fatal', negated: true }
 	},
 	review_type: {
 		in: 'body',
-		exists: {
-			errorMessage: 'L00004',
-		},
+		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
 	review_comment: {
 		in: 'body',
-		exists: {
-			errorMessage: 'L00004',
-		},
+		isLength: {
+			errorMessage: 'E00011,255',
+			options:{ max: 255 },
+		}
 	},
 }

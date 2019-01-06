@@ -1,0 +1,52 @@
+#registTitleModal(data-modal="hide")
+  form(method="post", action="", name="registTitleForm")
+
+    .board-prm
+      .board-cnt._s
+        .attention-prm
+          p: |新しく作品登録を行います。
+
+        .label-input-box._mbs#box_costume_title
+          .label-box
+            p.main-label: |作品名
+            span.sub-label: |作品のメインタイトルを入力してください。
+          .input-box._s.flex._c.st-required
+            input(type="text", name="content_title", placeholder="ひなまつり")
+          p.bottom-label
+
+        .label-input-box._mbs#box_content_sub_title
+          .label-box
+            p.main-label: |サブタイトル
+            span.sub-label: |作品にサブタイトルがある場合に入力してください。
+          .input-box._s.flex._c
+            input(type="text", name="content_sub_title")
+          p.bottom-label
+        
+        .label-input-box._mbs#box_content_abbreviation
+          .label-box
+            p.main-label: |略称名
+            span.sub-label: |作品に略称名がある場合に入力してください。
+          .input-box._s.flex._c
+            input(type="text", name="content_abbreviation")
+          p.bottom-label
+        
+        .accordion-prm.inline.shadow-l.content-space-top
+
+          .accordion-label.flex._c
+            .accordion-title
+              p: |登録時の注意事項
+          .accordion-cnt._s
+            p: |あああああああああああああああ
+
+        .label-input-box#box_consent_regist_title
+          .label-box
+            p.main-label: |<span class="c-red">※必ず上記をお読みください。</span>
+          .check-box._s.flex._c
+            input(id="consentRegistTitle" type="checkbox" name="consent_regist_title")
+            label(for="consentRegistTitle")
+              |確認の上、同意します。
+          p.bottom-label
+
+      .board-ftr._s.flex._c._jc.proc-board
+        button(type="submit", name="doPostRegistTitle").btn-prm.st-back-b.shadow-l
+          |登録
