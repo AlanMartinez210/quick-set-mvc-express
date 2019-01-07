@@ -8,7 +8,7 @@ module.exports = {
       },
       prefecture_id: {
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER.UNSIGNED
       },
       created_at: {
         type: Sequelize.DATE,
