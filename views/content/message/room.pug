@@ -8,7 +8,7 @@
     - for(var obj of messages){
       div(class=["message-pop",user_id==obj.user_id?"me":"other"])
         .message-state.date-s
-          | 2018-10-12
+          | #{obj.date_info.year}-#{obj.date_info.month}-#{obj.date_info.day}
         .pop-inner-cnt.flex
           .message-box.shadow-l
             | #{obj.message}
@@ -34,7 +34,7 @@
     span#editerMenuBtn.editer-menu-btn
       i.icon-editer-menu.fas.fa-bars
     .wrap-editer-set
-      .message-editer(contenteditable="true", role="textbox", tabindex="1", aria-multiline="true")
+      .message-editer(name="message", contenteditable="true", role="textbox", tabindex="1", aria-multiline="true")
       .span.emoji-icon
     button#messageSendBtn.message-send-btn
       |送信

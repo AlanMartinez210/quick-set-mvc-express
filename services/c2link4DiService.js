@@ -125,6 +125,20 @@ exports.enumUserType = () => {
 }
 
 /**
+ * 機材種別の列挙を操作します。
+ */
+exports.enumEquipmentType = () => {
+  const enumObj = [
+    {code: 1, type: "camera", name: "カメラ本体"},
+    {code: 2, type: "lens", name: "レンズ"},
+    {code: 3, type: "strobe", name: "ストロボ・ライト"},
+    {code: 4, type: "reflector", name: "レフ板"},
+    {code: 5, type: "tripod", name: "三脚"}
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
  * 都道府県の列挙を操作します。
  */
 exports.enumPref = () => {

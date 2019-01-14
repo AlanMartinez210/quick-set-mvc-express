@@ -10,17 +10,7 @@ class matching_item{
     this.icon_url = user.get('icon_url');
     this.user_name = user.get('user_name');
     this.status_type = matching.get('status');
-    const d = matching.get('updatedAt')
-    this.datetime_info = {
-      key: d.format("L"),
-      year: d.year(),
-      month: d.trueMonth(),
-      day: d.date(),
-      week: d.format('ddd'),
-      hour: d.hour(),
-      minute: d.minute(),
-      seconds: d.second(),
-    }
+    this.datetime_info = matching.get('updatedAt').getDateTimeInfo();
   }
 };
 /**
@@ -32,22 +22,15 @@ class matching_history_item{
 
     this.matching_id = matching.get('id');
     this.icon_url = user.get('icon_url');
-    const d = matching.get('updatedAt');
-    this.date_info = {
-      key: d.format("L"),
-      year: d.year(),
-      month: d.trueMonth(),
-      day: d.date(),
-      week: d.format('ddd')
-    }
+    this.date_info = matching.get('updatedAt').getDateInfo();
     this.user_name = user.get('user_name');
   }
 };
 
 module.exports = {
   /**
-   * 
-   * 
+   *
+   *
    * @param {String} user_id ログイン者のユーザーID
    */
   matching_page: class {

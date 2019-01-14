@@ -7,9 +7,10 @@ module.exports = {
       this.send_date_info = send_date_info;
       this.user_name = user_name;
       this.summary = summary;
+      this.newMessages = [];
     }
   },
-  
+
   /**
    * メッセージ履歴一覧
    */

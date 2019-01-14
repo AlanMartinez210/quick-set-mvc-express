@@ -23,6 +23,7 @@ const recruitDetailController = require(`${controllerPath}recruitDetailControlle
 const publicController = require(`${controllerPath}publicController`);
 const userController = require(`${controllerPath}userController`)
 const costumeController = require(`${controllerPath}costumeController`);
+const equipmentController = require(`${controllerPath}equipmentController`);
 
 
 // ルートにきたときの処理
@@ -75,8 +76,8 @@ router.get('/mypage/sampleImage', loginCheck, sampleImageController.index);
 
 /* サンプル写真の設定の登録/編集 postSampleImage */
 
-// 一つのコントローラーで作る
 /* 所持機材設定(カメラマンのみ) index */
+router.get('/mypage/equipment', loginCheck, equipmentController.index);
 
 /* 所持機材設定(カメラマンのみ)の登録/編集 postEquipment */
 
@@ -186,7 +187,7 @@ router.post('/mypage/matching/reject', loginCheck, validate.check(require('./for
 router.get('/message', loginCheck, messageController.index);
 
 /* チャットルーム */
-router.get('/message/room', loginCheck, messageRoomController.index);　
+router.get('/message/room', loginCheck, validate.check(require('./form/getMessageRoom')), validate.result, messageRoomController.index);　
 router.post('/api/room/postMessage', loginCheck, validate.check(require('./form/postMessageForm')), validate.result, messageRoomController.postMessage);　
 
 /** =============================

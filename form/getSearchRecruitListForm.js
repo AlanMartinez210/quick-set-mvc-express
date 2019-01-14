@@ -37,5 +37,8 @@ module.exports = {
 	},
 	shot_type:{
 		in: 'query'
+	},
+	is_bookmark:{
+		in: 'query'
 	}
 };

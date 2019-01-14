@@ -7,6 +7,7 @@ const enumGroup = {
   enumScheduleType: c2link4DiService.enumScheduleType(),
   enumUserType: c2link4DiService.enumUserType(),
   enumPref: c2link4DiService.enumPref(),
+  enumEquipmentType: c2link4DiService.enumEquipmentType(),
 }
 
 module.exports = (req, res, next) =>{

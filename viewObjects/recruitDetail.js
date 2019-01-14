@@ -8,14 +8,7 @@ module.exports = {
     constructor(Schedule = {}){
       const user = Schedule.get('user');  // スケジュールを投稿したユーザー
       this.schedule_id = Schedule.get("id");
-      const d = Schedule.get("date_key");
-      this.date_info = {
-        key: d.format("L"),
-        year: d.year(),
-        month: d.trueMonth(),
-        day: d.date(),
-        week: d.format('ddd')
-      };
+      this.date_info = Schedule.get("date_key").getDateInfo();
       this.time_from = Schedule.get("time_from");
       this.time_to = Schedule.get("time_to");
       this.shot_type = Schedule.get("shot_type").name;

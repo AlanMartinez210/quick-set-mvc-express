@@ -1,6 +1,6 @@
-/** 新規登録フォーム */
+/** チャット発言フォーム */
 module.exports = {
-	request_id: {
+	matching_id: {
 		in: 'body',
 		isEmpty: { errorMessage: 'fatal', negated: true },
 	},

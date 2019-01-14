@@ -245,14 +245,6 @@ module.exports = (sequelize, DataTypes) => {
       options.include = [{ all: true, nested: true}];
       options.distinct = true;
       const where = options.where = {};
-      where[sequelize.Op.and] = [
-        sequelize.literal(`NOT EXISTS( \
-          select * \
-          from   matchings \
-          where  schedule_id = schedule.id \
-          and    matchings.user_id = ${user_id} \
-        )`)
-      ];
       if(search_param.schedule_type){
         where.schedule_type = search_param.schedule_type;
       }
@@ -267,7 +259,6 @@ module.exports = (sequelize, DataTypes) => {
         if(!where.date_key)where.date_key = {};
         where.date_key[sequelize.Op.lte] = search_param.search_date_to.toDate();
       }
-      console.log("where.date_key", where.date_key);
       if(search_param.shot_type){
         where.shot_type = search_param.shot_type;
       }
@@ -291,6 +282,29 @@ module.exports = (sequelize, DataTypes) => {
             join  tags on tags.id = schedule_tags.tag_id
             where tags.tag_name = '${search_param.search_tag}'
             and   schedule_tags.schedule_id = schedule.id
+          )`)
+        );
+      }
+      if(user_id){
+        // user_idがある場合は、未応募の募集のみ表示
+        if(!where[sequelize.Op.and]) where[sequelize.Op.and] = [];
+        where[sequelize.Op.and].push(
+          sequelize.literal(`NOT EXISTS( \
+            select * \
+            from   matchings \
+            where  schedule_id = schedule.id \
+            and    matchings.user_id = ${user_id} \
+          )`)
+        );
+      }
+      if(search_param.is_bookmark && user_id){
+        if(!where[sequelize.Op.and]) where[sequelize.Op.and] = [];
+        where[sequelize.Op.and].push(
+          sequelize.literal(`EXISTS(
+            select *
+            from  Recruit_bookmarks
+            where Recruit_bookmarks.schedule_id = schedule.id
+            and   Recruit_bookmarks.user_id = ${user_id}
           )`)
         );
       }

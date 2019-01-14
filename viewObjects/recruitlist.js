@@ -17,7 +17,6 @@ const _ = require("lodash");
 class recruitListItem{
   constructor(schedule = {}){
     const user_info = schedule.get("user");
-    const date_info = schedule.get("date_key");
 
     this.schedule_id = schedule.get("id");
 
@@ -26,14 +25,7 @@ class recruitListItem{
       icon: user_info.icon
     };
 
-    this.date_info = {
-      key: date_info.format("L"),
-      year: date_info.year(),
-      month: date_info.trueMonth(),
-      day: date_info.date(),
-      week: date_info.format('ddd')
-    };
-
+    this.date_info = schedule.get("date_key").getDateInfo();
     this.event_info = {
       shot_type: schedule.get("shot_type"),
       title: schedule.get("event_name"),
@@ -54,7 +46,7 @@ class recruitSearchInfo{
   constructor(info){
     // shot_type＿objに変換
     this.shot_type = info.shot_type && c2link4DiService.enumShotType().getObj(info.shot_type);
-    
+
     this.search_date_from = info.search_date_from && info.search_date_from.format("L");
     this.search_date_to = info.search_date_to && info.search_date_to.format("L");
 

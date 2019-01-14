@@ -2,6 +2,33 @@ const moment = require('moment-timezone');
 moment.locale("ja");
 const days_map = ['日','月','火','水','木','金','土']; // 曜日のマッピング
 
+// moment拡張
+(function(){
+  // ViewObjectで使うDateTime
+  moment.prototype.getDateTimeInfo = function(){
+    return {
+      key: this.format("L"),
+      year: this.year(),
+      month: this.trueMonth(),
+      day: this.date(),
+      week: this.format('ddd'),
+      hour: this.hour(),
+      minute: this.minute(),
+      seconds: this.second(),
+    };
+  };
+  // ViewObjectで使うDate
+  moment.prototype.getDateInfo = function(){
+    return {
+      key: this.format("L"),
+      year: this.year(),
+      month: this.trueMonth(),
+      day: this.date(),
+      week: this.format('ddd')
+    };
+  };
+})();
+
 /**
  * Dateからmomentオブジェクトを取得します。
  *

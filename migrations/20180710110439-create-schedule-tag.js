@@ -4,11 +4,11 @@ module.exports = {
     return queryInterface.createTable('Schedule_tags', {
       schedule_id: {
         primaryKey: true,
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT
       },
       tag_id: {
         primaryKey: true,
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT
       },
       created_at: {
         type: Sequelize.DATE,

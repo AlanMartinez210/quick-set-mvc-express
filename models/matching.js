@@ -33,6 +33,13 @@ module.exports = (sequelize, DataTypes) => {
 
   /** option set **/
   const ModelOption = {
+    belongsList: (user_id, options={})=>{
+      options.include = ["user", "to_user"];
+      options.where = {
+        [sequelize.Op.or]: [{user_id: user_id}, {to_user_id: user_id}],
+      };
+      return options;
+    },
     noReviewList: (user_id, options={})=>{
       options.include = ["user", "to_user", "schedule"];
       options.where = {
@@ -157,6 +164,16 @@ module.exports = (sequelize, DataTypes) => {
     const count = await this.count(options);
     return count > 0;
   };
+
+  /**
+   * ユーザーがマッチングに属しているかどうかチェックする
+   */
+  Matching.isBelongs = async function(matching_id, user_id, options={}){
+    options = ModelOption.belongsList(user_id, options);
+    options.where.id = matching_id;
+    const count = await this.count(options);
+    return count > 0;
+  }
 
   /**
    * マッチングステータスを更新する
