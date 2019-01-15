@@ -135,18 +135,17 @@ export default class costume{
 	}
 	// 作品登録処理
 	registContentTitle(e){
-
+		const sendData = this.$registTitleForm.getValue();
 		this.app.showInfoDialog({
-			name: 'checkCostumeCmf',
+			name: 'checkTitleCmf',
 			title: "登録の確認",
 			text: "この内容で登録します。よろしいですか？",
 		})
 		.closelabel("いいえ")
 		.addBtn({
 			callback: () => {
-				this.app.sendPost('/mypage/costume', 'sendData')
+				this.app.sendPost('/mypage/costume/createtitle', sendData)
 				.done(result => {
-					$('.month-label.seleced').click();
 					this.app.hideDialog();
 					this.app.showClearAll();
 					this.app.showInfo("処理に成功しました。");
@@ -157,18 +156,17 @@ export default class costume{
 	}
 	// キャラクター登録処理
 	registContentChara(e){
-
+		const sendData = this.$registCharaForm.getValue();
 		this.app.showInfoDialog({
-			name: 'checkCostumeCmf',
+			name: 'checkCharaCmf',
 			title: "登録の確認",
 			text: "この内容で登録します。よろしいですか？",
 		})
 		.closelabel("いいえ")
 		.addBtn({
 			callback: () => {
-				this.app.sendPost('/mypage/costume/createchara', 'sendData')
+				this.app.sendPost('/mypage/costume/createchara', sendData)
 				.done(result => {
-					$('.month-label.seleced').click();
 					this.app.hideDialog();
 					this.app.showClearAll();
 					this.app.showInfo("処理に成功しました。");
@@ -179,7 +177,7 @@ export default class costume{
 	}
 	// 衣装登録処理
 	registCostume(e){
-
+		const sendData = this.$confirmRegistCostumeForm.getValue();
 		this.app.showInfoDialog({
 			name: 'checkCostumeCmf',
 			title: "登録の確認",
@@ -188,9 +186,8 @@ export default class costume{
 		.closelabel("いいえ")
 		.addBtn({
 			callback: () => {
-				this.app.sendPost('/mypage/costume/createtitle', 'sendData')
+				this.app.sendPost('/mypage/costume', sendData)
 				.done(result => {
-					$('.month-label.seleced').click();
 					this.app.hideDialog();
 					this.app.showClearAll();
 					this.app.showInfo("処理に成功しました。");

@@ -26,6 +26,7 @@ module.exports = {
       },
       islogin: {
         type: Sequelize.BOOLEAN,
+        defaultValue: 0,
         allowNull: false
       },
       created_at: {

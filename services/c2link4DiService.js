@@ -139,6 +139,30 @@ exports.enumEquipmentType = () => {
 }
 
 /**
+ * 使用年数の列挙を操作します。
+ */
+exports.enumUseYearType = () => {
+  const enumObj = [
+    {code: 1, type: "less", name: "1年未満"},
+    {code: 2, type: "middle", name: "1～3年程度"},
+    {code: 3, type: "over", name: "3年以上"},
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
+ * の列挙を操作します。
+ */
+exports.enumMakerType = () => {
+  const enumObj = [
+    {code: 1, type: "sony", name: "ソニー"},
+    {code: 2, type: "nikon", name: "ニコン"},
+    {code: 3, type: "canon", name: "キャノン"},
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
  * 都道府県の列挙を操作します。
  */
 exports.enumPref = () => {

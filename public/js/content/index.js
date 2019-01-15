@@ -15,6 +15,7 @@ import matching from './mypage/matching';
 import schedule from './mypage/schedule';
 import review from './mypage/review';
 import costume from './mypage/costume';
+import equipment from './mypage/equipment';
 
 // # 必ず紐づくコンテンツIDで定義してください。
 export const contents = {
@@ -34,5 +35,6 @@ export const contents = {
   matching,
   schedule,
   review,
-  costume
+  costume,
+  equipment
 };

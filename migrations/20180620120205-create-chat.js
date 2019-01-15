@@ -11,13 +11,16 @@ module.exports = {
         primaryKey: true,
       },
       user_id: {
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
-      to_user_id: { /** 内緒機能実装時に使う **/
-        type: Sequelize.BIGINT.UNSIGNED
+      to_user_id: {
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       message: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       read_flag: {
         type: Sequelize.BOOLEAN,

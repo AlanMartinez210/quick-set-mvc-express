@@ -13,16 +13,18 @@ module.exports = {
         allowNull: false
       },
       schedule_type: {
-        type: Sequelize.TINYINT,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         comment: '表示するスケジュールを制御するための種別'
       },
       group_year: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false,
         comment: '年を基準としたスケジュールの範囲',
       },
       group_month: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false,
         comment: '月を基準としたスケジュールの範囲',
       },
       date_key: {
@@ -36,7 +38,8 @@ module.exports = {
         type: Sequelize.STRING(5)
       },
       shot_type: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false,
       },
       event_name: {
         type: Sequelize.STRING(50),

@@ -19,7 +19,7 @@ html, body{ height: 100%; background: $grayLW;}
 button{ cursor: pointer; }
 .wrap-body-content{display: none;}
 .progress-cntnr{display: none;}
-.init-hidden{display: none !important;} // 初期状態が非表示
+.init-hidden{display: none;} // 初期状態が非表示
 .on-show {display: block !important;}
 .hdr-menu{transition: .3s;}
 .wrapper{position: relative;}

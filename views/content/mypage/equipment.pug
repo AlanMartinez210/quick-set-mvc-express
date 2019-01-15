@@ -8,59 +8,73 @@
 -
 
 .center-frame
-  .board-prm
-    .board-hdr
+  form(method="post", action="", name="equipmentForm")
 
-      .label-box._fb.flex._c
-        i.icon-title-b.fas.fa-camera.fa-fw.c-green
-        span: |所持機材設定
+    .board-prm
+      .board-hdr
 
-    .board-cnt
-      .attention-prm
-        p
-          span.st-required(style="border-radius:5px;display: inline-block;")
-            |&emsp;&emsp;&emsp;
-          |&nbsp;は必須項目です。
+        .label-box._fb.flex._c
+          i.icon-title-b.fas.fa-camera.fa-fw.c-green
+          span: |所持機材設定
 
-      .label-input-box._mbs#box_prefectures_field
-        .label-box
-          p.main-label: |機材種別
-          span.sub-label: |登録する機材のカテゴリを選択してください。
-        .select-box._s.flex._c.st-required
-          select(name="equipment_type")
-            each equip in self.globalParam.enumEquipmentType.getEnum()
-              option(value=equip.id) #{equip.name}
-            option(value="99") その他
-        p.bottom-label
-      
-      .label-input-box._mbs#box_costume_title
-        .label-box
-          p.main-label: |メーカー
-          span.sub-label: |機材のメーカーを選択してください。
-        .input-box._s.flex._c.st-required
-          input(type="text", name="content_title")
-        p.bottom-label
-      
-      .label-input-box._mbs#box_costume_title
-        .label-box
-          p.main-label: |機材名
-          span.sub-label: |機材の型名や名称を入力してださい。
-        .input-box._s.flex._c.st-required
-          input(type="text", name="content_title")
-        p.bottom-label
-      
-      .label-input-box._mbs#box_costume_title
-        .label-box
-          p.main-label: |使用年数
-          span.sub-label: |機材を使用した年数を入力してください。
-        .input-box._s.flex._c
-          input(type="text", name="content_title")
-        p.bottom-label
+      .board-cnt
+        .attention-prm
+          p
+            span.st-required(style="border-radius:5px;display: inline-block;")
+              |&emsp;&emsp;&emsp;
+            |&nbsp;は必須項目です。
 
-    .board-ftr._s.flex._c._jc
-      button.btn-prm.st-back-b.shadow-l
-        span: |登録
-  
+        .label-input-box._mbs#box_equipment_type
+          .label-box
+            p.main-label: |機材種別
+            span.sub-label: |登録する機材のカテゴリを選択してください。
+          .select-box._s.flex._c.st-required
+            select(name="equipment_type")
+              each equip in self.globalParam.enumEquipmentType.getEnum()
+                option(value=equip.code) #{equip.name}
+              option(value="99") その他
+          p.bottom-label
+
+        .label-input-box._mbs#box_maker_type
+          .label-box
+            p.main-label: |メーカー
+            span.sub-label: |登録する機材のメーカーを選択してください。
+          .select-box._s.flex._c.st-required
+            select(name="maker_type")
+              each maker in self.globalParam.enumMakerType.getEnum()
+                option(value=maker.code) #{maker.name}
+              option(value="99") その他
+          p.bottom-label
+        
+        .label-input-box.init-hidden._mbs#box_maker_name
+          .label-box
+            span.sub-label: |その他の場合はメーカーを入力してください。
+          .input-box._s.flex._c.st-required
+            input(type="text", name="maker_name")
+          p.bottom-label
+        
+        .label-input-box._mbs#box_equipment_name
+          .label-box
+            p.main-label: |機材名
+            span.sub-label: |機材の型名や名称を入力してださい。
+          .input-box._s.flex._c.st-required
+            input(type="text", name="equipment_name")
+          p.bottom-label
+        
+        .label-input-box._mbs#box_use_year
+          .label-box
+            p.main-label: |使用年数
+            span.sub-label: |機材の使用年数を選択してください。
+          .select-box._s.flex._c
+            select(name="use_year")
+              each use in self.globalParam.enumUseYearType.getEnum()
+                option(value=use.code) #{use.name}
+          p.bottom-label
+
+      .board-ftr._s.flex._c._jc
+        button(type="submit", name="doPostEquipment").btn-prm.st-back-b.shadow-l
+          span: |登録
+    
   .board-prm
     .board-hdr
 

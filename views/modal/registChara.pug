@@ -21,7 +21,7 @@
             p.main-label: |キャラクター名
             span.sub-label: |作品に登場するキャラクター名を入力してください。
           .input-box._s.flex._c.st-required
-            input(type="text", name="content_title", placeholder="新田 ひな")
+            input(type="text", name="content_chara", placeholder="新田 ひな")
           p.bottom-label
         
         .accordion-prm.inline.shadow-l.content-space-top
@@ -31,11 +31,11 @@
           .accordion-cnt._s
             p: |あああああああああああああああ
 
-        .label-input-box#box_consent_delete
+        .label-input-box#box_consent_regist_chara
           .label-box
             p.main-label: |<span class="c-red">※必ず上記をお読みください。</span>
           .check-box._s.flex._c
-            input(id="consentRegistChara" type="checkbox" name="consentRegistChara")
+            input(id="consentRegistChara" type="checkbox" name="consent_regist_chara")
             label(for="consentRegistChara")
               |確認の上、同意します。
           p.bottom-label

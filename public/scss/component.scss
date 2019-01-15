@@ -153,6 +153,7 @@ $fontAwesome : "Font Awesome 5 Free";
 		@include font-normal;
 		font-weight: bold;
 		color: $blackD;
+		margin-top: 16px;
 	}
 	.sub-label{
 		@include font-small;

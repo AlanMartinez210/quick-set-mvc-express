@@ -2,7 +2,7 @@ const sessionHelper = require('../common/helper/sessionHelper');
 const c2Util = require("../services/c2link4DiService");
 
 /**
- * コスプレ衣装設定画面の表示
+ * 所持機材登録の画面表示
  *
  * @param {*} req
  * @param {*} res
@@ -20,7 +20,21 @@ exports.index = function(req, res, next){
 }
 
 /**
- * コスプレ衣装新規登録
+ * 所持機材登録の画面表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.getEquipmentList = function(req, res, next){
+	const render_obj = res.render_obj;
+	const user_id = sessionHelper.getUserId(req);
+
+	res.json({status:'success'});
+
+}
+
+/**
+ * 機材の登録
  *
  * @param {*} req
  * @param {*} res
@@ -28,14 +42,14 @@ exports.index = function(req, res, next){
 exports.postCreate = function(req, res, next){
 
 	const render_obj = res.render_obj;
-	render_obj.contentId = "costume";
+	const form_data = req.form_data;
 
-	res.render('mypage/costume', render_obj);
+	res.json({status:'success'});
 
 }
 
 /**
- * コスプレ衣装更新
+ * 機材の更新
  *
  * @param {*} req
  * @param {*} res
@@ -43,15 +57,14 @@ exports.postCreate = function(req, res, next){
 exports.putUpdate = function(req, res, next){
 
 	const render_obj = res.render_obj;
-	render_obj.contentId = "costume";
-	const user_id = sessionHelper.getUserId(req);
+	const form_data = req.form_data;
 
-	res.render('mypage/costume', render_obj);
+	res.json({status:'success'});
 
 }
 
 /**
- * コスプレ衣装削除
+ * 機材の削除
  *
  * @param {*} req
  * @param {*} res
@@ -59,33 +72,8 @@ exports.putUpdate = function(req, res, next){
 exports.delete = function(req, res, next){
 
 	const render_obj = res.render_obj;
-	render_obj.contentId = "costume";
-	const user_id = sessionHelper.getUserId(req);
+	const form_data = req.form_data;
 
-	res.render('mypage/costume', render_obj);
-
-}
-
-/**
- * 作品の新規登録
- * 
- * @param {*} req
- * @param {*} res
- */
-exports.createContentTitle = function(req, res, next){
-
-
-
-}
-
-/**
- * キャラクターの新規登録
- * 
- * @param {*} req
- * @param {*} res
- */
-exports.createContentChara = function(req, res, next){
-
-
+	res.json({status:'success'});
 
 }

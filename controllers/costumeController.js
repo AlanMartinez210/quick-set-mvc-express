@@ -30,6 +30,8 @@ exports.postCreate = function(req, res, next){
 
 	const render_obj = res.render_obj;
 	render_obj.contentId = "costume";
+	const form_data = req.form_data;
+	console.log('form_data: ', form_data);
 
 	res.render('mypage/costume', render_obj);
 
@@ -44,6 +46,9 @@ exports.postCreate = function(req, res, next){
 exports.putUpdate = function(req, res, next){
 
 	const render_obj = res.render_obj;
+	const form_data = req.form_data;
+	console.log('form_data: ', form_data);
+
 	render_obj.contentId = "costume";
 	const user_id = sessionHelper.getUserId(req);
 
@@ -60,6 +65,9 @@ exports.putUpdate = function(req, res, next){
 exports.delete = function(req, res, next){
 
 	const render_obj = res.render_obj;
+	const form_data = req.form_data;
+	console.log('form_data: ', form_data);
+	
 	render_obj.contentId = "costume";
 	const user_id = sessionHelper.getUserId(req);
 
@@ -75,6 +83,9 @@ exports.delete = function(req, res, next){
  */
 exports.createContentTitle = function(req, res, next){
 
+	const render_obj = res.render_obj;
+	const form_data = req.form_data;
+	console.log('form_data: ', form_data);
 
 
 }
@@ -87,6 +98,8 @@ exports.createContentTitle = function(req, res, next){
  */
 exports.createContentChara = function(req, res, next){
 
-
+	const render_obj = res.render_obj;
+	const form_data = req.form_data;
+	console.log('form_data: ', form_data);
 
 }

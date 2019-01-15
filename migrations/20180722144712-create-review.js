@@ -6,19 +6,23 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT.UNSIGNED
       },
       matching_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       review_from: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       review_to: {
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       review_type: {
-        type: Sequelize.INTEGER
+        type: Sequelize.TINYINT.UNSIGNED,
+        allowNull: false
       },
       review_comment: {
         type: Sequelize.STRING

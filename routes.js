@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const controllerPath = './controllers/';
+const formPath = './form/';
 
 const validate = require('./common/middleware/validateForm');
 const loginCheck = require('./common/middleware/loginCheck');
@@ -25,6 +26,11 @@ const userController = require(`${controllerPath}userController`)
 const costumeController = require(`${controllerPath}costumeController`);
 const equipmentController = require(`${controllerPath}equipmentController`);
 
+const costumeForm = require(`${formPath}costumeForm`);
+const equipmentForm = require(`${formPath}equipmentForm`);
+const userForm = require(`${formPath}userForm`);
+const scheduleForm = require(`${formPath}scheduleForm`);
+
 
 // ルートにきたときの処理
 router.get('/', (req,res,next)=>{
@@ -40,14 +46,18 @@ router.get('/', (req,res,next)=>{
 
 /* 新規登録ページの表示 */
 router.get('/register', (req,res,next)=>{ sessionHelper.isLogin(req) ? res.redirect('/') : next() }, userController.index);
+
 /* ユーザー新規登録 */
-router.post('/api/register', validate.check(require('./form/postRegisterForm')), validate.result, userController.postRegister);
+router.post('/api/register', validate.check(userForm.post), validate.result, userController.postRegister);
+
 /* ログイン */
-router.post('/api/login', validate.check(require('./form/postLoginForm')), validate.result, userController.postLogin);
+router.post('/api/login', validate.check(userForm.postLogin), validate.result, userController.postLogin);
+
 /** ログアウト */
 router.post('/api/logout', loginCheck, userController.postLogout);
+
 /** アカウントの削除 */
-router.post('/api/delete', loginCheck, validate.check(require('./form/deleteUserForm')), validate.result, userController.postUserDelete);
+router.delete('/api/delete', loginCheck, validate.check(userForm.delete), validate.result, userController.postUserDelete);
 
 
 /** =============================
@@ -60,10 +70,11 @@ router.get('/mypage', loginCheck, mypageController.index);
 router.get('/mypage/profile', loginCheck, profileController.index);　/* プロフィール編集の表示 */
 
 /* プロフィール情報の取得 */
-router.get('/mypage/profile/:user_id', loginCheck, validate.check(require('./form/getUserData')), validate.result, userController.getUserData)
+router.get('/mypage/profile/:user_id', loginCheck, validate.check(userForm.getUser), validate.result, userController.getUserData)
 
 /* プロフィール設定の編集 postProfile */
-router.post('/mypage/profile', loginCheck, validate.check(require('./form/postProfileForm')), validate.result, userController.postUserUpdate)
+router.post('/mypage/profile', loginCheck, validate.check(userForm.putProfile), validate.result, userController.postUserUpdate)
+
 
 /* サイトの設定の表示 index */
 router.get('/mypage/site', loginCheck, siteController.index);
@@ -76,28 +87,38 @@ router.get('/mypage/sampleImage', loginCheck, sampleImageController.index);
 
 /* サンプル写真の設定の登録/編集 postSampleImage */
 
+
 /* 所持機材設定(カメラマンのみ) index */
 router.get('/mypage/equipment', loginCheck, equipmentController.index);
 
-/* 所持機材設定(カメラマンのみ)の登録/編集 postEquipment */
+/* 所持機材設定(カメラマンのみ)の登録 postCreate */
+router.post('/mypage/equipment', loginCheck, validate.check(equipmentForm.post), validate.result, equipmentController.postCreate);
+
+/* 所持機材設定(カメラマンのみ)の編集 putUpdate */
+router.put('/mypage/equipment', loginCheck, validate.check(equipmentForm.post), validate.result, equipmentController.putUpdate);
+
+/* 所持機材設定(カメラマンのみ)の削除 delete */
+router.delete('/mypage/equipment', loginCheck, validate.check(equipmentForm.post), validate.result, equipmentController.delete);
+
 
 /* 所持衣装設定(コスプレイヤーのみ) index */
-router.get('/mypage/costume', loginCheck, validate.check(require('./form/getSearchContentTilteFrom')), validate.result, costumeController.index);
+router.get('/mypage/costume', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.index);
 
 /* コスプレ作品登録 */
-router.post('/mypage/costume/createtitle', loginCheck, validate.check(require('./form/postRegistTitleForm')), validate.result, costumeController.createContentTitle);
+router.post('/mypage/costume/createtitle', loginCheck, validate.check(costumeForm.postRegistTitle), validate.result, costumeController.createContentTitle);
 
 /* コスプレキャラクター登録 */
-router.post('/mypage/costume/createchara', loginCheck, validate.check(require('./form/postRegistCharaForm')), validate.result, costumeController.createContentChara);
+router.post('/mypage/costume/createchara', loginCheck, validate.check(costumeForm.postRegistChara), validate.result, costumeController.createContentChara);
 
 /* コスプレ衣装設定(コスプレイヤーのみ)の登録 postCreate */
-router.post('/mypage/costume', loginCheck, validate.check(require('./form/postCostumeCreateForm')), validate.result, costumeController.postCreate);
+router.post('/mypage/costume', loginCheck, validate.check(costumeForm.post), validate.result, costumeController.postCreate);
 
 /* コスプレ衣装設定(コスプレイヤーのみ)の編集 putUpdate */
-router.put('/mypage/costume', loginCheck, validate.check(require('./form/putCostumeForm')), validate.result, costumeController.putUpdate);
+router.put('/mypage/costume', loginCheck, validate.check(costumeForm.put), validate.result, costumeController.putUpdate);
 
 /* コスプレ衣装設定(コスプレイヤーのみ)の削除 delete */
-router.delete('/mypage/costume', loginCheck, validate.check(require('./form/deleteCostumeForm')), validate.result, costumeController.delete);
+router.delete('/mypage/costume', loginCheck, validate.check(costumeForm.delete), validate.result, costumeController.delete);
+
 
 /* 運営情報の表示 */
 router.get('/adminInfo', publicController.getAdminInfo);
@@ -134,7 +155,7 @@ router.get('/mypage/schedule/:schedule_id', loginCheck, validate.check(require('
 
 /* スケジュールの登録 postSchedule */
 router.post('/mypage/schedule/cos', loginCheck, validate.check(require('./form/postCosScheduleForm')), validate.result, scheduleController.postSchedule);
-router.post('/mypage/schedule/cam', loginCheck, validate.check(require('./form/postCamScheduleForm')), validate.result, scheduleController.postSchedule);
+router.post('/mypage/schedule/cam', loginCheck, validate.check(require('./form/scheduleForm')), validate.result, scheduleController.postSchedule);
 
 router.put('/mypage/schedule/cos', loginCheck, validate.check(require('./form/putCosScheduleForm')), validate.result, scheduleController.putSchedule);
 router.put('/mypage/schedule/cam', loginCheck, validate.check(require('./form/putCamScheduleForm')), validate.result, scheduleController.putSchedule);

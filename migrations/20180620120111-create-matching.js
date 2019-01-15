@@ -9,16 +9,20 @@ module.exports = {
         type: Sequelize.BIGINT.UNSIGNED
       },
       schedule_id: {
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       user_id: {
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       to_user_id: {
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.BIGINT.UNSIGNED,
+        allowNull: false
       },
       status_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER.UNSIGNED,
+        allowNull: false
       },
       last_message: {
         type: Sequelize.STRING
