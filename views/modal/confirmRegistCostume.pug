@@ -12,6 +12,7 @@
           .input-box._s.flex._c.st-readonly
             input(type="text", name="content_title_name", readonly)
             input(type="hidden", name="conf_content_title")
+            input(type="hidden", name="costume_id")
         
         .label-input-box._mbs
           .label-box
@@ -29,7 +30,9 @@
           p.bottom-label
 
       .board-ftr._s.flex._c._jc.proc-board
-        button(type="submit", name="doPostCostume", data-proc="create").btn-prm.st-back-b.shadow-l.proc-btn
+        button(type="submit", name="doPostCostume", data-proc="create").st-mr.btn-prm.st-back-b.shadow-l.proc-btn
           |登録
-        button(type="submit", name="doPutCostume", data-proc="edit").btn-prm.st-back-b.shadow-l.proc-btn
+        button(type="submit", name="doPostCostume", data-proc="edit").st-mr.btn-prm.st-back-b.shadow-l.proc-btn
           |編集
+        button(type="submit", name="doPostCostume", data-proc="delete").btn-prm.st-back-r.shadow-l.proc-btn
+          |削除

@@ -50,6 +50,16 @@ exports.getSearchContentTilte = {
 }
 
 /**
+ * コスチューム情報の取得
+ */
+exports.getCostume = {
+	costume_id: {
+		in: 'params',
+		isEmpty: { errorMessage: 'fatal', negated: true }
+	}
+}
+
+/**
  * 作品タイトルの登録
  */
 exports.postRegistTitle = {
@@ -59,11 +69,9 @@ exports.postRegistTitle = {
 	},
 	content_sub_title: {
 		in: 'body',
-		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
 	content_abbreviation: {
 		in: 'body',
-		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
 	consent_regist_title: {
 		in: 'body',
@@ -82,15 +90,12 @@ exports.postRegistChara = {
 		in: 'body',
 		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
-	content_chara_name: {
+	content_chara: {
 		in: 'body',
 		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
-	conf_content_chara: {
+	consent_regist_chara: {
 		in: 'body',
 		isEmpty: { errorMessage: 'E00002', negated: true }
 	},
-	costume_comment: {
-		in: 'body',
-	}
 }

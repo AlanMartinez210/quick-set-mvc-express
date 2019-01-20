@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const errorHelper = require("../common/helper/errorHelper");
 
-const messageRepository = require('../models/repository/customRepository/messageRepository');
+const messageRepository = require('../models/repository/CustomRepository/messageRepository');
 
 /**
  * ログインユーザーの未読メッセージの一覧を取得

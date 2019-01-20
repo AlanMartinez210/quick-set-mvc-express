@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.BIGINT,
     content_id: DataTypes.BIGINT,
     chara_id: DataTypes.BIGINT,
+    remarks: DataTypes.STRING,
   }, {
     getterMethods:{
       createdAt(){ return dateHelper.getDate(this.created_at) },

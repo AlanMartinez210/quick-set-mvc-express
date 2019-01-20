@@ -73,18 +73,18 @@ module.exports = {
       }]
     }).then(e=>{
       queryInterface.sequelize.query(
-        `create trigger set_user_key before insert on users
+        `create trigger set_user_key before insert on Users
          for each row
          begin
           DECLARE $user_key varchar(50);
           DECLARE $dup_cnt int;
 
           select coalesce(new.user_key,new.user_name) into $user_key;
-          select count(1) into $dup_cnt from users where user_key = $user_key;
+          select count(1) into $dup_cnt from Users where user_key = $user_key;
           /* user_keyが重複する場合 または 英数_以外が入力されている場合に自動設定 */
           while $dup_cnt != 0 or $user_key regexp \'^[A-Za-z0-9_]+$\' = 0 do
             select substring(MD5(rand()),1,12) into $user_key;
-            select count(1) into $dup_cnt from users where user_key = $user_key;
+            select count(1) into $dup_cnt from Users where user_key = $user_key;
           end while;
           set NEW.user_key = $user_key;
          end; `

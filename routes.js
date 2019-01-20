@@ -30,7 +30,11 @@ const costumeForm = require(`${formPath}costumeForm`);
 const equipmentForm = require(`${formPath}equipmentForm`);
 const userForm = require(`${formPath}userForm`);
 const scheduleForm = require(`${formPath}scheduleForm`);
-
+const siteForm = require(`${formPath}siteForm`);
+const recruitlistForm = require(`${formPath}recruitlistForm`);
+const reviewForm = require(`${formPath}reviewForm`);
+const matchingForm = require(`${formPath}matchingForm`);
+const messageForm = require(`${formPath}messageForm`);
 
 // ルートにきたときの処理
 router.get('/', (req,res,next)=>{
@@ -75,12 +79,11 @@ router.get('/mypage/profile/:user_id', loginCheck, validate.check(userForm.getUs
 /* プロフィール設定の編集 postProfile */
 router.post('/mypage/profile', loginCheck, validate.check(userForm.putProfile), validate.result, userController.postUserUpdate)
 
-
 /* サイトの設定の表示 index */
 router.get('/mypage/site', loginCheck, siteController.index);
 
 /* サイトの設定の登録/編集 postSiteSetting */
-router.post('/mypage/site/', loginCheck, validate.check(require('./form/postSiteForm')), validate.result, siteController.postSiteSetting);
+router.post('/mypage/site/', loginCheck, validate.check(siteForm.post), validate.result, siteController.postSiteSetting);
 
 /* サンプル写真の設定の表示 index */
 router.get('/mypage/sampleImage', loginCheck, sampleImageController.index);
@@ -102,7 +105,13 @@ router.delete('/mypage/equipment', loginCheck, validate.check(equipmentForm.post
 
 
 /* 所持衣装設定(コスプレイヤーのみ) index */
-router.get('/mypage/costume', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.index);
+router.get('/mypage/costume', loginCheck, costumeController.index);
+
+/** 作品情報の取得 getContentTitle */
+router.get('/mypage/costume/content', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.getContentTitle);
+
+/** 所持衣装情報の取得 getCostume */
+router.get('/mypage/costume/:costume_id', loginCheck, validate.check(costumeForm.getCostume), validate.result, costumeController.getCostume)
 
 /* コスプレ作品登録 */
 router.post('/mypage/costume/createtitle', loginCheck, validate.check(costumeForm.postRegistTitle), validate.result, costumeController.createContentTitle);
@@ -151,18 +160,18 @@ router.get('/mypage/schedule', loginCheck, scheduleController.index);　
 router.get('/mypage/schedule/:year(\\d{4})/:month(\\d{1,2})', loginCheck, scheduleController.getSelectScheduleList);　
 
 /* 選択した日付のスケジュールを取得 getSchedule */
-router.get('/mypage/schedule/:schedule_id', loginCheck, validate.check(require('./form/getScheduleData')), validate.result, scheduleController.getSchedule);　
+router.get('/mypage/schedule/:schedule_id', loginCheck, validate.check(scheduleForm.getScheduleData), validate.result, scheduleController.getSchedule);　
 
 /* スケジュールの登録 postSchedule */
-router.post('/mypage/schedule/cos', loginCheck, validate.check(require('./form/postCosScheduleForm')), validate.result, scheduleController.postSchedule);
-router.post('/mypage/schedule/cam', loginCheck, validate.check(require('./form/scheduleForm')), validate.result, scheduleController.postSchedule);
+router.post('/mypage/schedule/cos', loginCheck, validate.check(scheduleForm.postByCos), validate.result, scheduleController.postSchedule);
+router.post('/mypage/schedule/cam', loginCheck, validate.check(scheduleForm.postByCam), validate.result, scheduleController.postSchedule);
 
-router.put('/mypage/schedule/cos', loginCheck, validate.check(require('./form/putCosScheduleForm')), validate.result, scheduleController.putSchedule);
-router.put('/mypage/schedule/cam', loginCheck, validate.check(require('./form/putCamScheduleForm')), validate.result, scheduleController.putSchedule);
+router.put('/mypage/schedule/cos', loginCheck, validate.check(scheduleForm.putByCos), validate.result, scheduleController.putSchedule);
+router.put('/mypage/schedule/cam', loginCheck, validate.check(scheduleForm.putByCam), validate.result, scheduleController.putSchedule);
 
 
 /* スケジュールの削除 deleteSchedule */
-router.delete('/mypage/schedule', loginCheck, validate.check(require('./form/deleteScheduleForm')), validate.result, scheduleController.deleteSchedule);
+router.delete('/mypage/schedule', loginCheck, validate.check(scheduleForm.delete), validate.result, scheduleController.deleteSchedule);
 
 /** =============================
  * レビューの管理
@@ -178,7 +187,7 @@ router.get('/mypage/review/sendList', loginCheck, reviewController.getReviewHist
 router.get('/mypage/review/recieveList', loginCheck, reviewController.getRevieweeHistory);
 
 /* レビューの登録/編集 postReview */
-router.post('/mypage/review', loginCheck, validate.check(require('./form/postReviewForm')), validate.result, reviewController.postReview);
+router.post('/mypage/review', loginCheck, validate.check(reviewForm.postReview), validate.result, reviewController.postReview);
 
 
 /** =============================
@@ -189,16 +198,16 @@ router.post('/mypage/review', loginCheck, validate.check(require('./form/postRev
 router.get('/mypage/matching', loginCheck, matchingController.index);
 
 /* 依頼/応募する postRequest */
-router.post('/mypage/matching/request', loginCheck, validate.check(require('./form/postRequestForm')), validate.result, matchingController.postRequest);
+router.post('/mypage/matching/request', loginCheck, validate.check(matchingForm.postReqest), validate.result, matchingController.postRequest);
 
 /* マッチング履歴の取得(マッチング履歴の取得) getMatchingHistory */
 // router.get('/mypage/matching/history', matchingController.getMatchingHistory);
 
 /* マッチングの承諾 postConsent */
-router.post('/mypage/matching/consent', loginCheck, validate.check(require('./form/postMatchingStateForm')), validate.result, matchingController.postConsent);
+router.post('/mypage/matching/consent', loginCheck, validate.check(matchingForm.postConsent), validate.result, matchingController.postConsent);
 
 /* マッチングを却下する postReject */
-router.post('/mypage/matching/reject', loginCheck, validate.check(require('./form/postMatchingStateForm')), validate.result, matchingController.postReject);
+router.post('/mypage/matching/reject', loginCheck, validate.check(matchingForm.postReject), validate.result, matchingController.postReject);
 
 /** =============================
  * メッセージ
@@ -208,21 +217,21 @@ router.post('/mypage/matching/reject', loginCheck, validate.check(require('./for
 router.get('/message', loginCheck, messageController.index);
 
 /* チャットルーム */
-router.get('/message/room', loginCheck, validate.check(require('./form/getMessageRoom')), validate.result, messageRoomController.index);　
-router.post('/api/room/postMessage', loginCheck, validate.check(require('./form/postMessageForm')), validate.result, messageRoomController.postMessage);　
+router.get('/message/room', loginCheck, validate.check(messageForm.getMessage), validate.result, messageRoomController.index);　
+router.post('/api/room/postMessage', loginCheck, validate.check(messageForm.postMessage), validate.result, messageRoomController.postMessage);　
 
 /** =============================
  * 募集/予定
  ================================*/
 
 /* 募集/予定一覧の表示 index */
-router.get('/recruitlist/:type', loginCheck, validate.check(require('./form/getRecruitListForm')), validate.result, recruitlistController.index);　
+router.get('/recruitlist/:type', loginCheck, validate.check(recruitlistForm.getRecruitlist), validate.result, recruitlistController.index);　
 
 /* 募集/予定の検索 getSearchRecruit */
-router.get('/recruitlist/:type/search', loginCheck, validate.check(require('./form/getSearchRecruitListForm')), validate.result, recruitlistController.getSearchRecruit);
+router.get('/recruitlist/:type/search', loginCheck, validate.check(recruitlistForm.getSearchRecruitlist), validate.result, recruitlistController.getSearchRecruit);
 
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
-router.post('/recruitlist/bookmark', loginCheck, validate.check(require('./form/postRecruitBookmarkForm')), validate.result, recruitlistController.postRecruitBookmark);
+router.post('/recruitlist/bookmark', loginCheck, validate.check(recruitlistForm.postBookmark), validate.result, recruitlistController.postRecruitBookmark);
 
 /* 募集/予定の詳細表示 */
 router.get('/recruitlist/detail/:schedule_id', loginCheck, recruitDetailController.getRecruitDetail);

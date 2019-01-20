@@ -20,6 +20,9 @@ module.exports = {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false
       },
+      remarks: {
+        type: Sequelize.STRING
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

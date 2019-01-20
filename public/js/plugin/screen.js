@@ -40,6 +40,15 @@ export default class screen{
 			}
 		})
 
+		// タブメニューの選択イベント
+		$(".tab-board").on("click", ".board-hdr .tab-item", e => {
+			$(".tab-board .tab-item").removeClass("active-tab");
+			$('[data-tab_content]').hide();
+			$(e.currentTarget).addClass("active-tab");
+			const tab_id = $(e.currentTarget).data("tab_id");
+			$(`[data-tab_content="${tab_id}"]`).show();
+		})
+
 		// メッセージチャットアクセス時のみ、bodyのスクロールを消す。
 		// if($mainFrame.hasClass("message-ptn")){
 		// 	$("body").css({"overflow": "hidden"});
@@ -60,5 +69,9 @@ export default class screen{
 	setContentBorder(height){
 		$(".general-ptn .main-cntnr").css("margin-top", -height);
 		$(".general-ptn .hdr-cntnr").css("padding-bottom", height);
+	}
+
+	tabInit(){
+		$(".tab-board .tab-item:first-child").trigger("click");
 	}
 }

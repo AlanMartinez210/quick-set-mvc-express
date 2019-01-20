@@ -25,8 +25,7 @@ export default class myApp extends baseApp {
     this.config = {};
     this.plugin = {};
     _.forEach(Plagins, (plg, key) => {
-      let c = new plg(this);
-      c.app = this;
+      let c = new plg();
       this.plugin[key] = c;
     });
 
@@ -63,7 +62,7 @@ export default class myApp extends baseApp {
       
       // readyメソッドを持つプラグインの実行
       _.forEach(this.plugin, p => {
-        if(p.ready) p.ready();
+        if(p.ready) p.ready(this);
       })
 
       // 画面の表示
@@ -101,7 +100,7 @@ export default class myApp extends baseApp {
 
       // loadメソッドを持つプラグインの実行
       _.forEach(this.plugin, p => {
-        if(p.load) p.load();
+        if(p.load) p.load(this);
       })
     });
   }

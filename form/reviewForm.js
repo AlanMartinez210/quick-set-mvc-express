@@ -1,5 +1,5 @@
 /** レビューの送信フォーム */
-module.exports = {
+exports.postReview = {
 	select_id: {
 		in: 'body',
 		isEmpty: { errorMessage: 'fatal', negated: true }

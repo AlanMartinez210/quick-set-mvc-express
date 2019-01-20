@@ -78,6 +78,35 @@ $fontAwesome : "Font Awesome 5 Free";
 	// 	margin: 0 4px;
 	// }
 
+	// タブ
+	&.tab-board{
+		.board-hdr{
+			display: flex;
+			padding: 0;
+			border: 0;
+			.tab-item{
+				cursor: pointer;
+				flex-grow: 1;
+				padding: 16px;
+				background: $grayLW;
+				border-radius: 5px 5px 0 0; 
+				border-top: 4px $grayLW solid;
+				&.active-tab{
+					background: $white;
+					border-top: 4px $blueL solid;
+					&:first-child{
+						border-radius: 5px 0 0 0;
+					}
+					&:last-child{
+						border-radius: 0 5px 0 0;
+					}
+				}
+			}
+		}
+	}
+	
+
+	// アコーディオン
 	&.board-accordion{
 		.board-hdr{
 			border: 0;

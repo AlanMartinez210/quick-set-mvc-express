@@ -1,5 +1,13 @@
+
+exports.getMessage = {
+	r:{
+		in: 'query',
+	}
+};
+
+
 /** チャット発言フォーム */
-module.exports = {
+exports.postMessage = {
 	matching_id: {
 		in: 'body',
 		isEmpty: { errorMessage: 'fatal', negated: true },

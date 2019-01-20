@@ -37,6 +37,7 @@ export default class schedule{
 		scheduleSection.on('click', showScheduleBtn , {
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
+
 				this.modalDisable();
 
 				// タグと都道府県のプラグインをロード
@@ -73,7 +74,8 @@ export default class schedule{
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
 				const modal_mode = event.currentTarget.dataset.mode;
-
+				// タブの初期化
+				this.app.plugin.screen.tabInit();
 				this.modalEnable();
 				// タグと都道府県のプラグインをロード
 				this.tags.init().ready();

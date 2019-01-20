@@ -1,10 +1,5 @@
 -
-  const costumelistArr = [
-    { title: "ひなまつり", name: "新田ひな" },
-    { title: "ひなまつり", name: "三島瞳" },
-    { title: "ひなまつり", name: "アンズ" },
-    { title: "ひなまつり", name: "マオ" },
-  ]
+  const costumelistArr = self.bodyData.rows
 -
 
 .center-frame
@@ -45,7 +40,7 @@
           p.main-label: |作品名
           span.sub-label: |作品名、または名称の一部を入力してください。
         .input-box._s.flex._c.st-required
-          input(type="text", name="content_title", placeholder="ひなまつり")
+          input(type="text", name="search_content_title", placeholder="ひなまつり")
         p.bottom-label
 
       .option-box.flex._jr
@@ -102,12 +97,13 @@
         span: |所持衣装一覧
 
     .board-cnt.list-board
-      ul.st_options
+      ul.st_options#has_coutume_list
         - for (let cl of costumelistArr )
           li.label-icon-link
             .link-wrap.flex._c
               .st-string-set
                 span.sub-text: |#{cl.title}
-                p: |#{cl.name}
+                p: |#{cl.chara}
+                input(type="hidden", name="has_chara_item", data-costume_id=cl.costume_id data-title=cl.title, data-chara=cl.chara)
               i.icon-link.fas.fa-chevron-right.fa-fw
       

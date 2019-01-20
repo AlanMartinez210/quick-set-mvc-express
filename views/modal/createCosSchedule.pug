@@ -1,9 +1,14 @@
 #createScheduleModal(data-modal="hide")
   form(method="post", action="", name="scheduleForm")
 
-    .board-prm
+    .board-prm.tab-board
 
-      .board-cnt._s
+      .board-hdr
+        .tab-item(data-tab_id="cameraRec").active-tab
+          p: |スケジュール
+        .tab-item(data-tab_id="groupRec")
+          p: |あわせ募集
+      .board-cnt._s(data-tab_content="cameraRec")
         .attention-prm
           p
             span.st-required(style="border-radius:5px;display: inline-block;")
@@ -62,14 +67,6 @@
             input(type="text", name="event_name", placeholder="世界コスプレサミット")
           p.bottom-label
 
-        .label-input-box#box_event_url
-          .label-box
-            p.main-label: |詳細URL
-            span.sub-label: |イベントや開催地のURLがある場合は入力してください。
-          .input-box._s.flex._c
-            input(type="text", name="event_url", placeholder="http://")
-          p.bottom-label
-
         .label-input-box#box_prefecture
           .label-box
             p.main-label: |開催都道府県
@@ -94,14 +91,15 @@
           |追加したタグ一覧
         .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
 
-        .label-input-box#box_allow_recruit_flg
+        .label-input-box#box_coschara
           .label-box
-            p.main-label: |公開設定
-            span.sub-label: |チェックするとカメラマンが応募できる状態になります。
-          .check-box._s.flex._c
-            input(id="allowrRecruitFlg" type="checkbox", name="allow_recruit_flg")
-            label(for="allowrRecruitFlg")
-              |公開する
+            p.main-label: |コスプレキャラクター
+            span.sub-label: |当日コスプレするキャラクターを選択してください。
+          .select-box._s.flex._c
+            select(name="coschara")
+              option(value="")
+                //- each pref in self.globalParam.enumPref.getEnum()
+                //-   option(value=pref.id) #{pref.name}
           p.bottom-label
 
         .accordion-prm.inline.shadow-l
@@ -126,12 +124,12 @@
                 input(type="text", name="cost")
               p.bottom-label
 
-            .label-input-box#box_character
+            .label-input-box#box_event_url
               .label-box
-                p.main-label: |コスプレキャラクター
-                span.sub-label: |当日コスプレするキャラクターを入力してください。
-              .textarea-box._s.flex._c
-                textarea(name="coschara", rows="2", placeholder="作品名/キャラクター名")
+                p.main-label: |会場URL
+                span.sub-label: |イベントや開催地のURLがある場合は入力してください。
+              .input-box._s.flex._c
+                input(type="text", name="event_url", placeholder="http://")
               p.bottom-label
 
             .label-input-box#box_remarks
@@ -140,6 +138,19 @@
               .textarea-box._s.flex._c
                 textarea(name="remarks", rows="3")
               p.bottom-label
+
+        .label-input-box#box_allow_recruit_flg
+          .label-box
+            p.main-label: |公開設定
+            span.sub-label: |チェックするとカメラマンが応募できる状態になります。
+          .check-box._s.flex._c
+            input(id="allowrRecruitFlg" type="checkbox", name="allow_recruit_flg")
+            label(for="allowrRecruitFlg")
+              |公開する
+          p.bottom-label
+        
+      .board-cnt._s(data-tab_content="groupRec")
+        
 
       .board-ftr._s.flex._c._jc.proc-box
         button(type="submit", data-proc="create", name="doSchedulePost").btn-prm.st-back-b.shadow-l.proc-btn
