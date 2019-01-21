@@ -70,7 +70,7 @@ exports.postByCos = {
 	tag_field: common.tag_field,
 	time_from: common.time_from,
 	time_to: common.time_to,
-	event_name: Object.assign(common.event_name, { isEmpty: { errorMessage: 'E00002', negated: true } } ),
+	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name),
 	remarks: common.remarks,
 	cos_chara:{
 		in: 'body',
@@ -139,7 +139,7 @@ exports.putByCos = {
 	tag_field: common.tag_field,
 	time_from: common.time_from,
 	time_to: common.time_to,
-	event_name: Object.assign(common.event_name, { isEmpty: { errorMessage: 'E00002', negated: true } } ),
+	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name ),
 	remarks: common.remarks,
 	cos_chara:{
 		in: 'body',

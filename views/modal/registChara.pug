@@ -9,18 +9,18 @@
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
-        .label-input-box._mbs
+        .label-input-box
           .label-box
             p.main-label: |作品名
-          .input-box._s.flex._c.st-readonly
+          .input-box.flex._c.st-readonly
             input(type="text", name="content_title_name", readonly)
             input(type="hidden", name="conf_content_title")
 
-        .label-input-box._mbs#box_content_chara
+        .label-input-box#box_content_chara
           .label-box
             p.main-label: |キャラクター名
             span.sub-label: |作品に登場するキャラクター名を入力してください。
-          .input-box._s.flex._c.st-required
+          .input-box.flex._c.st-required
             input(type="text", name="content_chara", placeholder="新田 ひな")
           p.bottom-label
         
@@ -34,7 +34,7 @@
         .label-input-box#box_consent_regist_chara
           .label-box
             p.main-label: |<span class="c-red">※必ず上記をお読みください。</span>
-          .check-box._s.flex._c
+          .check-box.flex._c
             input(id="consentRegistChara" type="checkbox" name="consent_regist_chara")
             label(for="consentRegistChara")
               |確認の上、同意します。

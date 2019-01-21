@@ -26,6 +26,7 @@ button{ cursor: pointer; }
 .invisible{visibility: hidden;}
 .ena-btm-margin{padding-bottom: 1px;} //margin-bottomを有効にする。
 .main-cntnr{position: relative; margin-top: -24px;}
+.last-item{ margin-bottom: 0 !important; }
 .center-frame{
 	width: calc(100% - 32px);
 	margin: 0 auto;

@@ -192,6 +192,11 @@
 .st-mt{
 	margin-top: 16px;
 }
+
+.st-mt-s{
+	margin-top: 8px;
+}
+
 .st-mr{
 	margin-right: 16px;
 }
@@ -233,13 +238,18 @@
 	}
 }
 
+.a-link{
+	text-decoration: underline;
+	color: $blueL;
+}
+
 .disabled{display: none !important;}
 
 /* icon */
 .icon-b{font-size: 42px;};
 .icon-btn{font-size: 24px; margin-right: 8px;}
 .icon-btn-s{font-size: 13px; margin-right: 4px;}
-.icon-input{ font-size: 16px; color: $grayL; }
+.icon-input{ font-size: 16px; color: $grayL; padding-left: 8px;}
 .icon-label{ margin-right: 8px; font-size:16px; }
 .icon-menu{ font-size: 24px; color: $blueL; }
 .icon-title{font-size: 16px; margin-right: 8px;}
@@ -248,7 +258,7 @@
 .icon-link{font-size: 16px; margin-left: auto; color: $grayD;}
 .icon-link-s{font-size: 13px; margin-left: auto; color: $grayD;}
 .icon-error{ font-size: 13px; color: $redD; margin-right: 8px; }
-.icon-plus{ font-size: 24px; color: $blueL;}
+.icon-plus{ font-size: 24px; color: $blueL; padding-right: 8px; }
 .icon-close{ font-size: 24px; color: $grayD; }
 .icon-logo-c2{height: 20px; margin-right: 12px;}
 .icon-pager{font-size: 13px; color: $blueD;}

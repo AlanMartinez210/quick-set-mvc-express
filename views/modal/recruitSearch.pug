@@ -8,10 +8,11 @@
             span: |入力した内容で表示する項目を絞ります。
           
         - if(!self.bodyData.isToday){
-        .label-input-box._mbs#box_search_date
+
+        .label-input-box#box_search_date
           .label-box
             p.main-label: |日付
-          .input-box._s.flex._c
+          .input-box.flex._c
             i.icon-input.far.fa-calendar.fa-fw
             input(type="text", data-datepicker, name="search_date_from", readonly="true", placeholder="ここを選択", data-inputclear="dateInput")
             span: |～&nbsp;
@@ -19,56 +20,55 @@
             input(type="text", data-datepicker, name="search_date_to", readonly="true", placeholder="ここを選択", data-inputclear="dateInput")
           p.bottom-label
 
-        .option-box.flex._jr
-          span.option-btn.st-line-b(name="inputClear" data-inputclear="dateInput")
-            |日付をクリア
+          .option-box.flex._jr
+            span.option-btn.st-line-b(name="inputClear" data-inputclear="dateInput")
+              |日付をクリア
+              
         - } else {
-        .label-input-box._mbs#box_search_date
+
+        .label-input-box#box_search_date
           .label-box
             p.main-label: |日付
-          .input-box._s.flex._c
+          .input-box.flex._c
             i.icon-input.far.fa-calendar.fa-fw
             input(type="text", name="search_date_from", readonly="true")
             span: |～&nbsp;
             i.icon-input.far.fa-calendar.fa-fw
             input(type="text", name="search_date_to", readonly="true")
           p.bottom-label
+
         - }
 
-        .label-input-box._mbs#box_prefectures_field
+        .label-input-box#box_prefectures_field
           .label-box
             p.main-label: |都道府県
-          .select-box._s.flex._c
+          .select-box.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
                 each pref in self.globalParam.enumPref.getEnum()
                   option(value=pref.id) #{pref.name}
           p.bottom-label
 
-        p.st-title-tag
-          |対象都道府県
-        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
+          p.st-title-tag.st-mt-s
+            |対象都道府県
+          .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
 
-        .label-input-box._mbs#box_search_tag
+        .label-input-box#box_search_tag
           .label-box
               p.main-label: |タグ
-          .input-box._s.flex._c
+          .input-box.flex._c
             i.icon-input.fas.fa-tags.fa-fw
             input(type="text", name="search_tag" placeholder="一眼レフOK")
           p.bottom-label
 
-        .accordion-prm
-          .accordion-label.flex._c
-            .accordion-title: p: |詳細オプション
-          .accordion-cnt
-            .label-input-box#box_shot_type
-              .label-box
-                p.main-label: |撮影タイプ
-              .select-box._s.flex._c
-                select(name="shot_type")
-                  option(value="") #{""}
-                  each shot_type in self.globalParam.enumShotType.getEnum()
-                    option(value=shot_type.code) #{shot_type.name}
+        .label-input-box#box_shot_type
+          .label-box
+            p.main-label: |撮影タイプ
+          .select-box.flex._c
+            select(name="shot_type")
+              option(value="") #{""}
+              each shot_type in self.globalParam.enumShotType.getEnum()
+                option(value=shot_type.code) #{shot_type.name}
 
       .board-ftr._s.flex._c._jc
         button(type="submit", name="doGetSearchRecruitList").btn-prm.st-back-b.shadow-l

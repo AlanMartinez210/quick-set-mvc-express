@@ -8,7 +8,7 @@
             span: |あなたのユーザーID
 
       .board-cnt._s
-        .input-box._s.flex._c.st-readonly
+        .input-box.flex._c.st-readonly
             input(type="text", name="user_id", value=body_data.user_id, readonly=true)
 
     .board-prm
@@ -43,7 +43,7 @@
           .label-box
             p.main-label: |ユーザー名
             span.sub-label: |50文字まで入力できます
-          .input-box._s.flex._c.st-required
+          .input-box.flex._c.st-required
             input(type="text", name="user_name")
           p.bottom-label
 
@@ -51,38 +51,39 @@
           .label-box
             p.main-label: |メールアドレス
             span.sub-label: |＠を含むメールアドレスを入力してください
-          .input-box._s.flex._c.st-required
+          .input-box.flex._c.st-required
             input(type="text", name="email")
           p.bottom-label
 
-        .label-input-box._mbs#box_prefectures_field
+        .label-input-box#box_prefectures_field
           .label-box
             p.main-label: |活動地域
             span.sub-label: |あなたの活動している地域を選択し追加してください。
-          .select-box._s.flex._c
+          .select-box.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
                 each pref in self.globalParam.enumPref.getEnum()
                   option(value= pref.id) #{pref.name}
+          
+
+          p.st-title-tag.st-mt-s
+            |追加した活動地域
+          .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
           p.bottom-label
 
-        p.st-title-tag
-          |追加した活動地域
-        .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
-
-        .label-input-box._mbs#box_tag_field
+        .label-input-box#box_tag_field
           .label-box
             p.main-label: |タグの設定
             span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
-          .input-box._s.flex._c
+          .input-box.flex._c
             input(type="text")#tags
             span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
+          
+          p.st-title-tag.st-mt-s
+            |追加したタグ一覧
+          .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
           p.bottom-label
-
-        p.st-title-tag
-          |追加したタグ一覧
-        .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
-
+      
       .board-ftr._s.flex._c._jc
         button(type="submit", name="doUserUpdate").btn-prm.st-back-b.shadow-l
           span: |更新

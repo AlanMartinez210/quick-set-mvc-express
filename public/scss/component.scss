@@ -51,6 +51,11 @@ $fontAwesome : "Font Awesome 5 Free";
 		&._s{padding: 8px;}
 		&._xs{padding: 4px;}
 		&._n{padding: 0;}
+		.label-input-box, .accordion-prm{
+			&:last-child{
+				margin-bottom: 0 !important;
+			}
+		}
 	}
 	.board-ftr{
 		padding: 16px;
@@ -177,12 +182,12 @@ $fontAwesome : "Font Awesome 5 Free";
 /* ラベル */
 .label-box{
 	line-height: 1.4em;
+	margin-bottom: 4px;
 	._wbka{word-break: keep-all};
 	.main-label{
 		@include font-normal;
 		font-weight: bold;
 		color: $blackD;
-		margin-top: 16px;
 	}
 	.sub-label{
 		@include font-small;
@@ -234,10 +239,7 @@ $fontAwesome : "Font Awesome 5 Free";
 .input-box{
 	border-radius: 5px;
 	border: 1px $grayL solid;
-	margin-bottom: 16px;
 	background: $white;
-	&._s{margin-bottom: 8px;}
-	&:last-child{margin-bottom: 0;}
 	input[type="text"], input[type="password"]{
 		width: 100%;
 		border-radius: 5px;
@@ -264,9 +266,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	border-radius: 5px;
 	padding: 0 8px;
 	border: 1px $grayL solid;
-	margin-bottom: 16px;
 	background: $white;
-	&._s{margin-bottom: 8px;}
 	&._mbn{margin-bottom: 0;}
 	&.hdr-right-side{margin-left: auto;}
 	select{
@@ -299,11 +299,9 @@ $fontAwesome : "Font Awesome 5 Free";
 .check-box{
 	border-radius: 5px;
 	border: 1px $grayL solid;
-	margin-bottom: 16px;
 	background: $white;
 	padding: 0.6em 0.8em 0.6em 0.8em;
 	&._n{border: 0; padding: 0;}
-	&._s{margin-bottom: 8px;}
 	&:last-child{margin-bottom: 0;}
 	label{width: 100%;}
 	input[type="checkbox"]{ display: none; }
@@ -322,16 +320,14 @@ $fontAwesome : "Font Awesome 5 Free";
 
 .textarea-box{
 	border-radius: 5px;
-	padding: 0 8px;
 	border: 1px $grayL solid;
-	margin-bottom: 16px;
 	background: $white;
-	&._s{margin-bottom: 8px;}
 	textarea{
 		resize: none;
 		width: 100%;
-		padding: 0.6em 0.4em 0.6em 0.4em;
+		padding: 0.6em 0.6em 0.6em 0.6em;
 		@include font-normal;
+		background: 0;
 	}
 	button{
 		background: none;
@@ -342,7 +338,6 @@ $fontAwesome : "Font Awesome 5 Free";
 }
 
 .option-box{
-	margin-bottom: 16px;
 	.option-btn{
 		cursor: pointer;
 		border-radius: 5px; 
@@ -350,11 +345,14 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
-.bottom-label{@include font-small;}
+.bottom-label{
+	margin-top: 4px;
+	@include font-small;
+}
 
 /* ラベル付きインプット */
 .label-input-box{
-	margin-bottom: 16px;
+	margin-bottom: 24px;
 	&._mbs{
 		margin-bottom: 8px;
 	}
@@ -423,7 +421,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	border: 1px $grayL solid;
 	border-radius: 5px;
 	padding: 8px 8px 0 8px;
-	margin-bottom: 16px;
+	margin-bottom: 4px;
 	&._s{margin-bottom: 8px;}
 	.tag-label{
 		background: $blueL;
@@ -482,7 +480,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	background: $grayLW;
 	border-radius: 5px;
 	font-size: 13px;
-	margin-bottom: 8px;
+	margin-bottom: 16px;
 }
 
 // アコーディオン
@@ -491,7 +489,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	&.inline{
 		border: 1px solid $grayD;
 		border-radius: 5px;
-		margin-bottom: 8px;
+		margin-bottom: 16px;
 		.accordion-label{
 			border-bottom: 0;
 		}

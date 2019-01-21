@@ -21,7 +21,7 @@
         .label-input-box#box_consent_delete
           .label-box
             p.main-label: |<span class="c-red">※必ず上記をお読みください。</span>
-          .check-box._s.flex._c
+          .check-box.flex._c
             input(id="consentDelete" type="checkbox" name="consent_delete")
             label(for="consentDelete")
               |確認の上、同意します。
@@ -31,7 +31,7 @@
           .label-box
             p.main-label: |パスワード
             span.sub-label: |ログイン時のパスワードを入力してください。
-          .input-box._s.flex._c
+          .input-box.flex._c
             input(type="password", name="password", autocomplete="password")
           p.bottom-label #{self.err_message}
           
