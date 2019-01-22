@@ -1,0 +1,60 @@
+#registTitle.board-cnt._s
+  .attention-prm
+      p
+        span.st-required(style="border-radius:5px;display: inline-block;")
+          |&emsp;&emsp;&emsp;
+        |&nbsp;は必須項目です。
+
+  .label-input-box#box_costume_title
+    .label-box
+      p.main-label: |作品名
+      span.sub-label: |作品名、または名称の一部を入力してください。
+    .input-box.flex._c.st-required
+      input(type="text", name="search_content_title", placeholder="ひなまつり")
+    p.bottom-label
+
+    .option-box.flex._jr
+      span.option-btn.st-line-b(name="titleSearch")
+        |検索
+  
+    p.st-title-tag#titleListNum
+      |候補一覧 (0件)
+
+    ul.inner_list#titleList
+      li: |候補がありません
+  
+  .label-link.shadow-l
+    a(name="openRegistTitleModal").flex._c.flex._c
+      i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+      .st-string-set
+        p: |作品登録
+        span.sub-text: |お探しの作品がない場合はこちら
+      i.icon-link.fas.fa-chevron-right.fa-fw
+  
+#registChara.board-cnt._s
+
+  .option-box.flex._jr
+    span.option-btn.st-line-b(name="backTitle")
+      |作品選択に戻る
+
+  .label-input-box
+    .label-box
+      p.main-label: |作品名
+    .input-box.flex._c.st-readonly
+      input(type="text", name="content_title_name", readonly)
+      input(type="hidden", name="conf_content_title")
+
+
+    p.st-title-tag
+      |キャラクター候補一覧
+
+    ul.inner_list#charaList
+      li: |候補がありません
+  
+  .label-link.shadow-l
+    a(name="openRegistCharaModal").flex._c
+      i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+      .st-string-set
+        p: |キャラクター登録
+        span.sub-text: |お探しのキャラクターがない場合はこちら
+      i.icon-link.fas.fa-chevron-right.fa-fw

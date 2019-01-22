@@ -8,12 +8,12 @@ export default class costume{
 		this.$registCharaForm = $('[name=registCharaForm]');
 		this.$registTitleForm = $('[name=registTitleForm]');
 	}
-	ready(){
+	ready(call = {type: "costume"}){
 		const $registTitle = $('#registTitle');
 		const $registChara = $('#registChara');
-		const openRegistTitleModalBtn = '[name=openRegistTitleModal]';
-		const openRegistCharaModalBtn = '[name=openRegistCharaModal]';
-		const titleSearchBtn = '[name=titleSearch]';
+		const $openRegistTitleModalBtn = $('[name=openRegistTitleModal]');
+		const $openRegistCharaModalBtn = $('[name=openRegistCharaModal]');
+		const $titleSearchBtn = $('[name=titleSearch]');
 		const $search_content_title = $('[name=search_content_title]');
 		const $titleList = $('#titleList');
 		const $titleListNum = $("#titleListNum");
@@ -34,18 +34,34 @@ export default class costume{
 		// キャラクター登録、初期非表示
 		$registChara.hide();
 
-		// 作品登録モーダルを開く
-		this.$costumeSection.on('click', openRegistTitleModalBtn, {
-			type: 'registTitle'
-		}, e => this.app.showModal(e));
+		if(call.type === "costume"){
+			
+			// 作品登録モーダルを開く
+			$openRegistTitleModalBtn.on('click', {
+				type: 'registTitle'
+			}, e => this.app.showModal(e));
 
-		// キャラクター登録モーダルを開く
-		this.$costumeSection.on('click', openRegistCharaModalBtn, {
-			type: 'registChara'
-		}, e => this.app.showModal(e));
+			// キャラクター登録モーダルを開く
+			$openRegistCharaModalBtn.on('click', {
+				type: 'registChara'
+			}, e => this.app.showModal(e));
+		
+		}else if(call.type === "schedule"){
 
+			// 作品登録モーダルに切り替える
+			$openRegistTitleModalBtn.on('click', () => {
+				this.app.switchModal("registTitle");
+			})
+
+			// キャラクター登録モーダルに切り替える
+			$openRegistCharaModalBtn.on('click', () => {
+				this.app.switchModal("registChara");
+			})
+
+		}
+				
 		// 作品検索ボタン
-		this.$costumeSection.on('click', titleSearchBtn, e => {
+		$titleSearchBtn.on('click', e => {
 			const sendData = { search: $search_content_title.val() } 
 			this.searchTitle(sendData)
 			.done(res => {
@@ -54,7 +70,7 @@ export default class costume{
 				if(res.rows && res.rows.length){
 					for(const item of res.rows){
 						$titleList.append(`
-							<li name="titleListItem" data-title_id=${item.id} data-chara_list=${JSON.stringify(item.chara_list)}>${item.name}</li>
+							<li name="titleListItem" data-title_id=${item.id} data-chara_list='${JSON.stringify(item.chara_list)}'>${item.name}</li>
 						`);
 					}
 					$titleListNum.text(`候補一覧 (${res.count}件)`);
@@ -66,7 +82,8 @@ export default class costume{
 		});
 
 		// 作品名リストをクリックしたとき
-		this.$costumeSection.on('click', "ul#titleList li[name=titleListItem]", e => {
+		$("ul#titleList").on('click', "li[name=titleListItem]", e => {
+
 			const chara_list = $(e.currentTarget).data("chara_list");
 			// 関連するキャラクター名を取得する。
 			$charaList.empty();
@@ -85,10 +102,12 @@ export default class costume{
 			// キャラ選択に引き継ぐ情報を入れる
 			$contentTitleName.val($(e.currentTarget).text());
 			$confContentTitle.val($(e.currentTarget).data("title_id"));
-		});
 
+		});
+		
+		
 		// キャラクター名リストをクリックしたとき
-		this.$costumeSection.on('click', "ul#charaList li[name=charaListItem]", {
+		$("ul#charaList").on('click', "li[name=charaListItem]", {
 			type: 'confirmRegistCostume',
 			onOpenBrefore: (e) => {
 				$(".proc-btn").hide();
@@ -114,7 +133,6 @@ export default class costume{
 					break;
 			}
 
-			
 			return false;
 		})
 
@@ -133,7 +151,7 @@ export default class costume{
 				// 取得したデータを作品リストに追加する。
 				$titleList.empty();
 				$titleList.append(`
-					<li name="titleListItem" data-title_id=${res.title_info.id} data-chara_list=${JSON.stringify(res.title_info.chara_list)}>${res.title_info.name}</li>
+					<li name="titleListItem" data-title_id=${res.title_info.id} data-chara_list='${JSON.stringify(res.title_info.chara_list)}'>${res.title_info.name}</li>
 				`);
 				$titleListNum.text(`候補一覧 (1件)`);
 			})
@@ -148,7 +166,7 @@ export default class costume{
 			})
 			.then(res => {
 				// 取得したデータをキャラリストに追加する。
-				$charaList.prepend(`<li name="charaListItem" data-chara_id=${res.chara_info.id}>${res.chara_info.name}</li>`);
+				$charaList.prepend(`<li name="charaListItem" data-chara_id=${res.id}>${res.name}</li>`);
 			})
 			return false;
 		});
@@ -304,8 +322,5 @@ export default class costume{
 		else{
 			this.app.showInputErr("consent_regist_chara", "チェックしてください。")
 		}
-		
-		
 	}
-
 }

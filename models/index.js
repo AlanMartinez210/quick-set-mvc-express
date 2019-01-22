@@ -35,4 +35,9 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// 文字列をエスケープした後に''で囲まないときに使う
+db.sequelize.rawEscape=(str)=>{
+  return db.sequelize.escape(str).replace(/(^')|('$)/g, '');  // escape後の先頭と末尾の'を削除する
+};
+
 module.exports = db;

@@ -37,6 +37,9 @@ const common = {
 			options:{ max: 50 },
 		}
 	},
+	allow_recruit_flg: {
+		in: 'body',
+	}
 };
 
 
@@ -54,8 +57,8 @@ exports.postByCam = {
 	time_from: common.time_from,
 	time_to: common.time_to,
 	event_name: common.event_name,
-	remarks: common.remarks
-
+	remarks: common.remarks,
+	allow_recruit_flg: common.allow_recruit_flg
 };
 
 /** 予定の作成 (コスプレイヤー) */
@@ -72,6 +75,7 @@ exports.postByCos = {
 	time_to: common.time_to,
 	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name),
 	remarks: common.remarks,
+	allow_recruit_flg: common.allow_recruit_flg,
 	cos_chara:{
 		in: 'body',
 	},
@@ -121,7 +125,8 @@ exports.putByCam = {
 	time_from: common.time_from,
 	time_to: common.time_to,
 	event_name: common.event_name,
-	remarks: common.remarks
+	remarks: common.remarks,
+	allow_recruit_flg: common.allow_recruit_flg
 };
 
 /** 募集の更新 (コスプレイヤー) */
@@ -141,6 +146,7 @@ exports.putByCos = {
 	time_to: common.time_to,
 	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name ),
 	remarks: common.remarks,
+	allow_recruit_flg: common.allow_recruit_flg,
 	cos_chara:{
 		in: 'body',
 	},

@@ -52,12 +52,12 @@
                   option(value=pref.id) #{pref.name}
           p.bottom-label
 
-        .label-input-box#box_coschara
+        .label-input-box#box_cos_chara
           .label-box
             p.main-label: |コスプレキャラクター
             span.sub-label: |当日コスプレするキャラクターを選択してください。
           .select-box.flex._c
-            select(name="coschara")
+            select(name="cos_chara")
               option(value="")
                 //- each pref in self.globalParam.enumPref.getEnum()
                 //-   option(value=pref.id) #{pref.name}
@@ -158,64 +158,32 @@
         
       .board-cnt._s(data-tab_content="groupRec")
 
-        .accordion-prm.inline.shadow-l
+        .label-input-box#box_costume_title
+          .label-box
+            p.main-label: |募集キャラクター一覧
+            span.sub-label: |コスプレ検索
+          ul.inner_list
+            li: |キャラクターを追加してください
+          p.bottom-label
 
-          .accordion-label.flex._c
-            .accordion-title
-              p: | コスプレ検索
-          .accordion-cnt._s
+          .option-box.flex._jr
+            span.option-btn.st-line-b(name="addChara")
+              |キャラクター追加
 
-            #registTitle
-              .attention-prm
-                  p
-                    span.st-required(style="border-radius:5px;display: inline-block;")
-                      |&emsp;&emsp;&emsp;
-                    |&nbsp;は必須項目です。
+        .label-input-box#box_remarks
+          .label-box
+            p.main-label: |備考
+          .textarea-box.flex._c
+            textarea(name="chara_remarks", rows="3")
+          p.bottom-label
 
-              .label-input-box._mbs#box_costume_title
-                .label-box
-                  p.main-label: |作品名
-                  span.sub-label: |作品名、または名称の一部を入力してください。
-                .input-box.flex._c.st-required
-                  input(type="text", name="search_content_title", placeholder="ひなまつり")
-                p.bottom-label
-
-              .option-box.flex._jr
-                span.option-btn.st-line-b(name="titleSearch")
-                  |検索
-              
-              p.st-title-tag#titleListNum
-                |候補一覧 (0件)
-
-              ul.inner_list#titleList
-                li: |候補がありません
-              
-            //- #registChara
-
-            //-   .option-box.flex._jr
-            //-     span.option-btn.st-line-b(name="backTitle")
-            //-       |作品選択に戻る
-
-            //-   .label-input-box._mbs
-            //-     .label-box
-            //-       p.main-label: |作品名
-            //-     .input-box.flex._c.st-readonly
-            //-       input(type="text", name="content_title_name", readonly)
-            //-       input(type="hidden", name="conf_content_title")
-
-            //-   p.st-title-tag
-            //-     |キャラクター候補一覧
-
-            //-   ul.inner_list#charaList
-            //-     li: |候補がありません
-
-        .label-input-box#box_allow_recruit_flg
+        .label-input-box#box_allow_notice_flg
           .label-box
             p.main-label: |募集通知
             span.sub-label: |チェックすると対象のコスプレができる人にあわせ募集をしてることを通知します。
           .check-box.flex._c
-            input(id="allowrRecruitFlg" type="checkbox", name="allow_recruit_flg")
-            label(for="allowrRecruitFlg")
+            input(id="allowNoticeFlg" type="checkbox", name="allow_notice_flg")
+            label(for="allowNoticeFlg")
               |あわせ募集を通知する
           p.bottom-label
             

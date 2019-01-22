@@ -1,5 +1,6 @@
 import plugin_tag from "../../plugin/tag";
 import plugin_prefecture from "../../plugin/prefecture";
+import outer_costume from "../mypage/costume";
 
 export default class schedule{
 	constructor(){
@@ -8,6 +9,10 @@ export default class schedule{
 	ready(){
 		this.tags = new plugin_tag(this.app);
 		this.prefs = new plugin_prefecture(this.app);
+		const costume = new outer_costume();
+		costume.app = this.app;
+		//costumeをスケジュールモードで開く
+		costume.ready({type: "schedule"});
 
 		const scheduleSection = $('#scheduleSection');
 		const calendarSection = $('#calendarSection');
@@ -18,6 +23,11 @@ export default class schedule{
 		const showScheduleBtn = "[name=showSchedule]";
 		// 日付のみ表示のチェック
 		const isExistSchedule = "#isCheckDate";
+		
+		//キャラクター追加ボタン
+		const $addCharaBtn =  $("[name=addChara]");
+		// あわせ募集に戻るボタン
+		const $bkGroupBtn = $("[name=bk_group]");
 
 		// カレンダーの年を変更したとき
 		calendarSection.on("change", "[name=yearSelectList]", (e) => {
@@ -171,7 +181,17 @@ export default class schedule{
 	
 			return false;
 		});
-			
+
+		// キャラクター検索モーダルの切り替え
+		$addCharaBtn.on("click", () => {
+			this.app.switchModal("charaSearch");
+		});
+
+		// あわせ募集に戻る
+		$bkGroupBtn.on("click", () => {
+			this.app.switchModal("createSchedule");
+		});
+
 	}
 	// スケジュールの取得
 	getSchedule(schedule_id){

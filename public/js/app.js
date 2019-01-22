@@ -411,6 +411,13 @@ export default class myApp extends baseApp {
     $("#modal-close, #modal-close-btn").off('click');
   }
 
+  /** 現在表示しているモーダルと指定したモーダルの表示を入れ替えます。 */
+  switchModal (modalName, e){
+    this.modalScrollReset();
+    // 現在表示しているモーダルを非表示にする。
+    $(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");
+    $("#"+ modalName + "Modal").attr("data-modal", "show");
+  }
 
   /** =======================================================
    * #### インスタントメッセージ
@@ -632,6 +639,16 @@ export default class myApp extends baseApp {
     // デコードする。
     url = decodeURIComponent(url);
     return _.chain(url).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
+  }
+
+  // モーダルスクロールをリセットにする
+  modalScrollReset(){
+    $("#modal-close").scrollTop(0);
+  }
+
+  // bodyのスクロールを
+  scrollReset(){
+    $("body").scrollTop(0);
   }
 }
 

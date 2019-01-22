@@ -1,62 +1,61 @@
 const c2link4DiService = require("../services/c2link4DiService");
 const _ = require('lodash');
 
+class charaInfo{
+  constructor(content_chara){
+    this.id = content_chara.get("id");
+    this.name = content_chara.get("name");
+  }
+}
+
 module.exports = {
-  
+
   content_title_obj: class {
-    constructor(contentTitlelist = []){
-      this.rows = [
-        {id: 1, name: "タイトルA", chara_list: [
-          {id: 1, name: "キャラA"},
-          {id: 2, name: "キャラB"},
-          {id: 3, name: "キャラC"},
-        ]},
-				{id: 2, name: "タイトルB", chara_list: [
-          {id: 1, name: "キャラA"},
-          {id: 2, name: "キャラB"},
-          {id: 3, name: "キャラC"},
-        ]},
-        {id: 3, name: "タイトルC", chara_list: [
-          {id: 1, name: "キャラA"},
-          {id: 2, name: "キャラB"},
-          {id: 3, name: "キャラC"},
-        ]},
-      ]
-      this.count = 3
+    constructor(contentTitleList = []){
+      this.rows = contentTitleList.map(contentTitle=>{
+        return {
+          id: contentTitle.get("id"),
+          name: contentTitle.get("name"),
+          chara_list: contentTitle.get("content_chara").map(v=>new charaInfo(v)),
+        };
+      });
+      this.count = contentTitleList.length;
     }
   },
 
   costume_list: class {
-    constructor(){
-      this.rows = [
-        {costume_id: 1, title: "タイトルA", chara: "キャラA"},
-        {costume_id: 2, title: "タイトルA", chara: "キャラB"},
-        {costume_id: 3, title: "タイトルA", chara: "キャラC"},
-      ]
+    constructor(costumeList){
+      this.rows = costumeList.map(v=>{
+        return {
+          costume_id: v.get("id"),
+          title: v.get("content").get("name"),
+          chara: v.get("chara").get("name"),
+        }
+      });
     }
   },
 
   return_title_info: class {
-    constructor(){
-      this.title_info = {id: 1, name: "タイトルD", chara_list: []}
+    constructor(content_title){
+      this.title_info = {
+        id: content_title.get("id"),
+        name: content_title.get("name"),
+        chara_list: content_title.get("content_chara").map(v=>new charaInfo(v)),
+      };
     }
   },
 
-  return_chara_info: class {
-    constructor(){
-      this.chara_info = {id: 4, name: "キャラD"}
-    }
-  },
+  return_chara_info: charaInfo,
 
   costume_obj: class {
-    constructor(){
+    constructor(User_content_relation){
       this.costume_info = {
-        costume_id: 1, 
-        content_title_name: "タイトルA",
-        conf_content_title: 1,
-        content_chara_name: "キャラA",
-        conf_content_chara: 1,
-        costume_comment: "ちょっとオリジナル入ってます。"
+        costume_id: User_content_relation.get("id"),
+        content_title_name: User_content_relation.get("content").get("name"),
+        conf_content_title: User_content_relation.get("content").get("id"),
+        content_chara_name: User_content_relation.get("chara").get("name"),
+        conf_content_chara: User_content_relation.get("chara").get("id"),
+        costume_comment: User_content_relation.get("remarks"),
       }
     }
   }

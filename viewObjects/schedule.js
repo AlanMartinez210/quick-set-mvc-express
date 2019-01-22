@@ -52,6 +52,7 @@ module.exports = {
 			this.event_name = scheduleInfo.event_name;
 			this.event_url = scheduleInfo.event_url;
 			this.remarks = scheduleInfo.remarks;
+			this.allow_recruit_flg = scheduleInfo.allow_recruit_flg;
 		}
 	}
 }

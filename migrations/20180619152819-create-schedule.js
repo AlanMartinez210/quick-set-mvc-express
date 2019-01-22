@@ -56,7 +56,10 @@ module.exports = {
         comment: '募集人数'
       },
       cos_chara: {
-        type: Sequelize.BIGINT.UNSIGNED
+        type: Sequelize.JSON
+      },
+      allow_recruit_flg: {
+        type: Sequelize.BOOLEAN
       },
       remarks: {
         type: Sequelize.STRING

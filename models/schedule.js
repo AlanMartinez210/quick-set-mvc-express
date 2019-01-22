@@ -30,8 +30,9 @@ module.exports = (sequelize, DataTypes) => {
     event_url: DataTypes.STRING,
     cost: DataTypes.STRING,
     num: DataTypes.STRING,
-    cos_chara: DataTypes.INTEGER,
+    cos_chara: DataTypes.JSON,
     remarks: DataTypes.STRING,
+    allow_recruit_flg: DataTypes.BOOLEAN
   }, {
     getterMethods:{
       createdAt(){ return dateHelper.getDate(this.created_at) },
