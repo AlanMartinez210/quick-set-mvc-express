@@ -733,3 +733,8 @@
 .login-ptn {
 	background: $grayL;
 }
+
+
+#image{
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}

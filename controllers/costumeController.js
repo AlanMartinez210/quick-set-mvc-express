@@ -41,7 +41,7 @@ exports.getContentTitle = function(req, res, next){
 
 	// 作品タイトルとそれに付随するキャラクター情報を取得する。
 	return contentTitleService.searchContentTitle({
-		name: form_data.search,
+		name: form_data.search_content_title,
 	})
 	.then(contentTitleList=>{
 		const json_data = new costumeVO.content_title_obj(contentTitleList);

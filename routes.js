@@ -108,7 +108,7 @@ router.delete('/mypage/equipment', loginCheck, validate.check(equipmentForm.post
 router.get('/mypage/costume', loginCheck, costumeController.index);
 
 /** 作品情報の取得 getContentTitle */
-router.get('/mypage/costume/content', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.getContentTitle);
+router.post('/mypage/costume/content', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.getContentTitle);
 
 /** 所持衣装情報の取得 getCostume */
 router.get('/mypage/costume/:costume_id', loginCheck, validate.check(costumeForm.getCostume), validate.result, costumeController.getCostume)

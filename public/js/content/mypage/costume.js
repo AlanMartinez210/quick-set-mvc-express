@@ -59,26 +59,43 @@ export default class costume{
 			})
 
 		}
+
+		// セット処理
+		const parseCharaList = (searchData) => {
+			$titleList.empty();
+			if(searchData.rows && searchData.rows.length){
+				for(const item of searchData.rows){
+					$titleList.append(`
+						<li name="titleListItem" data-title_id=${item.id} data-chara_list='${JSON.stringify(item.chara_list)}'>${item.name}</li>
+					`);
+				}
+			}else{
+				$titleList.append(`<li>候補がありません</li>`);
+				$titleListNum.text(`候補一覧 (0件)`);
+			}
+		}
 				
 		// 作品検索ボタン
 		$titleSearchBtn.on('click', e => {
-			const sendData = { search: $search_content_title.val() } 
-			this.searchTitle(sendData)
-			.done(res => {
-				$titleList.empty();
-				// 検索候補一覧に内容を適応する。
-				if(res.rows && res.rows.length){
-					for(const item of res.rows){
-						$titleList.append(`
-							<li name="titleListItem" data-title_id=${item.id} data-chara_list='${JSON.stringify(item.chara_list)}'>${item.name}</li>
-						`);
-					}
-					$titleListNum.text(`候補一覧 (${res.count}件)`);
-				}else{
-					$titleList.append(`<li>候補がありません</li>`);
-					$titleListNum.text(`候補一覧 (0件)`);
-				}
-			})
+			const sendData = { search_content_title: $search_content_title.val() } 
+			// 検索条件をローカルストレージから検索(連打対策)
+			const costumeSearch = sessionStorage.getItem("costumeSearch");
+			if(costumeSearch){
+				// 中身の検索結果をパースする。
+
+			}
+			const searchSession = sessionStorage.getItem(sendData.search_content_title);
+			if(searchSession){
+				parseCharaList(JSON.parse(searchSession));
+			}
+			else{
+				this.searchTitle(sendData)
+				.done(res => {
+					// 検索結果をsessionStrageに保存
+					sessionStorage.setItem(sendData.search_content_title, JSON.stringify(res));
+					parseCharaList(res);
+				});
+			}
 		});
 
 		// 作品名リストをクリックしたとき
@@ -138,6 +155,9 @@ export default class costume{
 
 		// 作品選択に戻るボタン
 		$backTitleBtn.on('click', e => {
+			$titleList.empty();
+			$titleList.append(`<li>候補がありません</li>`);
+			$titleListNum.text(`候補一覧 (0件)`);
 			$registChara.hide();
 			$registTitle.fadeIn("fast");
 		});
@@ -200,7 +220,7 @@ export default class costume{
 
 	// 作品検索
 	searchTitle(sendData = {}){
-		return this.app.sendGet(`/mypage/costume/content?${$.param(sendData)}`)
+		return this.app.sendPost(`/mypage/costume/content`, sendData)
 	}
 
 	// 衣装登録処理

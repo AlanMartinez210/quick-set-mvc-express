@@ -1,5 +1,7 @@
 import plugin_tag from "../../plugin/tag";
 import plugin_prefecture from "../../plugin/prefecture";
+import Cropper from 'cropperjs';
+
 
 export default class profile{
 	constructor(){
@@ -73,6 +75,101 @@ export default class profile{
 		});
 
 		$editProfileIconBtn.on('click', {type: 'editProfileIcon'}, e => this.app.showModal(e));
+
+		const image = document.getElementById('image');
+		const blob = image.src;
+
+		const cropper = new Cropper(image, {
+			// autoCrop: false,
+			ready() {
+				// Do something here
+				// ...
+				console.log('ready');
+				// And then
+				//ßthis.cropper.crop();
+				console.log(this.cropper.crop());
+				console.log(this.cropper.getCroppedCanvas());
+				const cropperCanvas = this.cropper.getCroppedCanvas();
+			},
+			dragMode() {
+				console.log('move');
+			},
+			viewMode: 3,
+			// crop: function(e) {
+				// var base64img = $($('image').cropper('getCroppedCanvas')).getCanvasImage('png');
+				// console.log(base64img);
+				// uploadtoS3(base64img);
+			// }
+			// viewMode: 3,
+			// dragMode: 'move',
+			// autoCropArea: 1,
+			// restore: false,
+			// modal: true,
+			// guides: true,
+			// highlight: false,
+			// cropBoxMovable: false,
+			// cropBoxResizable: false,
+			// toggleDragModeOnDblclick: false,
+			// preview: '.img-preview',
+			// aspectRatio: 1 / 1,
+			// crop(event) {
+			// 	console.log(event.detail.x);
+			// 	console.log(event.detail.y);
+			// 	console.log(event.detail.width);
+			// 	console.log(event.detail.height);
+			// 	console.log(event.detail.rotate);
+			// 	console.log(event.detail.scaleX);
+			// 	console.log(event.detail.scaleY);
+			// },
+			// zoomable:false,
+			// minCropBoxWidth:162,
+			// minCropBoxHeight:162
+		});
+
+// 		cropper.getCroppedCanvas();
+
+// cropper.getCroppedCanvas({
+//   width: 160,
+//   height: 90,
+//   minWidth: 256,
+//   minHeight: 256,
+//   maxWidth: 4096,
+//   maxHeight: 4096,
+//   fillColor: '#fff',
+//   imageSmoothingEnabled: false,
+//   imageSmoothingQuality: 'high',
+// });
+
+// // Upload cropped image to server if the browser supports `HTMLCanvasElement.toBlob`
+// console.log(cropper);
+// console.log(cropper.getCroppedCanvas());
+
+// cropper.getCroppedCanvas().toDataURL((blob) => {
+//   const formData = new FormData();
+
+//   formData.append('croppedImage', blob);
+
+//   // Use `jQuery.ajax` method
+//   $.ajax('/path/to/upload', {
+//     method: "POST",
+//     data: formData,
+//     processData: false,
+//     contentType: false,
+//     success() {
+//       console.log('Upload success');
+//     },
+//     error() {
+//       console.log('Upload error');
+//     },
+//   });
+// });
+
+// 		console.log('cropper',cropper);
+		
+		// Get the Cropper.js instance after initialized
+		// var cropper = $image.data('cropper');
+		// });
+
 	}
 
 	/**

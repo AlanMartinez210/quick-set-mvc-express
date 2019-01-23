@@ -44,8 +44,9 @@ exports.delete = {
  * 作品タイトルの検索
  */
 exports.getSearchContentTilte = {
-	search: {
-		in: 'params'
+	search_content_title: {
+		in: 'body',
+		isEmpty: { errorMessage: 'E00002', negated: true }
 	}
 }
 
