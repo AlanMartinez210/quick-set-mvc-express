@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         return pref;
       },
     },
+    sample_image: DataTypes.JSON,
     expiration_date: {
       type: DataTypes.DATE,
       field: "expiration_date",

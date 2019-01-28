@@ -1,4 +1,5 @@
 .center-frame
+
   .board-prm
     .board-hdr
 
@@ -7,8 +8,34 @@
         span: |サンプル写真設定
 
     .board-cnt
-      a sample_image
+      .attention-prm
+        p
+          |1Mまでの画像(jpg/gif/png)が設定できます。
 
-    .board-ftr._s.flex._c._jc
-      button.btn-prm.st-back-b.shadow-l
-        span: |変更する
+      label(for="up_sample_image").btn-prm.st-line-b.shadow-l
+        |画像を選択
+      input.init-hidden(type="file", id="up_sample_image", name="up_sample_image", accept="image/*")
+
+      .label-input-box
+        .label-box
+          p.main-label: |プレビュー
+        .custom-box._s
+          .img-preview-box
+            img(id="sampleImageThumbnail", src="")
+
+    .board-wrap.init-hidden
+      .board-ftr._s.flex._c._jc
+        button(type="submit", name="doPostSampleImage").btn-prm.st-back-b.shadow-l
+          span: |登録
+      
+  .board-prm
+
+    .board-hdr
+      .label-box._fb.flex._c
+        i.icon-title-b.far.fa-images.fa-fw.c-green
+        span: |サンプル写真一覧
+    
+    .board-cnt
+      .attention-prm
+        p
+          |写真は3枚まで設定できます。

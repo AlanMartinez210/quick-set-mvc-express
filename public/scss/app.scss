@@ -37,6 +37,10 @@ button{ cursor: pointer; }
 	}
 }
 
+.cropper-img{
+	max-width: 100%;
+}
+
 a.default{text-decoration: solid; color: $blueL;}
 
 .dummy-hide{

@@ -9,7 +9,7 @@ const c2Util = require('../services/c2link4DiService');
  * @param {*} req
  * @param {*} res
  */
-exports.index = function(req, res, next){
+exports.index = (req, res, next) => {
   const render_obj = res.render_obj;
   render_obj.contentId = "matching";
   render_obj.title = "マッチングの管理";
@@ -25,6 +25,19 @@ exports.index = function(req, res, next){
     res.render('mypage/matching', render_obj);
   }).catch(next);
 
+}
+
+exports.getMatchingHistory = (req, res, next) => {
+  const render_obj = res.render_obj;
+  const form_data = req.form_data;
+  console.log('form_data: ', form_data);
+  const user_id = sessionHelper.getUserId(req);
+
+  matchingService.getMatchingHistoryList(user_id, form_data.page)
+  .then(matchingHistoryList => {
+    render_obj.bodyData = new vo_matching.matching_history_list(user_id, matchingHistoryList, {page: form_data.page});
+    res.render('../content/mypage/matching/matchingHistorySection', render_obj);
+  }).catch(next);
 }
 
 /* 依頼する */

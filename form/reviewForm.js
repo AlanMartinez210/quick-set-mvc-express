@@ -16,3 +16,15 @@ exports.postReview = {
 		}
 	},
 }
+
+exports.getReviewHistory = {
+	page: {
+		in: 'query',
+	}
+}
+
+exports.getRevieweeHistory = {
+	page: {
+		in: 'query',
+	}
+}

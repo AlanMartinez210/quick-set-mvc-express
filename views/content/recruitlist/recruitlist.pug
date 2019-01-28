@@ -21,8 +21,8 @@
             |期間&nbsp;:&nbsp;
             |#{search_info.search_date_from ? search_info.search_date_from : "指定なし"}&nbsp;
             |#{search_info.search_date_to ? " ～ " + search_info.search_date_to : ""}
-          input(type="hidden", name='search_date_from' value=search_info.search_date_from)
-          input(type="hidden", name='search_date_to' value=search_info.search_date_to)
+          input(type="hidden", name='search_date_from', value=search_info.search_date_from)
+          input(type="hidden", name='search_date_to', value=search_info.search_date_to)
 
         if search_info.prefectures_field.length
           .label-box._s.flex._c

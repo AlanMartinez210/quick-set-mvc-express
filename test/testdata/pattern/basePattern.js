@@ -11,11 +11,11 @@ module.exports = class {
     this.cam_user_data = [];
     for(let i=1;i<=3;i++){
       const user_data = {}
+      user_data.icon_url = "default.png";
       user_data.user_name = "test_camera_man_" + i;
       const password = "password" + i;
       user_data.password = hashHelper(password);
       user_data.email = "test.cam_" + i + "_cs@c2link.mail.com";
-      user_data.icon_url = "http://s3.c2link.test/test" + i + ".jpg"
       user_data.user_type = 2;
       user_data.tags = [i%8+1, (i+1)%8+1, (i+2)%8+1];
       user_data.prefectures = [13+i, 14+i];
@@ -25,11 +25,11 @@ module.exports = class {
     this.cos_user_data = [];
     for(let i=1;i<=3;i++){
       const user_data = {}
+      user_data.icon_url = "default.png";
       user_data.user_name = "test_cosplayer_" + i;
       const password = "password" + i;
       user_data.password = hashHelper(password);
       user_data.email = "test.cos_" + i + "_cs@c2link.mail.com";
-      user_data.icon_url = "http://s3.c2link.test/test" + i + ".jpg"
       user_data.user_type = 1;
       user_data.tags = [i%8+1, (i+1)%8+1, (i+2)%8+1];
       user_data.prefectures = [13+i];

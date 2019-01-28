@@ -1,36 +1,59 @@
 -
   // あなたへのレビュー一覧
-  var revieweeHistorys = self.bodyData.revieweeHistoryItem.rows;
+  const revieweeHistorys = self.bodyData.revieweeHistoryItem.rows;
+  const revieweeHistoryPager = self.bodyData.revieweeHistoryItem.pages;
 -
+
 .board-hdr
   .label-box._fb.flex._c
     i.icon-title-b.fas.fa-gift.fa-fw.c-orange
     span: |あなたへのレビュー一覧
+
 .board-cnt._s.list-board
-  //- p.info-text: |メッセージ履歴はありません
-  ul.st_options
-    - var goodIcon = ["icon-title-b","far","fa-fw", "fa-thumbs-up","c-blue"]; // goodアイコンのcssセット
-    - var badIcon  = ["icon-title-b","far","fa-fw", "fa-thumbs-down","c-purple"]; //badアイコンのcssセット
-    - for(var reh of revieweeHistorys){
-      li.label-icon-link(name="editReviewBtn", data-review_id=reh.review_id, data-user=reh.username)
-        .link-wrap.flex._c.editReview
-          .label-icon
-            img
-          i(class=reh.type==1?goodIcon:badIcon)
-          .st-string-set
-            span.sub-text: |#{reh.date_info.year}年#{reh.date_info.month}月#{reh.date_info.day}日(#{reh.date_info.week})
-            p: |#{reh.username}
-          i.icon-link.fas.fa-chevron-right.fa-fw
-    - }
+  if(revieweeHistorys && revieweeHistorys.length)
+    ul.st_options
+      - var goodIcon = ["icon-title-b","far","fa-fw", "fa-thumbs-up","c-blue"]; // goodアイコンのcssセット
+      - var badIcon  = ["icon-title-b","far","fa-fw", "fa-thumbs-down","c-purple"]; //badアイコンのcssセット
+      - for(var reh of revieweeHistorys){
+        li.label-icon-link(name="editReviewBtn", data-review_id=reh.review_id, data-user=reh.username)
+          .link-wrap.flex._c.editReview
+            .label-icon
+              img
+            i(class=reh.type==1?goodIcon:badIcon)
+            .st-string-set
+              span.sub-text: |#{reh.date_info.year}年#{reh.date_info.month}月#{reh.date_info.day}日(#{reh.date_info.week})
+              p: |#{reh.username}
+            i.icon-link.fas.fa-chevron-right.fa-fw
+      - }
+  else
+    .no_list_box
+      p: |レビューはありません。
 
-
-.board-ftr._s
-  .pager(data-pagerid="revieweeHistry")
+.board-ftr
+  .pager(data-listpager="revieweeHistoryPager")
     ul.flex._jc
-      li: a: i.icon-pager.fas.fa-angle-double-left.fa-fw
-      li: a: i.icon-pager.fas.fa-angle-left.fa-fw
-      -for(let i=1;i<=3;i++){
-        li: a(class= i==1 ? 'selected' : '' ): |#{i}
-      -}
-      li: a: i.icon-pager.fas.fa-angle-right.fa-fw
-      li: a: i.icon-pager.fas.fa-angle-double-right.fa-fw
+      -
+        var url = `/mypage/reviewee/history`;
+            np = Number(revieweeHistoryPager.now_page),
+            mp = Number(revieweeHistoryPager.max_page),
+            isMin = np > 1,
+            isMax = np < mp,
+            prev = np - 1,
+            next = np + 1
+      -
+      li
+        span(data-page_url=`${url}?page=1`, class= isMin ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-left.fa-fw
+      li
+        span(data-page_url=`${url}?page=${prev}`, class= isMin ? '': 'invisible' ): i.icon-pager.fas.fa-angle-left.fa-fw
+      - for(let i=0;i<revieweeHistoryPager.disp_page_list.length;i++){ let p = revieweeHistoryPager.disp_page_list[i];
+        li
+          -if(p == np){
+          span(class="selected"): |#{p}
+          -}else{
+          span(data-page_url=`${url}?page=${p}`): |#{p}
+          -}
+      - }
+      li
+        span(data-page_url=`${url}?page=${next}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-right.fa-fw
+      li
+        span(data-page_url=`${url}?page=${mp}`, class= isMax ? '': 'invisible' ): i.icon-pager.fas.fa-angle-double-right.fa-fw

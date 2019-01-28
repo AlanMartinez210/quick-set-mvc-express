@@ -36,6 +36,9 @@ module.exports = {
       prefectures: {
         type: Sequelize.JSON
       },
+      sample_image: {
+        type: Sequelize.JSON
+      },
       expiration_date: {
         type: Sequelize.DATE,
         allowNull: true

@@ -1,52 +1,51 @@
--
-  const matchingDataArr = self.bodyData.matching_list || [];
-  console.log('matchingDataArr: ', matchingDataArr);
-  const matchingHistoryArr = self.bodyData.matching_history || [];
--
+- const matchingDataArr = self.bodyData.matching_list;
 
 .center-frame
-  .board-prm
-    .board-hdr
 
+  section#matchingStateSection.board-prm
+    .board-hdr
       .label-box._fb.flex._c
         i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
         span: |マッチング一覧
 
-    #matching_group.board-cnt._s.list-board
-      //- p.info-text: |新しいメッセージはありません
-      if(matchingDataArr.length)
+    .board-cnt._s.list-board#matching_group
+      if (matchingDataArr && matchingDataArr.length)
 
-      - for(let md of matchingDataArr){
-      .board-prm._s._border
-        .board-cnt._s
-          .label-icon-box.flex
-            .link-wrap
-              .label-icon
-                img(src=md.icon_url)
-            .maching-wrap
-              .st-string-set
-                span.sub-text: |#{md.datetime_info.year}年#{md.datetime_info.month}月#{md.datetime_info.day}日(#{md.datetime_info.week}) #{md.datetime_info.hour}:#{md.datetime_info.minute}:#{md.datetime_info.seconds}
-                p: |#{md.user_name}
-              .st-matching-type(date-machingid=md.status_type.code, class=`_${md.status_type.type}` ): |#{md.status_type.name}
+        - for(let md of matchingDataArr){
+          .board-prm._s._border
+            .board-cnt._s
+              .label-icon-box.flex
+                .link-wrap
+                  .label-icon
+                    img(src=md.icon_url)
+                .maching-wrap
+                  .st-string-set
+                    span.sub-text: |#{md.datetime_info.year}年#{md.datetime_info.month}月#{md.datetime_info.day}日(#{md.datetime_info.week}) #{md.datetime_info.hour}:#{md.datetime_info.minute}:#{md.datetime_info.seconds}
+                    p: |#{md.user_name}
+                  .st-matching-type(date-machingid=md.status_type.code, class=`_${md.status_type.type}` ): |#{md.status_type.name}
 
-        .board-ftr._s.flex._jr.btn-board
-          a.btn-prm.link-btn.st-btn-icon.st-line-b.flex._c(href=`/message/room?r=${md.matching_id}`)
-            i.icon-btn-s.far.fa-comment.fa-fw
-            span: |質問
-          a.btn-prm.link-btn.st-btn-icon.st-line-r.flex._c(name="doPostMatching", data-matching_id=md.matching_id, data-proc="reject")
-            i.icon-btn-s.fas.fa-times.fa-fw
-            span: |取消
+            .board-ftr._s.flex._jr.btn-board
+              a.btn-prm.link-btn.st-btn-icon.st-line-b.flex._c(href=`/message/room?r=${md.matching_id}`)
+                i.icon-btn-s.far.fa-comment.fa-fw
+                span: |質問
+              a.btn-prm.link-btn.st-btn-icon.st-line-r.flex._c(name="doPostMatching", data-matching_id=md.matching_id, data-proc="reject")
+                i.icon-btn-s.fas.fa-times.fa-fw
+                span: |取消
 
-          if md.isMine || md.status_type.code == 3
-            a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-schedule_id=md.schedule_id, data-proc="confirm")
-              i.icon-btn-s.far.fa-check-circle.fa-fw
-              span: |確認
-          else
-            if md.status_type.code == 1
-              a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-matching_id=md.matching_id, data-proc="consent")
-                i.icon-btn-s.far.fa-check-circle.fa-fw
-                span: |承諾
-      -}
+              if md.isMine || md.status_type.code == 3
+                a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-schedule_id=md.schedule_id, data-proc="confirm")
+                  i.icon-btn-s.far.fa-check-circle.fa-fw
+                  span: |確認
+              else
+                if md.status_type.code == 1
+                  a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-matching_id=md.matching_id, data-proc="consent")
+                    i.icon-btn-s.far.fa-check-circle.fa-fw
+                    span: |承諾
+        -}
+
+      else
+        .no_list_box
+          p: |マッチングはありません。
 
   section#matchingHistorySection.board-prm
     include ./matchingHistorySection.pug

@@ -4,6 +4,8 @@ const dateHelper = require('../common/helper/dateHelper');
 const errorHelper = require('../common/helper/errorHelper');
 const _ = require('lodash');
 
+const fs = require('fs');
+
 /**
  * ユーザーの作成を行います。
  * 同一のメールアドレスを持っている場合にはエラーを返します。
@@ -65,7 +67,7 @@ exports.clearExpirationDate = (user_id) => {
 
 /**
  * プロフィール編集画面のユーザー情報を取得します。
- * 
+ *
  * @param {string} user_id
  */
 exports.getUserData = async (user_id) => {
@@ -141,9 +143,7 @@ exports.getSiteSettingData = async (user_id) => {
     attributes: ['allow_bookmark_notification']
   });
   // ユーザーが存在しない場合はエラー
-  if (!userData) {
-    throw new errorHelper({code: "E00000"});
-  }
+  if (!userData) return Promise.reject(new errorHelper({ code: "fatal" }));
   return userData;
 }
 
@@ -161,5 +161,26 @@ exports.updateSiteSetting = (user_id, profileData) => {
   options.where = {
     id : user_id
   };
+  return db.User.update(values, options);
+}
+
+exports.registUserIcon = async (user_id, icon_name) => {
+  console.log('icon_name: ', icon_name);
+
+  const user_data = await db.User.getUserById(user_id);
+  if(!user_data) return Promise.reject(new errorHelper({ code: "fatal" }));
+
+  const old_filename = user_data.get("icon_url");
+  if(old_filename && old_filename !== "default.png"){
+    try{
+      fs.unlinkSync(`${__dirname}/../public/image/icons/${old_filename}`)
+    }catch(err){
+      console.log('err: ', err);
+    }
+  }
+
+  const options = {};
+  options.where = { id: user_id };
+  const values = { icon_url: icon_name };
   return db.User.update(values, options);
 }

@@ -26,7 +26,8 @@ module.exports = {
   resolve: {
 		extensions: ["*", ".js", ".css"],
 		alias: {
-			slick: path.resolve(__dirname, 'node_modules/slick-carousel/slick/')
+			slick: path.resolve(__dirname, 'node_modules/slick-carousel/slick/'),
+			cropper: path.resolve(__dirname, 'node_modules/cropperjs/')
 		}
 	},
 	plugins: [

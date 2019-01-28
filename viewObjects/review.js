@@ -17,7 +17,7 @@ class unReviewItem{
 class revieweeHistoryItem{
   constructor(revieweeHis = {}){
     this.review_id = revieweeHis.get('id');
-    this.date_info = unReview.get('updatedAt').getDateInfo();
+    this.date_info = revieweeHis.get('updatedAt').getDateInfo();
     this.username = revieweeHis.get('user').get('user_name');
     this.type = revieweeHis.get('review_type');
   }
@@ -29,7 +29,7 @@ class revieweeHistoryItem{
 class reviewHistoryItem{
   constructor(reviewHis = {}){
     this.review_id = reviewHis.get('id');
-    this.date_info = unReview.get('updatedAt').getDateInfo();
+    this.date_info = reviewHis.get('updatedAt').getDateInfo();
     this.username = reviewHis.get('to_user').get('user_name');
     this.type = reviewHis.get('review_type');
   }
@@ -48,10 +48,7 @@ class reviewHistoryItem{
 module.exports = class{
   constructor(user_id, { unReviewList, revieweeHistoryList, reviewHistoryList }, page = 1){
 
-    this.unReviewList = {
-      rows: unReviewList.rows.map(unReview => new unReviewItem(unReview))
-      // pages: pageHelper.makePageObject(unReviewList.count, page),
-    };
+    this.unReviewList = unReviewList.rows.map(unReview => new unReviewItem(unReview))
 
     this.revieweeHistoryItem = {
       rows:revieweeHistoryList.rows.map(revieweeHis => new revieweeHistoryItem(revieweeHis)),

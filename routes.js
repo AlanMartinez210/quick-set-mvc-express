@@ -79,6 +79,9 @@ router.get('/mypage/profile/:user_id', loginCheck, validate.check(userForm.getUs
 /* プロフィール設定の編集 postProfile */
 router.post('/mypage/profile', loginCheck, validate.check(userForm.putProfile), validate.result, userController.postUserUpdate)
 
+/* プロフィールアイコン画像の登録 postProfileIcon */
+router.post('/mypage/profile/profileIcon', loginCheck, userController.postProfileIcon)
+
 /* サイトの設定の表示 index */
 router.get('/mypage/site', loginCheck, siteController.index);
 
@@ -181,10 +184,10 @@ router.delete('/mypage/schedule', loginCheck, validate.check(scheduleForm.delete
 router.get('/mypage/review', loginCheck, reviewController.index);
 
 /* 自分がしたレビュー履歴の取得 getReviewHistory */
-router.get('/mypage/review/sendList', loginCheck, reviewController.getReviewHistory);
+router.get('/mypage/review/history', loginCheck, validate.check(reviewForm.getReviewHistory), validate.result, reviewController.getReviewHistory);
 
 /* 自分にされたレビュー履歴の取得 getRevieweeHistory */
-router.get('/mypage/review/recieveList', loginCheck, reviewController.getRevieweeHistory);
+router.get('/mypage/reviewee/history', loginCheck, validate.check(reviewForm.getRevieweeHistory), validate.result, reviewController.getRevieweeHistory);
 
 /* レビューの登録/編集 postReview */
 router.post('/mypage/review', loginCheck, validate.check(reviewForm.postReview), validate.result, reviewController.postReview);
@@ -197,11 +200,11 @@ router.post('/mypage/review', loginCheck, validate.check(reviewForm.postReview),
 /* マッチング一覧の表示(マッチング一覧と、マッチング履歴の表示) */
 router.get('/mypage/matching', loginCheck, matchingController.index);
 
+/* マッチング履歴の取得(マッチング履歴の取得) getMatchingHistory */
+router.get('/mypage/matching/history', loginCheck, validate.check(matchingForm.getMatchingHistory), validate.result, matchingController.getMatchingHistory);
+
 /* 依頼/応募する postRequest */
 router.post('/mypage/matching/request', loginCheck, validate.check(matchingForm.postReqest), validate.result, matchingController.postRequest);
-
-/* マッチング履歴の取得(マッチング履歴の取得) getMatchingHistory */
-// router.get('/mypage/matching/history', matchingController.getMatchingHistory);
 
 /* マッチングの承諾 postConsent */
 router.post('/mypage/matching/consent', loginCheck, validate.check(matchingForm.postConsent), validate.result, matchingController.postConsent);

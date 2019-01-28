@@ -1,3 +1,5 @@
+const pageHelper = require("../common/helper/pageHelper");
+
 /**
  * マッチング一覧中身
  */
@@ -13,6 +15,7 @@ class matching_item{
     this.datetime_info = matching.get('updatedAt').getDateTimeInfo();
   }
 };
+
 /**
  * マッチング履歴中身
  */
@@ -28,15 +31,11 @@ class matching_history_item{
 };
 
 module.exports = {
-  /**
-   *
-   *
-   * @param {String} user_id ログイン者のユーザーID
-   */
-  matching_page: class {
-    constructor(user_id, matchingList, matchingHistoryList){
-      this.matching_list = matchingList.rows.map(matching => {
 
+  matching_page: class {
+    constructor(user_id, matchingList, matchingHistoryList, current_page = {page: 1}){
+      this.matching_list = matchingList.rows.map(matching => {
+      
         let isMine = false;
         let user = matching.get('user');
 
@@ -49,19 +48,43 @@ module.exports = {
         return new matching_item(isMine, user, matching);
       });
 
-      this.matching_history = matchingHistoryList.rows.map(matching=>{
+      this.matching_history = {
+        rows: matchingHistoryList.rows.map(matching=>{
 
-        let isMine = false;
-        let user = matching.get('user');
-
-        // 自分とuser_idが同じだったら
-        if(user_id == matching.get('user_id')){
-          isMine = true;
-          user = matching.get('to_user');
-        }
-
-        return new matching_history_item(isMine, user, matching);
-      });
+          let isMine = false;
+          let user = matching.get('user');
+  
+          // 自分とuser_idが同じだったら
+          if(user_id == matching.get('user_id')){
+            isMine = true;
+            user = matching.get('to_user');
+          }
+  
+          return new matching_history_item(isMine, user, matching);
+        }),
+        pager: pageHelper.makePageObject(matchingHistoryList.count, current_page.page)
+      }
     }
   },
+
+  matching_history_list: class{
+    constructor(user_id, matchingHistoryList, current_page = {page: 1}){
+      this.matching_history = {
+        rows: matchingHistoryList.rows.map(matching=>{
+
+          let isMine = false;
+          let user = matching.get('user');
+  
+          // 自分とuser_idが同じだったら
+          if(user_id == matching.get('user_id')){
+            isMine = true;
+            user = matching.get('to_user');
+          }
+  
+          return new matching_history_item(isMine, user, matching);
+        }),
+        pager: pageHelper.makePageObject(matchingHistoryList.count, current_page.page)
+      }
+    }
+  }
 };

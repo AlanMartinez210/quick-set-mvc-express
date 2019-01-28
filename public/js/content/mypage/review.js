@@ -1,3 +1,5 @@
+import plugin_pager from "../../plugin/pager";
+
 export default class review{
 	constructor(){
     this.$unReviewSection = $("#unReviewSection");
@@ -9,7 +11,8 @@ export default class review{
     this.$reviewForm = $("[name=reviewForm]");
   }
 	ready(){
-
+    this.pager = new plugin_pager(this.app);
+    
     // レビュー編集モーダルを開く
     this.$unReviewSection.on("click", this.editReviewBtn, {
       type: "editReview",
@@ -100,7 +103,9 @@ export default class review{
 
 
       return false;
-    })
+    });
+
+    this.pager.ready(["revieweeHistorySection", "reviewHistorySection"]);
   }
   
   // モーダル初期化

@@ -1,3 +1,9 @@
+exports.getMatchingHistory = {
+	page: {
+		in: 'query',
+	}
+}
+
 /** 依頼を却下フォーム */
 exports.postConsent = {
 	matching_id: {

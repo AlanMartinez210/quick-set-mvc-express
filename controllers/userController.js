@@ -2,7 +2,8 @@ const userService = require("../services/userService");
 const generalVO = require("../viewObjects/general");
 const db = require("../models/index");
 const sessionHelper = require('../common/helper/sessionHelper');
-
+const fs = require('fs');
+const multer = require('multer');
 
 /**
  * 新規登録画面の表示
@@ -130,4 +131,47 @@ exports.postUserUpdate = (req, res, next) => {
 		}).catch(err => {
 			next(err);
 		});
+}
+
+
+/**
+ * ユーザーアイコンの登録
+ */
+exports.postProfileIcon = (req, res, next) => {
+	let imageUploader = multer({
+		dest: `${__dirname}/../public/image/icons`,
+		limits: {
+			fileSize: 500000  // ファイルサイズ上限
+		}
+	}).any();
+
+	imageUploader(req, res, err  => {
+		if (err) { next(err); }
+		console.log('req.files: ', req.files);
+		const mimetype = req.files[0].mimetype
+		const type = [
+			{ ext: 'gif', mime: 'image/gif' },
+			{ ext: 'jpg', mime: 'image/jpeg' },
+			{ ext: 'png', mime: 'image/png' }
+		].find(ext => {
+			return ext.mime === mimetype
+		})
+
+		if (!type) {
+			next(new errorHelper({ status: 400, code: "E00018" }))
+			return false;
+		}
+
+		const user_id = sessionHelper.getUserId(req);
+		//既存のicon情報を取得
+		userService.registUserIcon(user_id, req.files[0].filename)
+
+		.then(result => {
+			imageUploader = null;
+			res.json({ status: 'success' });
+		})
+		.catch(err => {
+			next(err);
+		});
+	});
 }

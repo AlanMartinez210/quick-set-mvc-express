@@ -39,6 +39,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
+    }).then(() => {
+      queryInterface.addIndex('Equipment', {
+        unique: false,
+        fields: ['user_id'],
+      });
     });
   },
   down: (queryInterface, Sequelize) => {

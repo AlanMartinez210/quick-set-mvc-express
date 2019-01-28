@@ -1,3 +1,5 @@
+const equipmentService = require("../services/equipmentService");
+const equipmentVO = require("../viewObjects/equipment");
 const sessionHelper = require('../common/helper/sessionHelper');
 const c2Util = require("../services/c2link4DiService");
 
@@ -40,12 +42,19 @@ exports.getEquipmentList = function(req, res, next){
  * @param {*} res
  */
 exports.postCreate = function(req, res, next){
+	// res.json({status:'success'});
 
-	const render_obj = res.render_obj;
 	const form_data = req.form_data;
-
-	res.json({status:'success'});
-
+	const user_id  = sessionHelper.getUserId(req);
+	//ユーザーIDをセッションから取得
+	equipmentService.create(user_id, form_data)
+		.then(results => {
+			res.json({
+				status: 'success'
+			});
+		}).catch(err => {
+			next(err);
+		});
 }
 
 /**

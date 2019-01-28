@@ -27,15 +27,15 @@ exports.index = function(req, res, next){
 	}).catch(next);
 }
 
-exports.getUnReviewList = async (req, res, next)=>{
-	const render_obj = res.render_obj;
-	const user_id = sessionHelper.getUserId(req);
-	const page = req.form_data.page;
+// exports.getUnReviewList = async (req, res, next)=>{
+// 	const render_obj = res.render_obj;
+// 	const user_id = sessionHelper.getUserId(req);
+// 	const page = req.form_data.page;
 
-	const unReviewList = await reviewService.getUnReviewList({user_id, page});
-	render_obj.bodyData = new vo_review(user_id, {unReviewList}, page);
-	res.render('../content/mypage/review/reviewHistorySection', render_obj);
-};
+// 	const unReviewList = await reviewService.getUnReviewList({user_id, page});
+// 	render_obj.bodyData = new vo_review(user_id, {unReviewList}, page);
+// 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
+// };
 
 
 exports.getRevieweeHistory = async (req, res, next)=>{
@@ -58,8 +58,8 @@ exports.getReviewHistory = async (req, res, next)=>{
 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
 };
 
-
 exports.postReview = function(req, res, next){
+	// FIX formdataつかって
 	c_reviewRepository.postReview(req).then(result=>{
 		res.json({status:'success'});
 	}).catch(next);

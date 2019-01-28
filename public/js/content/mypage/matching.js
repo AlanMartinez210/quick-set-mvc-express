@@ -1,10 +1,12 @@
 import recruitDetail from "../recruitDetail";
+import plugin_pager from "../../plugin/pager";
 
 export default class matching{
 	constructor(){
 	}
 	ready(){
 		this.recruitDetail = new recruitDetail(true);
+		this.pager = new plugin_pager(this.app);
 
 		const $matchingSection = $("#matchingSection");
 		const doPostMatchingBtn = "[name=doPostMatching]";
@@ -55,11 +57,11 @@ export default class matching{
 
 					break;
 			}
-
 		});
 
 		// 募集詳細のjsを呼び出す。
 		this.recruitDetail.ready();
+		this.pager.ready(["matchingHistorySection"]);
 	}
 
 	getRejectDialog() {

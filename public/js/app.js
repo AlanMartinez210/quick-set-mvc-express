@@ -145,14 +145,24 @@ export default class myApp extends baseApp {
 
     const ajaxOption = {
       type: method,
-      contentType: (option.contentType||'application/json'),
-      dataType: (option.dataType||'json'),
       timeout : 30000,
       cache: false,
       header: {}
     }
 
-    if(Object.keys(data).length > 0) Object.assign(ajaxOption, {data: JSON.stringify(data)});
+    if(!option.dataType){
+      ajaxOption.dataType = "json";
+    }
+
+    if(ajaxOption.dataType === 'json'){
+      ajaxOption.contentType = 'application/json';
+      if(Object.keys(data).length > 0) Object.assign(ajaxOption, {data: JSON.stringify(data)});
+    }
+    else{
+      Object.assign(ajaxOption, option);
+      Object.assign(ajaxOption, {data: data});
+    }
+
     console.log(" -> send options: ", ajaxOption);
 
     return $.ajax(url, ajaxOption)
