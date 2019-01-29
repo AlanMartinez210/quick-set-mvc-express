@@ -1,10 +1,4 @@
 {
   "name" : "app",
-  "script" : "bin/www",
-  "watch": ["./"],
-  "ignore_watch" : ["node_modules", "public/image", "log", ".git"],
-  "watch_options": {
-    "followSymlinks": false,
-    "usePolling": true
-  }
+  "script" : "bin/www"
 }

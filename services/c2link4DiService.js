@@ -151,7 +151,7 @@ exports.enumUseYearType = () => {
 }
 
 /**
- * の列挙を操作します。
+ * メーカーの列挙を操作します。
  */
 exports.enumMakerType = () => {
   const enumObj = [

@@ -1,11 +1,4 @@
--
-  const costumelistArr = [
-    { title: "ひなまつり", name: "新田ひな" },
-    { title: "ひなまつり", name: "三島瞳" },
-    { title: "ひなまつり", name: "アンズ" },
-    { title: "ひなまつり", name: "マオ" },
-  ]
--
+
 
 .center-frame
   form(method="post", action="", name="equipmentForm")
@@ -75,19 +68,5 @@
         button(type="submit", name="doPostEquipment").btn-prm.st-back-b.shadow-l
           span: |登録
     
-  .board-prm
-    .board-hdr
-
-      .label-box._fb.flex._c
-        i.icon-title-b.fas.fa-tshirt.fa-fw.c-green
-        span: |所持機材一覧
-
-    .board-cnt.list-board
-      ul.st_options
-        - for (let cl of costumelistArr )
-          li.label-icon-link
-            .link-wrap.flex._c
-              .st-string-set
-                span.sub-text: |#{cl.title}
-                p: |#{cl.name}
-              i.icon-link.fas.fa-trash-alt.fa-fw
+  section#hasEquipmentSection.board-prm
+    include ./hasEquipmentSection.pug

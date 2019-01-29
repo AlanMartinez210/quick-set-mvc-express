@@ -342,6 +342,8 @@ export default class myApp extends baseApp {
     $(".wrapper").css({"paddingRight": (window.innerWidth - document.body.clientWidth) + "px"});
     $("body").addClass("on-modal");
 
+    const modal_name = `${e.data.type}Modal`;
+
     // 同期版
     if(e.data.onOpenBrefore){
       this.onShowProgress();
@@ -358,16 +360,16 @@ export default class myApp extends baseApp {
       preModalProc
       .then(() => {
         this.onHideProgress();
-        $("#"+ e.data.type + "Modal").attr("data-modal", "show");
+        $(`#${modal_name}`).attr("data-modal", "show");
       })
       .catch(err => {
         this.onHideProgress();
-        this.showClearAll();
+        this.showClearAll(modal_name);
         this.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。")
       })
     }
     else{
-      $("#"+ e.data.type + "Modal").attr("data-modal", "show");
+      $(`#${modal_name}`).attr("data-modal", "show");
     }
 
     const modal_close_obj = $("#modal-close, #modal-close-btn");
@@ -378,7 +380,7 @@ export default class myApp extends baseApp {
         this.onShowProgress();
         e.data.onCloseBrefore(ev);
         this.onHideProgress();
-        this.showClearAll();
+        this.showClearAll(modal_name);
       });
     }
     else if(e.data.onSyncCloseBrefore){ // 閉じる処理(非同期)
@@ -390,17 +392,17 @@ export default class myApp extends baseApp {
         preCloseProc
         .then(() => {
           this.onHideProgress();
-          this.showClearAll();
+          this.showClearAll(modal_name);
         })
         .catch(err => {
           this.onHideProgress();
-          this.showClearAll();
+          this.showClearAll(modal_name);
           this.showErrMsg("処理に失敗しました。改善しない場合は、一度ログアウトし、再度ログインしてお試しください。");
         })
       });
     }
     else{
-      modal_close_obj.on('click', this.showClearAll);
+      modal_close_obj.on('click', e => {this.showClearAll(modal_name)});
     }
 
     $(".modal-box").on('click', e => {
@@ -413,8 +415,10 @@ export default class myApp extends baseApp {
   /**
    * すべてのモーダルを非表示にします。
    */
-  showClearAll(){
-  	$(".on-show").removeClass("on-show");
+  showClearAll(modal_name){
+    $(".on-show").removeClass("on-show");
+    // 項目の非表示
+    if(modal_name) $(`#${modal_name} [data-mdc]`).hide();
   	$(".wrapper").css({"paddingRight": "0px"});
   	$("body").removeClass("on-modal");
     $(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");

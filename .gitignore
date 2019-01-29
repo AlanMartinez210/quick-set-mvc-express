@@ -70,3 +70,5 @@ public/bundle.js
 # config
 config/config.json
 .vscode/launch.json
+public/image/icons/
+public/image/top311.png

@@ -16,7 +16,7 @@ exports.index = function(req, res, next){
 	const render_obj = res.render_obj;
 
 	render_obj.contentId = "costume";
-	render_obj.title = "コスプレ衣装設定";
+	render_obj.title = "所持コスプレ衣装設定";
 	render_obj.backBtn = c2Util.getBackMypageBtn();
 	const user_id = sessionHelper.getUserId(req);
 

@@ -79,12 +79,16 @@ export default class profile{
 		$editProfileIconBtn.on('click', {
 			type: 'editProfileIcon',
 			onOpenBrefore: (e) => {
-				$("[name=up_icon_image]").on('change', e => this.imgCropper(e));
+				$("[name=up_icon_image]").on('change', e => {
+					$("[data-mdc=trimming_box]").show();
+					$("[data-mdc=preview_box]").show();
+					$("[data-mdc=board-ftr]").show();
+					this.imgCropper(e);
+				});
 			},
 			onCloseBrefore: (e) => {
 				// 初期化
 				$("#iconThumbnail").cropper('destroy').attr("src", "");
-				
 				// fileオブジェクトの破棄
 				$("[name=up_icon_image]").off('change');
 				$("[name=up_icon_image]").val("");
@@ -135,14 +139,12 @@ export default class profile{
 							aspectRatio: 1/1,
 							viewMode: 1,
 							dragMode: 'move',
-							guides: false,
 							minCropBoxWidth: 160,
 							minCropBoxHeight: 160,
 							rotatable: false,
-							crop: function(event){
-								console.log(event.detail.width);
-								console.log(event.detail.height);
-							},
+							cropBoxResizable: false,
+							cropBoxMovable: false,
+							wheelZoomRatio: 0.05,
 							preview: '.crop_preview'
 						})
 						$("[name=cropper_reset]").on('click', e => $("#iconThumbnail").cropper('reset'));

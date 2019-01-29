@@ -82,7 +82,9 @@ $fontAwesome : "Font Awesome 5 Free";
 	// button, .link-btn{
 	// 	margin: 0 4px;
 	// }
-
+	[data-mdc]{
+		display: none;
+	}
 	// タブ
 	&.tab-board{
 		.board-hdr{
@@ -181,7 +183,7 @@ $fontAwesome : "Font Awesome 5 Free";
 
 /* ラベル */
 .label-box{
-	line-height: 1.4em;
+	// line-height: 1.4em;
 	margin-bottom: 4px;
 	._wbka{word-break: keep-all};
 	.main-label{

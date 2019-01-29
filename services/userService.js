@@ -23,6 +23,11 @@ exports.createUser = (new_user_data) => {
           .addErrorData({ view_id: "email", code: "E00010" })
         );
       }
+      // 初期自動設定
+      // アイコン
+      new_user_data.icon_url = "default.png";
+      // 背景
+      new_user_data.bg_image_url = "default_bg.png";
       return db.User.createUser(new_user_data)
     })
 };
