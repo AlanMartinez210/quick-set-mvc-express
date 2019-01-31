@@ -18,6 +18,7 @@ export default class profile{
 		const $userUpdateBtn = $("[name=doUserUpdate]");
 		const consentDelete = this.userDeleteForm.find("#consentDelete");
 		const $editProfileIconBtn = $("[name=doEditProfileIcon]")
+		const $editBgCoverImgBtn = $("[name=doEditBgCoverImg]")
 
 		// タグと都道府県のプラグインをロード
 		this.tags.init().ready();
@@ -29,8 +30,10 @@ export default class profile{
 		.then(res => {
 			console.log('res: ', res);
 			this.profileForm.setValue(res);
-			//アイコンの設定
-			$(".icon_img").attr("src", `/image/icons/${res.icon_url}`);
+			// アイコンの設定
+			$(".icon-img").attr("src", `/image/icons/${res.icon_url}`);
+			// カバー画像の設定
+			$(".cover-img").attr("src", `/image/covers/${res.bg_image_url}`);
 			res.tags.forEach(item => this.tags.addTags(item.tag_name));
 			res.prefectures.forEach(item => this.prefs.addPrefecture(item.pref_id, item.pref_name));
 		})
@@ -55,6 +58,8 @@ export default class profile{
 				callback: () => {
 					this.app.sendPost("/mypage/profile", sendData)
 					.done(result => {
+						// localStorageを更新します。
+						window.setLSUserData(result);
 						this.app.refresh({showInfo: "処理が完了しました。"});
 					})
 				}
@@ -76,14 +81,15 @@ export default class profile{
 			}
 		});
 
+		// アイコンの変更
 		$editProfileIconBtn.on('click', {
 			type: 'editProfileIcon',
 			onOpenBrefore: (e) => {
 				$("[name=up_icon_image]").on('change', e => {
-					$("[data-mdc=trimming_box]").show();
-					$("[data-mdc=preview_box]").show();
-					$("[data-mdc=board-ftr]").show();
-					this.imgCropper(e);
+					$("#editProfileIconModal [data-mdc=trimming_box]").show();
+					$("#editProfileIconModal [data-mdc=preview_box]").show();
+					$("#editProfileIconModal [data-mdc=board-ftr]").show();
+					this.imgCropper(e, "icon", $("[name=doPostIconData]"));
 				});
 			},
 			onCloseBrefore: (e) => {
@@ -92,6 +98,26 @@ export default class profile{
 				// fileオブジェクトの破棄
 				$("[name=up_icon_image]").off('change');
 				$("[name=up_icon_image]").val("");
+			}
+		}, e => this.app.showModal(e));
+
+		// カバー背景の変更
+		$editBgCoverImgBtn.on('click', {
+			type: 'editBgCoverImg',
+			onOpenBrefore: (e) => {
+				$("[name=up_cover_image]").on('change', e => {
+					$("#editBgCoverImgModal [data-mdc=trimming_box]").show();
+					$("#editBgCoverImgModal [data-mdc=preview_box]").show();
+					$("#editBgCoverImgModal [data-mdc=board-ftr]").show();
+					this.imgCropper(e, "cover", $("[name=doPostCoverData]"));
+				});
+			},
+			onCloseBrefore: (e) => {
+				// 初期化
+				$("#coverThumbnail").cropper('destroy').attr("src", "");
+				// fileオブジェクトの破棄
+				$("[name=up_cover_image]").off('change');
+				$("[name=up_cover_image]").val("");
 			}
 		}, e => this.app.showModal(e));
 
@@ -113,18 +139,18 @@ export default class profile{
 		return false;
 	}
 
-	imgCropper(e){
+	imgCropper(e, type, $procBtn){
 		// 初期化
-		$("#iconThumbnail").cropper('destroy').attr("src", "");
+		$(`#${type}Thumbnail`).cropper('destroy').attr("src", "");
 
-		if($("[name=up_icon_image]").val()){
+		if($(`[name=up_${type}_image]`).val()){
 
 			const image_file = $(e.currentTarget).prop('files')[0];
 
 			// 拡張子チェック
 			if (!/\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$/.test(image_file.name) || !/(jpg|jpeg|png|gif)$/.test(image_file.type)) {
 				this.app.showErrMsg("画像は(jpg/gif/png)形式を選択してください。");
-				$("[name=up_icon_image]").val("");
+				$(`[name=up_${type}_image]`).val("");
 			}
 			// else if (500000 < image_file.size) {
 			// 	this.app.showErrMsg(`500KB以下の画像を添付してください。 現在(${image_file.size})`);
@@ -134,33 +160,31 @@ export default class profile{
 				if(window.FileReader){
 					const fr = new FileReader();
 					fr.onload = () => {
-						$("#iconThumbnail").attr("src", fr.result);
-						$("#iconThumbnail").cropper({
-							aspectRatio: 1/1,
+						$(`#${type}Thumbnail`).attr("src", fr.result);
+						$(`#${type}Thumbnail`).cropper({
+							aspectRatio: type === "icon" ? 1/1 : 3/1,
 							viewMode: 1,
 							dragMode: 'move',
-							minCropBoxWidth: 160,
-							minCropBoxHeight: 160,
 							rotatable: false,
 							cropBoxResizable: false,
 							cropBoxMovable: false,
 							wheelZoomRatio: 0.05,
-							preview: '.crop_preview'
+							preview: `.${type}_crop_preview`
 						})
-						$("[name=cropper_reset]").on('click', e => $("#iconThumbnail").cropper('reset'));
-						$("[name=doPostIconData]").on('click', e => this.dataSend(e, image_file.name));
+						$("[name=cropper_reset]").on('click', e => $(`#${type}Thumbnail`).cropper('reset'));
+						$procBtn.on('click', e => this.dataSend(e, type, image_file.name));
 					}
 					fr.readAsDataURL(image_file);
 				}
 				else{
-					$("[name=up_icon_image]").val("");
+					$(`[name=up_${type}_image]`).val("");
 				}
 			}
 
 		}
 	}
 
-	dataSend(e, filename){
+	dataSend(e, type, filename){
 
 		this.app.showInfoDialog({
 			name: "checkCmf",
@@ -170,14 +194,16 @@ export default class profile{
 		.closelabel("いいえ")
 		.addBtn({
 			callback: () => {
-				const croped_image = $("#iconThumbnail").cropper('getCroppedCanvas');
+				const croped_image = $(`#${type}Thumbnail`).cropper('getCroppedCanvas');
 				
 				const blobMethod = croped_image.toBlob ? "toBlob" : "msToBlob";
 				croped_image[blobMethod]((blob) => {
 					const trimedImageForm = new FormData();
-					trimedImageForm.append('icon_imege', blob, filename);
+					trimedImageForm.append(`${type}_imege`, blob, filename);
+
+					const url = type === "icon" ? "/mypage/profile/profileIcon" : "/mypage/profile/bgCover"
 					
-					this.app.sendPost("/mypage/profile/profileIcon", trimedImageForm, {
+					this.app.sendPost(url, trimedImageForm, {
 						dataType: "json",
 						contentType: false,
 						processData: false

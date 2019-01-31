@@ -52,16 +52,19 @@
                   option(value=pref.id) #{pref.name}
           p.bottom-label
 
-        .label-input-box#box_cos_chara
+        .label-input-box#box_costume_field
           .label-box
-            p.main-label: |コスプレキャラクター
-            span.sub-label: |当日コスプレするキャラクターを選択してください。
+            p.main-label: |コスプレ衣装
+            span.sub-label: |当日コスプレするキャラクターの衣装を選択してください。
           .select-box.flex._c
-            select(name="cos_chara")
+            select#costumes
               option(value="")
-                //- each pref in self.globalParam.enumPref.getEnum()
-                //-   option(value=pref.id) #{pref.name}
+          
+          p.st-title-tag.st-mt-s
+            |追加した衣装
+          .tag-cnt-box.flex._wrap#costume_field(data-dummytag="input", name="costume_field").st-required
           p.bottom-label
+        
           .attention-prm
             p
               |コスプレするキャラクターがいない場合は<a href="/mypage/costume" class="a-link">所持コスプレ衣装設定</a>へ

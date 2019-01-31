@@ -82,6 +82,10 @@ router.post('/mypage/profile', loginCheck, validate.check(userForm.putProfile), 
 /* プロフィールアイコン画像の登録 postProfileIcon */
 router.post('/mypage/profile/profileIcon', loginCheck, userController.postProfileIcon)
 
+/* カバー背景画像の登録 postProfileIcon */
+router.post('/mypage/profile/bgCover', loginCheck, userController.postBgCover)
+
+
 /* サイトの設定の表示 index */
 router.get('/mypage/site', loginCheck, siteController.index);
 

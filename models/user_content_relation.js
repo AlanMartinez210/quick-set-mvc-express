@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * ユーザーが作成した衣装一覧を取得する
    */
-  User_content_relation.getUserCostumeList = async function(user_id, options={}){
+  User_content_relation.getUserCostumeList = async function(user_id, options = {}){
     options.include = [ "content", "chara"];
     options.where = {user_id: user_id};
     return this.findAll(options);
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * 衣装を登録する
    */
-  User_content_relation.addCostume = async function(user_id, {content_id, chara_id, remarks}, options={}){
+  User_content_relation.addCostume = async function(user_id, {content_id, chara_id, remarks}, options = {}){
     return this.create({
       user_id: user_id,
       content_id, chara_id, remarks,
@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * 衣装を登録する
    */
-  User_content_relation.updateCostume = async function(user_id, {costume_id, remarks}, options={}){
+  User_content_relation.updateCostume = async function(user_id, {costume_id, remarks}, options = {}){
     options.where = {
       id: costume_id,
       user_id: user_id,
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * 衣装を登録する
    */
-  User_content_relation.updateCostume = async function(user_id, {costume_id, remarks}, options={}){
+  User_content_relation.updateCostume = async function(user_id, {costume_id, remarks}, options = {}){
     options.where = {
       id: costume_id,
       user_id: user_id,
@@ -67,7 +67,8 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * 衣装を削除する
    */
-  User_content_relation.deleteCostume = async function(user_id, {costume_id}, options={}){
+  User_content_relation.deleteCostume = async function(user_id, {costume_id}, options = {}){
+    options
     return this.destroy({
       where: {user_id, id: costume_id},
     }, options);
@@ -76,7 +77,7 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * 衣装を取得する
    */
-  User_content_relation.getCostume = async function(user_id, costume_id, options={}){
+  User_content_relation.getCostume = async function(user_id, costume_id, options = {}){
     options.include = [ "content", "chara"];
     return this.findByPk(costume_id, options);
   };

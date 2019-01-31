@@ -26,7 +26,9 @@ exports.index = function(req, res, next){
 		render_obj.bodyData = new costumeVO.costume_list(costumeList);
 		res.render('mypage/costume', render_obj);
 	})
-
+	.catch(err=>{
+		next(err);
+	});
 }
 
 /**
@@ -46,6 +48,9 @@ exports.getContentTitle = function(req, res, next){
 	.then(contentTitleList=>{
 		const json_data = new costumeVO.content_title_obj(contentTitleList);
 		res.json(json_data);
+	})
+	.catch(err=>{
+		next(err);
 	});
 }
 
@@ -56,7 +61,6 @@ exports.getContentTitle = function(req, res, next){
  * @param {*} res
  */
 exports.getCostume = function(req, res, next){
-	const render_obj = res.render_obj;
 	const form_data = req.form_data;
 	const user_id = sessionHelper.getUserId(req);
 
@@ -65,6 +69,9 @@ exports.getCostume = function(req, res, next){
 	.then(User_content_relation=>{
 		const json_data = new costumeVO.costume_obj(User_content_relation);
 		res.json(json_data);
+	})
+	.catch(err=>{
+		next(err);
 	});
 }
 
@@ -75,7 +82,6 @@ exports.getCostume = function(req, res, next){
  * @param {*} res
  */
 exports.postCreate = function(req, res, next){
-	const render_obj = res.render_obj;
 	const form_data = req.form_data;
 	const user_id = sessionHelper.getUserId(req);
 
@@ -85,8 +91,16 @@ exports.postCreate = function(req, res, next){
 		chara_id: form_data.conf_content_chara,
 		remarks: form_data.costume_comment,
 	})
-	.then(()=>{
-		res.status(200).json({});
+	.then(() => {
+		// 所持衣装一覧の取得
+		return userContentRelationService.getUserCostumeList(user_id)
+	})
+	.then(costumeList => {
+		const json_data = new costumeVO.costume_list(costumeList);
+		res.json(json_data);
+	})
+	.catch(err=>{
+		next(err);
 	});
 }
 
@@ -106,8 +120,16 @@ exports.putUpdate = function(req, res, next){
 		costume_id: form_data.costume_id,
 		remarks: form_data.costume_comment,
 	})
-	.then(()=>{
-		res.status(200).json({});
+	.then(() => {
+		// 所持衣装一覧の取得
+		return userContentRelationService.getUserCostumeList(user_id)
+	})
+	.then(costumeList => {
+		const json_data = new costumeVO.costume_list(costumeList);
+		res.json(json_data);
+	})
+	.catch(err=>{
+		next(err);
 	});
 }
 
@@ -125,10 +147,17 @@ exports.delete = function(req, res, next){
 	return userContentRelationService.deleteCostume(user_id, {
 		costume_id: form_data.costume_id,
 	})
-	.then(()=>{
-		res.status(200).json({});
+	.then(() => {
+		// 所持衣装一覧の取得
+		return userContentRelationService.getUserCostumeList(user_id)
+	})
+	.then(costumeList => {
+		const json_data = new costumeVO.costume_list(costumeList);
+		res.json(json_data);
+	})
+	.catch(err=>{
+		next(err);
 	});
-
 }
 
 /**
@@ -156,7 +185,9 @@ exports.createContentTitle = function(req, res, next){
 			res.json(json_data);
 		});
 	})
-	;
+	.catch(err=>{
+		next(err);
+	});
 
 }
 
@@ -181,6 +212,8 @@ exports.createContentChara = function(req, res, next){
 		const json_data = new costumeVO.return_chara_info(content_chara);
 		res.json(json_data);
 	})
-	;
+	.catch(err=>{
+		next(err);
+	});
 
 }

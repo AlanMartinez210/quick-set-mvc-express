@@ -7,6 +7,24 @@ const _ = require('lodash');
 const fs = require('fs');
 
 /**
+ * プロフィール編集画面のユーザー情報を取得します。
+ *
+ * @param {string} user_id
+ */
+exports.getUserDataById = async (user_id, isRequire = true) => {
+  const user_data = await db.User.getUserById(user_id);
+  if (!user_data && isRequire) return Promise.reject(new errorHelper({ code: "fatal" }));
+  console.log('user_data: ', user_data);
+
+  // タグデータ取得
+  if (user_data.get("tags")) {
+    const tags = await db.Tag.getTagById(user_data.get("tags"));
+    if (tags) user_data.set("tags", tags.map(v => v.toJSON()));
+  }
+  return user_data;
+}
+
+/**
  * ユーザーの作成を行います。
  * 同一のメールアドレスを持っている場合にはエラーを返します。
  *
@@ -75,9 +93,10 @@ exports.clearExpirationDate = (user_id) => {
  *
  * @param {string} user_id
  */
-exports.getUserData = async (user_id) => {
-  const user_data = await db.User.getUserByKey(user_id);
-  if (!user_data) return Promise.reject(new errorHelper({ status: 400, code: "E00001" }));
+exports.getUserData = async (user_key) => {
+  const user_data = await db.User.getUserByKey(user_key);
+  console.log('user_data: ', user_data);
+  if (!user_data) return Promise.reject(new errorHelper({ code: "fatal" }));
 
   // タグデータ取得
   if (user_data.get("tags")) {
@@ -85,7 +104,6 @@ exports.getUserData = async (user_id) => {
     if (tags) user_data.set("tags", tags.map(v => v.toJSON()));
   }
   return user_data;
-
 }
 
 /**
@@ -138,6 +156,7 @@ exports.updateProfileData = (user_id, profileData) => {
     return await db.User.update(values, options);
   });
 }
+
 /**
  * サイト設定画面に必要な情報を取得します。
  * @param user_id ユーザーID
@@ -169,8 +188,13 @@ exports.updateSiteSetting = (user_id, profileData) => {
   return db.User.update(values, options);
 }
 
+/**
+ * ユーザーアイコンの登録を行います。
+ * 
+ * @param {string} user_id
+ * @param {string} icon_name
+ */
 exports.registUserIcon = async (user_id, icon_name) => {
-  console.log('icon_name: ', icon_name);
 
   const user_data = await db.User.getUserById(user_id);
   if(!user_data) return Promise.reject(new errorHelper({ code: "fatal" }));
@@ -187,5 +211,31 @@ exports.registUserIcon = async (user_id, icon_name) => {
   const options = {};
   options.where = { id: user_id };
   const values = { icon_url: icon_name };
+  return db.User.update(values, options);
+}
+
+/**
+ * カバー画像の登録を行います。
+ * 
+ * @param {string} user_id
+ * @param {string} icon_name
+ */
+exports.registBgCover = async (user_id, icon_name) => {
+
+  const user_data = await db.User.getUserById(user_id);
+  if(!user_data) return Promise.reject(new errorHelper({ code: "fatal" }));
+
+  const old_filename = user_data.get("bg_image_url");
+  if(old_filename && old_filename !== "default_bg.png"){
+    try{
+      fs.unlinkSync(`${__dirname}/../public/image/covers/${old_filename}`)
+    }catch(err){
+      console.log('err: ', err);
+    }
+  }
+
+  const options = {};
+  options.where = { id: user_id };
+  const values = { bg_image_url: icon_name };
   return db.User.update(values, options);
 }

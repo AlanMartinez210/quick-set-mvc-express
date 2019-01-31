@@ -94,6 +94,16 @@ export default class recruit {
 				this.getRecruitDetail(schedule_id)
 				.then(res => {
 					this.recruitDetailForm.setValue(res);
+
+					// カバー画像
+					const bgPath = `/image/covers/${res.bg_image_url}`;
+					$(".bgImage").css({
+						background: `url(${bgPath}) no-repeat center`,
+						backgroundSize: "cover"
+					})
+
+					// アイコン
+					$("img[name=user_icon]").attr("src", `/image/icons/${res.icon_url}`)
 					
 					// 日付
 					this.recruitDetailForm.find("[data-name=date_key]").text(`${res.date_info.year}年${res.date_info.month}月${res.date_info.day}日(${res.date_info.week})`)
@@ -108,7 +118,6 @@ export default class recruit {
 					$prefectures.empty();
 					res.prefectures.forEach(pref => $prefectures.append(`<span>${pref.prefecture_name}</span>`));
 					
-
 					resolve();
 				})
 			}

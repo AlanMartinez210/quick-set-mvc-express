@@ -67,6 +67,7 @@ exports.postUserDelete = function (req, res, next) {
 exports.postLogin = function (req, res, next) {
 	const login_key = req.form_data.login_key;
 	const password = req.form_data.login_password;
+
 	return userService.getloginUserData(login_key, password)
 		.then(user_data => {
 			user_data = user_data.toJSON();
@@ -106,14 +107,14 @@ exports.postLogout = function (req, res, next) {
  */
 exports.getUserData = (req, res, next) => {
 	// ユーザーID(user_key)
-	const user_id = req.form_data.user_id;
-	userService.getUserData(user_id)
-		.then(instance => {
-			res.json(new generalVO.userInfo(instance))
-		})
-		.catch(err => {
-			next(err);
-		});
+	const user_key = req.form_data.user_id;
+	userService.getUserData(user_key)
+	.then(instance => {
+		res.json(new generalVO.userInfo(instance))
+	})
+	.catch(err => {
+		next(err);
+	});
 }
 
 /**
@@ -124,13 +125,16 @@ exports.postUserUpdate = (req, res, next) => {
 	//ユーザーIDをセッションから取得
 	const user_id = sessionHelper.getUserId(req);
 	userService.updateProfileData(user_id, form_data)
-		.then(results => {
-			res.json({
-				status: 'success'
-			});
-		}).catch(err => {
-			next(err);
-		});
+	.then(() => {
+		// ユーザー情報を再取得する。
+		return userService.getUserDataById(user_id)
+	})
+	.then(instance => {
+		res.json(new generalVO.userInfo(instance));
+	})
+	.catch(err => {
+		next(err);
+	});
 }
 
 
@@ -165,7 +169,6 @@ exports.postProfileIcon = (req, res, next) => {
 		const user_id = sessionHelper.getUserId(req);
 		//既存のicon情報を取得
 		userService.registUserIcon(user_id, req.files[0].filename)
-
 		.then(result => {
 			imageUploader = null;
 			res.json({ status: 'success' });
@@ -175,3 +178,45 @@ exports.postProfileIcon = (req, res, next) => {
 		});
 	});
 }
+
+/**
+ * カバー背景の登録
+ */
+exports.postBgCover = (req, res, next) => {
+	let imageUploader = multer({
+		dest: `${__dirname}/../public/image/covers`,
+		limits: {
+			fileSize: 3000000  // ファイルサイズ上限
+		}
+	}).any();
+
+	imageUploader(req, res, err  => {
+		if (err) { next(err); }
+		console.log('req.files: ', req.files);
+		const mimetype = req.files[0].mimetype
+		const type = [
+			{ ext: 'gif', mime: 'image/gif' },
+			{ ext: 'jpg', mime: 'image/jpeg' },
+			{ ext: 'png', mime: 'image/png' }
+		].find(ext => {
+			return ext.mime === mimetype
+		})
+
+		if (!type) {
+			next(new errorHelper({ status: 400, code: "E00018" }))
+			return false;
+		}
+
+		const user_id = sessionHelper.getUserId(req);
+		//既存のicon情報を取得
+		userService.registBgCover(user_id, req.files[0].filename)
+		.then(result => {
+			imageUploader = null;
+			res.json({ status: 'success' });
+		})
+		.catch(err => {
+			next(err);
+		});
+	});
+}
+

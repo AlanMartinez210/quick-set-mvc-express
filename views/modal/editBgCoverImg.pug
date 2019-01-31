@@ -1,7 +1,5 @@
-
-
-#editProfileIconModal.login-ptm(data-modal="hide")
-  form(method="post", action="", name="editProfileIconForm")
+#editBgCoverImgModal.login-ptm(data-modal="hide")
+  form(method="post", action="", name="editBgCoverImgForm")
 
     .board-prm
       .board-hdr
@@ -15,9 +13,9 @@
         
         .label-input-box
           .custom-box._s
-            label(for="up_icon_image").btn-prm.st-line-b.shadow-l
+            label(for="up_cover_image").btn-prm.st-line-b.shadow-l
               |画像を選択
-            input.init-hidden(type="file", id="up_icon_image", name="up_icon_image", accept="image/*")
+            input.init-hidden(type="file", id="up_cover_image", name="up_cover_image", accept="image/*")
 
         .label-input-box(data-mdc="trimming_box")
           .label-box
@@ -27,16 +25,16 @@
               span.option-btn.st-line-b(name="cropper_reset")
                 |トリミングをリセット
             .image_wrap.st-mt-s
-              img(id="iconThumbnail", src="", class="cropper-img")
+              img(id="coverThumbnail", src="", class="cropper-img")
 
         .label-input-box(data-mdc="preview_box")
           .label-box
             p.main-label: |プレビュー
           .custom-box._s
-            .icon-box-wrap
-              .icon-box.icon_crop_preview.shadow-d
+            .cover-box-wrap
+              .cover-box.cover_crop_preview.shadow-d
       
       .board-wrap(data-mdc="board-ftr")
         .board-ftr._s.flex._c._jc
-          button(type="submit", name="doPostIconData").btn-prm.st-back-b.shadow-l
+          button(type="submit", name="doPostCoverData").btn-prm.st-back-b.shadow-l
             |登録

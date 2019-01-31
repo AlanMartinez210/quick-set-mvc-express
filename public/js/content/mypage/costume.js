@@ -79,23 +79,18 @@ export default class costume{
 		$titleSearchBtn.on('click', e => {
 			const sendData = { search_content_title: $search_content_title.val() } 
 			// 検索条件をローカルストレージから検索(連打対策)
-			const costumeSearch = sessionStorage.getItem("costumeSearch");
-			if(costumeSearch){
-				// 中身の検索結果をパースする。
-
-			}
-			const searchSession = sessionStorage.getItem(sendData.search_content_title);
-			if(searchSession){
-				parseCharaList(JSON.parse(searchSession));
-			}
-			else{
+			// const searchSession = sessionStorage.getItem(sendData.search_content_title);
+			// if(searchSession){
+			// 	parseCharaList(JSON.parse(searchSession));
+			// }
+			// else{
 				this.searchTitle(sendData)
 				.done(res => {
 					// 検索結果をsessionStrageに保存
 					sessionStorage.setItem(sendData.search_content_title, JSON.stringify(res));
 					parseCharaList(res);
 				});
-			}
+			// }
 		});
 
 		// 作品名リストをクリックしたとき
@@ -236,6 +231,8 @@ export default class costume{
 			callback: () => {
 				this.app.sendPost('/mypage/costume', sendData)
 				.done(result => {
+					// localStorageを更新します。
+					window.setLSUserData(result);
 					// リフレッシュ
 					this.app.refresh({showInfo: "処理に成功しました。"});
 				})
@@ -256,6 +253,8 @@ export default class costume{
 			callback: () => {
 				this.app.sendPut('/mypage/costume', sendData)
 				.done(result => {
+					// localStorageを更新します。
+					window.setLSUserData(result);
 					// リフレッシュ
 					this.app.refresh({showInfo: "処理に成功しました。"});
 				})
@@ -276,6 +275,8 @@ export default class costume{
 			callback: () => {
 				this.app.sendDelete('/mypage/costume', sendData)
 				.done(result => {
+					// localStorageを更新します。
+					window.setLSUserData(result);
 					// リフレッシュ
 					this.app.refresh({showInfo: "処理に成功しました。"});
 				})

@@ -12,6 +12,7 @@ module.exports = class {
     for(let i=1;i<=3;i++){
       const user_data = {}
       user_data.icon_url = "default.png";
+      user_data.bg_image_url = "default_bg.png";
       user_data.user_name = "test_camera_man_" + i;
       const password = "password" + i;
       user_data.password = hashHelper(password);
@@ -26,6 +27,7 @@ module.exports = class {
     for(let i=1;i<=3;i++){
       const user_data = {}
       user_data.icon_url = "default.png";
+      user_data.bg_image_url = "default_bg.png";
       user_data.user_name = "test_cosplayer_" + i;
       const password = "password" + i;
       user_data.password = hashHelper(password);
@@ -306,6 +308,11 @@ module.exports = class {
         db.sequelize.query(`truncate table chats;`,{}),
         db.sequelize.query(`truncate table authtwitters;`,{}),
         db.sequelize.query(`truncate table notices;`,{}),
+        db.sequelize.query(`truncate table content_charas;`,{}),
+        db.sequelize.query(`truncate table content_titles;`,{}),
+        db.sequelize.query(`truncate table equipment;`,{}),
+        db.sequelize.query(`truncate table recruit_bookmarks;`,{}),
+        db.sequelize.query(`truncate table user_content_relations;`,{})
       ])
       .then(res => {
         console.log("  -> complate!!");

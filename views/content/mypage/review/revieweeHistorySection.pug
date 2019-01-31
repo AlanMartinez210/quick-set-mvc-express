@@ -18,7 +18,7 @@
         li.label-icon-link(name="editReviewBtn", data-review_id=reh.review_id, data-user=reh.username)
           .link-wrap.flex._c.editReview
             .label-icon
-              img
+              img(src=`/image/icons/${reh.user_icon}`)
             i(class=reh.type==1?goodIcon:badIcon)
             .st-string-set
               span.sub-text: |#{reh.date_info.year}年#{reh.date_info.month}月#{reh.date_info.day}日(#{reh.date_info.week})

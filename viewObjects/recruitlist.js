@@ -21,8 +21,8 @@ class recruitListItem{
     this.schedule_id = schedule.get("id");
 
     this.user_info = {
-      id: user_info.id,
-      icon: user_info.icon
+      id: user_info.get("id"),
+      icon: user_info.get("icon_url")
     };
 
     this.date_info = schedule.get("date_key").getDateInfo();

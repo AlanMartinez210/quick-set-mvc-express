@@ -1,5 +1,6 @@
 import plugin_tag from "../../plugin/tag";
 import plugin_prefecture from "../../plugin/prefecture";
+import plugin_costume from "../../plugin/costume";
 import outer_costume from "../mypage/costume";
 
 export default class schedule{
@@ -7,13 +8,6 @@ export default class schedule{
 		this.scheduleForm = $('[name=scheduleForm]');
 	}
 	ready(){
-		this.tags = new plugin_tag(this.app);
-		this.prefs = new plugin_prefecture(this.app);
-		const costume = new outer_costume();
-		costume.app = this.app;
-		//costumeをスケジュールモードで開く
-		costume.ready({type: "schedule"});
-
 		const scheduleSection = $('#scheduleSection');
 		const calendarSection = $('#calendarSection');
 		// 処理ボタン
@@ -28,6 +22,16 @@ export default class schedule{
 		const $addCharaBtn =  $("[name=addChara]");
 		// あわせ募集に戻るボタン
 		const $bkGroupBtn = $("[name=bk_group]");
+
+		this.tags = new plugin_tag(this.app);
+		this.prefs = new plugin_prefecture(this.app);
+		this.p_costume = new plugin_costume(this.app);
+
+		// 所持衣装の一部画面スクリプトを呼び出す。
+		const costume = new outer_costume();
+		costume.app = this.app;
+		//costumeをスケジュールモードで開く
+		costume.ready({type: "schedule"});
 
 		// カレンダーの年を変更したとき
 		calendarSection.on("change", "[name=yearSelectList]", (e) => {
@@ -53,6 +57,7 @@ export default class schedule{
 				// タグと都道府県のプラグインをロード
 				this.tags.init().ready();
 				this.prefs.init().ready();
+				this.p_costume.init().ready();
 
 				// formを初期化する 
 				this.scheduleForm.clearForm();
@@ -90,6 +95,7 @@ export default class schedule{
 				// タグと都道府県のプラグインをロード
 				this.tags.init().ready();
 				this.prefs.init().ready();
+				this.p_costume.init().ready();
 
 				// formを初期化する 
 				this.scheduleForm.clearForm();
@@ -104,6 +110,13 @@ export default class schedule{
 					case "create":
 						const date_key = event.currentTarget.dataset.date_key;
 						this.scheduleForm.find('[name=date_key]').val(date_key);
+						// コスチュームデータの取得
+						this.app.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
+						.done(result=>{
+
+						})
+						// ユーザーデータの取得
+
 						resolve();
 						break;
 					case "delete": // 削除モード

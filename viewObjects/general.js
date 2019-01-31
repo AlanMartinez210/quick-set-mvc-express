@@ -8,9 +8,10 @@ module.exports = {
    */
   userInfo: class {
     constructor(user_info = {}){
-      this.icon_url = user_info.get("icon_url");
+      this.user_key = user_info.get("user_key");
       this.user_name = user_info.get("user_name");
       this.email = user_info.get("email");
+      this.icon_url = user_info.get("icon_url");
       this.bg_image_url = user_info.get("bg_image_url");
       this.prefectures = user_info.get("prefectures");
       this.tags = user_info.get("tags");

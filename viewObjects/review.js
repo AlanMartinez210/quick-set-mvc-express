@@ -8,6 +8,7 @@ class unReviewItem{
     this.matching_id = unReview.get('id');
     this.date_info = unReview.get('updatedAt').getDateInfo();
     this.username = unReview.get('to_user').get('user_name');
+    this.user_icon = unReview.get('to_user').get('icon_url');
   }
 }
 
@@ -19,6 +20,7 @@ class revieweeHistoryItem{
     this.review_id = revieweeHis.get('id');
     this.date_info = revieweeHis.get('updatedAt').getDateInfo();
     this.username = revieweeHis.get('user').get('user_name');
+    this.user_icon = revieweeHis.get('user').get('icon_url');
     this.type = revieweeHis.get('review_type');
   }
 };
@@ -31,6 +33,7 @@ class reviewHistoryItem{
     this.review_id = reviewHis.get('id');
     this.date_info = reviewHis.get('updatedAt').getDateInfo();
     this.username = reviewHis.get('to_user').get('user_name');
+    this.user_icon = reviewHis.get('to_user').get('icon_url');
     this.type = reviewHis.get('review_type');
   }
 }

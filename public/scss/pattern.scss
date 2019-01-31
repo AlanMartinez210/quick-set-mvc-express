@@ -4,7 +4,8 @@
 	background: $grayLW;
 	.hdr-cntnr {
 		background-image: linear-gradient(250deg, #4481eb 0%, #04befe 100%);
-		//background-image: linear-gradient(135deg, #48c6ef 0%, #6f86d6 100%);
+		&._n{background-image: none; }
+		// background-image: linear-gradient(135deg, #48c6ef 0%, #6f86d6 100%);
 		padding-bottom: 24px;
 		.header-spacer {
 			height: calc(100px + 16px);
@@ -110,7 +111,7 @@
 .recruitdetail-ptn {
 	background: $grayLW;
 	.bgImage {
-		background: url(https://designcolor-web.com/sample/img/bg_starry_night.jpg) no-repeat center;
+		background: url() no-repeat center;
 		background-size: cover;
 		position: relative;
 		z-index: $bgImage;
@@ -118,15 +119,15 @@
 	}
 	$bluer-size: 5px;
 	$bluer-size-m: -5px;
-	.bgImage:before {
-		content: '';
-		background: inherit;
-		-webkit-filter: blur($bluer-size);-moz-filter: blur($bluer-size);-o-filter: blur($bluer-size);-ms-filter: blur($bluer-size);
-		filter: blur($bluer-size);
-		position: absolute;
-		top: $bluer-size-m;left: $bluer-size-m;right: $bluer-size-m;bottom: $bluer-size-m;
-		z-index: $bgImage_before;
-	}
+	// .bgImage:before {
+	// 	content: '';
+	// 	background: inherit;
+	// 	-webkit-filter: blur($bluer-size);-moz-filter: blur($bluer-size);-o-filter: blur($bluer-size);-ms-filter: blur($bluer-size);
+	// 	filter: blur($bluer-size);
+	// 	position: absolute;
+	// 	top: $bluer-size-m;left: $bluer-size-m;right: $bluer-size-m;bottom: $bluer-size-m;
+	// 	z-index: $bgImage_before;
+	// }
 	.hdr-Gradation {
 		position: absolute;
 		width: 100%;
@@ -232,6 +233,10 @@
 			margin-bottom: 8px;
 			border-radius: 5px;
 			overflow: hidden;
+			img {
+				width: 100%;
+				height: 100%;
+			}
 		}
 		.label-box {
 			font-size: 13px;

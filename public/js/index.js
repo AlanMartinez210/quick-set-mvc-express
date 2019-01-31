@@ -2,6 +2,7 @@ import 'webpack-jquery-ui/datepicker';
 import 'webpack-jquery-ui/css';
 
 import myApp from './app';
+import costume from './content/mypage/costume';
 
 const c2 = new myApp();
 
@@ -28,6 +29,22 @@ c2.ready(() => {
       return c2.config.usertype;
     },
   })
+
+  // アプリケーションのlocalStorage操作メソッドを定義します。
+  window.setLSUserData = (user_data) => {
+    localStorage.setItem('myUserData', JSON.stringify(user_data));
+  }
+  window.getLSUserData = () => {
+    const d = localStorage.getItem('myUserData').length;
+    return d ? JSON.parse(d): {};
+  }
+  window.setLSCostumeData = (costume_data) => {
+    localStorage.setItem('myCostumeData', JSON.stringify(costume_data));
+  }
+  window.getLSCostumeData = () => {
+    const d = localStorage.getItem('myCostumeData').length;
+    return d ? JSON.parse(d): {};
+  }
 
   // お知らせモーダルを開く
   const $noticeModal = $("#noticeModal");

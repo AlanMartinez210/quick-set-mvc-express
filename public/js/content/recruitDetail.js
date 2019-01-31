@@ -53,8 +53,8 @@ export default class recruitDetail{
 	}
 
 	detailModalHeaderDefine(){
-		let hd = ($("body").width())-32;
-		hd = (hd >= 320) ? 300 : (hd <= 200) ? 200 : hd;
+		let hd = ($(".bgImage").width()/3);
+		hd = (hd >= 320) ? 300 : (hd <= 180) ? 180 : hd;
 		$("form.recruitdetail-ptn").find("div.hdr-cntnr").height(hd);
 	}
 }
