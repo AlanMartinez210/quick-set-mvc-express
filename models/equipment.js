@@ -50,5 +50,19 @@ module.exports = (sequelize, DataTypes) => {
     return this.create(equipment_data, options)
   };
 
+  /**
+   * 指定した機材を削除する。
+   *
+   * @param {*} user_id
+   * @param {*} equipment_id
+   */
+  Equipment.delete = function(user_id, equipment_id, options = {}){
+    options.where = {
+			id: equipment_id,
+			user_id: user_id
+		};
+		return this.destroy(options);
+  }
+
   return Equipment;
 };

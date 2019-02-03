@@ -43,7 +43,7 @@ exports.getRevieweeHistory = async (req, res, next)=>{
 	const user_id = sessionHelper.getUserId(req);
 	const page = req.form_data.page;
 
-	const revieweeHistoryList = await reviewService.getRevieweeHistoryList({user_id, page});
+	const revieweeHistoryList = await reviewService.getRevieweeHistoryList(user_id, page);
 	render_obj.bodyData = new vo_review(user_id, {revieweeHistoryList}, page);
 	res.render('../content/mypage/review/revieweeHistorySection', render_obj);
 };
@@ -53,14 +53,21 @@ exports.getReviewHistory = async (req, res, next)=>{
 	const user_id = sessionHelper.getUserId(req);
 	const page = req.form_data.page;
 
-	const reviewHistoryList = await reviewService.getReviewHistoryList({user_id, page});
+	const reviewHistoryList = await reviewService.getReviewHistoryList(user_id, page);
 	render_obj.bodyData = new vo_review(user_id, {reviewHistoryList}, page);
 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
 };
 
 exports.postReview = function(req, res, next){
-	// FIX formdataつかって
-	c_reviewRepository.postReview(req).then(result=>{
+	const form_data = req.form_data;
+	const user_id = sessionHelper.getUserId(req);
+	const data = {
+		user_id: user_id,
+		matching_id: form_data.select_id,
+		review_type: form_data.review_type,
+		review_comment: form_data.review_comment,
+	};
+	reviewService.postReview(data).then(result=>{
 		res.json({status:'success'});
 	}).catch(next);
 };

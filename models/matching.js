@@ -127,8 +127,10 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * マッチング履歴を取得
    */
-  Matching.getMatchingHistoryList = function(user_id, options={}){
+  Matching.getMatchingHistoryList = function(user_id, page, options={}){
     options = ModelOption.matchingHistoryList(user_id, options);
+    options.limit = PAGE_COUNT;
+    options.offset = PAGE_COUNT * (page-1);
     return this.findAndCountAll(options);
   };
 

@@ -76,30 +76,14 @@ exports.getEquipment = function(req, res, next){
 exports.postCreate = function(req, res, next){
 
 	const form_data = req.form_data;
-	const user_id  = sessionHelper.getUserId(req);
 	//ユーザーIDをセッションから取得
+	const user_id  = sessionHelper.getUserId(req);
 	equipmentService.create(user_id, form_data)
 		.then(results => {
-			console.log('results: ', results);
 			res.json({ status: 'success' });
 		}).catch(err => {
 			next(err);
 		});
-}
-
-/**
- * 機材の更新
- *
- * @param {*} req
- * @param {*} res
- */
-exports.putUpdate = function(req, res, next){
-
-	const render_obj = res.render_obj;
-	const form_data = req.form_data;
-
-	res.json({status:'success'});
-
 }
 
 /**
@@ -110,9 +94,16 @@ exports.putUpdate = function(req, res, next){
  */
 exports.delete = function(req, res, next){
 
-	const render_obj = res.render_obj;
 	const form_data = req.form_data;
+	//ユーザーIDをセッションから取得
+	const user_id  = sessionHelper.getUserId(req);
+	equipmentService.delete(user_id, form_data)
+		.then(results => {
+			res.json({ status: 'success' });
+		}).catch(err => {
+			next(err);
+		});
 
-	res.json({status:'success'});
+	// res.json({status:'success'});
 
 }

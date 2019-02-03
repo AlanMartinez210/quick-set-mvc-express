@@ -111,10 +111,10 @@ export default class schedule{
 						const date_key = event.currentTarget.dataset.date_key;
 						this.scheduleForm.find('[name=date_key]').val(date_key);
 						// コスチュームデータの取得
-						this.app.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
-						.done(result=>{
+						// this.app.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
+						// .done(result=>{
 
-						})
+						// })
 						// ユーザーデータの取得
 
 						resolve();

@@ -69,6 +69,11 @@ module.exports = (sequelize, DataTypes) => {
     return this.findAndCountAll(options);
   };
 
+  Review.postReview = function(matching_id, review_from, review_type, review_comment){
+    return this.create({
+      matching_id, review_from, review_type, review_comment
+    });
+  }
 
   return Review;
 };

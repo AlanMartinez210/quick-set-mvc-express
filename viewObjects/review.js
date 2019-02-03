@@ -51,16 +51,20 @@ class reviewHistoryItem{
 module.exports = class{
   constructor(user_id, { unReviewList, revieweeHistoryList, reviewHistoryList }, page = 1){
 
-    this.unReviewList = unReviewList.rows.map(unReview => new unReviewItem(unReview))
-
-    this.revieweeHistoryItem = {
-      rows:revieweeHistoryList.rows.map(revieweeHis => new revieweeHistoryItem(revieweeHis)),
-      pages: pageHelper.makePageObject(revieweeHistoryList.count, page),
-    };
-
-    this.reviewHistoryItem = {
-      rows:reviewHistoryList.rows.map(reviewHis => new reviewHistoryItem(reviewHis)),
-      pages: pageHelper.makePageObject(revieweeHistoryList.count, page),
-    };
+    if(unReviewList){
+      this.unReviewList = unReviewList.rows.map(unReview => new unReviewItem(unReview));
+    }
+    if(revieweeHistoryList){
+      this.revieweeHistoryItem = {
+        rows:revieweeHistoryList.rows.map(revieweeHis => new revieweeHistoryItem(revieweeHis)),
+        pages: pageHelper.makePageObject(revieweeHistoryList.count, page),
+      };
+    }
+    if(reviewHistoryList){
+      this.reviewHistoryItem = {
+        rows:reviewHistoryList.rows.map(reviewHis => new reviewHistoryItem(reviewHis)),
+        pages: pageHelper.makePageObject(reviewHistoryList.count, page),
+      };
+    }
   }
 };

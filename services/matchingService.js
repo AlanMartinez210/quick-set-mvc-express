@@ -18,8 +18,8 @@ exports.getMatchingList = (user_id) => {
  * @param user_id
  * @return {Promise}
  */
-exports.getMatchingHistoryList = (user_id) => {
-  return db.Matching.getMatchingHistoryList(user_id);
+ exports.getMatchingHistoryList = (user_id, page=1) => {
+  return db.Matching.getMatchingHistoryList(user_id, page);
 };
 
 

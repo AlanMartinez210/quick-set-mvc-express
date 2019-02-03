@@ -29,3 +29,12 @@ exports.getRevieweeHistoryList = (user_id, page=1)=>{
 exports.getReviewHistoryList = (user_id, page=1)=>{
   return Review.getReviewHistoryList(user_id, page);
 };
+
+
+/**
+ * レビューを送信する
+ *
+ */
+exports.postReview = ({matching_id, user_id, review_type, review_comment})=>{
+  return Review.postReview(matching_id, user_id, review_type, review_comment);
+};
