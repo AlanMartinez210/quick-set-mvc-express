@@ -184,18 +184,92 @@ $fontAwesome : "Font Awesome 5 Free";
 /* ラベル */
 .label-box{
 	// line-height: 1.4em;
+	position: relative;
 	margin-bottom: 4px;
 	._wbka{word-break: keep-all};
 	.main-label{
-		@include font-normal;
-		font-weight: bold;
-		color: $blackD;
-	}
-	.sub-label{
 		@include font-small;
-		color: $grayD;
+		// font-weight: bold;
+		color: $grayDW;
+	}
+	&.help-tip{
+		&::after{
+			content: '\f059';
+			position: absolute;
+			top: -2px;
+			right: 0;
+			font-size: 16px;
+			font-weight: 900;
+			font-family: $fontAwesome;
+			color: $blueL;
+			pointer-events: none;
+			border-radius: 16px; 
+			box-shadow:0px 1px 3px 0px $blackD-opcity-30;
+		}
+		.main-label{
+			padding-right: 36px;
+		}
+	}
+	&.icon_tip{
+		&::before{
+			position: absolute;
+			top: 2px;
+			left: 2px;
+			margin: 0;
+			font-size: 13px;
+			font-weight: 200;
+			font-family: $fontAwesome;
+			color: $blueL;
+			pointer-events: none;
+		}
+		&._edit{
+			&::before{
+				content: '\f044';
+			}
+		}
+		&._select{
+			&::before{
+				content: '\f03a';
+				font-weight: 900;
+			}
+		}
+		&._radio{
+			&::before{
+				content: '\f25a';
+			}
+		}
+		&._check{
+			&::before{
+				content: '\f14a';
+			}
+		}
+		
+		.main-label{
+			padding-left: 24px;
+		}
+	}
+
+
+	&.input_help{
+		.main-label{
+			&::after{
+
+			}
+		}
+	}
+
+
+
+
+
+	.sub-label{
+		display: none;
 	}
 	&._fb{font-weight: bold; }
+
+
+
+
 	.deco-label{
 		a, span {
 			display: inline-block;
@@ -258,17 +332,17 @@ $fontAwesome : "Font Awesome 5 Free";
 
 // 入力系
 .input-box{
-	border-radius: 5px;
-	border: 1px $grayL solid;
+	border: 0;
+	border-bottom: 1px solid $grayL;
 	background: $white;
 	input[type="text"], input[type="password"]{
 		width: 100%;
-		border-radius: 5px;
 		@include font-normal;
 		padding: 0.8em;
 	}
 }
 
+// ラジオボタン
 .radio-box{
 	margin: 4px 0;
 	.radio-set{
@@ -283,10 +357,10 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+// セレクトボックス
 .select-box{
-	border-radius: 5px;
 	padding: 0 8px;
-	border: 1px $grayL solid;
+	border-bottom: 1px solid $grayL;
 	background: $white;
 	&._mbn{margin-bottom: 0;}
 	&.hdr-right-side{margin-left: auto;}
@@ -317,6 +391,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+// チェックボックス
 .check-box{
 	border-radius: 5px;
 	border: 1px $grayL solid;
@@ -339,6 +414,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+// テキストエリア
 .textarea-box{
 	border-radius: 5px;
 	border: 1px $grayL solid;
@@ -358,6 +434,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+// オプション(ボタン等)
 .option-box{
 	.option-btn{
 		cursor: pointer;
@@ -443,7 +520,7 @@ $fontAwesome : "Font Awesome 5 Free";
 /* タグラベル */
 .tag-cnt-box{
 	min-height: 47px;
-	border: 1px $grayL solid;
+	background: $blueL-opcity-10;
 	border-radius: 5px;
 	padding: 8px 8px 0 8px;
 	margin-bottom: 4px;

@@ -557,9 +557,7 @@ export default class myApp extends baseApp {
     // ダイアログタイトルHTML定義
     const dTitle = title ? `
       <div class='dialog-title board-hdr'>
-        <div class='label-box _fb'>
-          <p class='title-str dialog-${type}'>${title}</>
-        </div>
+        <p class='title-str dialog-${type}'>${title}</>
       </div>` : "";
     
     // ダイアログをbodyの直前に定義します。

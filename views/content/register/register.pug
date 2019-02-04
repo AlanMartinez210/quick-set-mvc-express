@@ -37,33 +37,29 @@
         .board-cnt
 
           .label-input-box#box_user_name
-            .label-box
+            .label-box.icon_tip._edit.help-tip(data-help_text="50文字まで入力できます")
               p.main-label: |ユーザー名
-              span.sub-label: |50文字まで入力できます
             .input-box.flex._c
               input(type="text", name="user_name")
             p.bottom-label
 
           .label-input-box#box_password
-            .label-box
+            .label-box.icon_tip._edit.help-tip(data-help_text="半角英字と数字を含む8～32文字を入力してください")
               p.main-label: |パスワード
-              span.sub-label: |半角英字と数字を含む8～32文字を入力してください
             .input-box.flex._c
               input(type="password", name="password", autocomplete="password")
             p.bottom-label
 
           .label-input-box#box_email
-            .label-box
+            .label-box.icon_tip._edit.help-tip(data-help_text="＠を含むメールアドレスを入力してください")
               p.main-label: |メールアドレス
-              span.sub-label: |＠を含むメールアドレスを入力してください
             .input-box.flex._c
               input(type="text", name="email")
             p.bottom-label
 
           .label-input-box#box_type
-            .label-box
+            .label-box.icon_tip._radio.help-tip.st-mb-s(data-help_text="あなたの活動タイプを選択してください")
               p.main-label: |ユーザータイプ
-              span.sub-label: |あなたの活動タイプを選択してください
             .radio-box._s.flex._c._jc
               .radio-set
                 input(type="radio", id="cos", name="user_type", value="1", checked)

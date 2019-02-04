@@ -51,96 +51,16 @@ export default class schedule{
 		scheduleSection.on('click', showScheduleBtn , {
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
-
-				this.modalDisable();
-
-				// タグと都道府県のプラグインをロード
-				this.tags.init().ready();
-				this.prefs.init().ready();
-				this.p_costume.init().ready();
-
-				// formを初期化する 
-				this.scheduleForm.clearForm();
-
-				// 操作ボタン非表示
-				$(".proc-box").hide();
-
-				const schedule_id = event.currentTarget.dataset.schedule_id;
-				if(!schedule_id){
-					reject();
-				}
-				else{
-					// 値を取りに行く
-					this.getSchedule(schedule_id)
-					.then(res => {
-						// タグと都道府県のみ別設定
-						res.tag_field.forEach(item => this.tags.addTags(item));
-						res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
-						this.scheduleForm.setValue(res);
-						resolve();
-					});
-				}
+				this.openScheduleModal("reference", resolve, reject, event);
 			}
 		}, e => this.app.showModal(e));
 		
-
 		// モーダルを開く
 		scheduleSection.on('click', openScheduleBtn , {
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
-				const modal_mode = event.currentTarget.dataset.mode;
-				// タブの初期化
-				this.app.plugin.screen.tabInit();
-				this.modalEnable();
-				// タグと都道府県のプラグインをロード
-				this.tags.init().ready();
-				this.prefs.init().ready();
-				this.p_costume.init().ready();
-
-				// formを初期化する 
-				this.scheduleForm.clearForm();
-
-				// 一旦非表示
-				$(".proc-btn").hide();
-				// ボタンの表示
-				$(".proc-box").show();
-				$(`[data-proc=${modal_mode}]`).show();
-
-				switch(modal_mode){
-					case "create":
-						const date_key = event.currentTarget.dataset.date_key;
-						this.scheduleForm.find('[name=date_key]').val(date_key);
-						// コスチュームデータの取得
-						// this.app.sendGet(`/mypage/schedule/${year}/${month}`, {}, {dataType: "html"})
-						// .done(result=>{
-
-						// })
-						// ユーザーデータの取得
-
-						resolve();
-						break;
-					case "delete": // 削除モード
-						this.modalDisable();
-					case "edit": // 編集モード
-						const schedule_id = event.currentTarget.dataset.schedule_id;
-						if(!schedule_id){
-							reject();
-						}
-						else{
-							// 値を取りに行く
-							this.getSchedule(schedule_id)
-							.then(res => {
-								// タグと都道府県のみ別設定
-								res.tag_field.forEach(item => this.tags.addTags(item));
-								res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
-								this.scheduleForm.setValue(res);
-								resolve();
-							});
-						}
-						break;
-				}
+				this.openScheduleModal("edit", resolve, reject, event);
 			}
-			
 		}, e => this.app.showModal(e));
 
 		// スケジュールが存在するもののみ表示
@@ -221,30 +141,85 @@ export default class schedule{
 
 	// 変更無効時のモーダル制御
 	modalDisable(){
+		$(".proc-box").hide();
 		this.scheduleForm.find("input").prop('readonly', true);
 		this.scheduleForm.find("select").prop("readonly", true);
 		this.scheduleForm.find("textarea").prop('readonly', true);
-		this.scheduleForm.find(".sub-label").hide();
 	}
 
 	// 変更有効時のモーダル制御
 	modalEnable(){
+		$(".proc-box").show();
 		this.scheduleForm.find("input").prop('readonly', false);
 		this.scheduleForm.find("input[name=date_key]").prop('readonly', true);
 		this.scheduleForm.find("textarea").prop('readonly', false);
-		this.scheduleForm.find(".sub-label").show();
 	}
 
 	getModalData(){
 		const data = this.scheduleForm.getValue();
 
 		// 都道府県の取得(カメラマン用)
-		if(this.app.config.isCam()){
-			data.prefectures_field = this.prefs.getPrefectureValue();
-		}
+		if(this.app.config.isCam())	data.prefectures_field = this.prefs.getPrefectureValue();
 		
 		//タグの取得
 		data.tag_field = this.tags.getTagValue();
 		return data;
+	}
+
+	openScheduleModal(openMode, resolve, reject, event){
+		let modal_mode = "";
+		this.app.plugin.screen.tabInit();
+
+		// タグと都道府県のプラグインをロード
+		this.tags.init().ready();
+		this.prefs.init().ready();
+		this.p_costume.init().ready();
+
+		// formを初期化する 
+		this.scheduleForm.clearForm();
+
+		if(openMode === "reference"){
+			modal_mode = openMode;
+			this.modalDisable();
+		}
+		else{
+			modal_mode = event.currentTarget.dataset.mode;
+			this.modalEnable();
+			// 対象ボタンの表示
+			$(".proc-btn").hide();
+			$(`[data-proc=${modal_mode}]`).show();
+		}
+
+		// 共通情報の取得
+		// コスプレ情報
+		if(this.app.config.isCos()){
+
+		}
+
+		switch(modal_mode){
+			case "create":
+				const date_key = event.currentTarget.dataset.date_key;
+				this.scheduleForm.find('[name=date_key]').val(date_key);
+				resolve();
+				break;
+			case "delete": // 削除モード
+				this.modalDisable();
+			case "reference": // 参照モード
+			case "edit": // 編集モード
+				const schedule_id = event.currentTarget.dataset.schedule_id;
+				if(!schedule_id) reject();
+				
+				// 値を取りに行く
+				this.getSchedule(schedule_id)
+				.then(res => {
+					// タグと都道府県のみ別設定
+					res.tag_field.forEach(item => this.tags.addTags(item));
+					res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
+					this.scheduleForm.setValue(res);
+					resolve();
+				});
+				
+				break;
+		}
 	}
 }

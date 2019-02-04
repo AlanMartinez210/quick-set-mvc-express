@@ -138,6 +138,7 @@
 }
 
 .st-title-tag{
+	font-size: 13px;
 	line-height: 1.5em;
 }
 
@@ -204,6 +205,10 @@
 	margin-bottom: 16px;
 }
 
+.st-mb-s{
+	margin-bottom: 8px;
+}
+
 .st-readonly{
 	border: 0;
 }
@@ -214,10 +219,11 @@
 
 .error-input{
 	.input-box,.select-box{
-		border: 1px solid $redD !important;
-		background: $redD-opcity-40;
-		input{
-			background: $redD-opcity-40;
+		border-bottom: 1px solid $redD !important;
+	}
+	.label-box{
+		.main-label{
+			color: $redL;
 		}
 	}
 	.bottom-label{
@@ -268,7 +274,7 @@
 .info-text{font-size: 13px; color: $grayD;}
 .error-text{width: 100%; font-size: 13px; color: $redD; text-align: left;}
 .st-input-num{text-align: right;}
-.st-required{border: 2px solid $greenL;}
+.st-required{border-bottom: 2px solid $greenL;}
 
 ::-webkit-input-placeholder{color: $grayL;}
 ::-moz-placeholder{color: $grayL;}

@@ -98,6 +98,16 @@ c2.ready(() => {
   });
   c2.inputClear();
 
+  $(".help-tip").on('click', e => {
+    // ダイアログ
+    c2.showInfoDialog({
+      name: "helpTextDialog",
+      title: "入力のヒント",
+      text: $(e.currentTarget).data("help_text")
+    })
+    
+  });
+
   // test
   $(".ajaxtest").click(() => {
     c2.sendGet("/t/e/403", {});

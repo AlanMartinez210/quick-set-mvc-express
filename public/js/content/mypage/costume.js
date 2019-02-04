@@ -70,7 +70,7 @@ export default class costume{
 					`);
 				}
 			}else{
-				$titleList.append(`<li>候補がありません</li>`);
+				$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
 				$titleListNum.text(`候補一覧 (0件)`);
 			}
 		}
@@ -100,13 +100,12 @@ export default class costume{
 			// 関連するキャラクター名を取得する。
 			$charaList.empty();
 			if(chara_list && chara_list.length){
-				// chara_list = JSON.parse(chara_list);
 				for(const item of chara_list){
 					$charaList.append(`<li name="charaListItem" data-chara_id=${item.id}>${item.name}</li>`);
 				}
 			}
 			else{
-				$charaList.append(`<li>候補がありません</li>`);
+				$charaList.append(`<li name="charaListEmpty">候補がありません</li>`);
 			}
 
 			$registTitle.hide();
@@ -151,7 +150,7 @@ export default class costume{
 		// 作品選択に戻るボタン
 		$backTitleBtn.on('click', e => {
 			$titleList.empty();
-			$titleList.append(`<li>候補がありません</li>`);
+			$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
 			$titleListNum.text(`候補一覧 (0件)`);
 			$registChara.hide();
 			$registTitle.fadeIn("fast");
@@ -180,6 +179,7 @@ export default class costume{
 				return this.registContentChara(resolve, reject, e);
 			})
 			.then(res => {
+				if($charaList.find('[name=charaListEmpty]').length) $charaList.empty();
 				// 取得したデータをキャラリストに追加する。
 				$charaList.prepend(`<li name="charaListItem" data-chara_id=${res.id}>${res.name}</li>`);
 			})

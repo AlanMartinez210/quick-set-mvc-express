@@ -38,6 +38,12 @@ exports.index = function(req, res, next){
 // };
 
 
+/**
+ * あなたへのレビュー一覧の取得
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 exports.getRevieweeHistory = async (req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
@@ -48,6 +54,12 @@ exports.getRevieweeHistory = async (req, res, next)=>{
 	res.render('../content/mypage/review/revieweeHistorySection', render_obj);
 };
 
+/**
+ * レビュー履歴の取得
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 exports.getReviewHistory = async (req, res, next)=>{
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
@@ -58,6 +70,12 @@ exports.getReviewHistory = async (req, res, next)=>{
 	res.render('../content/mypage/review/reviewHistorySection', render_obj);
 };
 
+/**
+ * レビューの登録
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 exports.postReview = function(req, res, next){
 	const form_data = req.form_data;
 	const user_id = sessionHelper.getUserId(req);

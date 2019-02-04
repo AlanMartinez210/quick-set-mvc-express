@@ -104,9 +104,6 @@ router.get('/mypage/equipment', loginCheck, equipmentController.index);
 /* 所持機材設定(カメラマンのみ)の登録 postCreate */
 router.post('/mypage/equipment', loginCheck, validate.check(equipmentForm.post), validate.result, equipmentController.postCreate);
 
-/* 所持機材設定(カメラマンのみ)の編集 putUpdate */
-router.put('/mypage/equipment', loginCheck, validate.check(equipmentForm.post), validate.result, equipmentController.putUpdate);
-
 /* 所持機材設定(カメラマンのみ)の削除 delete */
 router.delete('/mypage/equipment', loginCheck, validate.check(equipmentForm.post), validate.result, equipmentController.delete);
 

@@ -158,6 +158,7 @@ a.default{text-decoration: solid; color: $blueL;}
 		width: 100%;
 		.dialog-title{
 			.title-str{
+				font-weight: bold;
 				padding-left: 28px;
 				&.dialog-info{
 					&::before{
@@ -176,7 +177,9 @@ a.default{text-decoration: solid; color: $blueL;}
 				}
 			}
 		}
-		.dialog-cnt{}
+		.dialog-cnt{
+			line-height: 1.4em;
+		}
 		.dialog-ftr{
 			border: 0;
 			button{

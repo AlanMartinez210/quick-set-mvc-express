@@ -60,7 +60,7 @@ exports.postConsent = async (user_id, matching_id) => {
 };
 
 /**
- * 依頼を拒否する
+ * 依頼を取り消しする
  *
  * @param user_id
  * @param matching_id
