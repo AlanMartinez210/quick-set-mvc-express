@@ -6,19 +6,17 @@
       .board-cnt._s
 
         .label-input-box#box_login_key
-          .label-box
-            p.main-label: |ユーザーID
-            span.sub-label: |50文字まで入力できます
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00004)
+            p.main-label: |ユーザーID、またはメールアドレス
           .input-box.flex._c
-            input(type="text", name="login_key")
+            input(type="text", name="login_key", maxlength=256)
           p.bottom-label #{self.err_message}
 
         .label-input-box#box_login_password
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00001)
             p.main-label: |パスワード
-            span.sub-label: |半角英字と数字を含む8～32文字を入力してください
           .input-box.flex._c
-            input(type="password", name="login_password", autocomplete="password")
+            input(type="password", name="login_password", autocomplete="password", maxlength=32)
           p.bottom-label #{self.err_message}
 
       .board-ftr._s.flex._c._jc

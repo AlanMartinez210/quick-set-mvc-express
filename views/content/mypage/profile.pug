@@ -22,7 +22,7 @@
       .board-cnt
         .attention-prm
           p
-            span.st-required(style="border-radius:5px;display: inline-block;")
+            span.st-required(style="display:inline-block;")
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
@@ -37,25 +37,22 @@
                 span: |画像を変更する
 
         .label-input-box#box_user_name
-          .label-box
+          .label-box.icon_tip._edit
             p.main-label: |ユーザー名
-            span.sub-label: |50文字まで入力できます
           .input-box.flex._c.st-required
-            input(type="text", name="user_name")
+            input(type="text", name="user_name", maxlength=50)
           p.bottom-label
 
         .label-input-box#box_email
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
             p.main-label: |メールアドレス
-            span.sub-label: |＠を含むメールアドレスを入力してください
           .input-box.flex._c.st-required
-            input(type="text", name="email")
+            input(type="text", name="email", maxlength=256)
           p.bottom-label
 
         .label-input-box#box_prefectures_field
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00005)
             p.main-label: |活動地域
-            span.sub-label: |あなたの活動している地域を選択し追加してください。
           .select-box.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
@@ -68,23 +65,22 @@
           .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
           p.bottom-label
 
-        .label-input-box#box_tag_field
-          .label-box
+        .label-input-box#box_cos_shedule_tags(data-tag_plugin="profile_tag")
+          .label-box.icon_tip._edit
             p.main-label: |タグの設定
-            span.sub-label: |よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。
           .input-box.flex._c
-            input(type="text")#tags
-            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
+            input(type="text", maxlength=20)
+            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw.add-tag-btn
+          
+          p.bottom-label
           
           p.st-title-tag.st-mt-s
-            |追加したタグ一覧
-          .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
-          p.bottom-label
+            |追加したタグ
+          .tag-cnt-box.flex._wrap(data-dummytag="input", name="tags_field")
 
         .label-input-box
-          .label-box
+          .label-box.help-tip(data-help_text=viewMsg.v00007)
             p.main-label: |カバー背景画像
-            span.sub-label: |募集詳細のヘッダーに表示されるカバー画像です。
           .custom-box._s
             .cover-box-wrap
               .cover-box.flex._c.shadow-d

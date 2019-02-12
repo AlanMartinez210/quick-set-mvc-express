@@ -11,7 +11,7 @@
       .board-cnt._s
         .attention-prm
           p
-            span.st-required(style="border-radius:5px;display: inline-block;")
+            span.st-required(style="display:inline-block;")
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
@@ -23,11 +23,10 @@
             input(type="hidden", name="conf_content_title")
 
         .label-input-box#box_content_chara
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text="＠を含むメールアドレスを入力してください")
             p.main-label: |キャラクター名
-            span.sub-label: |作品に登場するキャラクター名を入力してください。
           .input-box.flex._c.st-required
-            input(type="text", name="content_chara", placeholder="新田 ひな")
+            input(type="text", name="content_chara", maxlength=256)
           p.bottom-label
         
         .accordion-prm.inline.shadow-l.content-space-top

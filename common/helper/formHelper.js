@@ -9,6 +9,7 @@ const CONVERT_KEY = {
 	password: "password",
 	prefecture: "prefecture",
 	login_password: "password",
+	allow_recruit_flg: "allow_recruit_flg:",
 };
 
 /**
@@ -33,6 +34,9 @@ exports.converter = (formObject) => {
 				case "password":
 					// パスワード -> ハッシュ化
 					formObject[key] = hashHelper(formObject[key]);
+					break;
+				case "allow_recruit_flg:":
+					formObject[key] = formObject[key].checked;
 					break;
 			}
 		}

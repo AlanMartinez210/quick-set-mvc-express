@@ -10,7 +10,7 @@
             |&nbsp;は必須項目です。
 
         .label-input-box#box_date_key
-          .label-box.help-tip
+          .label-box
             p.main-label: |日付
           .input-box.flex._c.st-readonly
             input(type="text", name="date_key")
@@ -18,9 +18,8 @@
           p.bottom-label
 
         .label-input-box#box_shot_type
-          .label-box.icon_tip._select.help-tip
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00011)
             p.main-label: |撮影タイプ
-            span.sub-label: |可能な撮影を選択してください。
           .select-box.flex._c.st-required
             select(name="shot_type")
               each shot_type in self.globalParam.enumShotType.getEnum()
@@ -28,9 +27,8 @@
           p.bottom-label
 
         .label-input-box#box_prefectures_field
-          .label-box.icon_tip._select.help-tip
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00005)
             p.main-label: |移動範囲
-            span.sub-label: |当日あなたが向かうことのできる範囲の県を選択してください。
           .select-box.flex._c
             select#prefectures.js-addPrefectures
               option(value="")
@@ -43,18 +41,22 @@
             |追加した県
           .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
           
-        .label-input-box#box_tag_field
-          .label-box.icon_tip._edit.help-tip(data-help_text="よく使うタグを10個まで設定できます。設定したタグは募集または、予定を作成時に表示されます。")
+        .label-input-box#box_cos_shedule_tags(data-tag_plugin="cam_shedule_tags")
+          .label-box.icon_tip._edit
             p.main-label: |タグの設定
           .input-box.flex._c
-            input(type="text")#tags
-            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
-
+            input(type="text", maxlength=20)
+            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw.add-tag-btn
+          
           p.bottom-label
+
+          .option-box.flex._jr
+            span.option-btn.st-line-b(name="tagGen")
+              |質問からタグを作る
           
           p.st-title-tag.st-mt-s
-            |追加したタグ一覧
-          .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
+            |追加したタグ
+          .tag-cnt-box.flex._wrap(data-dummytag="input", name="tags_field")
           
 
         .accordion-prm.inline.shadow-l
@@ -65,9 +67,8 @@
 
           .accordion-cnt._s
             .label-input-box#box_time_from
-              .label-box.icon_tip._select.help-tip
+              .label-box.icon_tip._select
                 p.main-label: |撮影開始時間
-                span.sub-label: |撮影の開始時間を選択してください。
               .select-box.flex._c
                 select(name="time_from")
                   option(value="") 未定
@@ -78,9 +79,8 @@
               p.bottom-label
 
             .label-input-box#box_time_to
-              .label-box.icon_tip._select.help-tip
+              .label-box.icon_tip._select
                 p.main-label: |撮影終了時間
-                span.sub-label: |撮影の終了時間を選択してください。
               .select-box.flex._c
                 select(name="time_to")
                   option(value="") 未定
@@ -91,24 +91,22 @@
               p.bottom-label
 
             .label-input-box#box_event_name
-              .label-box.icon_tip._edit.help-tip
+              .label-box.icon_tip._edit.help-tip.help-tip(data-help_text=viewMsg.v00012)
                 p.main-label: |イベント名 or 開催地
-                span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
               .input-box.flex._c
-                input(type="text", name="event_name")
+                input(type="text", name="event_name", maxlength=256)
               p.bottom-label
 
             .label-input-box#box_remarks
-              .label-box.icon_tip._edit.help-tip
+              .label-box.icon_tip._edit
                 p.main-label: |備考
               .textarea-box.flex._c
-                textarea(name="remarks", rows="3")
+                textarea(name="remarks", rows="3", maxlength=500)
               p.bottom-label
 
         .label-input-box#box_allow_recruit_flg
-          .label-box.icon_tip._check.help-tip
+          .label-box.icon_tip._check.help-tip(data-help_text=viewMsg.v00013)
             p.main-label: |撮影依頼公開設定
-            span.sub-label: |チェックするとコスプレイヤーが撮影を依頼できる状態になります。
           .check-box.flex._c
             input(id="allowrRecruitFlg" type="checkbox", name="allow_recruit_flg")
             label(for="allowrRecruitFlg")

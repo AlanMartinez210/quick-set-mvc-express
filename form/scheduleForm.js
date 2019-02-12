@@ -71,14 +71,16 @@ exports.postByCos = {
 		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
 	tag_field: common.tag_field,
+	costume_field:{
+		in: 'body',
+		isArray:{ errorMessage: 'E00006' },
+		isEmpty: { errorMessage: 'E00002', negated: true },
+	},
 	time_from: common.time_from,
 	time_to: common.time_to,
 	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name),
 	remarks: common.remarks,
 	allow_recruit_flg: common.allow_recruit_flg,
-	cos_chara:{
-		in: 'body',
-	},
 	event_url:{
 		in: 'body',
 		isLength: {
@@ -141,15 +143,17 @@ exports.putByCos = {
 		in: 'body',
 		isEmpty: { errorMessage: 'E00002', negated: true },
 	},
+	costume_field:{
+		in: 'body',
+		isArray:{ errorMessage: 'E00006' },
+		isEmpty: { errorMessage: 'E00002', negated: true },
+	},
 	tag_field: common.tag_field,
 	time_from: common.time_from,
 	time_to: common.time_to,
 	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name ),
 	remarks: common.remarks,
 	allow_recruit_flg: common.allow_recruit_flg,
-	cos_chara:{
-		in: 'body',
-	},
 	event_url:{
 		in: 'body',
 		isLength: {

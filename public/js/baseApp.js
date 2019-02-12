@@ -87,7 +87,7 @@ export class baseApp {
                       }
                       break;
                     case "checkbox":
-                        formData[eleName] = $t.prop("checked");
+                        formData[eleName] = {checked: $t.prop("checked"), value: $t.val()}; 
                       break;
                   }
                   break;

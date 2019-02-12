@@ -377,6 +377,8 @@ export default class myApp extends baseApp {
     if(e.data.onCloseBrefore){  // 閉じる処理(同期)
       // 登録イベントを一旦破棄する。
       modal_close_obj.on('click', (ev) => {
+        if($(ev.currentTarget).hasClass("child-modal")) return false;
+
         this.onShowProgress();
         e.data.onCloseBrefore(ev);
         this.onHideProgress();
@@ -385,6 +387,8 @@ export default class myApp extends baseApp {
     }
     else if(e.data.onSyncCloseBrefore){ // 閉じる処理(非同期)
       modal_close_obj.on('click', (ev) => {
+        if($(ev.currentTarget).hasClass("child-modal")) return false;
+
         this.onShowProgress();
         const preCloseProc = new Promise((resolve, reject) => {
           return e.data.onSyncCloseBrefore(resolve, reject, ev);
@@ -402,7 +406,11 @@ export default class myApp extends baseApp {
       });
     }
     else{
-      modal_close_obj.on('click', e => {this.showClearAll(modal_name)});
+      modal_close_obj.on('click', e => {
+        if($(e.currentTarget).hasClass("child-modal")) return false;
+
+        this.showClearAll(modal_name);
+      });
     }
 
     $(".modal-box").on('click', e => {
@@ -425,12 +433,24 @@ export default class myApp extends baseApp {
     $("#modal-close, #modal-close-btn").off('click');
   }
 
-  /** 現在表示しているモーダルと指定したモーダルの表示を入れ替えます。 */
-  switchModal (modalName, e){
+  /** 
+   * 現在表示しているモーダルと指定したモーダルの表示を入れ替えます。
+   * 
+   * @param {*} modalName モーダルの名称
+   * @param {*} child 子モーダルとして開く(閉じる機能無効化)
+   * 
+   */
+  switchModal (modalName, child, e){
     this.modalScrollReset();
     // 現在表示しているモーダルを非表示にする。
     $(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");
     $("#"+ modalName + "Modal").attr("data-modal", "show");
+    if(child){
+      $("#modal-close, #modal-close-btn").addClass('child-modal');
+    }
+    else{
+      $("#modal-close, #modal-close-btn").removeClass('child-modal');
+    }
   }
 
   /** =======================================================
@@ -446,30 +466,39 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   showMessage(mesObj = {type: "info", messageStr: ""}){
+
+    // 既存のものを消す。
+    $("body").find(".instantMessage").remove();
+
+    if(!this.instant_count) this.instant_count = 0;
+    this.instant_count++;
+    
     let delay = (mesObj.messageStr.length / 6) * 1000;
     delay = delay < 3000 ? 3000 : delay;
 
+    const t = `instantMessage_${this.instant_count}`
 
     // メッセージの生成と表示
     const mesHtml = `
-      <div class="instantMessage shadow-d">
+      <div id="${t}" class="instantMessage shadow-d">
         <p class="message-str msg-${mesObj.type}">${mesObj.messageStr}</p>
         <span class="msg-close"><i class="fas fa-times"></span></i>
       </div>`;
 
-    // クリアメッセージの設定
-    $("body").on('click',  ".msg-close", () => {
-      this.clearMessage();
+    // メッセージのクリアを設定
+    $("body").on('click',  `#${t}, #${t} .msg-close`, () => {
+      this.clearMessage(t);
     })
 
     $("body").prepend(mesHtml);
-    $("body").find(".instantMessage").animate({
+
+    $("body").find(`#${t}`).animate({
       top: "8px",
       opacity: 1
     }, 300);
 
     setTimeout(()=>{
-      this.clearMessage();
+      this.clearMessage(t);
     }, delay);
 
   }
@@ -510,12 +539,12 @@ export default class myApp extends baseApp {
    * @param {*} alertMsg
    * @memberof myApp
    */
-  clearMessage(){
-    $("body").find(".instantMessage").animate({
+  clearMessage(target){
+    $("body").find(`#${target}`).animate({
       top: "0px",
       opacity: 0
     }, 300, () => {
-      $("body").find(".instantMessage").remove();
+      $("body").find(`#${target}`).remove();
     });
   }
 
@@ -574,6 +603,16 @@ export default class myApp extends baseApp {
 			</div>
     `);
 
+    // ダイアログ展開中のエンターキーの仕様を禁止する。
+    $(function(){
+      $("input, button").on("keydown", function(e) {
+        if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            return false;
+        } else {
+            return true;
+        }
+      });
+    });
 
     const $footer = $(`[name=${name}] .dialog-ftr`);
     const $closeBtn = $(`[name=${name}] [name=dialogClose]`);
@@ -604,6 +643,7 @@ export default class myApp extends baseApp {
    * @memberof myApp
    */
   hideDialog(){
+    $("input, button").off("keydown");
     $('#dialog_overlay, #dialog_body').remove();
   }
 

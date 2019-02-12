@@ -17,7 +17,7 @@ export default class costume{
 	}
 	ready(){
 
-		// 都道府県タグ追加
+		// 所持コスプレの追加
 		this.$input_costume.off('change');
 		this.$input_costume.on('change', () => {
 			const costume_id = $("#costumes option:selected").val();
@@ -40,14 +40,13 @@ export default class costume{
 			this.initSelect();
 		});
 
-		// 都道府県タグ削除
+		// 所持コスプレ削除
 		const that = this;
 		this.$costume_field.off('click', this.costume_delete_button);
 		this.$costume_field.on('click', this.costume_delete_button, function(){
-			// 削除する活動地域名取得
 			var costume_id = $(this).parent().children("input").val();
-			// 削除
 			$(this).parent().remove();
+			
 			var idx = that.costumeList.indexOf(Number(costume_id));
 			if(idx >= 0){
 				that.costumeList.splice(idx, 1);

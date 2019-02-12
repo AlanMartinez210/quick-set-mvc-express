@@ -65,6 +65,21 @@ exports.getBackMypageBtn = () => {
 }
 
 /**
+ * データの受け渡し期限の列挙を操作します。
+ */
+exports.enumDataPassType = () => {
+  const enumObj = [
+    {code: 99, type: "nolimit", name: "期限なし"},
+    {code: 1, type: "oneday", name: "即日渡し希望"},
+    {code: 2, type: "oneweek", name: "一週間以内希望"},
+    {code: 3, type: "twoeweek", name: "二週間以内希望"},
+    {code: 4, type: "threeweek", name: "三週間以内希望"},
+    {code: 5, type: "onemonth", name: "一か月以内希望"}
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
  * 撮影種別の列挙を操作します。
  */
 exports.enumShotType = () => {
@@ -73,6 +88,7 @@ exports.enumShotType = () => {
     {code: 2, type: "portlait", name: "ポートレート"},
     {code: 3, type: "private", name: "個人撮影"},
     {code: 4, type: "studio", name: "スタジオ撮影"},
+    {code: 98, type: "studio", name: "なんでもOK"},
     {code: 99, type: "other", name: "その他"}
   ]
   return new enumObject(enumObj);

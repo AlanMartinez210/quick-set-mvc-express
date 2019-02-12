@@ -11,32 +11,29 @@
       .board-cnt._s
         .attention-prm
           p
-            span.st-required(style="border-radius:5px;display: inline-block;")
+            span.st-required(style="display:inline-block;")
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
         .label-input-box#box_content_title
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text="＠を含むメールアドレスを入力してください")
             p.main-label: |作品名
-            span.sub-label: |作品のメインタイトルを入力してください。
           .input-box.flex._c.st-required
-            input(type="text", name="content_title", placeholder="ひなまつり")
+            input(type="text", name="content_title", placeholder="ひなまつり", maxlength=256)
           p.bottom-label
 
         .label-input-box#box_content_sub_title
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text="＠を含むメールアドレスを入力してください")
             p.main-label: |サブタイトル
-            span.sub-label: |作品にサブタイトルがある場合に入力してください。
           .input-box.flex._c
-            input(type="text", name="content_sub_title")
+            input(type="text", name="content_sub_title", maxlength=256)
           p.bottom-label
         
         .label-input-box#box_content_abbreviation
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text="＠を含むメールアドレスを入力してください")
             p.main-label: |略称名
-            span.sub-label: |作品に略称名がある場合に入力してください。
           .input-box.flex._c
-            input(type="text", name="content_abbreviation")
+            input(type="text", name="content_abbreviation", maxlength=256)
           p.bottom-label
         
         .accordion-prm.inline.shadow-l.content-space-top

@@ -9,7 +9,8 @@ const enumGroup = {
   enumPref: c2link4DiService.enumPref(),
   enumEquipmentType: c2link4DiService.enumEquipmentType(),
   enumUseYearType: c2link4DiService.enumUseYearType(),
-  enumMakerType: c2link4DiService.enumMakerType()
+  enumMakerType: c2link4DiService.enumMakerType(),
+  enumDataPassType: c2link4DiService.enumDataPassType()
 }
 
 module.exports = (req, res, next) =>{

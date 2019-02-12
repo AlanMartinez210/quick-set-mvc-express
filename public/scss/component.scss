@@ -53,7 +53,7 @@ $fontAwesome : "Font Awesome 5 Free";
 		&._n{padding: 0;}
 		.label-input-box, .accordion-prm{
 			&:last-child{
-				margin-bottom: 0 !important;
+				//margin-bottom: 0 !important;
 			}
 		}
 	}
@@ -196,7 +196,7 @@ $fontAwesome : "Font Awesome 5 Free";
 		&::after{
 			content: '\f059';
 			position: absolute;
-			top: -2px;
+			top: 0;
 			right: 0;
 			font-size: 16px;
 			font-weight: 900;
@@ -249,26 +249,11 @@ $fontAwesome : "Font Awesome 5 Free";
 		}
 	}
 
-
-	&.input_help{
-		.main-label{
-			&::after{
-
-			}
-		}
-	}
-
-
-
-
-
 	.sub-label{
-		display: none;
+		@include font-small;
+		color: $grayD;
 	}
 	&._fb{font-weight: bold; }
-
-
-
 
 	.deco-label{
 		a, span {
@@ -399,7 +384,10 @@ $fontAwesome : "Font Awesome 5 Free";
 	padding: 0.6em 0.8em 0.6em 0.8em;
 	&._n{border: 0; padding: 0;}
 	&:last-child{margin-bottom: 0;}
-	label{width: 100%;}
+	label{
+		line-height: 1.4em;
+		width: 100%;
+	}
 	input[type="checkbox"]{ display: none; }
 	input[type="checkbox"] + label::before{
 		font-size: 16px;
@@ -450,6 +438,7 @@ $fontAwesome : "Font Awesome 5 Free";
 
 /* ラベル付きインプット */
 .label-input-box{
+	position: relative;
 	margin-bottom: 24px;
 	&._mbs{
 		margin-bottom: 8px;

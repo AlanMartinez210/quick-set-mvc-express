@@ -20,10 +20,14 @@ export default class schedule{
 		
 		//キャラクター追加ボタン
 		const $addCharaBtn =  $("[name=addChara]");
+		// 質問からタグを作るボタン
+		const $tagGenBtn =  $("[name=tagGen]");
 		// あわせ募集に戻るボタン
 		const $bkGroupBtn = $("[name=bk_group]");
 
-		this.tags = new plugin_tag(this.app);
+		// 質問からタグを作る完了ボタン
+		const $doTagGenerateBtn =  $("[name=doTagGenerate]");
+		this.tags = new plugin_tag(this.app, this.app.config.isCos(true) ? "cos_shedule_tags" : "cam_shedule_tags");
 		this.prefs = new plugin_prefecture(this.app);
 		this.p_costume = new plugin_costume(this.app);
 
@@ -65,12 +69,49 @@ export default class schedule{
 
 		// スケジュールが存在するもののみ表示
 		scheduleSection.on('change', isExistSchedule, (e) => {
-			if($("#"+e.target.id).prop("checked")){
-				$(".empty").hide();
-			}
-			else{
-				$(".date-list li").show();
-			}
+			$("#"+e.target.id).prop("checked") ? $(".empty").hide() : $(".date-list li").show();
+		});
+
+		// キャラクター検索モーダルの切り替え
+		$addCharaBtn.on("click", () => {
+			this.app.switchModal("charaSearch", true);
+		});
+
+		// 質問からタグを作るモーダルの切り替え
+		$tagGenBtn.on("click", () => {
+			this.app.switchModal("tagGenerator", true);
+		});
+
+		// スケジュール/あわせ募集に戻る
+		$bkGroupBtn.on("click", () => {
+			this.app.switchModal("createSchedule");
+		});
+
+		// タグ作成完了処理
+		$doTagGenerateBtn.on("click", () => {
+
+			this.app.showWarnDialog({
+				name: "checkAddTag",
+				title: "タグ作成の確認",
+				text: `
+				<p>タグの作成を行います。<br /><br />
+				<p class="c-red">※一覧に追加されているタグは消えてしまいますので、ご注意ください。</p>
+			`
+			})
+			.closelabel("タグ作成に戻る")
+			.addBtn({
+				callback: () => {
+					const tagGenData = $("[name=tagGeneratorForm]").getValue();
+					this.tags.init().ready();
+					Object.keys(tagGenData).forEach(key => {
+						if(tagGenData[key].checked) this.tags.addTags(tagGenData[key].value)
+					})
+					this.app.hideDialog();
+					this.app.switchModal("createSchedule");
+				}
+			})
+			
+			return false;
 		});
 
 		// 登録/編集/削除ボタンの処理
@@ -115,16 +156,6 @@ export default class schedule{
 			return false;
 		});
 
-		// キャラクター検索モーダルの切り替え
-		$addCharaBtn.on("click", () => {
-			this.app.switchModal("charaSearch");
-		});
-
-		// あわせ募集に戻る
-		$bkGroupBtn.on("click", () => {
-			this.app.switchModal("createSchedule");
-		});
-
 	}
 	// スケジュールの取得
 	getSchedule(schedule_id){
@@ -160,6 +191,7 @@ export default class schedule{
 
 		// 都道府県の取得(カメラマン用)
 		if(this.app.config.isCam())	data.prefectures_field = this.prefs.getPrefectureValue();
+		if(this.app.config.isCos())	data.costume_field = this.p_costume.getCostumeValue();
 		
 		//タグの取得
 		data.tag_field = this.tags.getTagValue();
@@ -167,7 +199,40 @@ export default class schedule{
 	}
 
 	openScheduleModal(openMode, resolve, reject, event){
-		let modal_mode = "";
+	
+		const procType = event.currentTarget.dataset.mode;
+
+		// モーダルの初期化
+		new Promise((inResolve, inReject) => {
+			return this.openInitModal(openMode, inResolve, inReject, event);
+		})
+		.then(() => {
+			switch(procType){
+				case "delete": // 削除モード
+					this.modalDisable();
+				case "reference": // 参照モード
+				case "edit": // 編集モード
+					const schedule_id = event.currentTarget.dataset.schedule_id;
+					if(!schedule_id) reject();
+					
+					// 値を取りに行く
+					this.getSchedule(schedule_id)
+					.then(res => {
+						// タグと都道府県のみ別設定
+						res.tag_field.forEach(item => this.tags.addTags(item));
+						res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
+						this.scheduleForm.setValue(res);
+						resolve();
+					});
+					break;
+				default:
+					resolve();
+					break;
+			}
+		})
+	}
+
+	openInitModal(openMode, resolve, reject, event){
 		this.app.plugin.screen.tabInit();
 
 		// タグと都道府県のプラグインをロード
@@ -179,47 +244,33 @@ export default class schedule{
 		this.scheduleForm.clearForm();
 
 		if(openMode === "reference"){
-			modal_mode = openMode;
 			this.modalDisable();
 		}
 		else{
-			modal_mode = event.currentTarget.dataset.mode;
 			this.modalEnable();
 			// 対象ボタンの表示
 			$(".proc-btn").hide();
-			$(`[data-proc=${modal_mode}]`).show();
+			$(`[data-proc=${event.currentTarget.dataset.mode}]`).show();
 		}
 
-		// 共通情報の取得
-		// コスプレ情報
+		// 日付の設定
+		const date_key = event.currentTarget.dataset.date_key;
+		this.scheduleForm.find('[name=date_key]').val(date_key);
+
+		// コスプレイヤーならコスチューム情報を取得する。
 		if(this.app.config.isCos()){
-
+			this.app.sendGet(`/mypage/costume/list`)
+			.then(cosList => {
+				if(cosList && cosList.rows){
+					cosList.rows.forEach(item => {
+						$("#costumes").append($('<option>', {value: item.costume_id, text: `${item.title}-${item.chara}`}));
+					})
+				}
+				return resolve();
+			})
 		}
-
-		switch(modal_mode){
-			case "create":
-				const date_key = event.currentTarget.dataset.date_key;
-				this.scheduleForm.find('[name=date_key]').val(date_key);
-				resolve();
-				break;
-			case "delete": // 削除モード
-				this.modalDisable();
-			case "reference": // 参照モード
-			case "edit": // 編集モード
-				const schedule_id = event.currentTarget.dataset.schedule_id;
-				if(!schedule_id) reject();
-				
-				// 値を取りに行く
-				this.getSchedule(schedule_id)
-				.then(res => {
-					// タグと都道府県のみ別設定
-					res.tag_field.forEach(item => this.tags.addTags(item));
-					res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
-					this.scheduleForm.setValue(res);
-					resolve();
-				});
-				
-				break;
+		else{
+			return resolve();
 		}
 	}
 }

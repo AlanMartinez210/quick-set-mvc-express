@@ -13,14 +13,13 @@
       .board-cnt
         .attention-prm
           p
-            span.st-required(style="border-radius:5px;display: inline-block;")
+            span.st-required(style="display:inline-block;")
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
         .label-input-box#box_equipment_type
-          .label-box
+          .label-box.icon_tip._select
             p.main-label: |機材種別
-            span.sub-label: |登録する機材のカテゴリを選択してください。
           .select-box.flex._c.st-required
             select(name="equipment_type")
               each equip in self.globalParam.enumEquipmentType.getEnum()
@@ -29,9 +28,8 @@
           p.bottom-label
 
         .label-input-box#box_maker_type
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00009)
             p.main-label: |メーカー
-            span.sub-label: |登録する機材のメーカーを選択してください。
           .select-box.flex._c.st-required
             select(name="maker_type")
               each maker in self.globalParam.enumMakerType.getEnum()
@@ -47,17 +45,15 @@
             p.bottom-label
         
         .label-input-box#box_equipment_name
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00010)
             p.main-label: |機材名
-            span.sub-label: |機材の型名や名称を入力してださい。
           .input-box.flex._c.st-required
-            input(type="text", name="equipment_name")
+            input(type="text", name="equipment_name", maxlength=256)
           p.bottom-label
         
         .label-input-box#box_use_year
-          .label-box
+          .label-box.icon_tip._select
             p.main-label: |使用年数
-            span.sub-label: |機材の使用年数を選択してください。
           .select-box.flex._c
             select(name="use_year")
               each use in self.globalParam.enumUseYearType.getEnum()

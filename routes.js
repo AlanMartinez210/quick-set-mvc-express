@@ -111,6 +111,9 @@ router.delete('/mypage/equipment', loginCheck, validate.check(equipmentForm.post
 /* 所持衣装設定(コスプレイヤーのみ) index */
 router.get('/mypage/costume', loginCheck, costumeController.index);
 
+/* 所持衣装一覧の取得(コスプレイヤーのみ) list */
+router.get('/mypage/costume/list', loginCheck, costumeController.list);
+
 /** 作品情報の取得 getContentTitle */
 router.post('/mypage/costume/content', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.getContentTitle);
 
@@ -270,9 +273,9 @@ router.get('/:type/error', function(req, res, next){
 /**
  * エラーリクエスト処理
  */
-router.get('/t/e/:code', function(req, res, next){
+router.get('/t/e/:code/:logoutflg', function(req, res, next){
   console.log("error code:", req.params.code);
-  next(new errorHelper({status: req.params.code}));
+  next(new errorHelper({status: req.params.code, logout: Boolean(req.params.logoutflg)}));
 })
 
 

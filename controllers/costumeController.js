@@ -32,6 +32,26 @@ exports.index = function(req, res, next){
 }
 
 /**
+ * ユーザーの所持コスプレ衣装一覧の取得
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.list = function(req, res, next){
+	const user_id = sessionHelper.getUserId(req);
+
+	// 所持衣装一覧の取得
+	return userContentRelationService.getUserCostumeList(user_id)
+	.then(costumeList=>{
+		const json_data = new costumeVO.costume_list(costumeList);
+		res.json(json_data);
+	})
+	.catch(err=>{
+		next(err);
+	});
+}
+
+/**
  * 作品名の検索
  *
  * @param {*} req

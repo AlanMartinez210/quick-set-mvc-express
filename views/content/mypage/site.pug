@@ -22,9 +22,8 @@
         //-   p.bottom-label
 
         .label-input-box#box_allow_bookmark_flg
-          .label-box
+          .label-box.icon_tip._check.help-tip(data-help_text=viewMsg.v00008)
             p.main-label: |ブックマーク通知許可
-            span.sub-label: |ブックマークされた時に通知するか設定します。
           .check-box.flex._c
             input(id="allowBookmarkFlg" type="checkbox", name="allow_bookmark_flg")
             label(for="allowBookmarkFlg")

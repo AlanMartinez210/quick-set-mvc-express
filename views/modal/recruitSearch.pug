@@ -40,7 +40,7 @@
         - }
 
         .label-input-box#box_prefectures_field
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00014)
             p.main-label: |都道府県
           .select-box.flex._c
             select#prefectures.js-addPrefectures
@@ -54,7 +54,7 @@
           .tag-cnt-box.flex._wrap#prefectures_field(data-dummytag="input", name="prefectures_field")
 
         .label-input-box#box_search_tag
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00015)
               p.main-label: |タグ
           .input-box.flex._c
             i.icon-input.fas.fa-tags.fa-fw
@@ -62,7 +62,7 @@
           p.bottom-label
 
         .label-input-box#box_shot_type
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00016)
             p.main-label: |撮影タイプ
           .select-box.flex._c
             select(name="shot_type")

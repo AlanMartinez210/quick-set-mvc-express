@@ -12,7 +12,7 @@
       .board-cnt._s(data-tab_content="cameraRec")
         .attention-prm
           p
-            span.st-required(style="border-radius:5px;display: inline-block;")
+            span.st-required(style="display:inline-block;")
               |&emsp;&emsp;&emsp;
             |&nbsp;は必須項目です。
 
@@ -24,8 +24,22 @@
             input(type="hidden", name="schedule_id")
           p.bottom-label
 
+        .label-input-box#box_event_name
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00012)
+            p.main-label: |イベント名 or 開催地
+          .input-box.flex._c.st-required
+            input(type="text", name="event_name", maxlength=256)
+          p.bottom-label
+
+        .label-input-box#box_event_url
+          .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00022)
+            p.main-label: |外部サイトリンク
+          .input-box.flex._c
+            input(type="text", name="event_url", placeholder="http://", maxlength=500)
+          p.bottom-label
+
         .label-input-box#box_shot_type
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00017)
             p.main-label: |撮影タイプ
           .select-box.flex._c.st-required
             select(name="shot_type")
@@ -33,18 +47,36 @@
                 option(value=shot_type.code) #{shot_type.name}
           p.bottom-label
 
-        .label-input-box#box_event_name
-          .label-box
-            p.main-label: |イベント名 or 開催地
-            span.sub-label: |イベント名または開催する場所、建物の名前を入力してください。
-          .input-box.flex._c.st-required
-            input(type="text", name="event_name", placeholder="世界コスプレサミット")
+        .label-input-box#box_time_from
+          .label-box.icon_tip._select
+            p.main-label: |撮影開始時間
+          .select-box.flex._c
+            select(name="time_from")
+              option(value="") 未定
+              option(value="要相談") 要相談
+              - for(let i=0;i<24;i++){ const time = ((i+6)%24);
+                option(value=`${time}:00`) #{time}:00
+                option(value=`${time}:30`) #{time}:30
+              - }
+
+          p.bottom-label
+
+        .label-input-box#box_time_to
+          .label-box.icon_tip._select
+            p.main-label: |撮影終了時間
+          .select-box.flex._c
+            select(name="time_to")
+              option(value="") 未定
+              option(value="要相談") 要相談
+              - for(let i=0;i<24;i++){ const time = ((i+6)%24);
+                option(value=`${time}:00`) #{time}:00
+                option(value=`${time}:30`) #{time}:30
+              - }
           p.bottom-label
 
         .label-input-box#box_prefecture
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00018)
             p.main-label: |開催都道府県
-            span.sub-label: |イベントまたは撮影が行われる都道府県を選択してください。
           .select-box.flex._c.st-required
             select(name="prefecture")
               option(value="")
@@ -53,106 +85,83 @@
           p.bottom-label
 
         .label-input-box#box_costume_field
-          .label-box
+          .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00019)
             p.main-label: |コスプレ衣装
-            span.sub-label: |当日コスプレするキャラクターの衣装を選択してください。
-          .select-box.flex._c
+          .select-box.flex._c.st-required
             select#costumes
               option(value="")
           
           p.st-title-tag.st-mt-s
             |追加した衣装
-          .tag-cnt-box.flex._wrap#costume_field(data-dummytag="input", name="costume_field").st-required
+          .tag-cnt-box.flex._wrap#costume_field(data-dummytag="input", name="costume_field")
           p.bottom-label
         
           .attention-prm
             p
               |コスプレするキャラクターがいない場合は<a href="/mypage/costume" class="a-link">所持コスプレ衣装設定</a>へ
 
-        .label-input-box#box_tag_field
-          .label-box
-            p.main-label: |タグの設定
-            span.sub-label: |募集時の要項をタグとして10個まで設定できます。(例: 要一眼レフ 交通費自己負担
-          .input-box.flex._c
-            input(type="text")#tags
-            span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw#tag_add_button
-          
-          p.st-title-tag.st-mt-s
-            |追加したタグ一覧
-          .tag-cnt-box.flex._wrap#tags_field(data-dummytag="input", name="tags_field")
-
-          p.bottom-label
-
         .accordion-prm.inline.shadow-l
 
           .accordion-label.flex._c
             .accordion-title
-              p: |詳細オプション
+              p: |カメラマン募集オプション
 
           .accordion-cnt._s
-            .label-input-box#box_time_from
-              .label-box
-                p.main-label: |撮影開始時間
-                span.sub-label: |撮影の開始時間を選択してください。
-              .select-box.flex._c
-                select(name="time_from")
-                  option(value="") 未定
-                  option(value="要相談") 要相談
-                  - for(let i=0;i<24;i++){ const time = ((i+6)%24);
-                    option(value=`${time}:00`) #{time}:00
-                    option(value=`${time}:30`) #{time}:30
-                  - }
-
-              p.bottom-label
-
-            .label-input-box#box_time_to
-              .label-box
-                p.main-label: |撮影終了時間
-                span.sub-label: |撮影の終了時間を選択してください。
-              .select-box.flex._c
-                select(name="time_to")
-                  option(value="") 未定
-                  option(value="要相談") 要相談
-                  - for(let i=0;i<24;i++){ const time = ((i+6)%24);
-                    option(value=`${time}:00`) #{time}:00
-                    option(value=`${time}:30`) #{time}:30
-                  - }
-              p.bottom-label
 
             .label-input-box#box_num
-              .label-box
+              .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00020)
                 p.main-label: |募集人数
               .input-box.flex._c
-                input(type="text", name="num")
+                input(type="text", name="num", maxlength=20)
               p.bottom-label
 
             .label-input-box#box_cost
-              .label-box
+              .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00021)
                 p.main-label: |参加費用
-                span.sub-label: |交通費以外にカメラマンが負担する金額を入力してください。
               .input-box.flex._c
-                input(type="text", name="cost")
+                input(type="text", name="cost", maxlength=50)
+              p.bottom-label
+              .check-box.flex._c
+                input(id="selfPaymentFlg" type="checkbox", name="self_payment_flg")
+                label(for="selfPaymentFlg")
+                  |交通費自己負担
+
+            .label-input-box#data_pass_type
+              .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00017)
+                p.main-label: |データの受け渡し希望機関
+              .select-box.flex._c.st-required
+                select(name="data_pass_type")
+                  each data_pass_type in self.globalParam.enumDataPassType.getEnum()
+                    option(value=data_pass_type.code) #{data_pass_type.name}
               p.bottom-label
 
-            .label-input-box#box_event_url
-              .label-box
-                p.main-label: |外部サイトリンク
-                span.sub-label: |イベントや開催地のURLリンクがある場合は入力してください。
+            .label-input-box#box_cos_shedule_tags(data-tag_plugin="cos_shedule_tags")
+              .label-box.icon_tip._edit
+                p.main-label: |タグの設定
               .input-box.flex._c
-                input(type="text", name="event_url", placeholder="http://")
+                input(type="text", maxlength=20)
+                span(role="button"): i.icon-plus.fas.fa-plus-square.fa-fw.add-tag-btn
+              
               p.bottom-label
+
+              .option-box.flex._jr
+                span.option-btn.st-line-b(name="tagGen")
+                  |質問からタグを作る
+              
+              p.st-title-tag.st-mt-s
+                |追加したタグ
+              .tag-cnt-box.flex._wrap(data-dummytag="input", name="tags_field")
 
             .label-input-box#box_remarks
-              .label-box
+              .label-box.icon_tip._edit
                 p.main-label: |備考
               .textarea-box.flex._c
-                textarea(name="remarks", rows="3")
+                textarea(name="remarks", rows="3", maxlength=500)
               p.bottom-label
 
         .label-input-box#box_allow_recruit_flg
-          .label-box
+          .label-box.icon_tip._check.help-tip.help-tip(data-help_text=viewMsg.v00023)
             p.main-label: |募集設定
-            span.sub-label: |チェックするとカメラマンが応募できる状態になります。
           .check-box.flex._c
             input(id="allowrRecruitFlg" type="checkbox", name="allow_recruit_flg")
             label(for="allowrRecruitFlg")
@@ -164,7 +173,6 @@
         .label-input-box#box_costume_title
           .label-box
             p.main-label: |募集キャラクター一覧
-            span.sub-label: |コスプレ検索
           ul.inner_list
             li: |キャラクターを追加してください
           p.bottom-label
@@ -177,13 +185,12 @@
           .label-box
             p.main-label: |備考
           .textarea-box.flex._c
-            textarea(name="chara_remarks", rows="3")
+            textarea(name="chara_remarks", rows="3", maxlength=500)
           p.bottom-label
 
         .label-input-box#box_allow_notice_flg
           .label-box
             p.main-label: |募集通知
-            span.sub-label: |チェックすると対象のコスプレができる人にあわせ募集をしてることを通知します。
           .check-box.flex._c
             input(id="allowNoticeFlg" type="checkbox", name="allow_notice_flg")
             label(for="allowNoticeFlg")

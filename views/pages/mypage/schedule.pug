@@ -3,6 +3,7 @@ block header
   include ../../header/general.pug
 
 block modal
+  include ../../modal/tagGenerator.pug
   -if(self.userType == "1")
     include ../../modal/createCosSchedule.pug
     include ../../modal/charaSearch.pug

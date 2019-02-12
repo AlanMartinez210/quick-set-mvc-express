@@ -10,7 +10,7 @@ export default class profile{
 		this.userDeleteForm = $("[name=userDeleteForm]");
 	}
 	ready(){
-		this.tags = new plugin_tag(this.app);
+		this.tags = new plugin_tag(this.app, "profile_tag");
 		this.prefs = new plugin_prefecture(this.app);
 
 		const doUserDeleteBtn = this.userDeleteForm.find('[name=doUserDelete]');

@@ -37,6 +37,12 @@ button{ cursor: pointer; }
 	}
 }
 
+#modal-close-btn{
+	&.child-modal{
+		visibility: hidden;
+	}
+}
+
 .cropper-img{
 	max-width: 100%;
 }

@@ -22,9 +22,8 @@
             input(type="hidden", name="conf_content_chara")
 
         .label-input-box#box_costume_comment
-          .label-box
+          .label-box.icon_tip._edit.help-tip(data-help_text="＠を含むメールアドレスを入力してください")
             p.main-label: |メモ
-            span.sub-text: |コスチュームに補足などあれば入力してください。
           .textarea-box.flex._c
             textarea(name="costume_comment", rows="5")
           p.bottom-label

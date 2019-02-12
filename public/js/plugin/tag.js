@@ -1,14 +1,16 @@
 export default class tag{
-	constructor(app){
+	constructor(app, init_name = ""){
 		this.app = app;
+		this.init_name = init_name;
+		this.$my_tag_field = $(`[data-tag_plugin=${init_name}]`);
 		this.taglist = [];
-		this.$input_tag = $("#tags");
-		this.$tag_field = $("#tags_field");
-		this.$tag_add_button = $("#tag_add_button");
-		this.tag_delete_button = ".tag_delete_button";
+		this.$input_tag = $(`[data-tag_plugin=${init_name}] input`);
+		this.$tag_field = $(`[data-tag_plugin=${init_name}] [name=tags_field]`);
+		this.tag_add_button = '.add-tag-btn';
+		this.tag_delete_button = '.tag_delete_button';
 		this.limitTagLength = 10;
-		this.errEmitter = (errText) => {
-			this.app.showInputErr("tag_field", errText);
+		this.errEmitter = (errText, showMsg) => {
+			this.app.showInputErr(this.init_name, errText);
 			return false;
 		}
 	}
@@ -18,11 +20,14 @@ export default class tag{
 	}
 	ready(){
 		// タグ追加ボタン
-		this.$tag_add_button.off('click');
-		this.$tag_add_button.on('click', () => {
-			this.app.clearInputMsg("tag_field");
+		this.$my_tag_field.off('click', this.tag_add_button);
+		this.$my_tag_field.on('click', this.tag_add_button, () => {
+			this.app.clearInputMsg(this.init_name);
+
 			const tagStr = this.$input_tag.val();
-			var addTagName = tagStr.replace(/^\s+|\s+$/g, "")
+
+			var addTagName = tagStr.replace(/^\s+|\s+$/g, "");
+
 			if(!this.checkDuplicate(addTagName)) return false;
 			if(!this.checkBlank(addTagName)) return false;
 			if(!this.checkStrType(addTagName)) return false;
@@ -36,8 +41,8 @@ export default class tag{
 
 		// タグを削除する。
 		const that = this;
-		this.$tag_field.off('off', this.tag_delete_button);
-		this.$tag_field.on('click', this.tag_delete_button, function(){
+		this.$my_tag_field.off('off', this.tag_delete_button);
+		this.$my_tag_field.on('click', this.tag_delete_button, function(){
 			// 削除するタグ名取得(1文字目の#を削除)
 			var deleteTagName = $(this).parent().children("span").first().text().slice(1);
 
@@ -47,7 +52,7 @@ export default class tag{
 				that.taglist.splice(idx, 1); 
 			}
 			// エラー表示を消す
-			that.app.clearInputMsg("tag_field");
+			that.app.clearInputMsg(this.init_name);
 		});
 		
 	}
@@ -59,7 +64,7 @@ export default class tag{
 		this.$tag_field.append(`
 			<div class="tag-label flex _c">
 				<span class="tag-text">#${tagArr}</span>
-				<i data-id="tab-close" class="far fa-times-circle tag_delete_button" ></i>
+				<i class="far fa-times-circle tag_delete_button"></i>
 				<input type="hidden" value="${tagArr}">
 			</div>
 		`);
@@ -70,7 +75,7 @@ export default class tag{
 	/**
 	 * 重複チェック
 	 */
-	checkDuplicate(tagStr){
+	checkDuplicate(tagStr, showMsg = true){
 		const idx = this.taglist.indexOf(tagStr);
 		if(idx >= 0) return this.errEmitter("すでに登録されています");
 		return true;

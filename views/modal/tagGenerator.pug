@@ -1,0 +1,79 @@
+#tagGeneratorModal(data-modal="hide")
+  form(method="post", action="", name="tagGeneratorForm")
+
+    .board-prm
+
+      .board-hdr
+        .label-box._fb.flex._c
+          i.icon-title-b.fas.fa-database.fa-fw.c-blue
+          span: |タグ作成
+
+      .board-cnt._s
+        .option-box.flex._jr
+          span.option-btn.st-line-b(name="bk_group")
+            |スケジュールに戻る
+
+      .board-cnt._s
+        .attention-prm
+          p
+            |あてはまるものにチェックをしてください。
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq1" type="checkbox", name="cosq1" value="カメラ必須" checked=true)
+            label(for="cosq1")
+              |一眼レフ、またはミラーレスは必須ですか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq2" type="checkbox", name="cosq2" value="ストロボ撮影あり" checked=true)
+            label(for="cosq2")
+              |ストロボ撮影を行いますか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq3" type="checkbox", name="cosq3" value="夜間暗所撮影あり" checked=true)
+            label(for="cosq3")
+              |夜間または暗所での撮影を行いますか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq4" type="checkbox", name="cosq4" value="女性限定" checked=true)
+            label(for="cosq4")
+              |カメラマンは女性限定ですか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq5" type="checkbox", name="cosq5" value="18才未満不可" checked=true)
+            label(for="cosq5")
+              |カメラマンは18才以上の方に絞りますか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq6" type="checkbox", name="cosq6" value="作品理解に理解のある方" checked=true)
+            label(for="cosq6")
+              |作品に理解がある方のほうがいいですか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq7" type="checkbox", name="cosq7" value="構図を一緒に考えてくれる方" checked=true)
+            label(for="cosq7")
+              |構図を一緒に考えてくれるカメラマンのほうがいいですか？
+          p.bottom-label
+
+        .label-input-box
+          .check-box.flex._c
+            input(id="cosq8" type="checkbox", name="cosq8" value="写真レタッチ可" checked=true)
+            label(for="cosq8")
+              |写真はレタッチしてもいいですか？
+          p.bottom-label
+
+      .board-ftr._s.flex._c._jc.proc-board
+        button(type="submit", name="doTagGenerate").btn-prm.st-back-b.shadow-l
+          |完了

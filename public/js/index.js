@@ -19,13 +19,16 @@ c2.ready(() => {
 
   // アプリケーションの独自コンフィグを設定
   c2.setConfig({
-    isCos(){
+    isCos(isRequired = false){
+      if(isRequired && !c2.config.usertype) return location.href = "/t/e/500/1";
       return Number(c2.config.usertype) === 1;
     },
-    isCam(){
+    isCam(isRequired = false){
+      if(isRequired && !c2.config.usertype) return location.href = "/t/e/500/1";
       return Number(c2.config.usertype) === 2;
     },
-    getUserType(){
+    getUserType(isRequired = false){
+      if(isRequired && !c2.config.usertype) return location.href = "/t/e/500/1";
       return c2.config.usertype;
     },
   })
@@ -93,24 +96,58 @@ c2.ready(() => {
   });
 
   // input系の標準イベント
-  $("input[type='text'], input[type='password']").on('change', e => {
+  $("input[type='text'], input[type='password'], select").on('change', e => {
     c2.clearInputMsg(e.target.name);
   });
   c2.inputClear();
 
+  // 入力項目のヘルプ
   $(".help-tip").on('click', e => {
-    // ダイアログ
-    c2.showInfoDialog({
-      name: "helpTextDialog",
-      title: "入力のヒント",
-      text: $(e.currentTarget).data("help_text")
-    })
-    
+    const $t = $(e.currentTarget);
+    if($t && $t.length){
+      let title = $t.find(".main-label").text();
+      c2.showInfo(`${title ? title : "入力のヒント"}: <br />${$t.data("help_text")}`);
+    }
   });
+  
+  // 残文字数の表示
+  $("input, textarea").on('focus', e => {
+    const $t = $(e.currentTarget);
+    const mx = $t.prop("maxlength");
 
+    if(mx <= 0) return false;
+
+    const cr = $t.val().length;
+
+    let style = "font-size:13px;position:absolute;top:0;right:24px;background:#FFF;";
+    if((mx - cr) < 0) style += "color:#e74c3c;";
+
+    $t.parent().after(`<p class="input-str-num" style="${style}">残り${mx-cr}文字</p>`);
+
+    const $str_num = $($t.parent().parent().find(".input-str-num"));
+
+    // 表示文字の更新
+    const timer_id = setInterval(() => {
+      const crn = $t.val().length;
+      // if((mx-crn) > 0){
+      //   $str_num.removeClass("c-red");
+      // }else{
+      //   $str_num.addClass("c-red");
+      // }
+      $str_num.text(`残り${mx-crn}文字`);
+    }, 500);
+
+    // イベントセット
+    $t.off('blur');
+    $t.on('blur', e => {
+      clearInterval(timer_id);
+      $str_num.remove();
+    })
+  })
+  
   // test
   $(".ajaxtest").click(() => {
-    c2.sendGet("/t/e/403", {});
+    c2.sendGet("/t/e/403/1", {});
   })
 });
 
