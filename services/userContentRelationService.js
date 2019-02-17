@@ -42,6 +42,11 @@ exports.deleteCostume = (user_id, data)=>{
  * user_id: 登録者ID
  * costume_id: 衣装ID
  */
-exports.getCostume = (user_id, costume_id)=>{
-  return User_content_relation.getCostume(user_id, costume_id);
+exports.getCostumeById = async (costume_id) => {
+  const instance = await User_content_relation.getCostumeByID(costume_id);
+  if(!instance) return Promise.reject(new errorHelper({code: "E00000"}));
+
+  return instance;
 };
+
+

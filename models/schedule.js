@@ -1,5 +1,6 @@
 const dateHelper = require("../common/helper/dateHelper");
 const enumShotType = require('../services/c2link4DiService').enumShotType();
+const enumDataPassType = require('../services/c2link4DiService').enumDataPassType();
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {
@@ -21,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     time_from: DataTypes.STRING,
     time_to: DataTypes.STRING,
     shot_type:{
-      type: DataTypes.INTEGER,
+      type: DataTypes.TINYINT.UNSIGNED,
       get(){
         return enumShotType.getObj(this.getDataValue('shot_type'));
       }
@@ -32,7 +33,15 @@ module.exports = (sequelize, DataTypes) => {
     num: DataTypes.STRING,
     cos_chara: DataTypes.JSON,
     remarks: DataTypes.STRING,
-    allow_recruit_flg: DataTypes.BOOLEAN
+    allow_recruit_flg: DataTypes.BOOLEAN,
+    self_payment_flg: DataTypes.BOOLEAN,
+    allow_notice_flg: DataTypes.BOOLEAN,
+    data_pass_type: {
+      type: DataTypes.TINYINT.UNSIGNED,
+      get(){
+        return enumDataPassType.getObj(this.getDataValue('data_pass_type'));
+      }
+    }
   }, {
     getterMethods:{
       createdAt(){ return dateHelper.getDate(this.created_at) },

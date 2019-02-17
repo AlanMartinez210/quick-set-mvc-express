@@ -81,6 +81,9 @@ exports.postByCos = {
 	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name),
 	remarks: common.remarks,
 	allow_recruit_flg: common.allow_recruit_flg,
+	self_payment_flg: {
+		in: 'body',
+	},
 	event_url:{
 		in: 'body',
 		isLength: {
@@ -154,6 +157,9 @@ exports.putByCos = {
 	event_name: Object.assign({ isEmpty: { errorMessage: 'E00002', negated: true } }, common.event_name ),
 	remarks: common.remarks,
 	allow_recruit_flg: common.allow_recruit_flg,
+	self_payment_flg: {
+		in: 'body',
+	},
 	event_url:{
 		in: 'body',
 		isLength: {

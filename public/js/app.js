@@ -440,16 +440,50 @@ export default class myApp extends baseApp {
    * @param {*} child 子モーダルとして開く(閉じる機能無効化)
    * 
    */
-  switchModal (modalName, child, e){
-    this.modalScrollReset();
+  switchModal ({modalName, child, position} = param){
+    const modal = document.getElementById("modal-close");
+
+    if(position === "keep") modal.dataset.p = modal.scrollTop;
+    
     // 現在表示しているモーダルを非表示にする。
     $(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");
+
     $("#"+ modalName + "Modal").attr("data-modal", "show");
-    if(child){
-      $("#modal-close, #modal-close-btn").addClass('child-modal');
+    $("#modal-close, #modal-close-btn")[child ? 'addClass' : 'removeClass']('child-modal');
+
+    if(position === "release"){
+      modal.scrollTo(0, modal.dataset.p);
+      modal.dataset.p = 0;
     }
     else{
-      $("#modal-close, #modal-close-btn").removeClass('child-modal');
+      this.modalScrollReset();
+    }
+  }
+
+  /**
+   * 指定したモーダルコンテンツにオーバーレイヤーをかけます。
+   */
+  addProtectModalCnt(modalName){
+    const boardList = document.querySelectorAll(`#${modalName}Modal .board-cnt`);
+
+    if(boardList.length > 0){
+      _.forEach(boardList, (v) => {
+        const div = document.createElement('div');
+        div.classList.add('modal-protect');
+        v.appendChild(div);
+      })
+    }
+  }
+
+  /**
+   * 指定したモーダルコンテンツのオーバーレイヤーを削除します。
+   */
+  removeProtectModalCnt(){
+    const modalProtect = document.getElementsByClassName("modal-protect");
+    if(modalProtect.length > 0){
+      _.forEach(modalProtect, (v) => {
+        if(v) v.parentNode.removeChild(v);
+      })
     }
   }
 

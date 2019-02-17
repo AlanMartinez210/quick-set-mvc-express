@@ -66,7 +66,7 @@ export default class costume{
 			<div class="tag-label flex _c">
 				<span class="tag-text">${costume_name}</span>
 				<i data-id="tab-close" class="far fa-times-circle costume_delete_button" ></i>
-				<input type="hidden" value="${costume_id}">
+				<input type="hidden" value="${costume_id}-${costume_name}">
 				</div>
 		`);
 
@@ -100,7 +100,10 @@ export default class costume{
 
 	getCostumeValue(){
 		return $('[name=costume_field]').find("input").map((idx, ele) => {
-			return ele.value;
+			if(ele.value){
+				let arr = ele.value.split("-");
+				return  {costume_id: arr[0], title:	arr[1], chara: arr[2]};
+			}
 		}).get();
 	}
 }

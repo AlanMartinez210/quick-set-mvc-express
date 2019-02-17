@@ -58,7 +58,16 @@ module.exports = {
       cos_chara: {
         type: Sequelize.JSON
       },
+      data_pass_type: {
+        type: Sequelize.TINYINT.UNSIGNED
+      },
       allow_recruit_flg: {
+        type: Sequelize.BOOLEAN
+      },
+      self_payment_flg: {
+        type: Sequelize.BOOLEAN
+      },
+      allow_notice_flg: {
         type: Sequelize.BOOLEAN
       },
       remarks: {

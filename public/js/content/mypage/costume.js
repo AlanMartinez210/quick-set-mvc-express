@@ -50,12 +50,12 @@ export default class costume{
 
 			// 作品登録モーダルに切り替える
 			$openRegistTitleModalBtn.on('click', () => {
-				this.app.switchModal("registTitle");
+				this.app.switchModal({modalName: "registTitle", child:true});
 			})
 
 			// キャラクター登録モーダルに切り替える
 			$openRegistCharaModalBtn.on('click', () => {
-				this.app.switchModal("registChara");
+				this.app.switchModal({modalName: "registChara", child:true});
 			})
 
 		}
@@ -69,6 +69,7 @@ export default class costume{
 						<li name="titleListItem" data-title_id=${item.id} data-chara_list='${JSON.stringify(item.chara_list)}'>${item.name}</li>
 					`);
 				}
+				if(searchData.count) $titleListNum.text(`候補一覧 (${searchData.count}件)`);
 			}else{
 				$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
 				$titleListNum.text(`候補一覧 (0件)`);

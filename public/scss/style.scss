@@ -124,7 +124,6 @@
 .st-btn-fixed-w{width: 280px;}
 
 .st-string-set{
-	// padding-top: 4px;
 	line-height: 1.2em;
 	p{font-weight: bold;}
 	span{ font-size: 13px; }
@@ -153,7 +152,6 @@
 	width: 28px;
     height: 28px;
     text-align: center;
-    // left: 195px;
     line-height: 2em;
     font-weight: bold;
     background: $blackD;
@@ -260,7 +258,6 @@
 .icon-menu{ font-size: 24px; color: $blueL; }
 .icon-title{font-size: 16px; margin-right: 8px;}
 .icon-title-b{font-size: 20px; margin-right: 12px;}
-//.icon-title-b{font-size: 24px; margin-right: 12px;}
 .icon-link{font-size: 16px; margin-left: auto; color: $grayD;}
 .icon-link-s{font-size: 13px; margin-left: auto; color: $grayD;}
 .icon-error{ font-size: 13px; color: $redD; margin-right: 8px; }
@@ -270,10 +267,10 @@
 .icon-pager{font-size: 13px; color: $blueD;}
 
 /* text */
-.sub-text{font-size: 13px; color: $grayD;}
+.sub-text{font-size: 13px; color: $grayD; font-weight: normal !important;}
 .info-text{font-size: 13px; color: $grayD;}
 .error-text{width: 100%; font-size: 13px; color: $redD; text-align: left;}
-.st-input-num{text-align: right;}
+.right-text{text-align: right;}
 .st-required{border-bottom: 2px solid $greenL;}
 
 ::-webkit-input-placeholder{color: $grayL;}
@@ -310,16 +307,6 @@
 	&._drr{-webkit-flex-direction: row-reverse; flex-direction: row-reverse;}
 }
 
-/* liを灰色のボーダーで区切るul */
-ul.st_options{
-	// &>li{
-	// 	//border-bottom: 1px solid $grayLW;
-	// }
-	// &>li:last-child{
-	// 	border-bottom: none;
-	// }
-}
-
 ol{
 	padding-left: 24px;
 	li{
@@ -331,7 +318,6 @@ ol{
 
 /* カスタム */
 .cus-board-set{
-	//background-image: linear-gradient(250deg, #4481eb 0%, #04befe 100%);
 	background-image: linear-gradient(250deg, #92fe9d 0%, #00c9ff 100%);
 	div, p, span, i{
 		color: $white;

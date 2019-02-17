@@ -75,9 +75,18 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   /**
-   * 衣装を取得する
+   * ユーザーIDから衣装を取得する
    */
-  User_content_relation.getCostume = async function(user_id, costume_id, options = {}){
+  User_content_relation.getCostumeByUserID = async function(user_id, options = {}){
+    options.include = [ "content", "chara"];
+    options.where = { user_id: user_id };
+    return this.findAll(options);
+  };
+
+  /**
+   * コスチュームIDから衣装を取得する
+   */
+  User_content_relation.getCostumeByID = async function(costume_id, options = {}){
     options.include = [ "content", "chara"];
     return this.findByPk(costume_id, options);
   };

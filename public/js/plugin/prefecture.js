@@ -67,7 +67,7 @@ export default class prefecture{
 			<div class="tag-label flex _c">
 				<span class="tag-text">${pref_name}</span>
 				<i data-id="tab-close" class="far fa-times-circle tag_delete_button" ></i>
-				<input type="hidden" value="${pref_id}">
+				<input type="hidden" value="${pref_name}-${pref_id}">
 				</div>
 		`);
 
@@ -101,7 +101,10 @@ export default class prefecture{
 
 	getPrefectureValue(){
 		return $('[name=prefectures_field]').find("input").map((idx, ele) => {
-			return ele.value;
+			if(ele.value){
+				let arr = ele.value.split("-");
+				return {prefecture_name: arr[0], prefecture_id: arr[1]};
+			}
 		}).get();
 	}
 }

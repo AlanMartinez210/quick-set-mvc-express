@@ -25,6 +25,8 @@ export default class schedule{
 		// あわせ募集に戻るボタン
 		const $bkGroupBtn = $("[name=bk_group]");
 
+		const $moveCostumeLink = $("#moveCostume");
+
 		// 質問からタグを作る完了ボタン
 		const $doTagGenerateBtn =  $("[name=doTagGenerate]");
 		this.tags = new plugin_tag(this.app, this.app.config.isCos(true) ? "cos_shedule_tags" : "cam_shedule_tags");
@@ -64,6 +66,11 @@ export default class schedule{
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
 				this.openScheduleModal("edit", resolve, reject, event);
+			},
+			onCloseBrefore: (event) => {
+				// 内容のキャッシュ
+				const modalData = this.getModalData();
+				localStorage.setItem(`${this.app.config.isCam()? "ca": "co"}-${modalData.date_key}`, encodeURIComponent(JSON.stringify(modalData)));
 			}
 		}, e => this.app.showModal(e));
 
@@ -71,20 +78,43 @@ export default class schedule{
 		scheduleSection.on('change', isExistSchedule, (e) => {
 			$("#"+e.target.id).prop("checked") ? $(".empty").hide() : $(".date-list li").show();
 		});
+		
 
 		// キャラクター検索モーダルの切り替え
 		$addCharaBtn.on("click", () => {
-			this.app.switchModal("charaSearch", true);
+			this.app.switchModal({modalName: "charaSearch", child:true});
 		});
 
 		// 質問からタグを作るモーダルの切り替え
 		$tagGenBtn.on("click", () => {
-			this.app.switchModal("tagGenerator", true);
+			this.app.switchModal({modalName: "tagGenerator", child:true, position: "keep"});
 		});
 
 		// スケジュール/あわせ募集に戻る
 		$bkGroupBtn.on("click", () => {
-			this.app.switchModal("createSchedule");
+			this.app.switchModal({modalName: "createSchedule", position: "release"});
+		});
+
+		// コスチューム設定に移動
+		$moveCostumeLink.on('click', (e) => {
+			const t = $(e.currentTarget);
+			console.log('t: ', t);
+			this.app.showInfoDialog({
+				mame: "moveCostume",
+				title: "所持コスプレ設定に移動",
+				text: `編集した内容を一時保存しました。<br /><br />
+				所持コスプレ設定に移動します。<br />
+				よろしいですか。`
+			}).closelabel("スケジュールに戻る")
+			.addBtn({
+				callback: () => {
+					const modalData = this.getModalData();
+					localStorage.setItem(`${this.app.config.isCam()? "ca": "co"}-${modalData.date_key}-edit`, encodeURIComponent(JSON.stringify(modalData)));
+					location.href = t.attr("href");
+				}
+			})
+
+			return false;
 		});
 
 		// タグ作成完了処理
@@ -107,7 +137,7 @@ export default class schedule{
 						if(tagGenData[key].checked) this.tags.addTags(tagGenData[key].value)
 					})
 					this.app.hideDialog();
-					this.app.switchModal("createSchedule");
+					this.app.switchModal({modalName: "createSchedule", position: "release"});
 				}
 			})
 			
@@ -145,6 +175,8 @@ export default class schedule{
 				callback: () => {
 					this.app[httpMethod](path, sendData)
 					.done(result => {
+						localStorage.removeItem(`${this.app.config.isCam()? "ca": "co"}-${sendData.date_key}`);
+						localStorage.removeItem(`${this.app.config.isCam()? "ca": "co"}-${sendData.date_key}-edit`);
 						$('.month-label.seleced').click();
 						this.app.hideDialog();
 						this.app.showClearAll();
@@ -172,7 +204,9 @@ export default class schedule{
 
 	// 変更無効時のモーダル制御
 	modalDisable(){
-		$(".proc-box").hide();
+		this.app.addProtectModalCnt("createSchedule");
+		// 操作不能になるので、アコーディオンは開く
+		this.scheduleForm.find(".accordion-prm").addClass("on-show");
 		this.scheduleForm.find("input").prop('readonly', true);
 		this.scheduleForm.find("select").prop("readonly", true);
 		this.scheduleForm.find("textarea").prop('readonly', true);
@@ -180,6 +214,7 @@ export default class schedule{
 
 	// 変更有効時のモーダル制御
 	modalEnable(){
+		this.app.removeProtectModalCnt("createSchedule");
 		$(".proc-box").show();
 		this.scheduleForm.find("input").prop('readonly', false);
 		this.scheduleForm.find("input[name=date_key]").prop('readonly', true);
@@ -202,31 +237,63 @@ export default class schedule{
 	
 		const procType = event.currentTarget.dataset.mode;
 
+		const setModalData = (d) => {
+			// タグと都道府県のみ別設定
+			d.tag_field.forEach(item => this.tags.addTags(item));
+			if(this.app.config.isCos()){
+				d.costume_field.forEach(item => this.p_costume.addCostume(item.costume_id, `${item.title}-${item.chara}`));
+			}
+			else{
+				console.log('d: ', d);
+				d.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
+			}
+			this.scheduleForm.setValue(d);
+		}
+
 		// モーダルの初期化
 		new Promise((inResolve, inReject) => {
 			return this.openInitModal(openMode, inResolve, inReject, event);
 		})
 		.then(() => {
+
+			// 日付の設定
+			const date_key = event.currentTarget.dataset.date_key;
+			this.scheduleForm.find('[name=date_key]').val(date_key);
+			let ls;
+
 			switch(procType){
+				case "create":
+					ls = JSON.parse(decodeURIComponent( localStorage.getItem(`${this.app.config.isCam()? "ca": "co"}-${date_key}-edit`) ));
+					ls = ls ? ls : JSON.parse(decodeURIComponent( localStorage.getItem(`${this.app.config.isCam()? "ca": "co"}-${date_key}`) ));
+					if(ls){
+						this.app.showAlert(`一時保存されたデータを読み込みました。<br />この内容を確定するには、登録を行ってください。`);
+						setModalData(ls);
+					} 
+					resolve();
+					break;
 				case "delete": // 削除モード
 					this.modalDisable();
 				case "reference": // 参照モード
 				case "edit": // 編集モード
 					const schedule_id = event.currentTarget.dataset.schedule_id;
 					if(!schedule_id) reject();
-					
-					// 値を取りに行く
-					this.getSchedule(schedule_id)
-					.then(res => {
-						// タグと都道府県のみ別設定
-						res.tag_field.forEach(item => this.tags.addTags(item));
-						res.prefectures_field.forEach(item => this.prefs.addPrefecture(item.prefecture_id, item.prefecture_name));
-						this.scheduleForm.setValue(res);
+
+					if(procType !== "delete") ls = JSON.parse(decodeURIComponent( localStorage.getItem(`${this.app.config.isCam()? "ca": "co"}-${date_key}-edit`) ));
+					if(ls){
+						this.app.showAlert(`一時保存されたデータを読み込みました。<br />この内容を確定するには、更新を行ってください。`);
+						setModalData(ls);
 						resolve();
-					});
-					break;
-				default:
-					resolve();
+					}
+					else{
+						// 値を取りに行く
+						this.getSchedule(schedule_id)
+						.then(res => {
+							setModalData(res);
+							resolve();
+						});
+					}
+
+					
 					break;
 			}
 		})
@@ -244,6 +311,7 @@ export default class schedule{
 		this.scheduleForm.clearForm();
 
 		if(openMode === "reference"){
+			$(".proc-box").hide();
 			this.modalDisable();
 		}
 		else{
@@ -253,12 +321,10 @@ export default class schedule{
 			$(`[data-proc=${event.currentTarget.dataset.mode}]`).show();
 		}
 
-		// 日付の設定
-		const date_key = event.currentTarget.dataset.date_key;
-		this.scheduleForm.find('[name=date_key]').val(date_key);
-
 		// コスプレイヤーならコスチューム情報を取得する。
 		if(this.app.config.isCos()){
+			if($("#costumes option").length > 1) return resolve();
+
 			this.app.sendGet(`/mypage/costume/list`)
 			.then(cosList => {
 				if(cosList && cosList.rows){
@@ -267,7 +333,8 @@ export default class schedule{
 					})
 				}
 				return resolve();
-			})
+			});
+
 		}
 		else{
 			return resolve();

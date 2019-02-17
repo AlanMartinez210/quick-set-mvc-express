@@ -1,5 +1,6 @@
 const errorHelper = require('../common/helper/errorHelper');
 const calendarHelper = require("../common/helper/calendarHelper");
+const userContentRelationService = require("./userContentRelationService");
 const _ = require('lodash');
 
 const db = require("../models/index");
@@ -40,10 +41,23 @@ exports.getScheduleData = async (schedule_id) => {
       },
       { model: db.Schedule_prefecture }
     ];
-    const instance = await db.Schedule.getSchedule(schedule_id, options);
+    let instance = await db.Schedule.getSchedule(schedule_id, options);
     if(!instance) return Promise.reject(new errorHelper({code: "E00000"}));
     
-    return instance.toJSON();
+    instance = instance.toJSON();
+
+    // コスチュームの取得
+    if(instance.cos_chara){
+      let costumeResult = await function () {
+        const costumePromise = instance.cos_chara.map(v => userContentRelationService.getCostumeById(v));
+        return Promise.all(costumePromise);
+      }();
+      
+      if(!costumeResult) return Promise.reject(new errorHelper({code: "E00000"}));
+      instance.cos_chara = costumeResult;
+    }
+
+    return instance;
   }
   catch(err){
     return err;
@@ -61,7 +75,7 @@ exports.updateScheduleData = async(schedule_data) => {
   const res = await db.Schedule.updateSchedule(schedule_data, db)
   
   // 更新出来なかったらエラー
-  if(!_.isArray(res) || res[0] === 0) return Promise.reject(new errorHelper({ status: 400, code: "E00000" })); 
+  if(!_.isArray(res)) return Promise.reject(new errorHelper({ status: 400, code: "E00000" })); 
   
   return res;
 }

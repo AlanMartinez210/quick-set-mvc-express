@@ -8,8 +8,9 @@ const CONVERT_KEY = {
 	search_date_to: "moment",
 	password: "password",
 	prefecture: "prefecture",
+	prefectures_field: "prefectures_field",
 	login_password: "password",
-	allow_recruit_flg: "allow_recruit_flg:",
+	costume_field: "costume_field"
 };
 
 /**
@@ -26,8 +27,11 @@ exports.converter = (formObject) => {
 					break;
 				case "prefecture":
 					// カメラマンの登録に合わせる。
-					formObject.prefectures_field = [ formObject[key] ];
+					formObject.prefectures_field = [ Number(formObject[key]) ];
 					delete formObject[key];
+					break;
+				case "prefectures_field":
+					formObject.prefectures_field = formObject[key].map(v => Number(v.prefecture_id));
 					break;
 				case "tags":
 					break;
@@ -35,9 +39,8 @@ exports.converter = (formObject) => {
 					// パスワード -> ハッシュ化
 					formObject[key] = hashHelper(formObject[key]);
 					break;
-				case "allow_recruit_flg:":
-					formObject[key] = formObject[key].checked;
-					break;
+				case "costume_field":
+					formObject.cos_chara = formObject[key].map(v => Number(v.costume_id));
 			}
 		}
 	})

@@ -58,7 +58,6 @@ exports.list = function(req, res, next){
  * @param {*} res
  */
 exports.getContentTitle = function(req, res, next){
-	const render_obj = res.render_obj;
 	const form_data = req.form_data;
 
 	// 作品タイトルとそれに付随するキャラクター情報を取得する。
@@ -82,10 +81,9 @@ exports.getContentTitle = function(req, res, next){
  */
 exports.getCostume = function(req, res, next){
 	const form_data = req.form_data;
-	const user_id = sessionHelper.getUserId(req);
 
-	// ユーザーの指定されたcostume_idから衣装情報を取得する。
-	return userContentRelationService.getCostume(user_id, form_data.costume_id)
+	// costume_idから衣装情報を取得する。
+	return userContentRelationService.getCostumeById(form_data.costume_id)
 	.then(User_content_relation=>{
 		const json_data = new costumeVO.costume_obj(User_content_relation);
 		res.json(json_data);

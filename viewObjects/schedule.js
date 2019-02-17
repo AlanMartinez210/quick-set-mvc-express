@@ -38,21 +38,38 @@ module.exports = {
 	 */
 	getScheduleInfo: class {
 		constructor(scheduleInfo = {}){
+
 			this.schedule_id = scheduleInfo.id;
 			this.date_key = scheduleInfo.date_key.format("L");
 			this.shot_type = scheduleInfo.shot_type.code;
-			this.prefecture = scheduleInfo.Schedule_prefectures[0].prefecture_id;
-			this.prefectures_field = scheduleInfo.Schedule_prefectures;
 			this.tag_field = scheduleInfo.getArrTagByName;
-			this.coschara = scheduleInfo.cos_chara;
-			this.cost = Number(scheduleInfo.cost);
-			this.num =  Number(scheduleInfo.num);
 			this.time_from = scheduleInfo.time_from;
 			this.time_to = scheduleInfo.time_to;
 			this.event_name = scheduleInfo.event_name;
 			this.event_url = scheduleInfo.event_url;
 			this.remarks = scheduleInfo.remarks;
 			this.allow_recruit_flg = scheduleInfo.allow_recruit_flg;
+			
+			// コスプレイヤー
+			if(scheduleInfo.schedule_type === 1){
+				this.data_pass_type = scheduleInfo.data_pass_type.code;
+				this.prefecture = scheduleInfo.Schedule_prefectures[0].prefecture_id;
+				this.costume_field = scheduleInfo.cos_chara.map(v => {
+					return {
+						costume_id: v.get("id"),
+						title: v.get("content").get("name"),
+						chara: v.get("chara").get("name"),
+					}
+				});
+
+				this.cost = Number(scheduleInfo.cost);
+				this.num =  Number(scheduleInfo.num);
+				this.self_payment_flg = scheduleInfo.self_payment_flg;
+				this.allow_notice_flg = scheduleInfo.allow_notice_flg;
+			}
+			else{
+				this.prefectures_field = scheduleInfo.Schedule_prefectures;
+			}
 		}
 	}
 }

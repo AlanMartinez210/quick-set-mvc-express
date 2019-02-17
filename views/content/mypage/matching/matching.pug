@@ -20,9 +20,19 @@
                     img(src=`/image/icons/${md.icon_url}`)
                 .maching-wrap
                   .st-string-set
-                    span.sub-text: |#{md.datetime_info.year}年#{md.datetime_info.month}月#{md.datetime_info.day}日(#{md.datetime_info.week}) #{md.datetime_info.hour}:#{md.datetime_info.minute}:#{md.datetime_info.seconds}
-                    p: |#{md.user_name}
-                  .st-matching-type(date-machingid=md.status_type.code, class=`_${md.status_type.type}` ): |#{md.status_type.name}
+                    span.sub-text: |#{md.isMine ? "◀◀◀ " : "▶▶▶ "}#{md.datetime_info.year}年#{md.datetime_info.month}月#{md.datetime_info.day}日(#{md.datetime_info.week}) #{md.datetime_info.hour}:#{md.datetime_info.minute}:#{md.datetime_info.seconds}
+                    p: | #{md.user_name}
+                    //- .st-matching-type(date-machingid=md.status_type.code, class=`_${md.status_type.type}` ): |#{md.status_type.name}
+                    if(Number(self.userType) == 1)
+                      if md.isMine 
+                        p.sub-text.right-text: |さんへ依頼しました。
+                      else
+                        p.sub-text.right-text: |さんが応募しました。
+                    else
+                      if md.isMine
+                        p.sub-text.right-text: |さんの募集に応募しました。
+                      else
+                        p.sub-text.right-text: |さんから依頼されました。
 
             .board-ftr._s.flex._jr.btn-board
               a.btn-prm.link-btn.st-btn-icon.st-line-b.flex._c(href=`/message/room?r=${md.matching_id}`)
@@ -32,15 +42,10 @@
                 i.icon-btn-s.fas.fa-times.fa-fw
                 span: |取消
 
-              if md.isMine || md.status_type.code == 3
-                a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-schedule_id=md.schedule_id, data-proc="confirm")
+              if !md.isMine && md.status_type.code == 1
+                a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-matching_id=md.matching_id, data-proc="consent")
                   i.icon-btn-s.far.fa-check-circle.fa-fw
-                  span: |確認
-              else
-                if md.status_type.code == 1
-                  a.btn-prm.link-btn.st-btn-icon.st-back-b.flex._c(name="doPostMatching", data-matching_id=md.matching_id, data-proc="consent")
-                    i.icon-btn-s.far.fa-check-circle.fa-fw
-                    span: |承諾
+                  span: |承諾
         -}
 
       else

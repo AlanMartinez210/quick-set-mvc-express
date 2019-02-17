@@ -98,7 +98,7 @@
         
           .attention-prm
             p
-              |コスプレするキャラクターがいない場合は<a href="/mypage/costume" class="a-link">所持コスプレ衣装設定</a>へ
+              |コスプレするキャラクターがいない場合は<a href="/mypage/costume" id="moveCostume" class="a-link">所持コスプレ衣装設定</a>へ
 
         .accordion-prm.inline.shadow-l
 
@@ -129,7 +129,7 @@
             .label-input-box#data_pass_type
               .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00017)
                 p.main-label: |データの受け渡し希望機関
-              .select-box.flex._c.st-required
+              .select-box.flex._c
                 select(name="data_pass_type")
                   each data_pass_type in self.globalParam.enumDataPassType.getEnum()
                     option(value=data_pass_type.code) #{data_pass_type.name}

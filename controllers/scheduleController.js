@@ -82,6 +82,7 @@ exports.getSchedule = (req, res, next)=>{
 
   scheduleService.getScheduleData(schedule_id)
   .then(results => {
+    console.log('results: ', results);
     res.json(new scheduleVO.getScheduleInfo(results));
   })
   .catch(err => {
@@ -99,6 +100,7 @@ exports.getSchedule = (req, res, next)=>{
  */
 exports.postSchedule = (req, res, next) => {
   const scheduleData = req.form_data;
+  console.log('scheduleData: ', scheduleData);
   scheduleData.user_id = sessionHelper.getUserId(req);
   scheduleData.schedule_type = sessionHelper.getUserType(req);
   

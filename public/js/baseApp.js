@@ -87,7 +87,12 @@ export class baseApp {
                       }
                       break;
                     case "checkbox":
+                      if($t.val() === "on"){
+                        formData[eleName] = $t.prop("checked"); 
+                      }
+                      else{
                         formData[eleName] = {checked: $t.prop("checked"), value: $t.val()}; 
+                      }
                       break;
                   }
                   break;

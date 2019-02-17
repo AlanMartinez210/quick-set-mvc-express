@@ -47,13 +47,14 @@ $fontAwesome : "Font Awesome 5 Free";
 		border-bottom: 1px solid $grayL;
 	}
 	.board-cnt{
+		position: relative;
 		padding: 16px;
 		&._s{padding: 8px;}
 		&._xs{padding: 4px;}
 		&._n{padding: 0;}
 		.label-input-box, .accordion-prm{
 			&:last-child{
-				//margin-bottom: 0 !important;
+				margin-bottom: 0 !important;
 			}
 		}
 	}
