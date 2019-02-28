@@ -13,7 +13,8 @@
         li.label-icon-link
           .link-wrap.flex._c
             .st-string-set
-              //- span.sub-text: |#{el.equipment_type.name} / #{el.maker_type.name} #{el.maker_type.maker_name}
+              - const mk = Number(el.maker_type.code) === 99 ? `${el.maker_type.name}(${el.maker_name})` : el.maker_type.name; 
+              span.sub-text: |#{el.equipment_type.name} / #{mk} 
               p: |#{el.equipment_name}
             i.icon-link.fas.fa-trash-alt.fa-fw.c-red
   

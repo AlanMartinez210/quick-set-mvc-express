@@ -14,8 +14,8 @@ module.exports = {
       this.icon_url = user_info.get("icon_url");
       this.bg_image_url = user_info.get("bg_image_url");
       this.prefectures = user_info.get("prefectures");
+      this.sample_image = user_info.get("sample_image");
       this.tags = user_info.get("tags");
     }
   }
-
 }

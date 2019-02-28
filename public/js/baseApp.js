@@ -6,7 +6,9 @@ import '../scss/style.scss';
 import 'slick/slick.scss';
 import 'slick/slick-theme.scss';
 
-import _ from "lodash";
+import _isEmpty from 'lodash/isEmpty';
+import _isUndefined from 'lodash/isUndefined';
+import _isNull from 'lodash/isNull';
 
 /**
  * アプリケーションの基本機能を定義します。
@@ -77,7 +79,7 @@ export class baseApp {
                     case "file":
                     case "hidden":
                       if(!allowEmpty){
-                        if(!$t.val() || _.isEmpty($t.val())) break;
+                        if(!$t.val() || _isEmpty($t.val())) break;
                       }
                       formData[eleName] = $t.val();
                       break;
@@ -98,7 +100,7 @@ export class baseApp {
                   break;
                 case "SELECT":
                   if(!allowEmpty){
-                    if(!$t.val() || _.isEmpty($t.val())) break;
+                    if(!$t.val() || _isEmpty($t.val())) break;
                   }
                   formData[eleName] = $t.val();
                   break;
@@ -106,7 +108,7 @@ export class baseApp {
                 case "SPAN":
                 case "p":
                   if(!allowEmpty){
-                    if(!$t.val() || _.isEmpty($t.val())) break;
+                    if(!$t.val() || _isEmpty($t.val())) break;
                   }
 
                   if($t.data("dummytag") == "input") formData[eleName] = $t.text();
@@ -125,7 +127,7 @@ export class baseApp {
             $formEle.each(function(){
               const $t = $(this);
               const item = formSetObj[$t.prop("name")] || formSetObj[$t.data("name")];
-              if(_.isUndefined(item) || _.isNull(item)) return true;
+              if(_isUndefined(item) || _isNull(item)) return true;
               switch($t.prop("tagName")){
                 case "INPUT":
                 case "TEXTAREA":

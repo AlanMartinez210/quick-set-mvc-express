@@ -152,12 +152,9 @@ export default class profile{
 				this.app.showErrMsg("画像は(jpg/gif/png)形式を選択してください。");
 				$(`[name=up_${type}_image]`).val("");
 			}
-			// else if (500000 < image_file.size) {
-			// 	this.app.showErrMsg(`500KB以下の画像を添付してください。 現在(${image_file.size})`);
-			// 	$("[name=up_icon_image]").val("");
-			// }
 			else{
 				if(window.FileReader){
+					const image = new Image();
 					const fr = new FileReader();
 					fr.onload = () => {
 						$(`#${type}Thumbnail`).attr("src", fr.result);
@@ -172,7 +169,14 @@ export default class profile{
 							preview: `.${type}_crop_preview`
 						})
 						$("[name=cropper_reset]").on('click', e => $(`#${type}Thumbnail`).cropper('reset'));
-						$procBtn.on('click', e => this.dataSend(e, type, image_file.name));
+
+						image.src = fr.result;
+						image.onload = () => {
+							$procBtn.off('click');
+							$procBtn.on('click', e => this.dataSend(e, type, {
+								file_obj: image_file, w: image.naturalWidth, h: image.naturalHeight
+							}));
+						}
 					}
 					fr.readAsDataURL(image_file);
 				}
@@ -184,7 +188,7 @@ export default class profile{
 		}
 	}
 
-	dataSend(e, type, filename){
+	dataSend(e, type, file_info){
 
 		this.app.showInfoDialog({
 			name: "checkCmf",
@@ -195,23 +199,31 @@ export default class profile{
 		.addBtn({
 			callback: () => {
 				const croped_image = $(`#${type}Thumbnail`).cropper('getCroppedCanvas');
+				console.log('croped_image: ', croped_image);
 				
-				const blobMethod = croped_image.toBlob ? "toBlob" : "msToBlob";
-				croped_image[blobMethod]((blob) => {
-					const trimedImageForm = new FormData();
-					trimedImageForm.append(`${type}_imege`, blob, filename);
+				const dataURL = croped_image.toDataURL();
 
-					const url = type === "icon" ? "/mypage/profile/profileIcon" : "/mypage/profile/bgCover"
-					
-					this.app.sendPost(url, trimedImageForm, {
-						dataType: "json",
-						contentType: false,
-						processData: false
-					})
-					.done(result => {
-						this.app.refresh({showInfo: "処理が完了しました。"});
-					})
-				})
+				// リサイズ処理
+				this.app.imageResize({
+					dataURL: dataURL,
+					max_w: type === "icon" ? 250 : 1500,
+					max_h: type === "icon" ? 250 : 500,
+					callback: (blob) => {
+						const trimedImageForm = new FormData();
+						trimedImageForm.append(`${type}_imege`, blob, file_info.file_obj.name);
+
+						const url = type === "icon" ? "/mypage/profile/profileIcon" : "/mypage/profile/bgCover"
+						
+						this.app.sendPost(url, trimedImageForm, {
+							dataType: "json",
+							contentType: false,
+							processData: false
+						})
+						.done(result => {
+							this.app.refresh({showInfo: "処理が完了しました。"});
+						})
+					}
+				});
 			}
 		});
 		

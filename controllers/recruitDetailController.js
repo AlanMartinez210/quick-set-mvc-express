@@ -27,7 +27,6 @@ exports.getRecruitDetail = async(req, res, next)=>{
  * @param {*} res
  */
 exports.entryOutSide = function(req, res, next){
-	console.log(req.query);
 	const render_obj = res.render_obj;
 	// const user_type = sessionHelper.getUserData(req);
 

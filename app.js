@@ -1,9 +1,3 @@
-const env = process.env.NODE_ENV;
-// グローバルオブジェクトのセット
-const appConfig = require(__dirname + '/config/env.json');
-console.log('---- start env ------', env);
-global.APPENV = Object.assign(appConfig.common, appConfig[env]);
-
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -12,6 +6,7 @@ const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const session = require('express-session');
 const errorHelper = require('./common/helper/errorHelper');
+const fs = require('fs');
 
 const app = express();
 
@@ -56,7 +51,16 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 /**
  * setting logger
 */
-app.use(logger('dev'));
+if(app.get('env') === 'production'){
+  const logDirPath = path.join(__dirname, 'log');
+  if(!fs.existsSync(logDirPath)){
+    fs.mkdirSync(logDirPath);
+  }
+  const accessLogStream = fs.createWriteStream(`${logDirPath}\\access.log`, { flags: 'a' })
+  app.use(logger('combined', { stream: accessLogStream }))
+}else{
+  app.use(logger('dev', {immediate: true}));
+}
 
 
 /**
@@ -133,13 +137,13 @@ function errorObjectWrapper(err, req, res, next){
  * @param {*} next 
  */
 function logHandler(err, req, res, next){
-  if(env === 'development'){
+  if(app.get('env') === 'production'){
+
+  }
+  else{
     console.debug("development error message: ", err.message);
     console.debug("development error obj: ", err);
     // console.error("error stack log: ", err.stack);
-  }
-  else{
-    // ログファイルに書き出します。
   }
   next(err);
 }

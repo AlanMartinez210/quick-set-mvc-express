@@ -237,7 +237,6 @@ module.exports = class {
         console.log("  -> user is expiration date to today data generating...");
         const user_data = this.cam_user_data.map(v => {
           v.expiration_date = new Date();
-          console.log(v);
           return v;
         })
         return db.User.bulkCreate(user_data);

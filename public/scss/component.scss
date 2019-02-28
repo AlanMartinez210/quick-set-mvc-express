@@ -159,6 +159,10 @@ $fontAwesome : "Font Awesome 5 Free";
 		border-bottom: 1px solid $grayLW;
 	}
 	.card-cnt{padding: 8px;}
+	.card-ftr{
+		border-top: 1px solid $grayLW;
+		padding: 8px;
+	}
 }
 
 .floor-prm{
@@ -187,6 +191,9 @@ $fontAwesome : "Font Awesome 5 Free";
 	// line-height: 1.4em;
 	position: relative;
 	margin-bottom: 4px;
+	&._nmb{
+		margin-bottom: 0px;
+	}
 	._wbka{word-break: keep-all};
 	.main-label{
 		@include font-small;
@@ -261,7 +268,7 @@ $fontAwesome : "Font Awesome 5 Free";
 			display: inline-block;
 			font-size: 13px;
 			padding: 4px 8px;
-			margin: 0 3px 3px 0;
+			margin: 3px 3px 3px 0;
 			border-radius: 5px;
 			border: 1px solid $blueL;
 			background: $blueL-opcity-30;
@@ -273,9 +280,45 @@ $fontAwesome : "Font Awesome 5 Free";
 	}
 }
 
+.good-review-box{
+	background: $blueD;
+	&::before{
+		content : '\f164';
+	}
+}
+
+.bad-review-box{
+	background: $purpleD;
+	&::before{
+		content : '\f165';
+	}
+}
+
+.good-review-box, .bad-review-box{
+	position: relative;
+	padding: 8px;
+	border-radius: 5px;
+	margin-bottom: 8px;
+	&:last-child{
+		margin-bottom: 0px;
+	}
+	&::before{
+		position: absolute;
+		font-size: 16px;
+		font-family: "Font Awesome 5 Free";
+		color: $white;
+		font-weight: 900;
+		top: 9px;
+		left: 9px;
+	}
+	.review-mention{
+		color: $white;
+		margin-left: 32px;
+	}
+}
+
 // 拡張系
 .custom-box{
-	margin: 8px 0 16px;
 	background: $white;
 	.icon-box-wrap{
 		text-align: center;
@@ -294,8 +337,18 @@ $fontAwesome : "Font Awesome 5 Free";
 				height: 100%;
 			}
 		}
+		a{
+			display: inline-block;
+			span{
+				line-height: 1.5em;
+			}
+		}
 	}
-	
+	.img-preview-box{
+		img{
+			width: 100%;
+		}
+	}
 	.cover-box-wrap{
 		text-align: center;
 		padding: 8px 8px 16px;
@@ -313,6 +366,12 @@ $fontAwesome : "Font Awesome 5 Free";
 				height: auto;
 			}
 		}
+		a{
+			display: inline-block;
+			span{
+				line-height: 1.5em;
+			}
+		}
 	}
 }
 
@@ -321,10 +380,13 @@ $fontAwesome : "Font Awesome 5 Free";
 	border: 0;
 	border-bottom: 1px solid $grayL;
 	background: $white;
-	input[type="text"], input[type="password"]{
+	input[type="text"], input[type="password"], span[data-dummytag="input"]{
 		width: 100%;
 		@include font-normal;
 		padding: 0.8em;
+		&._s{
+			padding: 0.4em;
+		}
 	}
 }
 
@@ -556,14 +618,14 @@ $fontAwesome : "Font Awesome 5 Free";
 		p {font-size: 13px;}
 		padding-bottom: 16px;
 	}
-	.btn-notice-read {
-		text-align: center;
-		font-size: 13px;
-		text-decoration: underline;
-		color: $blueL;
-		cursor: pointer;
-	}
-	.notice-cnt-on-show {display: block;}
+}
+
+.btn-more-read {
+	text-align: center;
+	font-size: 13px;
+	text-decoration: underline;
+	color: $blueL;
+	cursor: pointer;
 }
 
 

@@ -1,0 +1,33 @@
+-
+  const user_info = self.bodyData;
+  console.log('user_info: ', user_info);
+-
+
+.board-hdr
+  .label-box._fb.flex._c
+    i.icon-title-b.far.fa-images.fa-fw.c-green
+    span: |サンプル写真一覧
+
+.board-cnt
+  .attention-prm
+    p
+      |写真は3枚まで設定できます。
+
+  if(user_info && user_info.sample_image && user_info.sample_image.length)
+    - let i = 0;
+    - for (let si of user_info.sample_image ){
+
+      .label-input-box
+        .label-box
+          p.main-label: |サンプル画像#{++i}
+        .custom-box._s
+          .cover-box-wrap
+            div(style='width:60px;height:60px;', data-imagemodal="sample" + i)
+            .cover-box.flex._c.shadow-d
+              img.cover-img(src=`/image/sampleimages/${si}`, class="sample" + i)
+            button(type="submit", name="doDeleteSampleImage", data-siname=si).btn-prm-n.st-back-r.shadow-l
+              span: |画像を削除する
+    -}
+  else
+    .no_list_box
+      p: |サンプル画像はありません。

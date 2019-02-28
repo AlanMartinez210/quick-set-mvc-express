@@ -2,7 +2,7 @@ import recruit_detail from './recruitDetail';
 import register from './register';
 import mypage from './mypage/mypage';
 import recruit from './recruit';
-import message from './message';
+import message from './mypage/message';
 import profile from './mypage/profile';
 import site from './mypage/site';
 import sample_image from './mypage/sampleImage';
@@ -16,6 +16,7 @@ import schedule from './mypage/schedule';
 import review from './mypage/review';
 import costume from './mypage/costume';
 import equipment from './mypage/equipment';
+import messageRoom from './messageRoom';
 
 // # 必ず紐づくコンテンツIDで定義してください。
 export const contents = {
@@ -36,5 +37,6 @@ export const contents = {
   schedule,
   review,
   costume,
-  equipment
+  equipment,
+  messageRoom
 };

@@ -141,7 +141,6 @@ exports.putSchedule = (req, res, next) => {
  */
 exports.deleteSchedule = (req, res, next) => {
   const schedule_id = req.form_data.schedule_id;
-  console.log(schedule_id);
   db.Schedule.deleteSchedule(schedule_id, db)
   .then(results=>{
     res.json({status:'success'});

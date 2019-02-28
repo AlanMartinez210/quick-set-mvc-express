@@ -51,7 +51,7 @@ table {
 
 button, select, textarea, input[type="text"], input[type="password"]{ border: 0; outline: 0; }
 div, label{box-sizing: border-box};
-a{text-decoration: none; color: $blackD;}
+a{text-decoration: none; color: $blackD; word-break: break-all;}
 p{line-height: 1.4em;}
 body{
 	position: relative;

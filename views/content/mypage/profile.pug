@@ -33,7 +33,7 @@
             .icon-box-wrap
               .icon-box.shadow-d
                 img.icon-img
-              button(type="submit", name="doEditProfileIcon").btn-prm-n.st-line-w.shadow-l
+              a(role="button", name="doEditProfileIcon", tabindex=-1).btn-prm-n.st-line-w.shadow-l
                 span: |画像を変更する
 
         .label-input-box#box_user_name
@@ -85,11 +85,11 @@
             .cover-box-wrap
               .cover-box.flex._c.shadow-d
                 img.cover-img(src="")
-              button(type="submit", name="doEditBgCoverImg").btn-prm-n.st-line-w.shadow-l
+              a(role="button", name="doEditBgCoverImg", tabindex=-1).btn-prm-n.st-line-w.shadow-l
                 span: |画像を変更する
       
       .board-ftr._s.flex._c._jc
-        button(type="submit", name="doUserUpdate").btn-prm.st-back-b.shadow-l
+        button(type="submit", name="doUserUpdate" data-initfoucs).btn-prm.st-back-b.shadow-l
           span: |更新
 
   .board-prm

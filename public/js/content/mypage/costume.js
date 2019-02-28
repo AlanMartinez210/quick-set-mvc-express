@@ -1,6 +1,3 @@
-import { resolve } from "path";
-import { rejects } from "assert";
-
 export default class costume{
 	constructor(){
 		this.$costumeSection = $('#costumeSection');

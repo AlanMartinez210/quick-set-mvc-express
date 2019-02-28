@@ -95,8 +95,11 @@ router.post('/mypage/site/', loginCheck, validate.check(siteForm.post), validate
 /* サンプル写真の設定の表示 index */
 router.get('/mypage/sampleImage', loginCheck, sampleImageController.index);
 
-/* サンプル写真の設定の登録/編集 postSampleImage */
+/* サンプル写真の設定の登録 postSampleImage */
+router.post('/mypage/sampleImage', loginCheck, sampleImageController.postSampleImage);
 
+/* サンプル写真の設定の削除 deleteSampleImage */
+router.delete('/mypage/sampleImage', loginCheck, validate.check(userForm.deleteSampleImage), validate.result, sampleImageController.deleteSampleImage);
 
 /* 所持機材設定(カメラマンのみ) index */
 router.get('/mypage/equipment', loginCheck, equipmentController.index);
@@ -302,7 +305,6 @@ const hashHelper = require("./common/helper/hashHelper");
  */
 router.get('/test/:type/:mode', (req, res, next) => {
   const sessionHelper = require('./common/helper/sessionHelper');
-  console.log(req.params);
   const user_type = req.params.type;
   const data_mode = req.params.mode;
   console.log("ユーザー種別 -> ", user_type);

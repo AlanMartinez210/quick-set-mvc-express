@@ -112,3 +112,13 @@ exports.delete = {
 		in: 'body'
 	}
 }
+
+/**
+ * サンプル写真の削除
+ */
+exports.deleteSampleImage = {
+	sample_Image_name: {
+		in: 'body',
+		isEmpty: { errorMessage: 'fatal', negated: true }
+	}
+}

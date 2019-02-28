@@ -22,6 +22,7 @@ export default class recruitDetail{
 			$('.next-touch').css('height',height);
 		}, 0);
 
+		
 		if(this.isCallModal){
 			this.detailModalHeaderDefine();
 

@@ -19,7 +19,6 @@ exports.index = function(req, res, next){
 		mypageService.getMatchingRequestNum(user_id),
 	])
 	.then(results => {
-		console.log(results);
 		render_obj.bodyData = new mypageVO.mypageInit({
       no_review_num: results[0],
       matching_info_num: results[1],

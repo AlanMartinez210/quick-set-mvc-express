@@ -1,5 +1,11 @@
 #!/usr/bin/env node
 
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+console.log('---- start env ------', process.env.NODE_ENV);
+
+var appConfig = require('../config/env.json');
+global.APPENV = Object.assign(appConfig.common, appConfig[process.env.NODE_ENV]);
+
 /**
  * Module dependencies.
  */

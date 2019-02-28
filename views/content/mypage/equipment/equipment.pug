@@ -34,7 +34,6 @@
             select(name="maker_type")
               each maker in self.globalParam.enumMakerType.getEnum()
                 option(value=maker.code) #{maker.name}
-              option(value="99") その他
           p.bottom-label
         
           #box_maker_name.init-hidden

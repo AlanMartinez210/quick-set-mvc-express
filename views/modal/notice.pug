@@ -35,7 +35,7 @@ form(action="", name="noticeForm")
         .card-cnt
           article.notice-cnt(name=`noticeArticle${notice.id}`)
             |#{notice.content}
-          .btn-notice-read(name="noticeMore", data-noticeid=notice.id): |さらに読み込む
+          .btn-more-read(name="noticeMore", data-noticeid=notice.id): |さらに読み込む
       - }
 
 

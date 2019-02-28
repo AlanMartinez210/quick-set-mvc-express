@@ -14,13 +14,14 @@
         - for(let md of matchingDataArr){
           .board-prm._s._border
             .board-cnt._s
-              .label-icon-box.flex
+
+              .label-icon-box.flex.st-mb-s
                 .link-wrap
                   .label-icon
                     img(src=`/image/icons/${md.icon_url}`)
                 .maching-wrap
                   .st-string-set
-                    span.sub-text: |#{md.isMine ? "◀◀◀ " : "▶▶▶ "}#{md.datetime_info.year}年#{md.datetime_info.month}月#{md.datetime_info.day}日(#{md.datetime_info.week}) #{md.datetime_info.hour}:#{md.datetime_info.minute}:#{md.datetime_info.seconds}
+                    span.sub-text: |#{md.isMine ? "◀ " : "▶ "}#{md.datetime_info.year}年#{md.datetime_info.month}月#{md.datetime_info.day}日(#{md.datetime_info.week}) #{md.datetime_info.hour}:#{md.datetime_info.minute}:#{md.datetime_info.seconds}
                     p: | #{md.user_name}
                     //- .st-matching-type(date-machingid=md.status_type.code, class=`_${md.status_type.type}` ): |#{md.status_type.name}
                     if(Number(self.userType) == 1)
@@ -33,6 +34,26 @@
                         p.sub-text.right-text: |さんの募集に応募しました。
                       else
                         p.sub-text.right-text: |さんから依頼されました。
+
+              .card-prm
+
+                .card-cnt
+                
+                  .label-input-box._mbs
+                    .label-box
+                      p.main-label: |対象スケジュール日付
+                    .input-box.flex._c.st-readonly
+                      span._s(data-dummytag="input", data-name="date_key"): |#{md.schedule_date_key}
+                      input(type="hidden", name="schedule_id", value=md.schedule_id)
+                
+                  .label-input-box._mbs
+                    .label-box
+                      p.main-label: |イベント名 or 開催地
+                    .input-box.flex._c.st-readonly
+                      span._s(data-dummytag="input", data-name="event_name"): |#{md.schedule_event_name}
+
+                .card-ftr
+                  .btn-more-read(name="noticeMore"): |詳細を見る
 
             .board-ftr._s.flex._jr.btn-board
               a.btn-prm.link-btn.st-btn-icon.st-line-b.flex._c(href=`/message/room?r=${md.matching_id}`)

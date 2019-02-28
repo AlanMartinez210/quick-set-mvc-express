@@ -9,6 +9,8 @@ class matching_item{
 
     this.matching_id = matching.get('id');
     this.schedule_id = matching.get('schedule_id');
+    this.schedule_date_key = matching.get("schedule").get("date_key").format("L");
+    this.schedule_event_name = matching.get("schedule").get("event_name");
     this.icon_url = user.get('icon_url');
     this.user_name = user.get('user_name');
     this.status_type = matching.get('status');
@@ -34,6 +36,7 @@ module.exports = {
 
   matching_page: class {
     constructor(user_id, matchingList, matchingHistoryList, current_page = {page: 1}){
+      
       this.matching_list = matchingList.rows.map(matching => {
       
         let isMine = false;

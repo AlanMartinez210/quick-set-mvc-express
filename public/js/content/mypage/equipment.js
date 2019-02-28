@@ -34,9 +34,7 @@ export default class costume{
 			callback: () => {
 				this.app.sendPost('/mypage/equipment', sendData)
 				.done(result => {
-					this.app.hideDialog();
-					this.app.showClearAll();
-					this.app.showInfo("処理に成功しました。");
+					this.app.refresh({showInfo: "処理が完了しました。"});
 				})
 			}
 		})

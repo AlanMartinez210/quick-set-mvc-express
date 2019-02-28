@@ -1,24 +1,66 @@
 // 画面操作系処理JS
 export default class screen{
 	constructor(){
-		this.$window = $(window);
 		this.$mainFrame = $('.wrap-body-content');
 		this.startPos = 0;
+		this.scrollTimer = null;
+		this.currentPos = 0;
 	}
 	ready(){
-		// スクロール時にヘッダーを一時的に非表示にする。
-		this.$window.scroll(() => {
-			const currentPos = $(window).scrollTop();
-			if(Math.abs(currentPos - this.startPos) > 50){
-				if (currentPos > this.startPos) {
-					if(currentPos >= 60) $(".hdr-menu").css("top", "-" + 100 + "px");
-				}
-				else {
-					$(".hdr-menu").css("top", 0 + "px");
-				}
-				this.startPos = currentPos;
+		const $hdrMenu = $(".hdr-menu");
+		const $window = $(window);
+		let ticking = false;
+
+		const hdrMenuScroll = () => {
+			if(!ticking){
+				requestAnimationFrame(() => {
+					ticking = false;
+					this.currentPos = $window.scrollTop();
+					
+					if(this.currentPos >= 60){
+						if((this.currentPos - this.startPos) > 0){
+							$hdrMenu.css("top", "-" + 100 + "px");
+						}else{
+							if(Math.abs(this.currentPos - this.startPos) < 400) return false;
+							$hdrMenu.css("top", 0 + "px");
+						}
+					}else{
+						$hdrMenu.css("top", 0 + "px");
+					}
+
+					// スタートの更新
+					this.startPos = this.currentPos;
+				});
+				ticking = true;
 			}
-		});
+		}
+
+		document.addEventListener('scroll', hdrMenuScroll, {passive: false});
+
+			// this.scrollTimer = setTimeout(() => {
+			// 	this.currentPos = $window.scrollTop();
+			// 	console.log('startPos: ', this.startPos );
+			// 	console.log('currentPos: ', this.currentPos);
+			// 	// 現在のポジションが100px以下ならメニューは初期値
+			// 	if(this.currentPos <= 50){
+			// 		$hdrMenu.css("top", 0 + "px");
+			// 		return false;
+			// 	}
+
+			// 	// 下にスクロールした
+			// 	if (this.currentPos > this.startPos) {
+			// 		$hdrMenu.css("top", "-" + 100 + "px");
+			// 	}
+			// 	else {
+			// 		if((this.startPos - this.currentPos >= 100)){
+			// 			$hdrMenu.css("top", 0 + "px");
+			// 		}
+			// 	}
+
+			// 	// スタートの更新
+			// 	this.startPos = this.currentPos;
+
+			// }, 33)
 
 		// アコーディオンの開閉イベント
 		$(".accordion-label").on("click", function(e){

@@ -31,6 +31,9 @@ module.exports = {
 		}
 	},
 	plugins: [
+		new webpack.DefinePlugin({
+      'process.browser': 'true'
+    }),
 		new webpack.ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",

@@ -30,7 +30,6 @@ exports.index = (req, res, next) => {
 exports.getMatchingHistory = (req, res, next) => {
   const render_obj = res.render_obj;
   const form_data = req.form_data;
-  console.log('form_data: ', form_data);
   const user_id = sessionHelper.getUserId(req);
 
   matchingService.getMatchingHistoryList(user_id, form_data.page)
@@ -47,7 +46,6 @@ exports.postRequest = (req, res, next)=>{
   
   matchingService.postRequest(user_id, schedule_id)
   .then(row=>{
-    console.log(row);
     res.json({status:'success'});
   }).catch(next);
 }
@@ -58,7 +56,6 @@ exports.postConsent = (req, res, next)=>{
   const matching_id = req.form_data.matching_id;
   matchingService.postConsent(user_id, matching_id)
   .then(row=>{
-		console.log(row);
     res.json({status:'success'});
 	}).catch(next)
 }
@@ -69,7 +66,6 @@ exports.postReject = (req, res, next)=>{
   const matching_id = req.form_data.matching_id;
   matchingService.postReject(user_id, matching_id)
   .then(row=>{
-		console.log(row);
     res.json({status:'success'});
 	}).catch(next)
 }

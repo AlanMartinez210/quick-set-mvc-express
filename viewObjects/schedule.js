@@ -62,8 +62,8 @@ module.exports = {
 					}
 				});
 
-				this.cost = Number(scheduleInfo.cost);
-				this.num =  Number(scheduleInfo.num);
+				this.cost = scheduleInfo.cost;
+				this.num =  scheduleInfo.num;
 				this.self_payment_flg = scheduleInfo.self_payment_flg;
 				this.allow_notice_flg = scheduleInfo.allow_notice_flg;
 			}

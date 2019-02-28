@@ -1,5 +1,8 @@
+const sessionHelper = require('../common/helper/sessionHelper');
+
 const messageService = require("../services/messageService");
 const messageViewObjects = require("../viewObjects/message");
+
 
 /**
  * 新着メッセージ一覧
@@ -8,11 +11,12 @@ const messageViewObjects = require("../viewObjects/message");
  * @param {*} res
  */
 exports.index = function(req, res, next){
-	var render_obj = res.render_obj;
+	const render_obj = res.render_obj;
 	render_obj.title = "メッセージ一覧";
 	render_obj.contentId = "message";
-
-	messageService.getNewMessageList(req)
+	const user_id = sessionHelper.getUserId(req);
+	// reqでとらない
+	messageService.getNewMessageList(user_id)
 	.then(results=>{
 
 		render_obj.bodyData = new messageViewObjects.newMessageList({

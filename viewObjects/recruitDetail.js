@@ -27,8 +27,8 @@ module.exports = {
       this.good_review_num = user.get("good_review_num");
       this.bad_review_num = user.get("bad_review_num");
       this.review_list = [
-        { review_type: 1, review_comments: "よくできました。"},
-        { review_type: 2, review_comments: "ダメでした。"}
+        { review_type: 1, review_comments: "撮影開始から終了までとても親切にしていただけました。おかげ様で充実した撮影ができました。"},
+        { review_type: 2, review_comments: "開始時に遅刻されて少し迷惑しました。できれば事前に遅刻することを伝えていただきたかったです。"}
       ];
       this.sample_image = [];
     }

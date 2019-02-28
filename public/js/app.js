@@ -2,7 +2,11 @@ import { baseApp } from './baseApp';
 import { Plagins } from './plugin/index';
 import { contents } from './content/index';
 
-import _ from 'lodash';
+import _forEach from 'lodash/forEach';
+import _chain from 'lodash/chain';
+import _partial from 'lodash/partial';
+import _split from 'lodash/split';
+import _isObject from 'lodash/isObject';
 
 let currently_content = "";
 
@@ -24,7 +28,7 @@ export default class myApp extends baseApp {
     super();
     this.config = {};
     this.plugin = {};
-    _.forEach(Plagins, (plg, key) => {
+    _forEach(Plagins, (plg, key) => {
       let c = new plg();
       this.plugin[key] = c;
     });
@@ -61,7 +65,7 @@ export default class myApp extends baseApp {
 
       
       // readyメソッドを持つプラグインの実行
-      _.forEach(this.plugin, p => {
+      _forEach(this.plugin, p => {
         if(p.ready) p.ready(this);
       })
 
@@ -99,7 +103,7 @@ export default class myApp extends baseApp {
       }
 
       // loadメソッドを持つプラグインの実行
-      _.forEach(this.plugin, p => {
+      _forEach(this.plugin, p => {
         if(p.load) p.load(this);
       })
     });
@@ -113,7 +117,7 @@ export default class myApp extends baseApp {
    */
   bodyParser(){
     const body = document.getElementsByTagName('body')[0];
-    return _.isObject(body.dataset) ? Object.assign({}, body.dataset) : {};
+    return _isObject(body.dataset) ? Object.assign({}, body.dataset) : {};
   }
 
   /**
@@ -467,7 +471,7 @@ export default class myApp extends baseApp {
     const boardList = document.querySelectorAll(`#${modalName}Modal .board-cnt`);
 
     if(boardList.length > 0){
-      _.forEach(boardList, (v) => {
+      _forEach(boardList, (v) => {
         const div = document.createElement('div');
         div.classList.add('modal-protect');
         v.appendChild(div);
@@ -481,7 +485,7 @@ export default class myApp extends baseApp {
   removeProtectModalCnt(){
     const modalProtect = document.getElementsByClassName("modal-protect");
     if(modalProtect.length > 0){
-      _.forEach(modalProtect, (v) => {
+      _forEach(modalProtect, (v) => {
         if(v) v.parentNode.removeChild(v);
       })
     }
@@ -693,6 +697,11 @@ export default class myApp extends baseApp {
         inputName = $(ele).data("inputclear");
         target = `input[data-inputclear="${inputName}"]`;
         $(target).val("");
+        // datepickerオブジェクト
+        if(typeof($(target).datepicker) ==  "function"){
+          $(target).datepicker("option", "minDate", null);
+          $(target).datepicker("option", "maxDate", null);
+        }
       })
     })
   }
@@ -724,7 +733,7 @@ export default class myApp extends baseApp {
   getUrlParam(url = location.search){
     // デコードする。
     url = decodeURIComponent(url);
-    return _.chain(url).replace('?', '').split('&').map(_.partial(_.split, _, '=', 2)).fromPairs().value();
+    return _chain(url).replace('?', '').split('&').map(_partial(_split, _, '=', 2)).fromPairs().value();
   }
 
   // モーダルスクロールをリセットにする
@@ -735,6 +744,41 @@ export default class myApp extends baseApp {
   // bodyのスクロールを
   scrollReset(){
     $("body").scrollTop(0);
+  }
+
+  // 画像のリサイズ
+  imageResize({file_obj, dataURL, max_w, max_h, callback}){
+    // ローディング
+    this.onShowProgress();
+    let base64Url = file_obj ? URL.createObjectURL(file_obj) : dataURL ? dataURL : "";
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    const that = this;
+
+    img.crossOrigin = "Anonymous";
+    img.onload = function(e) {
+      let isResize = false;
+      let type = null;
+
+      if(this.width > this.height){ // 横長
+        if(this.width > max_w) [isResize, type] = [true, "W"]; 
+      }
+      else{ // 縦長
+        if(this.height > max_h) [isResize, type] = [true, "H"]; 
+      }
+
+      const scale = isResize ? Math.round(((type === "W" ? max_w/this.width : max_h/this.height)*100)) / 100 : 1;
+      const dstWidth = this.width * scale;
+      const dstHeight = this.height * scale;
+      canvas.width = dstWidth;
+      canvas.height = dstHeight;
+      ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, dstWidth, dstHeight);
+      canvas.toBlob(callback, "image/jpeg", 0.8);
+      that.onHideProgress();
+    }
+    img.src = base64Url;
   }
 }
 

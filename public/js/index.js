@@ -2,7 +2,6 @@ import 'webpack-jquery-ui/datepicker';
 import 'webpack-jquery-ui/css';
 
 import myApp from './app';
-import costume from './content/mypage/costume';
 
 const c2 = new myApp();
 
@@ -48,6 +47,32 @@ c2.ready(() => {
     const d = localStorage.getItem('myCostumeData').length;
     return d ? JSON.parse(d): {};
   }
+  // イメージモーダル
+  const $imageModal = $("#imageModal");
+  $('body').on('click', '[data-imagemodal]', {
+    type: "image",
+    onSyncOpenBrefore: (resolve, reject, event) => {
+      const $t = $(event.currentTarget);
+      const image_key = $t.data("imagemodal");
+      // 同一キーを持つイメージ要素を取得
+      const $image_wrap = $(".image-wrap");
+
+      const img_obj = new Image();
+      img_obj.onload = function(e){
+        $image_wrap.append(`
+          <div style='max-width:${this.width}px; max-height:${this.height}px; margin: 0 auto;'>
+            <img src='${this.src}' style='width:100%; height:100%;'>
+          </div>
+        `);
+        resolve();
+      }
+      img_obj.src = $(`.${image_key}`).prop("src");
+
+    },
+    onCloseBrefore: (event) => {
+      $(".image-wrap").empty();
+    }
+  }, e => c2.showModal(e));
 
   // お知らせモーダルを開く
   const $noticeModal = $("#noticeModal");
@@ -154,6 +179,13 @@ c2.ready(() => {
 // window load complated run function.
 c2.load(() => {
   $('input[data-datepicker]').datepicker();
+  const start_date = $('input[data-datepickerstart]').datepicker().on('change', function(){
+    end_date.datepicker("option", "minDate", this.value ? this.value : null);
+  });
+
+  const end_date = $('input[data-datepickerend]').datepicker().on('change', function(){
+    start_date.datepicker("option", "maxDate", this.value ? this.value : null);
+  });
 });
 
 /**
@@ -167,7 +199,6 @@ function setDesignPtn(cntId){
   let designPtn = "general";
   switch (cntId){
     case "register":
-    case "message":
       designPtn = cntId;
       break;
     case "recruit_detail":

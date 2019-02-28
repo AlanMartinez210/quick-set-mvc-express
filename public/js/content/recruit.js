@@ -1,6 +1,6 @@
 import plugin_prefecture from "../plugin/prefecture";
 import recruitDetail from "./recruitDetail";
-import _ from 'lodash';
+import _isEmpty from 'lodash/isEmpty';
 
 export default class recruit {
 	constructor () {
@@ -118,8 +118,21 @@ export default class recruit {
 					$prefectures.empty();
 					res.prefectures.forEach(pref => $prefectures.append(`<span>${pref.prefecture_name}</span>`));
 					
+					// レビュー評価
+					const $reviews = this.recruitDetailForm.find("#review_box");
+					$reviews.empty();
+					res.review_list.forEach(review =>{
+
+						$reviews.append(`
+							<div class='${review.review_type === 1 ? `good-review-box` : 'bad-review-box'}'>
+								<p class='review-mention'>${review.review_comments}</p>
+							</div>
+						`);
+
+					});
 					resolve();
-				})
+				});
+				
 			}
 		}, e => this.app.showModal(e))
 		
@@ -139,14 +152,14 @@ export default class recruit {
 		// 値がなければ取得しない
 		const formData = this.recruitSearchForm.getValue(false);
 		const pref = this.prefecture.getPrefectureValue();
-		if(!_.isEmpty(pref)) formData.prefectures_field = pref;
+		if(!_isEmpty(pref)) formData.prefectures_field = pref;
 		
 		return formData;
 	}
 
 	// 検索処理を行います。
 	getSearchReqest(sendData = {}, pageNum = 1){
-		const paramString = _.isEmpty(sendData) ? "" :  `&${$.param(sendData)}`;
+		const paramString = _isEmpty(sendData) ? "" :  `&${$.param(sendData)}`;
 		const path = `/recruitlist/${this.app.config.cntid === "recruit" ? "every" : "today"}/search?page=${pageNum}${paramString}`;
 
 		// URLの書き換えを行う。
@@ -166,7 +179,7 @@ export default class recruit {
 			callback: () => {
 				this.app.sendPost("/mypage/matching/request", sendData)
 				.done(result => {
-					this.app.onShowProgress()
+					this.app.onShowProgress();
 					this.app.hideDialog();
 					
 					this.app.refresh({showInfo: "処理が完了しました。"});

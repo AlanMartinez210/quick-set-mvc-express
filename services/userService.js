@@ -14,7 +14,6 @@ const fs = require('fs');
 exports.getUserDataById = async (user_id, isRequire = true) => {
   const user_data = await db.User.getUserById(user_id);
   if (!user_data && isRequire) return Promise.reject(new errorHelper({ code: "fatal" }));
-  console.log('user_data: ', user_data);
 
   // タグデータ取得
   if (user_data.get("tags")) {
@@ -95,7 +94,6 @@ exports.clearExpirationDate = (user_id) => {
  */
 exports.getUserData = async (user_key) => {
   const user_data = await db.User.getUserByKey(user_key);
-  console.log('user_data: ', user_data);
   if (!user_data) return Promise.reject(new errorHelper({ code: "fatal" }));
 
   // タグデータ取得

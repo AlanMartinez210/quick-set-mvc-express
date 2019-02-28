@@ -2,7 +2,6 @@ const userService = require("../services/userService");
 const generalVO = require("../viewObjects/general");
 const db = require("../models/index");
 const sessionHelper = require('../common/helper/sessionHelper');
-const fs = require('fs');
 const multer = require('multer');
 
 /**

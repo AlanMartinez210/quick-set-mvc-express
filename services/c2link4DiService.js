@@ -174,6 +174,7 @@ exports.enumMakerType = () => {
     {code: 1, type: "sony", name: "ソニー"},
     {code: 2, type: "nikon", name: "ニコン"},
     {code: 3, type: "canon", name: "キャノン"},
+    {code: 99, type: "other", name: "その他"},
   ]
   return new enumObject(enumObj);
 }
