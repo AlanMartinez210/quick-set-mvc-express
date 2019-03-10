@@ -5,11 +5,13 @@ export default class matching{
 	constructor(){
 	}
 	ready(){
-		this.recruitDetail = new recruitDetail(true);
+		this.recruitDetail = new recruitDetail(this.app, true);
 		this.pager = new plugin_pager(this.app);
 
 		const $matchingSection = $("#matchingSection");
+		const $matchingStateSection = $("#matchingStateSection");
 		const doPostMatchingBtn = "[name=doPostMatching]";
+		const scheduleMore = "[name=scheduleMore]";
 
 		$matchingSection.on('click', doPostMatchingBtn, {
 			type: "recruitDetail",
@@ -60,7 +62,7 @@ export default class matching{
 		});
 
 		// 募集詳細のjsを呼び出す。
-		this.recruitDetail.ready();
+		this.recruitDetail.ready($matchingStateSection, scheduleMore);
 		this.pager.ready(["matchingHistorySection"]);
 	}
 

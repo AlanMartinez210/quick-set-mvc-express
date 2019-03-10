@@ -65,20 +65,20 @@ export default class screen{
 		// アコーディオンの開閉イベント
 		$(".accordion-label").on("click", function(e){
 			const acCnt = $(this).parent();
-			if(acCnt.hasClass("on-show")){
-				acCnt.removeClass("on-show");
+			if(acCnt.hasClass("on-show-acd-inner")){
+				acCnt.removeClass("on-show-acd-inner");
 			}else{
-				acCnt.addClass("on-show");
+				acCnt.addClass("on-show-acd-inner");
 			}
 		})
 
 		// ボードラベル用アコーディオンの開閉イベント
 		$(".board-accordion").find(".board-hdr").on("click", function(e){
 			const acCnt = $(this).parent();
-			if(acCnt.hasClass("on-show")){
-				acCnt.removeClass("on-show");
+			if(acCnt.hasClass("on-show-acd")){
+				acCnt.removeClass("on-show-acd");
 			}else{
-				acCnt.addClass("on-show");
+				acCnt.addClass("on-show-acd");
 			}
 		})
 

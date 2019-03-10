@@ -429,6 +429,7 @@ export default class myApp extends baseApp {
    */
   showClearAll(modal_name){
     $(".on-show").removeClass("on-show");
+    $(".on-show-acd-inner").removeClass("on-show-acd-inner");
     // 項目の非表示
     if(modal_name) $(`#${modal_name} [data-mdc]`).hide();
   	$(".wrapper").css({"paddingRight": "0px"});
@@ -775,7 +776,13 @@ export default class myApp extends baseApp {
       canvas.width = dstWidth;
       canvas.height = dstHeight;
       ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, dstWidth, dstHeight);
-      canvas.toBlob(callback, "image/jpeg", 0.8);
+      if(canvas.msToBlob){
+        var blob = canvas.msToBlob();
+        callback(blob);
+      }else{
+        canvas.toBlob(callback, "image/jpeg", 0.8);
+      }
+      
       that.onHideProgress();
     }
     img.src = base64Url;

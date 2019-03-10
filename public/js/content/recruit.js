@@ -9,7 +9,7 @@ export default class recruit {
 	}
 	ready(){
 		this.prefecture = new plugin_prefecture(this.app);
-		this.recruitDetail = new recruitDetail(true);
+		this.recruitDetail = new recruitDetail(this.app, true);
 
 		const $recruitSection = $("#recruitSection, #recruitTodaySection");
 		const openSearchBtn = "#searchBtn";
@@ -80,72 +80,12 @@ export default class recruit {
 		// 依頼/応募するボタン
 		$recruitSection.on('click', doPostRequestBtn, (event) => this.sendReqest(event));
 		this.recruitDetailForm.on('click', doPostRequestBtn, (event) => this.sendReqest(event));
-
-		// 募集詳細モーダルを開く
-		$recruitSection.on('click', opneRecruitDetailBtn, {
-			type: "recruitDetail",
-			onSyncOpenBrefore: (resolve, reject, event) => {
-				// 募集IDの取得
-				const schedule_id = event.currentTarget.dataset.schedule_id;
-				// ボタンにセット
-				this.recruitDetailForm.find(doPostRequestBtn).attr("data-schedule_id", schedule_id)
-
-				// 値を取りに行く
-				this.getRecruitDetail(schedule_id)
-				.then(res => {
-					this.recruitDetailForm.setValue(res);
-
-					// カバー画像
-					const bgPath = `/image/covers/${res.bg_image_url}`;
-					$(".bgImage").css({
-						background: `url(${bgPath}) no-repeat center`,
-						backgroundSize: "cover"
-					})
-
-					// アイコン
-					$("img[name=user_icon]").attr("src", `/image/icons/${res.icon_url}`)
-					
-					// 日付
-					this.recruitDetailForm.find("[data-name=date_key]").text(`${res.date_info.year}年${res.date_info.month}月${res.date_info.day}日(${res.date_info.week})`)
-					
-					// タグ
-					const $tags = this.recruitDetailForm.find("#tag_box");
-					$tags.empty();
-					res.tags.forEach(tag => $tags.append(`<span>${tag}</span>`));
-
-					// 開催地
-					const $prefectures = this.recruitDetailForm.find("#prefectures_box");
-					$prefectures.empty();
-					res.prefectures.forEach(pref => $prefectures.append(`<span>${pref.prefecture_name}</span>`));
-					
-					// レビュー評価
-					const $reviews = this.recruitDetailForm.find("#review_box");
-					$reviews.empty();
-					res.review_list.forEach(review =>{
-
-						$reviews.append(`
-							<div class='${review.review_type === 1 ? `good-review-box` : 'bad-review-box'}'>
-								<p class='review-mention'>${review.review_comments}</p>
-							</div>
-						`);
-
-					});
-					resolve();
-				});
-				
-			}
-		}, e => this.app.showModal(e))
 		
 		// 募集詳細のjsを呼び出す。
-		this.recruitDetail.ready();
+		this.recruitDetail.ready($recruitSection, opneRecruitDetailBtn);
 	}
 
 	// ===============================================================================
-
-	// 募集詳細情報を取得します。
-	getRecruitDetail(schedule_id){
-		return this.app.sendGet(`/recruitlist/detail/${schedule_id}`);
-	}
 
 	// 検索フォームから検索データを取得します。
 	getSearchData(){

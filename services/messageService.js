@@ -1,7 +1,7 @@
 const db = require("../models/index");
 const errorHelper = require("../common/helper/errorHelper");
 
-const messageRepository = require('../models/repository/CustomRepository/messageRepository');
+// const messageRepository = require('../models/repository/CustomRepository/messageRepository');
 
 /**
  * ログインユーザーの未読メッセージの一覧を取得
@@ -12,7 +12,7 @@ const messageRepository = require('../models/repository/CustomRepository/message
  *
  */
 exports.getNewMessageList = (user_id)=>{
-  return messageRepository.getNewMessageList(user_id);
+  // return messageRepository.getNewMessageList(user_id);
 };
 
 /**
@@ -31,6 +31,9 @@ exports.getMessageList = async(matching_id, user_id)=>{
  * 発言する
  */
 exports.postMessage = async(user_id, matching_id, message)=>{
+
+  // どっちがどっちに発言した的なやついらないの？
+
   if(await db.Matching.isBelongs(matching_id, user_id)){
     return db.Chat.postMessage(user_id, matching_id, message);
   }else{

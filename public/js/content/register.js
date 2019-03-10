@@ -7,6 +7,7 @@ export default class register {
 		const doRegisterBtn = this.registerForm.find("[name=doRegist]");
 		const doLoginBtn = this.loginForm.find('[name=doLogin]');
 		const loginBtn = $("#loginBtn");
+		const introductionBtn = $("#introductionBtn");
 
 		const pmh = 58;
 
@@ -22,6 +23,10 @@ export default class register {
 			onOpenBrefore: () => {
 				this.loginForm.clearForm();
 			}
+		}, e => this.app.showModal(e));
+
+		introductionBtn.on('click', {
+			type: "introduction"
 		}, e => this.app.showModal(e));
 
 		doRegisterBtn.on('click', (e)=>{

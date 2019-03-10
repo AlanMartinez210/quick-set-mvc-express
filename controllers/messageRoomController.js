@@ -12,7 +12,7 @@ const messageRoomVO = require("../viewObjects/messageRoom");
 exports.index = (req, res, next)=>{
 	var render_obj = res.render_obj;
 	render_obj.title = "メッセージルーム";
-	render_obj.contentId = "message";
+	render_obj.contentId = "messageRoom";
 
 	const matching_id = req.form_data.r;
 	const user_id = sessionHelper.getUserId(req);

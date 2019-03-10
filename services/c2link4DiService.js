@@ -180,6 +180,33 @@ exports.enumMakerType = () => {
 }
 
 /**
+ * メーカーの列挙を操作します。
+ */
+exports.enumMakerType = () => {
+  const enumObj = [
+    {code: 1, type: "sony", name: "ソニー"},
+    {code: 2, type: "nikon", name: "ニコン"},
+    {code: 3, type: "canon", name: "キャノン"},
+    {code: 99, type: "other", name: "その他"},
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
+ * メーカーの列挙を操作します。
+ */
+exports.enumContactType = () => {
+  const enumObj = [
+    {code: 1, type: "bag", name: "不具合報告"},
+    {code: 2, type: "use", name: "機能の使い方"},
+    {code: 3, type: "qa", name: "ご質問・ご要望"},
+    {code: 4, type: "vio", name: "違反ユーザー通報"},
+    {code: 99, type: "other", name: "その他"},
+  ]
+  return new enumObject(enumObj);
+}
+
+/**
  * 都道府県の列挙を操作します。
  */
 exports.enumPref = () => {

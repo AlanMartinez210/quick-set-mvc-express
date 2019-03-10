@@ -53,12 +53,12 @@ module.exports = (sequelize, DataTypes) => {
   /**
    * 自分がされたレビューの一覧を取得
    */
-  Review.getRevieweeHistoryList = function(user_id, page, options={}){
+  Review.getRevieweeHistoryList = function(user_id, options={}){
     options = ModelOption.revieweeHistoryList(user_id, options);
-    options.limit = PAGE_COUNT;
-    options.offset = PAGE_COUNT * (page-1);
     return this.findAndCountAll(options);
   };
+
+  
   /**
    * 自分がしたレビューの一覧を取得
    */

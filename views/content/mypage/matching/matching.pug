@@ -44,7 +44,6 @@
                       p.main-label: |対象スケジュール日付
                     .input-box.flex._c.st-readonly
                       span._s(data-dummytag="input", data-name="date_key"): |#{md.schedule_date_key}
-                      input(type="hidden", name="schedule_id", value=md.schedule_id)
                 
                   .label-input-box._mbs
                     .label-box
@@ -53,7 +52,7 @@
                       span._s(data-dummytag="input", data-name="event_name"): |#{md.schedule_event_name}
 
                 .card-ftr
-                  .btn-more-read(name="noticeMore"): |詳細を見る
+                  .btn-more-read(name="scheduleMore" data-schedule_id=md.schedule_id): |詳細を見る
 
             .board-ftr._s.flex._jr.btn-board
               a.btn-prm.link-btn.st-btn-icon.st-line-b.flex._c(href=`/message/room?r=${md.matching_id}`)

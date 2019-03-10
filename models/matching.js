@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 
     this.belongsTo(models.User, {as:"user"})
     this.belongsTo(models.User, {as:"to_user"})
-    this.hasOne(models.Schedule, {as:"schedule", foreignKey: "id", targetKey: "schedule_id" })
+    this.belongsTo(models.Schedule, {as:"schedule"})
   };
 
   /** option set **/
@@ -131,6 +131,7 @@ module.exports = (sequelize, DataTypes) => {
     options = ModelOption.matchingHistoryList(user_id, options);
     options.limit = PAGE_COUNT;
     options.offset = PAGE_COUNT * (page-1);
+    options.order = [["schedule", "date_key", "DESC"], ["updated_at", "DESC"]];
     return this.findAndCountAll(options);
   };
 

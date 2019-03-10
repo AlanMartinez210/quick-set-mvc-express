@@ -10,14 +10,35 @@ const db = require("../models/index");
  * @param {*} res
  */
 exports.getRecruitDetail = async(req, res, next)=>{
+	const scheduleOptions = {};
+	
 	const schedule_id = req.params.schedule_id;
-
-	const options = {};
-	options.include = [{ all: true, nested: true}];
+	scheduleOptions.include = [{ all: true, nested: true}];
 	const schedule = await db.Schedule.getSchedule(schedule_id, options);
+
+	// スケジュールデータがなければエラーにする。
+	if(!schedule) 
+	// スケジュールに属するレビューデータの取得
+	const reviewData = await db.Review.getRevieweeHistoryList(schedule.get("user_id"));
+
+	console.log('user_id: ', user_id);
+
+	// const results = await function(){
+	// 	return Promise.all([
+	// 		db.Schedule.getSchedule(schedule_id, options),
+	// 		db.Review.getRevieweeHistoryList()
+	// 	])
+	// }();
+
+	
+	const schedule = await db.Schedule.getSchedule(schedule_id, options);
+
+	// レビュー情報の取得
+
+	
 	const recruit_detail_item = new recruitDetailVO.recruit_detail_item(schedule);
-	console.log('schedule: ', recruit_detail_item);
 	res.json(recruit_detail_item);
+	
 }
 
 /**

@@ -16,7 +16,7 @@ module.exports = {
       },
       to_user_id: {
         type: Sequelize.BIGINT.UNSIGNED,
-        allowNull: false
+        allowNull: true
       },
       message: {
         type: Sequelize.STRING,

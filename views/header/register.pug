@@ -1,19 +1,16 @@
 if(process.env.NODE_ENV == "development")
   div(style = "position: fixed;z-index: 100;background: rgba(0,0,0,0.3);")
-    div: |cam [
-      a(href="./test/cam/u"): |ユーザーのみ/
-      a(href="./test/cam/s"): |スケジュール/
-      a(href="./test/cam/m"): |マッチング/
-      a(href="./test/cam/r"): |レビュー/
+    div: |コマンド[<br/>
+      a(href="./test/data/init"): |テストデータ初期化/<br/>
+      a(href="./test/data/1"): |テストデータ①/<br/>
+      a(href="./test/data/2"): |テストデータ②/<br/>
+      a(href="./test/data/3"): |テストデータ③/<br/>
       |]
-    div: |cos [
-      a(href="./test/cos/u"): |ユーザーのみ/
-      a(href="./test/cos/s"): |スケジュール/
-      a(href="./test/cos/m"): |マッチング/
-      a(href="./test/coc/r"): |レビュー
-      |]
-    div: |err ajax [
-      span.ajaxtest: |ajax test
+    div: |ログイン [<br/>
+      a(href="./test/cam/1"): |カメラマン①/<br/>
+      a(href="./test/cam/2"): |カメラマン②/<br/>
+      a(href="./test/cos/1"): |コスプレイヤー①/<br/>
+      a(href="./test/cos/2"): |コスプレイヤー②<br/>
       |]
 
 header

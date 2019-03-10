@@ -5,6 +5,7 @@
 const noticeVO = require("../viewObjects/notice");
 const publicService = require("../services/publicService");
 const sessionHelper = require('../common/helper/sessionHelper');
+const mailHelper = require('../common/helper/mailHelper');
 const c2Util = require("../services/c2link4DiService");
 
 const db = require("../models/index");
@@ -63,11 +64,24 @@ exports.getAboutUserData = (req, res, next) => {
  * @param {*} req
  * @param {*} res
  */
+exports.postContact = (req, res, next) => {
+	const contactData = req.form_data;
+
+	mailHelper.send(contactData);
+}
+
+/**
+ * お問い合わせ画面の表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 exports.getContact = (req, res, next) => {
 	var render_obj = res.render_obj;
 	render_obj.contentId = "contact";
 	render_obj.title = "お問い合わせ";
-
+	render_obj.backBtn = c2Util.getBackMypageBtn();
+	
 	res.render('public/contact',render_obj);
 }
 

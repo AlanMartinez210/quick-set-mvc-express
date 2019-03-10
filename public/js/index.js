@@ -47,8 +47,17 @@ c2.ready(() => {
     const d = localStorage.getItem('myCostumeData').length;
     return d ? JSON.parse(d): {};
   }
+
+  // モーダル閉じる共通
+  $('[name=doCloseModal]').on('click', e => c2.showClearAll())
+
+  // ヘルプモーダル
+  $('body').on('click', '[data-helpmodal]', {
+    type: "help"
+  }, e => c2.showModal(e));
+
   // イメージモーダル
-  const $imageModal = $("#imageModal");
+  const $modal_box = $(".modal-box");
   $('body').on('click', '[data-imagemodal]', {
     type: "image",
     onSyncOpenBrefore: (resolve, reject, event) => {
@@ -59,10 +68,12 @@ c2.ready(() => {
 
       const img_obj = new Image();
       img_obj.onload = function(e){
+        $modal_box.css({
+          'max-width': `${this.width}px`,
+          'max-height': `${this.height}px`
+        })
         $image_wrap.append(`
-          <div style='max-width:${this.width}px; max-height:${this.height}px; margin: 0 auto;'>
-            <img src='${this.src}' style='width:100%; height:100%;'>
-          </div>
+          <img src='${this.src}' style='width:100%; height:100%;'>
         `);
         resolve();
       }
@@ -71,6 +82,10 @@ c2.ready(() => {
     },
     onCloseBrefore: (event) => {
       $(".image-wrap").empty();
+      $modal_box.css({
+        'max-width': '',
+        'max-height': ''
+      })
     }
   }, e => c2.showModal(e));
 
@@ -86,9 +101,16 @@ c2.ready(() => {
         // さらに読み込む
         $noticeModal.off("click", "[name=noticeMore]");
         $noticeModal.on("click", "[name=noticeMore]", (e) => {
-          const notice_id = $(e.target).data("noticeid");
+          const $t = $(e.target);
+          const notice_id = $t.data("noticeid");
           const $article = $(`[name=noticeArticle${notice_id}]`)
-          $article.isVisible() ? $article.hide() : $article.show();
+          if($article.isVisible()){
+            $t.text("さらに読み込む");
+            $article.hide();
+          }else{
+            $t.text("閉じる");
+            $article.show();
+          }
         })
 
         // ページャー処理
@@ -203,6 +225,9 @@ function setDesignPtn(cntId){
       break;
     case "recruit_detail":
       designPtn = "recruitdetail";
+      break;
+    case "messageRoom":
+      designPtn = "message"
       break;
   }
 

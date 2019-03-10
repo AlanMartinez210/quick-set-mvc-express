@@ -131,7 +131,7 @@ $fontAwesome : "Font Awesome 5 Free";
 		.board-cnt{
 			display: none;
 		}
-		&.on-show{
+		&.on-show-acd{
 			.board-hdr{
 				border-bottom: 1px solid $grayL;
 				&::after{
@@ -470,6 +470,7 @@ $fontAwesome : "Font Awesome 5 Free";
 	border-radius: 5px;
 	border: 1px $grayL solid;
 	background: $white;
+	&.st-required{border: 2px solid $greenL;}
 	textarea{
 		resize: none;
 		width: 100%;
@@ -674,7 +675,7 @@ $fontAwesome : "Font Awesome 5 Free";
 			padding: 8px;
 		}
 	}
-	&.on-show{
+	&.on-show-acd-inner{
 		.accordion-label{
 			&::after{
 				font-family: "Font Awesome 5 Free";
@@ -775,5 +776,27 @@ ul.inner_list{
 	img {
 		width: 100%;
 		height: 100%;
+	}
+}
+
+.help-q{
+	padding: 4px;
+	border-radius: 5px;
+	margin: 0 auto 8px 0;
+	background: $blueL;
+	width: fit-content;
+	max-width: calc(100% - 32px);
+	color: $white;
+}
+
+.help-a{
+	padding: 4px;
+	border-radius: 5px;
+	margin: 0 0 16px auto;
+	background: $white;
+	width: fit-content;
+	max-width: calc(100% - 32px);
+	&:last-child{
+		margin-bottom: 0;
 	}
 }

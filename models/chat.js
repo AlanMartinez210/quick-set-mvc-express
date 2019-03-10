@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
    *
    */
   Chat.postMessage = function(user_id, matching_id, message, options={}){
-    const data = {matching_id, user_id, message};
+    const data = {user_id, matching_id, message};
     return this.create(data, options);
   }
 

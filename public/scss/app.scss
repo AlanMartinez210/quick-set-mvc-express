@@ -20,7 +20,7 @@ button{ cursor: pointer; }
 .wrap-body-content{display: none;}
 .progress-cntnr{display: none;}
 .init-hidden{display: none;} // 初期状態が非表示
-.on-show {display: block !important;}
+.on-show, .on-show-acd-inner, .on-show-acd {display: block !important;}
 .hdr-menu{transition: .3s;}
 .wrapper{position: relative;}
 .invisible{visibility: hidden;}
@@ -56,7 +56,7 @@ button{ cursor: pointer; }
 	max-width: 100%;
 }
 
-a.default{text-decoration: solid; color: $blueL;}
+a.default{text-decoration: underline; color: $blueD; cursor: pointer;}
 
 .dummy-hide{
 	height: 0 !important;

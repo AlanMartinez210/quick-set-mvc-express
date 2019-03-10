@@ -109,6 +109,10 @@ module.exports = (sequelize, DataTypes) => {
     return this.findAll(options);
   };
 
+  Schedule.getScheduleBelongToUserId = function(schedule_id, options = {}) {
+    this
+  }
+
   /**
    * スケジュール情報を取得します。
    *

@@ -35,6 +35,7 @@ const recruitlistForm = require(`${formPath}recruitlistForm`);
 const reviewForm = require(`${formPath}reviewForm`);
 const matchingForm = require(`${formPath}matchingForm`);
 const messageForm = require(`${formPath}messageForm`);
+const publicForm = require(`${formPath}publicForm`);
 
 // ルートにきたときの処理
 router.get('/', (req,res,next)=>{
@@ -150,6 +151,9 @@ router.get('/aboutUserData', publicController.getAboutUserData);
 
 /* お問い合わせの表示 index */
 router.get('/contact', publicController.getContact);
+
+/* お問い合わせの送信 postContact */
+router.post('/contact', validate.check(publicForm.postContact), validate.result, publicController.postContact);
 
 /** お知らせ getNoticeData */
 router.get('/api/notice', publicController.getNoticeData)
@@ -292,78 +296,40 @@ const reviewPattern = require("./test/testdata/pattern/reviewPattern");
 const db = require("./models/index");
 const hashHelper = require("./common/helper/hashHelper");
 
-/**
- * テストでのデータやログインモードをデバックで使用します。
- *
- * type(ユーザー種別): cam(カメラマン)/cos(コスプレイヤー)
- * mode(データタイプ):
- *    u(ユーザーデータのみ)
- *    s(スケジュールデータ)
- *    m(マッチングデータ)
- *    r(レビューデータ)
- * 
- */
 router.get('/test/:type/:mode', (req, res, next) => {
   const sessionHelper = require('./common/helper/sessionHelper');
-  const user_type = req.params.type;
+  const type = req.params.type;
   const data_mode = req.params.mode;
-  console.log("ユーザー種別 -> ", user_type);
-  const mail = user_type == "cam" ? "test.cam_1_cs@c2link.mail.com" : "test.cos_1_cs@c2link.mail.com";
 
-  if(data_mode == "u"){
-    console.log("データタイプ -> ユーザーデータのみ ");
-    const bp = new basePattern();
-    bp.genUserAndTags().then(results => {
-      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
-    })
+  const bp = new basePattern();
+
+  if(type === "data"){
+    switch(data_mode){
+      case "init": 
+        console.log("データタイプ -> 初期化 ");
+        bp.trancateAll().then(() => res.redirect('/'));
+        break;
+      case "1":
+        console.log("データタイプ -> 1 ユーザーデータのみ ");
+        bp.genUserAndTags().then(() => res.redirect('/'));
+        break;
+      case "2":
+        console.log("データタイプ -> 2 スケジュールデータ ");
+        bp.genTestData().then(() => res.redirect('/'));
+        break;
+      case "3":
+        console.log("データタイプ -> 3 全データ");
+        break;
+    }
+  }else{
+    const mail = `test.${type}_${data_mode}_cs@c2link.mail.com`;
+    console.log(`${type} -> ${mail}`);
+    db.User.getUserByUserKeyOrEmail(mail, hashHelper(`password${data_mode}`))
     .then(results => {
       sessionHelper.setUserData(req, results[0]);
       res.redirect('/');
     })
-  }
-  else if(data_mode == "s"){
-    console.log("データタイプ -> スケジュールデータ ");
-    const bp = new basePattern();
-    bp.genTestData().then(results => {
-      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
-    })
-    .then(results => {
-      sessionHelper.setUserData(req, results[0]);
-      res.redirect('/');
-    })
-  }
-  else if(data_mode == "m"){
-    console.log("データタイプ -> マッチングデータ ");
-    const mp = new matchingPattern();
-    mp.genMatchingData().then(results => {
-      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
-    })
-    .then(results => {
-      sessionHelper.setUserData(req, results[0]);
-      res.redirect('/');
-    })
-  }
-  else if(data_mode == "r"){
-    console.log("データタイプ -> レビューデータ ");
-    const rp = new reviewPattern();
-    rp.genReviewData().then(results => {
-      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
-    })
-    .then(results => {
-      sessionHelper.setUserData(req, results[0]);
-      res.redirect('/');
-    })
-  }
-  else if(data_mode == "l"){
-    console.log("データタイプ -> レビューデータ ");
-    const rp = new reviewPattern();
-    bp.genTestData().then(results => {
-      return db.User.getUserByUserKeyOrEmail(mail, hashHelper("password1"));
-    })
-    .then(results => {
-      sessionHelper.setUserData(req, results[0]);
-      res.redirect('/');
-    })
+
   }
 
 });
