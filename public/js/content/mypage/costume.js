@@ -66,7 +66,7 @@ export default class costume{
 						<li name="titleListItem" data-title_id=${item.id} data-chara_list='${JSON.stringify(item.chara_list)}'>${item.name}</li>
 					`);
 				}
-				if(searchData.count) $titleListNum.text(`候補一覧 (${searchData.count}件)`);
+				if(searchData.count) $titleListNum.text(`作品候補一覧 (${searchData.count}件)`);
 			}else{
 				$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
 				$titleListNum.text(`候補一覧 (0件)`);
@@ -103,7 +103,7 @@ export default class costume{
 				}
 			}
 			else{
-				$charaList.append(`<li name="charaListEmpty">候補がありません</li>`);
+				$charaList.append(`<li name="charaListEmpty">キャラクターがいません</li>`);
 			}
 
 			$registTitle.hide();
@@ -149,7 +149,7 @@ export default class costume{
 		$backTitleBtn.on('click', e => {
 			$titleList.empty();
 			$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
-			$titleListNum.text(`候補一覧 (0件)`);
+			$titleListNum.text(`作品候補一覧 (0件)`);
 			$registChara.hide();
 			$registTitle.fadeIn("fast");
 		});
@@ -165,11 +165,11 @@ export default class costume{
 				$titleList.append(`
 					<li name="titleListItem" data-title_id=${res.title_info.id} data-chara_list='${JSON.stringify(res.title_info.chara_list)}'>${res.title_info.name}</li>
 				`);
-				$titleListNum.text(`候補一覧 (1件)`);
+				$titleListNum.text(`作品候補一覧 (1件)`);
 			})
 			
 			return false;
-		})
+		});
 
 		// キャラクター新規登録ボタン 
 		$doPostRegistCharaBtn.on('click', e => {

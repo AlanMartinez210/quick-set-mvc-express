@@ -149,8 +149,15 @@ module.exports = class {
       const notice = {};
       notice.notice_date = dateHelper.createDate(2018, 11, i);
       notice.type = (i%3)+1;
-      notice.title = "新しいお知らせ" + i;
-      notice.content = "お知らせ本部<br /><br />これは新しいおしらせです。<br />これは新しいおしらせです。<br />これは新しいおしらせです。";
+      notice.title = "β版での注意事項" + i;
+      notice.content = `
+        c2linkをご利用いただきありがとうございます。<br />
+        c2link運営です。<br /><br />
+        c2linkは現在β版(一部機能が不安定な場合がある状態)運用中です。<br />
+        ご利用中に予期せぬ不具合が発生し、ご利用者様にご不便をおかけする可能性がございます。<br />
+        万が一、不具合に遭遇した場合は、お手数ですが<a href="/contact">お問い合わせ</a>からご一報いただけますと幸いです。<br />
+        一日でも早い正式版のリリースを目指し、c2link運営一同邁進致しますので、何卒ご協力をお願い致します。<br /><br />
+        c2link運営`;
       notice.islogin = i%2;
       this.notice_data.push(notice);
     }

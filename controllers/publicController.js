@@ -7,6 +7,7 @@ const publicService = require("../services/publicService");
 const sessionHelper = require('../common/helper/sessionHelper');
 const mailHelper = require('../common/helper/mailHelper');
 const c2Util = require("../services/c2link4DiService");
+const common_env = require("../config/env.json").common;
 
 const db = require("../models/index");
 
@@ -66,8 +67,19 @@ exports.getAboutUserData = (req, res, next) => {
  */
 exports.postContact = (req, res, next) => {
 	const contactData = req.form_data;
+	const sendData = {};
+	contactData.contact_type = c2Util.enumContactType().getName(contactData.contact_type);
 
-	mailHelper.send(contactData);
+	sendData.from_address = common_env.CONTACT_MAIL;
+	sendData.to_address = contactData.contact_email;
+	sendData.subject = '【c2link】お問い合わせ';
+	sendData.mail_text = `
+    ■お問い合わせ種別：<br>${contactData.contact_type}<br>
+    ■問い合わせ内容：<br>${contactData.contact_text}<br>
+    ■ユーザーID：<br>${contactData.user_id}`;
+
+	mailHelper.send(common_env.MAIL_SETTING, sendData);
+	res.json({status:'success'});
 }
 
 /**

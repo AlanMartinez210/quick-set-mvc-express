@@ -1,7 +1,6 @@
 const recruitDetailVO = require("../viewObjects/recruitDetail");
 const dateHelper = require("../common/helper/dateHelper");
-
-const db = require("../models/index");
+const recruitDetailService = require("../services/recruitDetailService");
 
 /**
  * 募集の詳細ページ
@@ -10,35 +9,15 @@ const db = require("../models/index");
  * @param {*} res
  */
 exports.getRecruitDetail = async(req, res, next)=>{
-	const scheduleOptions = {};
-	
-	const schedule_id = req.params.schedule_id;
-	scheduleOptions.include = [{ all: true, nested: true}];
-	const schedule = await db.Schedule.getSchedule(schedule_id, options);
+	const form_data = req.form_data;
 
-	// スケジュールデータがなければエラーにする。
-	if(!schedule) 
-	// スケジュールに属するレビューデータの取得
-	const reviewData = await db.Review.getRevieweeHistoryList(schedule.get("user_id"));
-
-	console.log('user_id: ', user_id);
-
-	// const results = await function(){
-	// 	return Promise.all([
-	// 		db.Schedule.getSchedule(schedule_id, options),
-	// 		db.Review.getRevieweeHistoryList()
-	// 	])
-	// }();
-
-	
-	const schedule = await db.Schedule.getSchedule(schedule_id, options);
-
-	// レビュー情報の取得
-
-	
-	const recruit_detail_item = new recruitDetailVO.recruit_detail_item(schedule);
-	res.json(recruit_detail_item);
-	
+	recruitDetailService.getRecruitDetail(form_data.schedule_id)
+	.then(results => {
+		res.json(new recruitDetailVO.recruit_detail_item(results));
+	})
+	.catch(err => {
+		next(err);
+	});
 }
 
 /**

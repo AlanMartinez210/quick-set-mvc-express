@@ -19,7 +19,7 @@ export default class matching{
 				// 募集IDの取得
 				const schedule_id = event.currentTarget.dataset.schedule_id;
 				// 値を取りに行く
-				this.app.sendGet(`/recruitlist/detail/${schedule_id}`)
+				this.app.sendGet(`/recruitdetail/${schedule_id}`)
 				.then(res => {
 					console.log('res: ', res);
 					resolve();

@@ -36,6 +36,7 @@ const reviewForm = require(`${formPath}reviewForm`);
 const matchingForm = require(`${formPath}matchingForm`);
 const messageForm = require(`${formPath}messageForm`);
 const publicForm = require(`${formPath}publicForm`);
+const recruitDetailForm = require(`${formPath}recruitDetailForm`);
 
 // ルートにきたときの処理
 router.get('/', (req,res,next)=>{
@@ -247,14 +248,18 @@ router.get('/recruitlist/:type/search', loginCheck, validate.check(recruitlistFo
 /* 募集/予定のブックマークの設定/解除 PostRecruitBookMark */
 router.post('/recruitlist/bookmark', loginCheck, validate.check(recruitlistForm.postBookmark), validate.result, recruitlistController.postRecruitBookmark);
 
+/** =============================
+ * 募集/予定
+ ================================*/
+
 /* 募集/予定の詳細表示 */
-router.get('/recruitlist/detail/:schedule_id', loginCheck, recruitDetailController.getRecruitDetail);
+router.get('/recruitdetail/:schedule_id', loginCheck, validate.check(recruitDetailForm.getRecruitDetail), validate.result, recruitDetailController.getRecruitDetail);
 
 /**
  * 募集/予定の詳細の表示 entryOutSide
  * 外部からのアクセス専用
  *  */
-router.get('/api/recruitlist/detail', recruitDetailController.entryOutSide)
+router.get('/api/recruitdetail', recruitDetailController.entryOutSide)
 
 
 /**

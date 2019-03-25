@@ -34,7 +34,7 @@
         .main-cntnr
           .center-frame
 
-            .board-prm
+            #board_date_key.board-prm
 
               .board-hdr._s
                 .label-box._nmb._fb.flex._c
@@ -42,8 +42,22 @@
                   span: |日付
               .board-cnt
                 span(data-dummytag="input", data-name="date_key")
+              
+              .board-ftr._s
+                .label-box._nmb._fb.flex._c
+                  i.icon-title.fas.fa-link.fa-fw.c-blue
+                  span: |開始時間
+              .board-ftr
+                span(data-dummytag="input", data-name="time_from")
+              
+              .board-ftr._s
+                .label-box._nmb._fb.flex._c
+                  i.icon-title.fas.fa-link.fa-fw.c-blue
+                  span: |終了時間
+              .board-ftr
+                span(data-dummytag="input", data-name="time_to")
 
-            .board-prm
+            #board_shot_type.board-prm
               .board-hdr._s
                 .label-box._nmb._fb.flex._c
                   i.icon-title.fas.fa-camera.fa-fw.c-blue
@@ -51,7 +65,7 @@
               .board-cnt
                 span(data-dummytag="input", data-name="shot_type")
 
-            .board-prm
+            #board_event_name.board-prm
               .board-hdr._s
                 .label-box._nmb._fb.flex._c
                   i.icon-title.far.fa-flag.fa-fw.c-blue
@@ -64,9 +78,18 @@
                   i.icon-title.fas.fa-link.fa-fw.c-blue
                   span: |詳細URL
               .board-ftr
-                a(target="_blank", data-dummytag="input", data-name="event_url")
+                a(class="default" target="_blank", data-dummytag="input", data-name="event_url")
 
-            .board-prm
+            #board_costumes.board-prm
+              .board-hdr._s
+                .label-box._nmb._fb.flex._c
+                  i.icon-title.fas.fa-tshirt.fa-fw.c-blue
+                  span: |コスチューム
+              .board-cnt._s
+                .label-box._nmb
+                  #costume_box.deco-label
+
+            #board_prefectures.board-prm
               .board-hdr._s
                 .label-box._nmb._fb.flex._c
                   i.icon-title.fas.fa-map-marker-alt.fa-fw.c-blue
@@ -74,26 +97,8 @@
               .board-cnt._s
                 .label-box._nmb
                   #prefectures_box.deco-label
-
-
-            .board-prm
-              .board-hdr._s
-                .label-box._nmb._fb.flex._c
-                  i.icon-title.far.fa-images.fa-fw.c-blue
-                  span: |サンプル写真
-              .board-cnt.js-slickBtn
-                .my-slick-wrap
-
-            .board-prm
-              .board-hdr._s
-                .label-box._nmb._nmb._fb.flex._c
-                  i.icon-title.far.fa-thumbs-up.fa-fw.c-blue
-                  span: |レビュー評価
-              .board-cnt._s
-                .group-wrap
-                  #review_box
-
-            .board-prm
+            
+            #board_tags.board-prm
               .board-hdr._s
                 .label-box._nmb._fb.flex._c
                   i.icon-title.fas.fa-tag.fa-fw.c-blue
@@ -102,7 +107,32 @@
                 .label-box._nmb
                   #tag_box.deco-label
 
-            .board-prm
+            #board_cost.board-prm
+              .board-hdr._s
+                .label-box._nmb._fb.flex._c
+                  i.icon-title.fas.fa-yen-sign.fa-fw.c-blue
+                  span: |費用
+              .board-cnt
+                span(data-dummytag="input", data-name="cost")
+
+            #board_sample_image.board-prm
+              .board-hdr._s
+                .label-box._nmb._fb.flex._c
+                  i.icon-title.far.fa-images.fa-fw.c-blue
+                  span: |サンプル写真
+              .board-cnt.js-slickBtn
+                .my-slick-wrap
+
+            #board_reviews.board-prm
+              .board-hdr._s
+                .label-box._nmb._nmb._fb.flex._c
+                  i.icon-title.far.fa-thumbs-up.fa-fw.c-blue
+                  span: |レビュー評価
+              .board-cnt._s
+                .group-wrap
+                  #review_box
+
+            #board_remarks.board-prm
               .board-hdr._s
                 .label-box._nmb._fb.flex._c
                   i.icon-title.fas.fa-clipboard-list.fa-fw.c-blue

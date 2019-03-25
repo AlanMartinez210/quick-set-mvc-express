@@ -91,17 +91,21 @@ $fontAwesome : "Font Awesome 5 Free";
 		.board-hdr{
 			display: flex;
 			padding: 0;
-			border: 0;
 			.tab-item{
 				cursor: pointer;
 				flex-grow: 1;
 				padding: 16px;
-				background: $grayLW;
+				text-align: center;
 				border-radius: 5px 5px 0 0; 
-				border-top: 4px $grayLW solid;
+				span{
+					padding: 8px;
+					border-bottom: 4px $white solid;
+				}
 				&.active-tab{
 					background: $white;
-					border-top: 4px $blueL solid;
+					span{
+						border-bottom: 4px $blueL solid;
+					}
 					&:first-child{
 						border-radius: 5px 0 0 0;
 					}
@@ -618,6 +622,7 @@ $fontAwesome : "Font Awesome 5 Free";
 		display: none;
 		p {font-size: 13px;}
 		padding-bottom: 16px;
+		line-height: 1.4em;
 	}
 }
 
@@ -751,7 +756,7 @@ ul.line-list{
 	}
 }
 
-ul.inner_list{
+ul.inner-list{
 	overflow: scroll;
 	height: 150px;
 	border: 1px solid $grayL;
@@ -761,6 +766,23 @@ ul.inner_list{
 		color: $blueL;
 		&:nth-child(odd){
 			background-color: $grayLW;
+		}
+	}
+}
+
+ul.inner-rich-list{
+	overflow: scroll;
+	height: 200px;
+	border: 1px solid $grayL;
+	border-radius: 5px;
+	background: $grayD;
+	li{
+		border-radius: 5px;
+		margin: 0 8px 8px 8px;
+		background: $white;
+		box-shadow:0px 1px 3px 0px $blackD-opcity-30;
+		&:first-child{
+			margin-top: 8px;
 		}
 	}
 }

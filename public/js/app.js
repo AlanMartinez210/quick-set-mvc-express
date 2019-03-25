@@ -337,6 +337,7 @@ export default class myApp extends baseApp {
    * #### モーダル
    ========================================================== */
 
+
   /**
    * モーダルを表示します。
    *
@@ -438,31 +439,52 @@ export default class myApp extends baseApp {
     $("#modal-close, #modal-close-btn").off('click');
   }
 
+  /**
+   * モーダルを親子関係を設定して開きます。
+   * 
+   * @param {*} modalName モーダルの名称
+   * @param {*} isKeepParentPosition 子モーダルを開いた時の親モーダルの位置を保持する
+   */
+  showChildModal({modalName, isKeepParentPosition: ture} = param){
+    const $modalBody = $("#modal-close");
+    const $backParentBtn = $("#modal-back-btn");
+
+    // 初期化
+    $backParentBtn.off("click");
+    $modalBody.removeClass("child-modal");
+    $modalBody[0].dataset.p =keepParentPosition ? $modalBody.scrollTop() : 0;
+
+    // 現在開いてるモーダルのIDを取得する。
+    const parentModalId = $modalBody.find("[data-modal='show']")[0].id;
+
+    // モーダルに子モーダル設定をします。
+    $modalBody.addClass('child-modal');
+    $modalBackBtn.on('click', () => {
+      // 子モーダルの解除
+      $modalBody.removeClass("child-modal");
+      switchModal(parentModalId);
+      $modalBody.scrollTop(0, $modalBody[0].dataset.p || 0);
+      $modalBody[0].dataset.p = 0;
+    });
+
+    switchModal(parentModalId);
+  }
+
   /** 
    * 現在表示しているモーダルと指定したモーダルの表示を入れ替えます。
    * 
    * @param {*} modalName モーダルの名称
-   * @param {*} child 子モーダルとして開く(閉じる機能無効化)
    * 
    */
-  switchModal ({modalName, child, position} = param){
-    const modal = document.getElementById("modal-close");
+  switchModal (modalName){
+    const $modalBody = $("#modal-close");
+    const $changeModal = $("#"+ modalName);
 
-    if(position === "keep") modal.dataset.p = modal.scrollTop;
+    // 現在開いているモーダルを閉じる
+    $modalBody.find("[data-modal='show']")[0].dataset.modal = "hide";
     
-    // 現在表示しているモーダルを非表示にする。
-    $(".modal-box").find("[data-modal='show']").attr("data-modal", "hide");
-
-    $("#"+ modalName + "Modal").attr("data-modal", "show");
-    $("#modal-close, #modal-close-btn")[child ? 'addClass' : 'removeClass']('child-modal');
-
-    if(position === "release"){
-      modal.scrollTo(0, modal.dataset.p);
-      modal.dataset.p = 0;
-    }
-    else{
-      this.modalScrollReset();
-    }
+    // 目的のモーダルを開く
+    $changeModal[0].dataset.modal = "show";
   }
 
   /**

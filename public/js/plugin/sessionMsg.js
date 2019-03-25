@@ -5,16 +5,19 @@ export default class sessionMsg{
     // セッションからアクセスモードを取り出し、モードごとの処理を行う。
     switch(window.sessionStorage.getItem(['access_mode'])){
       case "register":
+
         // 案内用ダイアログを表示する。
         myApp.showInfoDialog({
           name: "registerInfo",
           title: "c2Linkへようこそ！",
-          text: "<p>まずは自分のスケジュールを入力して、みんなに広めましょう！</p>",
+          text: myApp.config.isCos() ? 
+          `<p>まずは自分のコスプレ衣装を設定しましょう！</p>` :
+          `<p>まずはスケジュールを入力して、あなたが活動できる日をみんなに伝えましょう！</p>`
         }).closelabel("閉じる")
         .addBtn({
           label: "移動する",
           callback: function() {
-            location.href = '/mypage/schedule';
+            location.href = myApp.config.isCos() ? '/mypage/costume' : '/mypage/schedule';
           }
         })
         break;
@@ -32,6 +35,8 @@ export default class sessionMsg{
       case "account_dalete":
         // ログアウトしたことを通知する。
         myApp.showInfo("アカウントの削除が完了しました。");
+        break;
+      case "login_hint":
         break;
     }
     window.sessionStorage.removeItem(['access_mode']);

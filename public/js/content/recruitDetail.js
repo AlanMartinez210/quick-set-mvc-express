@@ -122,7 +122,7 @@ export default class recruitDetail{
 
 	// 募集詳細情報を取得します。
 	getRecruitDetail(schedule_id){
-		return this.app.sendGet(`/recruitlist/detail/${schedule_id}`);
+		return this.app.sendGet(`/recruitdetail/${schedule_id}`);
 	}
 
 	detailHeaderDefine(){

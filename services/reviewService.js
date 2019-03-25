@@ -16,12 +16,12 @@ exports.getUnReviewList = (user_id, page=1)=>{
  *  page: ページ番号 1-
  */
 exports.getRevieweeHistoryList = (user_id, page=1)=>{
-  const option = {};
+  const options = {};
 
-  options.limit = PAGE_COUNT;
-  options.offset = PAGE_COUNT * (page-1);
+  // options.limit = PAGE_COUNT;
+  // options.offset = PAGE_COUNT * (page-1);
 
-  return Review.getRevieweeHistoryList(user_id, option);
+  return Review.getRevieweeHistoryList(user_id, options);
 };
 
 

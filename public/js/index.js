@@ -10,7 +10,6 @@ c2.init(() => {
 });
 // document read complated run function.
 c2.ready(() => {
-  
 	// デザインパターンの設定
 	setDesignPtn(c2.config.cntid);
 	// ヘッダーの選択設定

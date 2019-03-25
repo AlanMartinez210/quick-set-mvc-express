@@ -15,49 +15,51 @@
         li.shadow-l: |過去のお問い合わせの回答は、<a class="default" data-helpmodal>ヘルプ</a>にてまとめておりますので、お問い合わせ前に一度ご確認をお願い致します。
 
   .board-prm
-    .board-hdr
+    form(method="post", action="", name="contactForm")
+      .board-hdr
 
-      .label-box._fb.flex._c
-        i.icon-title-b.far.fa-envelope.fa-fw.c-red
-        span: |お問い合わせ
+        .label-box._fb.flex._c
+          i.icon-title-b.far.fa-envelope.fa-fw.c-red
+          span: |お問い合わせ
 
-    .board-cnt
-      .attention-prm
-        p
-          span.st-required(style="display:inline-block;")
-            |&emsp;&emsp;&emsp;
-          |&nbsp;は必須項目です。
-
-      .label-input-box#box_user_id
-        .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
-          p.main-label: |ユーザーID
-        .input-box.flex._c
-          input(type="text", name="user_id", maxlength=256)
-        p.bottom-label
-
-      .label-input-box#box_contact_email
-        .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
-          p.main-label: |返答用メールアドレス
-        .input-box.flex._c.st-required
-          input(type="text", name="contact_email", maxlength=256)
-        p.bottom-label
-
-      .label-input-box#box_contact_type
-        .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00017)
-          p.main-label: |お問い合わせ種別
-        .select-box.flex._c.st-required
-          select(name="contact_type")
-            each contact_type in self.globalParam.enumContactType.getEnum()
-              option(value=contact_type.code) #{contact_type.name}
-        p.bottom-label
-
-      .label-input-box#box_contact_text
-        .label-box.icon_tip._edit.help-tip.help-tip(data-help_text=viewMsg.v00012)
-          p.main-label: |お問い合わせ内容
-        .textarea-box.flex._c.st-required
-          textarea(name="contact_text", rows="5", maxlength=2000)
-        p.bottom-label
+      .board-cnt
         
-    .board-ftr._s.flex._c._jc
-      button.btn-prm.st-back-b.shadow-l
-        span: |送信
+          .attention-prm
+            p
+              span.st-required(style="display:inline-block;")
+                |&emsp;&emsp;&emsp;
+              |&nbsp;は必須項目です。
+
+          .label-input-box#box_user_id
+            .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
+              p.main-label: |ユーザーID
+            .input-box.flex._c
+              input(type="text", name="user_id", maxlength=256)
+            p.bottom-label
+
+          .label-input-box#box_contact_email
+            .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
+              p.main-label: |返答用メールアドレス
+            .input-box.flex._c.st-required
+              input(type="text", name="contact_email", maxlength=256)
+            p.bottom-label
+
+          .label-input-box#box_contact_type
+            .label-box.icon_tip._select.help-tip(data-help_text=viewMsg.v00017)
+              p.main-label: |お問い合わせ種別
+            .select-box.flex._c.st-required
+              select(name="contact_type")
+                each contact_type in self.globalParam.enumContactType.getEnum()
+                  option(value=contact_type.code) #{contact_type.name}
+            p.bottom-label
+
+          .label-input-box#box_contact_text
+            .label-box.icon_tip._edit.help-tip.help-tip(data-help_text=viewMsg.v00012)
+              p.main-label: |お問い合わせ内容
+            .textarea-box.flex._c.st-required
+              textarea(name="contact_text", rows="5", maxlength=2000)
+            p.bottom-label
+          
+      .board-ftr._s.flex._c._jc
+        button(type="submit", name="doContactPost").btn-prm.st-back-b.shadow-l.proc-btn
+          span: |送信

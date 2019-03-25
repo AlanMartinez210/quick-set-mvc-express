@@ -216,8 +216,11 @@
 }
 
 .error-input{
-	.input-box,.select-box{
-		border-bottom: 1px solid $redD !important;
+	.input-box, .select-box{
+		border-bottom: 2px solid $redD !important;
+	}
+	.textarea-box{
+		border: 2px solid $redD !important;
 	}
 	.label-box{
 		.main-label{

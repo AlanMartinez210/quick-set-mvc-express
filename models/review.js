@@ -1,8 +1,5 @@
 const PAGE_COUNT = global.APPENV.PAGE_COUNT;
-const enumMatchingStatus = require('../services/c2link4DiService').enumMatchingStatus();
 const dateHelper = require('../common/helper/dateHelper');
-const errorHelper = require("../common/helper/errorHelper");
-
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {

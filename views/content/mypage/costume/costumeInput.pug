@@ -7,7 +7,7 @@
 
   .label-input-box#box_search_content_title
     .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00024)
-      p.main-label: |作品名を検索
+      p.main-label: |キャラクターを検索
     .input-box.flex._c.st-required
       input(type="text", name="search_content_title", maxlength=50)
     p.bottom-label
@@ -17,43 +17,49 @@
         |検索
   
     p.st-title-tag#titleListNum
-      |作品候補一覧 (0件)
+      |候補一覧 (0件)
 
-    ul.inner_list#titleList
-      li: |候補がありません
-  
-  .label-link.shadow-l
-    a(name="openRegistTitleModal").flex._c.flex._c
-      i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
+    ul#titleList.inner-rich-list
+      //- li
+      //-   .label-link
+      //-     a(href="/mypage/review").flex._c
+      //-       .st-string-set
+      //-         p: |レビューの管理
+      //-         span.sub-text: |レビューの管理や閲覧ができます。
+      //-       i.icon-link.fas.fa-chevron-right.fa-fw
+
+  #createCharaBtn.label-link.shadow-l.init-hidden
+    a(href="/mypage/review").flex._c.flex._c
+      i.icon-title-b.fas.fa-info-circle.fa-fw.c-blue
       .st-string-set
-        p: |作品登録
-        span.sub-text: |お探しの作品がない場合はこちら
+        p: |お探しのキャラクターがいませんか？
+        span.sub-text: |作品がない場合は、こちらから作品を登録します。
       i.icon-link.fas.fa-chevron-right.fa-fw
   
-#registChara.board-cnt._s
+//- #registChara.board-cnt._s
 
-  .option-box.flex._jr
-    span.option-btn.st-line-b(name="backTitle")
-      |作品選択に戻る
+//-   .option-box.flex._jr
+//-     span.option-btn.st-line-b(name="backTitle")
+//-       |作品選択に戻る
 
-  .label-input-box
-    .label-box
-      p.main-label: |作品名
-    .input-box.flex._c.st-readonly
-      input(type="text", name="content_title_name", readonly)
-      input(type="hidden", name="conf_content_title")
+//-   .label-input-box
+//-     .label-box
+//-       p.main-label: |作品名
+//-     .input-box.flex._c.st-readonly
+//-       input(type="text", name="content_title_name", readonly)
+//-       input(type="hidden", name="conf_content_title")
 
 
-    p.st-title-tag
-      |キャラクター候補一覧
+//-     p.st-title-tag
+//-       |キャラクター候補一覧
 
-    ul.inner_list#charaList
-      li: |候補がありません
+//-     ul.inner_list#charaList
+//-       li: |候補がありません
   
-  .label-link.shadow-l
-    a(name="openRegistCharaModal").flex._c
-      i.icon-title-b.far.fa-thumbs-up.fa-fw.c-blue
-      .st-string-set
-        p: |キャラクター登録
-        span.sub-text: |お探しのキャラクターがない場合はこちら
-      i.icon-link.fas.fa-chevron-right.fa-fw
+//-   .label-link.shadow-l
+//-     a(name="openRegistCharaModal").flex._c
+//-       i.icon-title-b.fas.fa-info-circle.fa-fw.c-blue
+//-       .st-string-set
+//-         p: |お探しのキャラクターがいませんか？
+//-         span.sub-text: |キャラクターがいない場合は、こちらからキャラクターを登録します。
+//-       i.icon-link.fas.fa-chevron-right.fa-fw

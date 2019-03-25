@@ -46,11 +46,14 @@ button{ cursor: pointer; }
 	left:0;
 }
 
-#modal-close-btn{
+#modal-close{
 	&.child-modal{
-		visibility: hidden;
+		#modal-close-btn{ visibility: hidden; }
+		#modal-back-btn{ visibility: visible; }
 	}
 }
+
+
 
 .cropper-img{
 	max-width: 100%;
@@ -133,6 +136,15 @@ a.default{text-decoration: underline; color: $blueD; cursor: pointer;}
 				right: 0;
 				border-radius: 5px;
 				padding: 8px 12px;
+				background: $white;
+			}
+			.modal-back{
+				visibility: hidden;
+				position: absolute;
+				top: -48px;
+				left: 0;
+				border-radius: 5px;
+				padding: 8px 10px;
 				background: $white;
 			}
 			[data-modal="hide"]{
