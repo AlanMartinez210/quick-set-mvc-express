@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   });
   Content_title.associate = function(models) {
     // associations can be defined here
-    this.hasMany(models.Content_chara, {as: "content_chara", foreignKey: "content_id", targetKey: "id" });
+    this.hasMany(models.Content_chara, {as: "content_chara", foreignKey: "content_title_id", targetKey: "id" });
   };
 
   /**
@@ -23,9 +23,16 @@ module.exports = (sequelize, DataTypes) => {
    * content_id: 作品ID
    * options: options
    */
-  Content_title.getContentTitle = async function(content_id, options={}){
+  Content_title.getContentTitleById = async function(content_id, options={}){
     options.include = ["content_chara"];
     return this.findByPk(content_id, options);
+  };
+
+  Content_title.isExist = async function(content_id, options={}){
+    return this.findByPk(content_id, options)
+    .then(instance => {
+      return instance ? true : false;
+    })
   };
 
   /**
@@ -34,11 +41,13 @@ module.exports = (sequelize, DataTypes) => {
    * obj: パラメータ
    * options: options
    */
-  Content_title.addContentTitle = async function(user_id, {name, sub_title, abbreviation}, options={}){
+  Content_title.addContentTitle = async function({name, sub_title, abbreviation, create_user_id} = data, options={}){
     return this.create({
-      create_user_id: user_id,
-      name, sub_title, abbreviation,
-    },options);
+      name, 
+      sub_title, 
+      abbreviation, 
+      create_user_id
+    }, options);
   };
 
   /**
@@ -46,9 +55,8 @@ module.exports = (sequelize, DataTypes) => {
    * obj: キーワード
    * options: options
    */
-  Content_title.searchContentTitle = async function({name}, options={}){
+  Content_title.search = async function(options={}){
     options.include = ["content_chara"];
-    options.where = { name: { [sequelize.Op.like]: '%' + sequelize.rawEscape(name) + '%'} };
     return this.findAll(options);
   };
 

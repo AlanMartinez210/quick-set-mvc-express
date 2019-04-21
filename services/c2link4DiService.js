@@ -9,7 +9,7 @@ const prefectureHelper = require('../common/helper/prefectureHelper');
  * @param {session.user_type} user_type
  */
 exports.isCosplayer = (user_type) => {
-  return Number(user_type) === 1 ? true : false;
+  return Number(user_type) === 1;
 }
 
 /**
@@ -18,7 +18,21 @@ exports.isCosplayer = (user_type) => {
  * @param {session.user_type} user_type
  */
 exports.isCameraman = (user_type) => {
-  return Number(user_type) === 2 ? true : false;
+  return Number(user_type) === 2;
+}
+
+/**
+ * タイトルの場合trueを返します。
+ */
+exports.isTitle = (type) => {
+  return type === 'title';
+}
+
+/**
+ * キャラクターの場合trueを返します。
+ */
+exports.isChara = (type) => {
+  return type === 'chara';
 }
 
 /**
@@ -61,6 +75,13 @@ exports.getBackMypageBtn = () => {
   return {
     href: '/mypage',
     name: 'マイページに戻る'
+  }
+}
+
+exports.getBackTopPageBtn = () => {
+  return {
+    href: '/register',
+    name: 'トップに戻る'
   }
 }
 

@@ -8,12 +8,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT.UNSIGNED
       },
-      content_id: {
+      content_title_id: {
         type: Sequelize.BIGINT.UNSIGNED,
         allowNull: false
       },
       name: {
         type: Sequelize.STRING(256),
+        allowNull: false
+      },
+      nickname: {
+        type: Sequelize.STRING(256)
+      },
+      name_type: {
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false
       },
       create_user_id: {

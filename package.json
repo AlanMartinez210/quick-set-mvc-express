@@ -91,5 +91,8 @@
   },
   "husky": {
     "hooks": {}
+  },
+  "nodemonConfig":{
+    "ignore": ["public"]
   }
 }

@@ -337,7 +337,6 @@ export default class myApp extends baseApp {
    * #### モーダル
    ========================================================== */
 
-
   /**
    * モーダルを表示します。
    *
@@ -445,46 +444,53 @@ export default class myApp extends baseApp {
    * @param {*} modalName モーダルの名称
    * @param {*} isKeepParentPosition 子モーダルを開いた時の親モーダルの位置を保持する
    */
-  showChildModal({modalName, isKeepParentPosition: ture} = param){
+  showChildModal({modalName, isKeepParentPosition} = param){
     const $modalBody = $("#modal-close");
     const $backParentBtn = $("#modal-back-btn");
 
     // 初期化
     $backParentBtn.off("click");
-    $modalBody.removeClass("child-modal");
-    $modalBody[0].dataset.p =keepParentPosition ? $modalBody.scrollTop() : 0;
+    // 親の位置を保存する。
+    $modalBody[0].dataset.p = isKeepParentPosition ? $modalBody.scrollTop() : 0;
 
     // 現在開いてるモーダルのIDを取得する。
     const parentModalId = $modalBody.find("[data-modal='show']")[0].id;
 
     // モーダルに子モーダル設定をします。
-    $modalBody.addClass('child-modal');
-    $modalBackBtn.on('click', () => {
-      // 子モーダルの解除
-      $modalBody.removeClass("child-modal");
-      switchModal(parentModalId);
-      $modalBody.scrollTop(0, $modalBody[0].dataset.p || 0);
-      $modalBody[0].dataset.p = 0;
+    $backParentBtn.on('click', () => {
+      this.switchModal(parentModalId, true);
     });
+    this.switchModal(modalName);
 
-    switchModal(parentModalId);
+    $modalBody.addClass('child-modal');
   }
 
   /** 
    * 現在表示しているモーダルと指定したモーダルの表示を入れ替えます。
    * 
    * @param {*} modalName モーダルの名称
+   * @param {*} isPosition モーダルに設定したポジションを反映する。
    * 
    */
-  switchModal (modalName){
+  switchModal (modalName, isPosition){
     const $modalBody = $("#modal-close");
     const $changeModal = $("#"+ modalName);
 
+    // モーダルについているオプションの解除
+    $modalBody.removeClass("child-modal");
     // 現在開いているモーダルを閉じる
     $modalBody.find("[data-modal='show']")[0].dataset.modal = "hide";
-    
+
     // 目的のモーダルを開く
     $changeModal[0].dataset.modal = "show";
+    
+    // 位置オプションの反映とリセット
+    if(isPosition){
+      $modalBody.scrollTop($modalBody[0].dataset.p || 0);
+      $modalBody[0].dataset.p = 0;
+    }else{
+      $modalBody.scrollTop(0);
+    }
   }
 
   /**
@@ -824,6 +830,10 @@ function getContent(app){
     case "recruitToday":
       contenId = "recruit";
       break;
+    case "forget_password":
+    case "forget_userid":
+      contenId = "forget";
+      break;
     case "error":
       errProc();
       break;
@@ -839,6 +849,6 @@ function getContent(app){
 }
 
 function errProc(){
-  // URLをerrorに書きかけ
+  // URLをerrorに書きかえ
   history.replaceState('','','/error');
 }

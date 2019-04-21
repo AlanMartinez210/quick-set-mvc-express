@@ -8,27 +8,6 @@ export default class schedule{
 		this.scheduleForm = $('[name=scheduleForm]');
 	}
 	ready(){
-		const scheduleSection = $('#scheduleSection');
-		const calendarSection = $('#calendarSection');
-		// 処理ボタン
-		const doScheduleBtn = $('[name=doSchedulePost]');
-		// モーダルの表示
-		const openScheduleBtn = "[name=createSchedule]";
-		const showScheduleBtn = "[name=showSchedule]";
-		// 日付のみ表示のチェック
-		const isExistSchedule = "#isCheckDate";
-		
-		//キャラクター追加ボタン
-		const $addCharaBtn =  $("[name=addChara]");
-		// 質問からタグを作るボタン
-		const $tagGenBtn =  $("[name=tagGen]");
-		// あわせ募集に戻るボタン
-		const $bkGroupBtn = $("[name=bk_group]");
-
-		const $moveCostumeLink = $("#moveCostume");
-
-		// 質問からタグを作る完了ボタン
-		const $doTagGenerateBtn =  $("[name=doTagGenerate]");
 		this.tags = new plugin_tag(this.app, this.app.config.isCos(true) ? "cos_shedule_tags" : "cam_shedule_tags");
 		this.prefs = new plugin_prefecture(this.app);
 		this.p_costume = new plugin_costume(this.app);
@@ -38,6 +17,9 @@ export default class schedule{
 		costume.app = this.app;
 		//costumeをスケジュールモードで開く
 		costume.ready({type: "schedule"});
+
+		const scheduleSection = $('#scheduleSection');
+		const calendarSection = $('#calendarSection');
 
 		// カレンダーの年を変更したとき
 		calendarSection.on("change", "[name=yearSelectList]", (e) => {
@@ -54,15 +36,15 @@ export default class schedule{
 		});
 
 		// モーダルを参照モードで開く
-		scheduleSection.on('click', showScheduleBtn , {
+		scheduleSection.on('click', "[name=showSchedule]" , {
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
 				this.openScheduleModal("reference", resolve, reject, event);
 			}
 		}, e => this.app.showModal(e));
 		
-		// モーダルを開く
-		scheduleSection.on('click', openScheduleBtn , {
+		// スケジュール作成モーダルを開く
+		scheduleSection.on('click', "[name=createSchedule]" , {
 			type: "createSchedule",
 			onSyncOpenBrefore : (resolve, reject, event) => {
 				this.openScheduleModal("edit", resolve, reject, event);
@@ -75,28 +57,55 @@ export default class schedule{
 		}, e => this.app.showModal(e));
 
 		// スケジュールが存在するもののみ表示
-		scheduleSection.on('change', isExistSchedule, (e) => {
+		scheduleSection.on('change', "#isCheckDate", (e) => {
 			$("#"+e.target.id).prop("checked") ? $(".empty").hide() : $(".date-list li").show();
 		});
-		
 
-		// キャラクター検索モーダルの切り替え
-		$addCharaBtn.on("click", () => {
-			this.app.switchModal({modalName: "charaSearch", child:true});
-		});
+		// // キャラクター検索モーダルの切り替え
+		// const $addCharaBtn =  $("[name=addChara]");
+		// $addCharaBtn.on("click", () => {
+		// 	this.app.switchModal({modalName: "charaSearch", child:true});
+		// });
 
 		// 質問からタグを作るモーダルの切り替え
-		$tagGenBtn.on("click", () => {
-			this.app.switchModal({modalName: "tagGenerator", child:true, position: "keep"});
+		$("[name=tagGen]").on("click", () => {
+			this.app.showChildModal({
+				modalName: "tagGeneratorModal",
+				isKeepParentPosition: true
+			});
 		});
 
-		// スケジュール/あわせ募集に戻る
-		$bkGroupBtn.on("click", () => {
-			this.app.switchModal({modalName: "createSchedule", position: "release"});
+		// タグ作成完了処理
+		$("[name=doTagGenerate]").on("click", () => {
+			this.app.showWarnDialog({
+				name: "checkAddTag",
+				title: "タグ作成の確認",
+				text: `
+				<p>タグの作成を行います。<br /><br />
+				<p class="c-red">※一覧に追加されているタグは消えてしまいますので、ご注意ください。</p>
+			`
+			})
+			.closelabel("タグ作成に戻る")
+			.addBtn({
+				callback: () => {
+					const tagGenData = $("[name=tagGeneratorForm]").getValue();
+					this.tags.init().ready();
+
+					$("[name=tags_field]").empty();
+					
+					Object.keys(tagGenData).forEach(key => {
+						if(tagGenData[key].checked) this.tags.addTags(tagGenData[key].value)
+					});
+
+					this.app.hideDialog();
+					this.app.switchModal("createScheduleModal", true);
+				}
+			})
+			return false;
 		});
 
 		// コスチューム設定に移動
-		$moveCostumeLink.on('click', (e) => {
+		$("#moveCostume").on('click', (e) => {
 			const t = $(e.currentTarget);
 			console.log('t: ', t);
 			this.app.showInfoDialog({
@@ -113,39 +122,11 @@ export default class schedule{
 					location.href = t.attr("href");
 				}
 			})
-
-			return false;
-		});
-
-		// タグ作成完了処理
-		$doTagGenerateBtn.on("click", () => {
-
-			this.app.showWarnDialog({
-				name: "checkAddTag",
-				title: "タグ作成の確認",
-				text: `
-				<p>タグの作成を行います。<br /><br />
-				<p class="c-red">※一覧に追加されているタグは消えてしまいますので、ご注意ください。</p>
-			`
-			})
-			.closelabel("タグ作成に戻る")
-			.addBtn({
-				callback: () => {
-					const tagGenData = $("[name=tagGeneratorForm]").getValue();
-					this.tags.init().ready();
-					Object.keys(tagGenData).forEach(key => {
-						if(tagGenData[key].checked) this.tags.addTags(tagGenData[key].value)
-					})
-					this.app.hideDialog();
-					this.app.switchModal({modalName: "createSchedule", position: "release"});
-				}
-			})
-			
 			return false;
 		});
 
 		// 登録/編集/削除ボタンの処理
-		doScheduleBtn.on('click', (event) => {
+		$('[name=doSchedulePost]').on('click', (event) => {
 			let path = "/mypage/schedule";
 			let httpMethod;
 			const modal_mode = event.currentTarget.dataset.proc;
@@ -189,6 +170,9 @@ export default class schedule{
 		});
 
 	}
+
+	//
+
 	// スケジュールの取得
 	getSchedule(schedule_id){
 		return this.app.sendGet(`/mypage/schedule/${schedule_id}`);
@@ -329,7 +313,7 @@ export default class schedule{
 			.then(cosList => {
 				if(cosList && cosList.rows){
 					cosList.rows.forEach(item => {
-						$("#costumes").append($('<option>', {value: item.costume_id, text: `${item.title}-${item.chara}`}));
+						$("#costumes").append($('<option>', {value: item.costume_id, text: `${item.content_title_name}-${item.content_chara_name}`}));
 					})
 				}
 				return resolve();

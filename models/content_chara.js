@@ -3,8 +3,10 @@ const dateHelper = require('../common/helper/dateHelper');
 
 module.exports = (sequelize, DataTypes) => {
   const Content_chara = sequelize.define('Content_chara', {
-    content_id: DataTypes.BIGINT,
+    content_title_id: DataTypes.BIGINT,
     name: DataTypes.STRING,
+    nickname: DataTypes.STRING,
+    name_type: DataTypes.INTEGER,
     create_user_id: DataTypes.BIGINT
   }, {
     getterMethods:{
@@ -14,15 +16,29 @@ module.exports = (sequelize, DataTypes) => {
   });
   Content_chara.associate = function(models) {
     // associations can be defined here
-    this.belongsTo(models.Content_title, {as:"content"})
+    this.belongsTo(models.Content_title, {as: "content_title"})
   };
+
   /**
    * キャラクターを取得する
    * chara_id: キャラID
    * options: options
    */
-  Content_chara.getChara = async function(chara_id, options={}){
+  Content_chara.getCharaById = async function(chara_id, options={}){
+    options.include = ["content_title"];
     return this.findByPk(chara_id, options);
+  };
+
+  /**
+   * キャラクターが存在するか確認する。
+   * chara_id: キャラID
+   * options: options
+   */
+  Content_chara.isExist = async function(chara_id, options={}){
+    return this.findByPk(chara_id, options)
+    .then(instance => {
+      return instance ? true : false;
+    })
   };
 
   /**
@@ -30,12 +46,25 @@ module.exports = (sequelize, DataTypes) => {
    * user_id: 作成者ID
    * obj: パラメータ
    */
-  Content_chara.addChara = async function(user_id, {content_id, name}){
+  Content_chara.addChara = async function({content_title_id, name, nickname, name_type, create_user_id} = data, options = {}){
     return this.create({
-      create_user_id: user_id,
-      content_id, name,
-    });
+      content_title_id, 
+      name,
+      nickname,
+      name_type,
+      create_user_id
+    }, options);
   };
+
+  /**
+   * キーワードからキャラクターを検索する。
+   * 
+   * 
+   */
+  Content_chara.search = async function(options = {}){
+    options.include = ["content_title"];
+    return this.findAll(options);
+  }
 
   return Content_chara;
 };

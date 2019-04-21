@@ -25,7 +25,9 @@ const publicController = require(`${controllerPath}publicController`);
 const userController = require(`${controllerPath}userController`)
 const costumeController = require(`${controllerPath}costumeController`);
 const equipmentController = require(`${controllerPath}equipmentController`);
+const contentController = require(`${controllerPath}contentController`);
 
+const contentForm = require(`${formPath}contentForm`);
 const costumeForm = require(`${formPath}costumeForm`);
 const equipmentForm = require(`${formPath}equipmentForm`);
 const userForm = require(`${formPath}userForm`);
@@ -65,6 +67,16 @@ router.post('/api/logout', loginCheck, userController.postLogout);
 /** アカウントの削除 */
 router.delete('/api/delete', loginCheck, validate.check(userForm.delete), validate.result, userController.postUserDelete);
 
+/** お知らせ getNoticeData */
+router.get('/api/notice', publicController.getNoticeData);
+
+/** パスワードを忘れた */
+router.get('/forget/password', publicController.forgetPassword);
+router.post('/forget/password', validate.check(publicForm.forgetPassword), validate.result, publicController.postForgetPassword);
+
+/** ユーザーIDを忘れた/登録したメールアドレスが分からない */
+router.get('/forget/userid', publicController.forgetUserid);
+router.post('/forget/userid', validate.check(publicForm.forgetUserId), validate.result, publicController.postForgetUserid);
 
 /** =============================
  * マイページ
@@ -76,16 +88,16 @@ router.get('/mypage', loginCheck, mypageController.index);
 router.get('/mypage/profile', loginCheck, profileController.index);　/* プロフィール編集の表示 */
 
 /* プロフィール情報の取得 */
-router.get('/mypage/profile/:user_id', loginCheck, validate.check(userForm.getUser), validate.result, userController.getUserData)
+router.get('/mypage/profile/:user_id', loginCheck, validate.check(userForm.getUser), validate.result, userController.getUserData);
 
 /* プロフィール設定の編集 postProfile */
-router.post('/mypage/profile', loginCheck, validate.check(userForm.putProfile), validate.result, userController.postUserUpdate)
+router.post('/mypage/profile', loginCheck, validate.check(userForm.putProfile), validate.result, userController.postUserUpdate);
 
 /* プロフィールアイコン画像の登録 postProfileIcon */
-router.post('/mypage/profile/profileIcon', loginCheck, userController.postProfileIcon)
+router.post('/mypage/profile/profileIcon', loginCheck, userController.postProfileIcon);
 
 /* カバー背景画像の登録 postProfileIcon */
-router.post('/mypage/profile/bgCover', loginCheck, userController.postBgCover)
+router.post('/mypage/profile/bgCover', loginCheck, userController.postBgCover);
 
 
 /* サイトの設定の表示 index */
@@ -119,17 +131,8 @@ router.get('/mypage/costume', loginCheck, costumeController.index);
 /* 所持衣装一覧の取得(コスプレイヤーのみ) list */
 router.get('/mypage/costume/list', loginCheck, costumeController.list);
 
-/** 作品情報の取得 getContentTitle */
-router.post('/mypage/costume/content', loginCheck, validate.check(costumeForm.getSearchContentTilte), validate.result, costumeController.getContentTitle);
-
 /** 所持衣装情報の取得 getCostume */
 router.get('/mypage/costume/:costume_id', loginCheck, validate.check(costumeForm.getCostume), validate.result, costumeController.getCostume)
-
-/* コスプレ作品登録 */
-router.post('/mypage/costume/createtitle', loginCheck, validate.check(costumeForm.postRegistTitle), validate.result, costumeController.createContentTitle);
-
-/* コスプレキャラクター登録 */
-router.post('/mypage/costume/createchara', loginCheck, validate.check(costumeForm.postRegistChara), validate.result, costumeController.createContentChara);
 
 /* コスプレ衣装設定(コスプレイヤーのみ)の登録 postCreate */
 router.post('/mypage/costume', loginCheck, validate.check(costumeForm.post), validate.result, costumeController.postCreate);
@@ -140,6 +143,17 @@ router.put('/mypage/costume', loginCheck, validate.check(costumeForm.put), valid
 /* コスプレ衣装設定(コスプレイヤーのみ)の削除 delete */
 router.delete('/mypage/costume', loginCheck, validate.check(costumeForm.delete), validate.result, costumeController.delete);
 
+
+
+// /* コスプレ作品登録 */
+// router.post('/mypage/costume/createtitle', loginCheck, validate.check(costumeForm.postRegistTitle), validate.result, costumeController.createContentTitle);
+
+// /* コスプレキャラクター登録 */
+// router.post('/mypage/costume/createchara', loginCheck, validate.check(costumeForm.postRegistChara), validate.result, costumeController.createContentChara);
+
+/** =============================
+ * 運営情報
+ ================================*/
 
 /* 運営情報の表示 */
 router.get('/adminInfo', publicController.getAdminInfo);
@@ -156,13 +170,30 @@ router.get('/contact', publicController.getContact);
 /* お問い合わせの送信 postContact */
 router.post('/contact', validate.check(publicForm.postContact), validate.result, publicController.postContact);
 
-/** お知らせ getNoticeData */
-router.get('/api/notice', publicController.getNoticeData)
-
-
 /* 外部サービス連携の表示 postExtService */
 router.get('/mypage/extService', loginCheck, extServiceController.index);　
 
+/** =============================
+ * 作品/キャラクター情報
+ ================================*/
+
+/* 作品/キャラクターの取得 info */
+router.get('/api/content/:type', validate.check(contentForm.info), validate.result, contentController.info);
+
+/* 作品名/キャラクター名の検索 search */
+router.get('/api/content/search/:type', validate.check(contentForm.search), validate.result, contentController.search);
+
+/* 作品情報の登録 create */
+router.post('/api/content/title', validate.check(contentForm.postRegistTitle), validate.result, contentController.createContentTitle);
+
+/* キャラクター情報の登録 create */
+router.post('/api/content/chara', validate.check(contentForm.postRegistChara), validate.result, contentController.createContentChara);
+
+/* 作品情報の更新 update */
+router.put('/api/content/title', validate.check(contentForm.updateTitle), validate.result, contentController.update);
+
+/* キャラクター情報の更新 update */
+router.put('/api/content/chara', validate.check(contentForm.updateChara), validate.result, contentController.update);
 
 /** =============================
  * スケジュール

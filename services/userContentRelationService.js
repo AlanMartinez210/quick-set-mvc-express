@@ -1,5 +1,5 @@
 const errorHelper = require("../common/helper/errorHelper");
-const {User_content_relation} = require("../models/index");
+const {Content_chara, User_content_relation} = require("../models/index");
 
 /**
  * ユーザーが登録した衣装一覧
@@ -14,8 +14,18 @@ exports.getUserCostumeList = (user_id)=>{
  * user_id: 登録者ID
  * data: 衣装情報
  */
-exports.addCostume = (user_id, data)=>{
-  return User_content_relation.addCostume(user_id, data);
+exports.addCostume = async (user_id, {chara_id, remarks} = data)=>{
+
+  // キャラクター情報を取得して存在を確認する。
+  const instance = await Content_chara.getCharaById(chara_id)
+  
+  if(!instance) return Promise.reject( new errorHelper({ status: 400, code: "E00020" }) );
+
+  return User_content_relation.addCostume(user_id, {
+    content_id: instance.get("content_title").id,
+    chara_id,
+    remarks
+  });
 };
 
 /**
@@ -48,5 +58,3 @@ exports.getCostumeById = async (costume_id) => {
 
   return instance;
 };
-
-

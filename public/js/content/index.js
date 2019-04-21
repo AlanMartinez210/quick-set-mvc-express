@@ -17,6 +17,7 @@ import review from './mypage/review';
 import costume from './mypage/costume';
 import equipment from './mypage/equipment';
 import messageRoom from './messageRoom';
+import forget from './forget';
 
 // # 必ず紐づくコンテンツIDで定義してください。
 export const contents = {
@@ -38,5 +39,6 @@ export const contents = {
   review,
   costume,
   equipment,
-  messageRoom
+  messageRoom,
+  forget
 };

@@ -20,7 +20,7 @@ exports.post = {
 		in: 'body',
 		isLength: {
       errorMessage: 'E00004',
-      options: { min: 7 }
+      options: { min: 7, max: 32 }
 		},
 		matches: {
 			errorMessage: 'E00004',

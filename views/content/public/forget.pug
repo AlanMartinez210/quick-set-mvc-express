@@ -1,0 +1,79 @@
+.center-frame
+
+  form(name="forgetForm")
+
+    if self.contentId == "forget_password"
+
+      .board-prm
+        .board-hdr
+          .label-box._fb.flex._c
+            i.icon-title-b.fas.fa-exclamation-triangle.fa-fw.c-orange
+            span: |はじめにお読みください。
+        
+        .board-cnt
+          p
+            |c2linkに登録したメールアドレス宛に、パスワード再設定用のURLが添付されたメールが送付されます。
+          p.c-red
+            |※メールは1時間以内に届きますので、送付されない場合は再度申請をお願い致します。
+
+      .board-prm
+        
+
+        .board-cnt
+          .attention-prm
+            p
+              span.st-required(style="display:inline-block;")
+                |&emsp;&emsp;&emsp;
+              |&nbsp;は必須項目です。
+
+          .label-input-box#box_forget_user_id
+            .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
+              p.main-label: |ユーザーID
+            .input-box.flex._c.st-required
+              input(type="text", name="forget_user_id", maxlength=256)
+            p.bottom-label
+
+          .label-input-box#box_forget_email
+            .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
+              p.main-label: |登録したメールアドレス
+            .input-box.flex._c.st-required
+              input(type="text", name="forget_email", maxlength=256)
+            p.bottom-label
+        
+        .board-ftr.flex._j
+          button(name="doSendforgetPassword").btn-prm.st-back-b.shadow-l
+            span: |送信
+    
+    else
+
+      .board-prm
+        .board-hdr
+          .label-box._fb.flex._c
+            i.icon-title-b.fas.fa-exclamation-triangle.fa-fw.c-orange
+            span: |はじめにお読みください。
+        
+        .board-cnt
+          p
+            |応答可能なメールアドレスを入力してください。<br />オペレーターより、復旧作業が開始されます。
+          p.c-red
+            |※メールは1時間以内に届きますので、送付されない場合は再度申請をお願い致します。
+
+      .board-prm
+
+        .board-cnt
+          .attention-prm
+            p
+              span.st-required(style="display:inline-block;")
+                |&emsp;&emsp;&emsp;
+              |&nbsp;は必須項目です。
+
+          .label-input-box#box_forget_email
+            .label-box.icon_tip._edit.help-tip(data-help_text=viewMsg.v00002)
+              p.main-label: |応答可能なメールアドレス
+            .input-box.flex._c.st-required
+              input(type="text", name="forget_email", maxlength=256)
+            p.bottom-label
+        
+        .board-ftr.flex._j
+          button(name="doSendforgetUserId").btn-prm.st-back-b.shadow-l
+            span: |送信

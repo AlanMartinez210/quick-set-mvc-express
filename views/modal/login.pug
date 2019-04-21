@@ -1,5 +1,5 @@
 #loginModal.login-ptm(data-modal="hide")
-  form(method="post", action="/login", name="loginForm")
+  form(name="loginForm")
 
     .board-prm
 
@@ -18,14 +18,24 @@
           .input-box.flex._c
             input(type="password", name="login_password", autocomplete="password", maxlength=32)
           p.bottom-label #{self.err_message}
+
+        .accordion-prm.inline.shadow-l
+
+          .accordion-label.flex._c
+            .accordion-title
+              p: |ログインでお困りですか？
+
+          .accordion-cnt._s
         
-        .label-box
-          p
-            a.default(data-helpmodal): |パスワードを忘れました
-        .label-box
-          p
-            a.default(data-helpmodal): |ユーザーID/メールアドレスを忘れました
+            .label-box
+              p
+                span: |・
+                a.default(href="/forget/password"): |パスワードを忘れました
+            .label-box
+              p
+                span: |・
+                a.default(href="/forget/userid"): |ユーザーIDとメールアドレスを忘れました
 
       .board-ftr._s.flex._c._jc
-        button(type="submit", name="doLogin").btn-prm.st-back-b.shadow-l
+        button(name="doLogin").btn-prm.st-back-b.shadow-l
           |ログイン

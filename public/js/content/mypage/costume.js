@@ -2,132 +2,54 @@ export default class costume{
 	constructor(){
 		this.$costumeSection = $('#costumeSection');
 		this.$confirmRegistCostumeForm = $('[name=confirmRegistCostumeForm]');
-		this.$registCharaForm = $('[name=registCharaForm]');
-		this.$registTitleForm = $('[name=registTitleForm]');
 	}
 	ready(call = {type: "costume"}){
-		const $registTitle = $('#registTitle');
-		const $registChara = $('#registChara');
-		const $openRegistTitleModalBtn = $('[name=openRegistTitleModal]');
-		const $openRegistCharaModalBtn = $('[name=openRegistCharaModal]');
-		const $titleSearchBtn = $('[name=titleSearch]');
-		const $search_content_title = $('[name=search_content_title]');
-		const $titleList = $('#titleList');
-		const $titleListNum = $("#titleListNum");
-		const $backTitleBtn = $('[name=backTitle]');
-		const $contentTitleName = $("[name=content_title_name]");
-		const $confContentTitle = $("[name=conf_content_title]");
 
-		const $contentCharaName = $("[name=content_chara_name");
-		const $confContentChara = $("[name=conf_content_chara");
-
-		const $charaList = $('#charaList');
-		const $doPostCostumeBtn = $('[name=doPostCostume]');
-		const $doPostRegistCharaBtn = $('[name=doPostRegistChara]');
-		const $doPostRegistTitleBtn = $('[name=doPostRegistTitle]');
-
-		const $hasCoutumeList = $('#has_coutume_list');
-		
-		// キャラクター登録、初期非表示
-		$registChara.hide();
-
-		if(call.type === "costume"){
-			
-			// 作品登録モーダルを開く
-			$openRegistTitleModalBtn.on('click', {
-				type: 'registTitle'
-			}, e => this.app.showModal(e));
-
-			// キャラクター登録モーダルを開く
-			$openRegistCharaModalBtn.on('click', {
-				type: 'registChara'
-			}, e => this.app.showModal(e));
-		
-		}else if(call.type === "schedule"){
-
-			// 作品登録モーダルに切り替える
-			$openRegistTitleModalBtn.on('click', () => {
-				this.app.switchModal({modalName: "registTitle", child:true});
-			})
-
-			// キャラクター登録モーダルに切り替える
-			$openRegistCharaModalBtn.on('click', () => {
-				this.app.switchModal({modalName: "registChara", child:true});
-			})
-
-		}
-
-		// セット処理
-		const parseCharaList = (searchData) => {
-			$titleList.empty();
-			if(searchData.rows && searchData.rows.length){
-				for(const item of searchData.rows){
-					$titleList.append(`
-						<li name="titleListItem" data-title_id=${item.id} data-chara_list='${JSON.stringify(item.chara_list)}'>${item.name}</li>
-					`);
+		// コスプレするキャラクターの検索
+		const $charaList = $("#charaList");
+		const $countCharaList = $("#countCharaList");
+		$("[name=search_chara_keyword_btn]").on('click', () => {
+			const sendData = $("[name=searchCharaForm]").getValue();
+			this.searchChara(sendData)
+			.done(res => {
+				$charaList.empty();
+				if(res.rows && res.rows.length){
+					for(const item of res.rows){
+						$charaList.append(this.getCharaListHTML(item.id, item.name, item.title_info.name));
+					}
+					if(res.count) $countCharaList.text(`作品候補一覧 (${res.count}件)`);
+				}else{
+					$charaList.append(this.getCharaListHTML());
+					$countCharaList.text(`候補一覧 (0件)`);
 				}
-				if(searchData.count) $titleListNum.text(`作品候補一覧 (${searchData.count}件)`);
-			}else{
-				$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
-				$titleListNum.text(`候補一覧 (0件)`);
-			}
-		}
-				
-		// 作品検索ボタン
-		$titleSearchBtn.on('click', e => {
-			const sendData = { search_content_title: $search_content_title.val() } 
-			// 検索条件をローカルストレージから検索(連打対策)
-			// const searchSession = sessionStorage.getItem(sendData.search_content_title);
-			// if(searchSession){
-			// 	parseCharaList(JSON.parse(searchSession));
-			// }
-			// else{
-				this.searchTitle(sendData)
-				.done(res => {
-					// 検索結果をsessionStrageに保存
-					sessionStorage.setItem(sendData.search_content_title, JSON.stringify(res));
-					parseCharaList(res);
-				});
-			// }
+			});
 		});
-
-		// 作品名リストをクリックしたとき
-		$("ul#titleList").on('click', "li[name=titleListItem]", e => {
-
-			const chara_list = $(e.currentTarget).data("chara_list");
-			// 関連するキャラクター名を取得する。
-			$charaList.empty();
-			if(chara_list && chara_list.length){
-				for(const item of chara_list){
-					$charaList.append(`<li name="charaListItem" data-chara_id=${item.id}>${item.name}</li>`);
-				}
-			}
-			else{
-				$charaList.append(`<li name="charaListEmpty">キャラクターがいません</li>`);
-			}
-
-			$registTitle.hide();
-			$registChara.fadeIn("fast");
-			// キャラ選択に引き継ぐ情報を入れる
-			$contentTitleName.val($(e.currentTarget).text());
-			$confContentTitle.val($(e.currentTarget).data("title_id"));
-
-		});
-		
 		
 		// キャラクター名リストをクリックしたとき
+		const $confTitleName = $("[name=conf_title_name");
+		const $confCharaName = $("[name=conf_chara_name");
+		const $confCharaId = $("[name=conf_chara_id");
 		$("ul#charaList").on('click', "li[name=charaListItem]", {
 			type: 'confirmRegistCostume',
-			onOpenBrefore: (e) => {
+			onSyncOpenBrefore : (resolve, reject, event) => {
+				
 				$(".proc-btn").hide();
-				$(`[data-proc=create]`).show();
-				$contentCharaName.val($(e.currentTarget).text());
-				$confContentChara.val($(e.currentTarget).data("chara_id"));
+				$('[data-proc=create]').show();
+				
+				// キャラクター情報を取得
+				this.getCharaInfo({chara_id: $(event.currentTarget).data("chara_id")})
+				.done(res => {
+					// 値の設定
+					$confTitleName.val(res.item.title_info.name);
+					$confCharaName.val(res.item.name);
+					$confCharaId.val(res.item.id);
+					return resolve();
+				})
 			}
 		}, e => this.app.showModal(e));
 		
 		// 衣装-登録/編集/削除
-		$doPostCostumeBtn.on('click', e => {
+		$('[name=doPostCostume]').on('click', e => {
 			console.log(e.currentTarget);
 			const procType = $(e.currentTarget).data("proc");
 			switch(procType){
@@ -145,47 +67,8 @@ export default class costume{
 			return false;
 		})
 
-		// 作品選択に戻るボタン
-		$backTitleBtn.on('click', e => {
-			$titleList.empty();
-			$titleList.append(`<li name="titleListEmpty">候補がありません</li>`);
-			$titleListNum.text(`作品候補一覧 (0件)`);
-			$registChara.hide();
-			$registTitle.fadeIn("fast");
-		});
-
-		// 作品新規登録ボタン
-		$doPostRegistTitleBtn.on('click', e => {
-			new Promise((resolve, reject) => {
-				return this.registContentTitle(resolve, reject, e);
-			})
-			.then(res => {
-				// 取得したデータを作品リストに追加する。
-				$titleList.empty();
-				$titleList.append(`
-					<li name="titleListItem" data-title_id=${res.title_info.id} data-chara_list='${JSON.stringify(res.title_info.chara_list)}'>${res.title_info.name}</li>
-				`);
-				$titleListNum.text(`作品候補一覧 (1件)`);
-			})
-			
-			return false;
-		});
-
-		// キャラクター新規登録ボタン 
-		$doPostRegistCharaBtn.on('click', e => {
-			new Promise((resolve, reject) => {
-				return this.registContentChara(resolve, reject, e);
-			})
-			.then(res => {
-				if($charaList.find('[name=charaListEmpty]').length) $charaList.empty();
-				// 取得したデータをキャラリストに追加する。
-				$charaList.prepend(`<li name="charaListItem" data-chara_id=${res.id}>${res.name}</li>`);
-			})
-			return false;
-		});
-
 		// 所持衣装一覧クリック処理
-		$hasCoutumeList.on('click', 'li', {
+		$('#has_coutume_list').on('click', 'li', {
 			type: 'confirmRegistCostume',
 			onSyncOpenBrefore : (resolve, reject, event) => {
 					// リストからcostume_idを取得し、モーダルに展開する。
@@ -200,20 +83,45 @@ export default class costume{
 				// 衣装情報の取得
 				this.app.sendGet(`/mypage/costume/${costume_id}`)
 				.done(result => {
-					this.$confirmRegistCostumeForm.setValue(result.costume_info)
+					console.log('result: ', result);
+					this.$confirmRegistCostumeForm.setValue({
+						costume_id: result.item.costume_id,
+						conf_title_name: result.item.content_title_name,
+						conf_chara_name: result.item.content_chara_name,
+						costume_comment: result.item.costume_comment,
+					})
 					resolve();
 				})
 			}
 		}, e => this.app.showModal(e))
 
-		// 所持衣装の編集
 	}
 
 	//
 
-	// 作品検索
-	searchTitle(sendData = {}){
-		return this.app.sendPost(`/mypage/costume/content`, sendData)
+	// キャラクターの検索
+	searchChara({search_type, keyword} = sendData){
+		return this.app.sendGet(`/api/content/search/${search_type === "1" ? 'title' : 'chara'}?keyword=${keyword}`)
+	}
+
+	// キャラクターの検索
+	getCharaInfo({chara_id} = sendData){
+		return this.app.sendGet(`/api/content/chara?id=${chara_id}`)
+	}
+
+	// キャラクター検索結果一覧のHTMLを取得します。
+	getCharaListHTML(chara_id, chara_name, title_name){
+		return `<li ${chara_id ? `name='charaListItem' data-chara_id=${chara_id}` : "" } >
+			<div class="label-link">
+				<a ${chara_id ? "" : "href='/mypage'"} class="flex _c">
+					<div class="st-string-set">
+						<p>${ chara_name || "キャラクターが見つかりません…" }</p>
+						<span class="sub-text">${ title_name || "こちらからキャラクター登録をお願いします。" }</span>
+					</div>
+					<i class="icon-link fas fa-chevron-right fa-fw"></i>
+				</a>
+			</div>
+		</li>`
 	}
 
 	// 衣装登録処理
@@ -280,66 +188,5 @@ export default class costume{
 				})
 			}
 		})
-	}
-
-	// 作品登録処理
-	registContentTitle(resolve, reject, e){
-		const sendData = this.$registTitleForm.getValue();
-
-		// 同意の確認
-		if(sendData.consent_regist_title){
-			this.app.clearInputMsg("consent_regist_title");
-			this.app.showInfoDialog({
-				name: 'checkTitleCmf',
-				title: "登録の確認",
-				text: "この内容で登録します。よろしいですか？",
-			})
-			.closelabel("いいえ")
-			.addBtn({
-				callback: () => {
-					this.app.sendPost('/mypage/costume/createtitle', sendData)
-					.done(result => {
-						if(result){
-							resolve(result);
-							this.app.hideDialog();
-							this.app.showClearAll();
-							this.app.showInfo("処理に成功しました。");
-						}
-					})
-				}
-			})
-		}else{
-			this.app.showInputErr("consent_regist_title", "チェックしてください。")
-		}
-	}
-
-	// キャラクター登録処理
-	registContentChara(resolve, reject, e){
-		const sendData = this.$registCharaForm.getValue();
-		// 同意の確認
-		if(sendData.consent_regist_chara){
-			this.app.showInfoDialog({
-				name: 'checkCharaCmf',
-				title: "登録の確認",
-				text: "この内容で登録します。よろしいですか？",
-			})
-			.closelabel("いいえ")
-			.addBtn({
-				callback: () => {
-					this.app.sendPost('/mypage/costume/createchara', sendData)
-					.done(result => {
-						if(result){
-							resolve(result);
-							this.app.hideDialog();
-							this.app.showClearAll();
-							this.app.showInfo("処理に成功しました。");
-						}
-					})
-				}
-			})
-		}
-		else{
-			this.app.showInputErr("consent_regist_chara", "チェックしてください。")
-		}
 	}
 }

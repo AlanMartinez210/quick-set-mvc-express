@@ -23,7 +23,8 @@ module.exports = (req, res, next) =>{
     let content_id = "";
     let header = {
       menu: { notice: [] },
-      data: {}
+      data: {},
+      publicMode: false
     };
     let body = {
       data: {},
@@ -40,6 +41,9 @@ module.exports = (req, res, next) =>{
       //
       get title() {return header.title},
       set title(t) {header.title = t},
+      //
+      get publicMode() {return header.publicMode},
+      set publicMode(flg) {header.publicMode = flg},
       //
       get contentId() {return content_id},
       set contentId(cid) {content_id = cid},

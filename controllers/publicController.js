@@ -97,6 +97,10 @@ exports.getContact = (req, res, next) => {
 	res.render('public/contact',render_obj);
 }
 
+/**
+ * 
+ * 
+ */
 exports.getNoticeData = (req, res, next) => {
 	const render_obj = res.render_obj;
 	const user_id = sessionHelper.getUserId(req);
@@ -122,4 +126,62 @@ exports.getNoticeData = (req, res, next) => {
   .catch(err => {
     next(err);
   })
+}
+
+/**
+ * パスワードを忘れた画面の表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.forgetPassword = (req, res, next) => {
+	var render_obj = res.render_obj;
+	render_obj.contentId = "forget_password";
+	render_obj.title = "パスワードの再発行";
+	render_obj.publicMode = true;
+	render_obj.backBtn = c2Util.getBackTopPageBtn();
+	
+	res.render('public/forget', render_obj);
+}
+
+/**
+ * ユーザーID、メールアドレスを忘れた画面の表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.forgetUserid = (req, res, next) => {
+	var render_obj = res.render_obj;
+	render_obj.contentId = "forget_userid";
+	render_obj.title = "アカウントの復旧";
+	render_obj.publicMode = true;
+	render_obj.backBtn = c2Util.getBackTopPageBtn();
+	
+	res.render('public/forget', render_obj);
+}
+
+/**
+ * パスワードを忘れた画面の表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.postForgetPassword = (req, res, next) => {
+	const form_data = req.form_data;
+	const render_obj = res.render_obj;
+	render_obj.contentId = "register";
+	render_obj.title = "新規登録";
+	res.render('register', render_obj);
+}
+
+/**
+ * ユーザーID、メールアドレスを忘れた画面の表示
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.postForgetUserid = (req, res, next) => {
+	const form_data = req.form_data;
+	
+	res.render('register');
 }

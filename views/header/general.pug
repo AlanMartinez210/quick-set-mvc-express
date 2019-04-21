@@ -1,23 +1,7 @@
 header
   .hdr-cntnr
     .cntnr-balancer
-      .header-spacer
-
-      //- - if (ShortcutMenu){
-      //- .hdr-controll
-      //-   .hdr-select-box._s.flex._c.shadow-l
-          
-      //-     label.selectBox.flex._c
-      //-       select#scMenu(data-scMenuSelected="")
-              
-      //-         - for (let i=0;i<sc_menu_list.length;i++){ const m = sc_menu_list[i];
-      //-           - if (ml[i].type == session.user.type){
-      //-             option(value=m.id, data-href=m.id) #{m.name}
-      //-           - }
-      //-         - }
-
-      //-       i.fas.fa-caret-down.icon-title
-      //- - }
+      div(class=`${self.publicMode ? "header-spacer-public" : "header-spacer"}`)
 
       - if (backBtn.href){
       .hdr-controll
@@ -29,13 +13,14 @@ header
     .hdr-menu
       .cntnr-balancer
         //-title
-        .hdr-title.flex._c
+        div(class=`${self.publicMode ? "hdr-title-public" : "hdr-title"} flex _c`)
           .hdr-logo
             img(src=main_logo, alt="", srcset="")
           h1: |#{self.title}
           span#noticeBtn.act-back-blue.shadow-d.on-notice
             i.icon_notice.far.fa-bell
         //-navigation
+        - if (!self.publicMode) {
         nav
           ul.hdr-g-nav.flex._c
             each menu in gnav_menu_list
@@ -44,4 +29,6 @@ header
                 a.flex._c._j(href=menu.href)
                   span.menu-icon-poti-lock
                     i.icon-menu.fa-fw(class=menu.icon_css)
+        - }
+        
 
